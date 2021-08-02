@@ -15,7 +15,7 @@ import { View, Text } from '@tarojs/components'
 import { getImmutableTypeHeight } from './getHeight'
 import { getElementRect, randomStr } from './utils'
 import Skeleton from './skeleton';
-import { updateViewCountInStores } from '@common/utils/viewcount-in-storage';
+import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
 
 @inject('site')
 @inject('index')
@@ -208,9 +208,15 @@ class Index extends React.Component {
     }
 
     updateViewCount = async () => {
-      const { threadId = '' } = this.props.data || {};
+      const { data, site } = this.props;
+      const { threadId = '' } = data || {};
+      const { openViewCount } = site?.webConfig?.setSite || {};
+
+      const viewCountMode = Number(openViewCount);
+      if(viewCountMode === 1) return;
+
       const threadIdNumber = Number(threadId);
-      const viewCount = await updateViewCountInStores(threadIdNumber);
+      const viewCount = await updateViewCountInStorage(threadIdNumber);
       if(viewCount) {
         this.props.index.updateAssignThreadInfo(threadIdNumber, { updateType: 'viewCount', updatedInfo: { viewCount: viewCount } })
         this.props.search.updateAssignThreadInfo(threadIdNumber, { updateType: 'viewCount', updatedInfo: { viewCount: viewCount } })

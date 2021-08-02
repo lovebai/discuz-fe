@@ -8,7 +8,7 @@ import ThreadMiniPage from '@layout/thread/index';
 import withShare from '@common/utils/withShare/withShare';
 import ErrorMiniPage from '../../layout/error/index';
 import { priceShare } from '@common/utils/priceShare';
-import { updateViewCountInStores } from '@common/utils/viewcount-in-storage';
+import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
 
 // const MemoToastProvider = React.memo(ToastProvider);
 @inject('site')
@@ -60,8 +60,12 @@ class Detail extends React.Component {
   }
 
   updateViewCount = async (id) => {
+    const { site } = this.props;
+    const { openViewCount } = site?.webConfig?.setSite || {};
+    const viewCountMode = Number(openViewCount);
+
     const threadId = Number(id);
-    const viewCount = await updateViewCountInStores(threadId);
+    const viewCount = await updateViewCountInStorage(threadId, viewCountMode === 0);
     if (viewCount) {
       this.props.thread.updateViewCount(viewCount);
       this.props.index.updateAssignThreadInfo(threadId, {

@@ -26,7 +26,8 @@ export default function fuzzyCalcContentLength(content, lengthInLine = 50) {
     // 替换图片标签
     newContent = replaceStringInRegex(newContent, "img", '');
 
-    // 回车换成'\n'
+    // 把代码块中的<br>换成*br*从而不参与计算长度，并换回占位符，回车换成'\n'
+    newContent = replaceStringInRegex(newContent, "breakInCode", '*br*');
     newContent = replaceStringInRegex(newContent, "break", '\n');
 
     // 替换所有标签
@@ -44,7 +45,7 @@ export default function fuzzyCalcContentLength(content, lengthInLine = 50) {
             const restInLine = lengthInLine - newContent.indexOf('\n') > 0 ? // 防止长文章最后一个字是回车
                                 lengthInLine - newContent.indexOf('\n') : 0;
             totalCount += restInLine;
-            newContent = newContent.replace(newContent.indexOf('\n'), '');
+            newContent = newContent.substr(newContent.indexOf('\n') + 1);
         }
     }
     return parseInt(totalCount);

@@ -378,7 +378,7 @@ class PostPage extends React.Component {
         Toast.error({ content });
         return false;
       }
-      this.setState({ curPaySelect: child.id, emoji: {} });
+      this.setState({ currentDefaultOperation: item.id, curPaySelect: child.id, emoji: {} });
     } else {
       this.setState({ currentDefaultOperation: item.id, emoji: {} }, () => {
         if (item.id === defaultOperation.attach) {

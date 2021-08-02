@@ -428,7 +428,10 @@ export default function DVditor(props) {
 
   return (
     <>
-      <div id={vditorId} className={className} onClick={e => e.stopPropagation()}>
+      <div id={vditorId} className={className} onClick={e => {
+        e.stopPropagation()
+        setState({ currentDefaultOperation: '' })
+      }}>
         <LoadingBox>编辑器加载中...</LoadingBox>
       </div>
       {/* {!pc && isFocus && <div className="dvditor__placeholder"></div>} */}
