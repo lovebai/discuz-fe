@@ -1,4 +1,4 @@
-import { createAttachment } from '@common/server';
+import { createAttachment, getCosTmpKey, updateAttachment } from '@common/server';
 import { fixImageOrientation } from '@common/utils/exif';
 
 
@@ -12,16 +12,48 @@ const attachmentUploadOne = async (file, type = 1) => {
 
 
 
-  // 使用cos上传
+
   const Bucket = 'discuz-service-test-1258344699';
   const Region = 'ap-guangzhou';
 
+  // 使用cos上传
   const COS = (await import('cos-js-sdk-v5')).default;
-  var cos = new COS({
-    SecretId: 'AKIDCJAnwjKjthEk6HBm6fwzhCLFRRBlsBxG',
-    SecretKey: 'DF1SjllSwlna8i9D6jAGFPPzT6TXHnac',
+
+  const fileName = file.name;
+  const key = `${new Date().getTime()}${fileName}`;
+  let cosKeyData = {};
+
+  const cos = new COS({
+    getAuthorization: async (options, callback) => {
+      const res = await getCosTmpKey({
+        type,
+        nameArr: [key]
+      });
+      const { code, data } = res;
+      if (code === 0) {
+        cosKeyData = data;
+        const credentials = data && data.credentials;
+        callback({
+          TmpSecretId: credentials.tmpSecretId,
+          TmpSecretKey: credentials.tmpSecretKey,
+          SecurityToken: credentials.sessionToken,
+          StartTime: data.startTime,
+          ExpiredTime: data.expiredTime,
+        });
+      } else {
+        // todo: 处理异常情况，获取临时密钥失败
+      }
+    }
   });
-  const key = `${new Date().getTime()}${file.name}`
+
+  // const cos = new COS({
+  //   SecretId: 'AKIDCJAnwjKjthEk6HBm6fwzhCLFRRBlsBxG',
+  //   SecretKey: 'DF1SjllSwlna8i9D6jAGFPPzT6TXHnac',
+  // });
+
+
+
+  // 开始上传
   cos.putObject({
     Bucket: Bucket,
     Region: Region,
@@ -30,22 +62,27 @@ const attachmentUploadOne = async (file, type = 1) => {
     Body: file,
     onProgress: function(progressData) {
         console.log(JSON.stringify(progressData));
+        // todo: 上传进度处理
     }
   }, function(err, data) {
-    console.log(err || data);
-
     if (err === null) {
-
       const url = cos.getObjectUrl({
         Bucket: Bucket,
-        Region: Region,     /* 存储桶所在地域，必须字段 */
+        Region: Region,
         Key: key,
         Sign: false
       });
 
-
-      console.log(data, url);
-      debugger;
+      updateAttachment({
+        type,
+        filePath: url,
+        fileName,
+        fileSize: file.size,
+        fileType: file.type,
+        requestId: cosKeyData?.requestId,
+      });
+    } else if (err) {
+      // todo: 异常情况处理，上传失败
     }
   });
 
@@ -72,35 +109,8 @@ const attachmentUploadOne = async (file, type = 1) => {
 
 
 
-  // const cos = new COS({
-  //   getAuthorization: (callback) => {
-  //     // 异步获取临时密钥
-  //     var url = '/coskey';
-  //     var xhr = new XMLHttpRequest();
-  //     xhr.open('POST', url, true);
-  //     xhr.setRequestHeader("Content-Type", "application/json");
-  //     const data = JSON.stringify({type: 1});
-  //     xhr.send(data);
-  //     xhr.onreadystatechange = () => {
-  //       if (xhr.readyState === 4 && xhr.status === 200) {
-  //         const data = JSON.parse(xhr.responseText);
-  //         var credentials = data && data.credentials;
-  //         if (!data || !credentials) return console.error('credentials invalid');
-  //         callback({
-  //           TmpSecretId: credentials.tmpSecretId,
-  //           TmpSecretKey: credentials.tmpSecretKey,
-  //           SecurityToken: credentials.sessionToken,
-  //           // 建议返回服务器时间作为签名的开始时间，避免用户浏览器本地时间偏差过大导致签名错误
-  //           StartTime: data.startTime, // 时间戳，单位秒，如：1580000000
-  //           ExpiredTime: data.expiredTime, // 时间戳，单位秒，如：1580000900
-  //         });
-  //       }
-  //     };
-  //   }
-  // });
-  // cos.options.getAuthorization(res => {
-  //   console.log(res);
-  // });
+
+
 
 
 
