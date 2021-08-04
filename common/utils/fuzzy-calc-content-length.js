@@ -33,12 +33,12 @@ export default function fuzzyCalcContentLength(content, lengthInLine = 50) {
     // 替换所有标签
     newContent = replaceStringInRegex(newContent, "tags", '');
 
-    if(!newContent || newContent === '') return 0;
+    let totalCount = EMOJ_SIZE * countEmojs + // 表情大小
+    IMG_SIZE * (countImgs - countEmojs > 0 ? countImgs - countEmojs : 0); // 加上图片大小
 
+    if(!newContent || newContent === '') return parseInt(totalCount);
+    totalCount += newContent.length;
     const countReturns = (newContent.match(/\n/g) || []).length; // 匹配回车符
-    let totalCount = newContent.length +
-        EMOJ_SIZE * countEmojs + // 表情大小
-        IMG_SIZE * (countImgs - countEmojs > 0 ? countImgs - countEmojs : 0); // 加上图片大小
 
     for(let i = 0; i < countReturns; i++) {
         if(newContent.indexOf('\n') >= 0) {
@@ -48,6 +48,7 @@ export default function fuzzyCalcContentLength(content, lengthInLine = 50) {
             newContent = newContent.substr(newContent.indexOf('\n') + 1);
         }
     }
+
     return parseInt(totalCount);
 }
   

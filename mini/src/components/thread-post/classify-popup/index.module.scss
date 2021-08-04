@@ -60,7 +60,7 @@
 
   .content-parent {
     padding: var(--padding-4n) 0;
-    border-bottom: var(--border-border);
+    border-bottom: 1px solid $border-color;
     .active {
       color: #fff;
       background: #2469f6;
@@ -68,7 +68,8 @@
   }
 
   .content-child {
-    margin: var(--margin-4n) 0;
+    padding: var(--margin-4n) 0;
+    border-bottom: 1px solid $border-color;
 
     .active {
       color: #2469f6;
@@ -82,7 +83,6 @@
     font-size: var(--font-size-primary);
     color: #4f5a70;
     text-align: center;
-    border-top: var(--border-border);
     @include ios-safe-area-inset-bottom;
   }
 }

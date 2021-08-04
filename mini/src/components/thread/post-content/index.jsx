@@ -135,7 +135,7 @@ import replaceStringInRegex from '@common/utils/replace-string-in-regex';
   }
 
   useEffect(() => {
-    const lengthInLine = parseInt((contentWrapperRef.current.offsetWidth || 704) / 16);
+    const lengthInLine = parseInt((contentWrapperRef.current.offsetWidth || 704) / 32);
 
     const length = fuzzyCalcContentLength(filterContent, lengthInLine); // 大致计算文本长度
     const maxContentLength = lengthInLine * 6; // 如果默认长度是704，一共可容纳264个字符
