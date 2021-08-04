@@ -13,10 +13,10 @@
     "update": "dzq update"
   },
   "dependencies": {
-    "@discuzq/design": "^1.0.58",
+    "@discuzq/design": "^1.0.61",
     "@discuzq/discuz-babel-plugin-import": "0.0.1",
     "@discuzq/plugin": "^1.0.31",
-    "@discuzq/sdk": "^1.0.33",
+    "@discuzq/sdk": "^1.0.34",
     "@discuzq/vditor": "^1.0.25",
     "@popperjs/core": "^2.9.2",
     "@sandstreamdev/react-swipeable-list": "^1.0.1",

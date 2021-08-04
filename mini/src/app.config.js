@@ -91,7 +91,7 @@ const config = {
       network: 'all',
       packages: ['indexPages'],
     },
-  },
+  }
 };
 
 module.exports = config;
