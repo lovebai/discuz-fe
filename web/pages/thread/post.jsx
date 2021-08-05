@@ -201,12 +201,14 @@ class PostPage extends React.Component {
   };
 
   // 上传视频之前判断是否已经有了视频，如果有了视频提示只能上传一个视频
-  handleVideoUpload = () => {
-    this.isVideoUploadDone = false;
+  handleVideoUpload = (isStart) => {
     const { postData } = this.props.threadPost;
     if (postData.video && postData.video.id) {
       Toast.info({ content: '只能上传一个视频' });
       return false;
+    }
+    if (isStart) { // 视频选择完毕，即将上传
+      this.isVideoUploadDone = false;
     }
     return true;
   };
