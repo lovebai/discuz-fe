@@ -33,6 +33,20 @@ class CommentPCPage extends React.Component {
 
     this.commentData = null;
     this.replyData = null;
+
+
+    this.positionRef = React.createRef();
+    this.isPositioned = false;
+  }
+
+  componentDidUpdate() {
+    // 滚动到指定的评论定位位置
+    if (this.props.comment?.postId && !this.isPositioned && this.positionRef?.current) {
+      this.isPositioned = true;
+      setTimeout(() => {
+        this.positionRef.current.scrollIntoView();
+      }, 1000);
+    }
   }
 
   // 返回
@@ -360,6 +374,8 @@ class CommentPCPage extends React.Component {
                   isFirstDivider={true}
                   isShowInput={this.state.commentId === commentData.id}
                   onSubmit={(value, imageList) => this.createReply(value, imageList)}
+                  postId={this.props.comment.postId}
+                  positionRef={this.positionRef}
                 ></CommentList>
               ) : (
                 <LoadingTips type="init"></LoadingTips>

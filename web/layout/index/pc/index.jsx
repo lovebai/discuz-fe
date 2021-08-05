@@ -18,7 +18,7 @@ const DynamicVListLoading = dynamic(
   { loading: (res) => {
       return (
           <div style={{width: '100%', maxWidth: '1420px'}}>
-              <DynamicLoading data={res} style={{padding: '0 0 20px 0'}} loadComponent={<Placeholder/>}/>
+              <DynamicLoading data={res} style={{padding: '0 0 20px'}} loadComponent={<Placeholder/>}/>
           </div>
       )
     } }

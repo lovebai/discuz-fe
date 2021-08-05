@@ -52,6 +52,8 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
+    this.handleRouterCategory()
+
     const { index } = this.props;
     const { essence = 0, sequence = 0, attention = 0, sort = 1 } = index.filter;
 
@@ -83,6 +85,56 @@ class Index extends React.Component {
     }
   }
 
+  // 通过地址栏获取到当前分类信息
+  handleRouterCategory = () => {
+    // 识别通过分享过来的url
+    // 若包含categoryId参数，则定位到具体的categoryId数据
+    const { router, index, site } = this.props;
+    let { categoryId = '', sequence = '0' } = router.query || {}
+
+    if (site.platform === 'pc') {
+      // 设置PC端左边栏
+      if (categoryId === '') {
+        categoryId = 'all'
+      }
+
+      // 设置PC端顶部
+      if (sequence !== '0') {
+        index.topMenuIndex = `${sequence}`
+      }
+    }
+
+    if (categoryId || sequence !== '0') {
+      let ids = categoryId.split('_').map(item => {
+        // 判断categoryId是否是数字。可能是all/default
+        const id = /^\d+$/.test(item) ? Number(item) : item
+
+        return id
+      }).filter(item => item)
+
+      if (sequence === '1' && !ids?.length) {
+        ids = ['default']
+      }
+
+      if (ids.indexOf('default') !== -1 && sequence === '0') {
+        sequence = '1'
+      }
+
+      const newFilter = { ...index.filter, categoryids: ids, sequence };
+
+      index.setFilter(newFilter);
+    } else {
+      const { categoryids, sequence: seq } = index.filter || {}
+      this.setUrl(categoryids, seq)
+    }
+  }
+
+  // 根据选中的筛选项，设置地址栏 
+  setUrl = (categoryIds = [], sequence = 0) => {
+    const url = (categoryIds?.length || sequence !== 0)  ? `/?categoryId=${categoryIds.join('_')}&sequence=${sequence}` : '/'
+    this.props.router.replace(url)
+  }
+
   dispatch = async (type, data = {}) => {
     const { index } = this.props;
     const newData = {...index.filter, ...data}
@@ -101,6 +153,8 @@ class Index extends React.Component {
     }
 
     if (type === 'click-filter') { // 点击tab
+      this.setUrl(categoryIds, sequence)
+
       this.page = 1;
       this.props.baselayout.setJumpingToTop();
       this.props.vlist.setPosition(0);

@@ -6,7 +6,7 @@ import DVditor from '@components/editor';
 import Title from '@components/thread-post/title';
 import { AttachmentToolbar, DefaultToolbar } from '@components/editor/toolbar';
 import Position from '@components/thread-post/position';
-import { Button, Audio, AudioRecord } from '@discuzq/design';
+import { Button, Audio, AudioRecord, Tag } from '@discuzq/design';
 import ClassifyPopup from '@components/thread-post/classify-popup';
 import { withRouter } from 'next/router';
 import Emoji from '@components/editor/emoji';
@@ -24,6 +24,7 @@ import Copyright from '@components/copyright';
 import ForTheForm from '@components/thread/for-the-form';
 import VideoDisplay from '@components/thread-post/video-display';
 import MoneyDisplay from '@components/thread-post/money-display';
+import TagLocalData from '@components/thread-post/tag-localdata';
 
 @inject('threadPost')
 @inject('index')
@@ -122,6 +123,7 @@ class ThreadPCPage extends React.Component {
                 <DVditor
                   pc
                   value={postData.contentText}
+                  isResetContentText={postData.isResetContentText}
                   emoji={emoji}
                   atList={atList}
                   topic={topic}
@@ -221,18 +223,26 @@ class ThreadPCPage extends React.Component {
                 </div>
 
               </div>
-              {/* 设置的金额相关展示 */}
-              <MoneyDisplay
-                pc
-                canEditReward={this.props.canEditReward}
-                canEditRedpacket={this.props.canEditRedpacket}
-                payTotalMoney={threadPost.payTotalMoney}
-                redTotalMoney={threadPost.redpacketTotalAmount}
-                postData={postData} setPostData={this.props.setPostData}
-                handleSetState={this.props.handleSetState}
-                onAttachClick={this.props.handleAttachClick}
-                onDefaultClick={this.props.handleDefaultIconClick}
-              />
+              {/* 设置的金额相关展示 + 本地缓存设置 */}
+              <div className={styles.['editor-footer']}>
+                <div className={styles['editor-footer--left']}>
+                  {threadPost.isHaveLocalData && <TagLocalData pc />}
+                  <MoneyDisplay
+                    pc
+                    canEditReward={this.props.canEditReward}
+                    canEditRedpacket={this.props.canEditRedpacket}
+                    payTotalMoney={threadPost.payTotalMoney}
+                    redTotalMoney={threadPost.redpacketTotalAmount}
+                    postData={postData} setPostData={this.props.setPostData}
+                    handleSetState={this.props.handleSetState}
+                    onAttachClick={this.props.handleAttachClick}
+                    onDefaultClick={this.props.handleDefaultIconClick}
+                  />
+                </div>
+                {postData.autoSaveTime && (<div className={styles['editor-footer--right']}>
+                  最近保存{postData.autoSaveTime}
+                </div>)}
+              </div>
             </div>
             <div className={styles.toolbar}>
               <div className={styles['toolbar-left']}>
@@ -296,7 +306,7 @@ class ThreadPCPage extends React.Component {
                 )}
               </div>
             </div>
-            <ClassifyPopup pc onClick={this.hintHide} />
+            <ClassifyPopup pc onClick={this.hintHide} categoryId={threadPost.postData.categoryId} />
             <div className={styles.footer}>
               <Button type="info" disabled={this.props.postType === "isEdit" && !postData.isDraft}
                 onClick={() => this.props.handleDraft()}>保存至草稿箱</Button>

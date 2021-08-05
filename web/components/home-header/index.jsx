@@ -90,7 +90,10 @@ class HomeHeader extends React.Component {
   }
   handleH5Share = () => {
     const title = document?.title || '';
-    h5Share(title);
+    h5Share({
+      title,
+      path: `/${location.search}`
+    });
     Toast.info({ content: '复制链接成功' });
     this.onCancel();
   }

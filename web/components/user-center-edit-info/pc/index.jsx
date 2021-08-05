@@ -429,7 +429,7 @@ class index extends Component {
             ))}
           </div>
           <div className={styles.bottomText}>
-            <Copyright center line />
+            <Copyright center marginTop={0} marginBottom={0} />
           </div>
         </div>
 
