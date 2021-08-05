@@ -176,7 +176,7 @@ export default class Page extends React.Component {
 
     const { site, disabledToast, className = '' } = this.props;
     return (
-      <View className={`${styles['dzq-page']} dzq-theme-${site.theme} ${className}`}>
+      <View className={`${styles['dzq-page']} dzq-theme--${site.theme} ${className}`}>
         <PayBoxProvider>{this.createContent()}</PayBoxProvider>
         {!disabledToast && <ToastProvider></ToastProvider>}
       </View>

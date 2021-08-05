@@ -112,7 +112,7 @@ class DzqApp extends App {
   render() {
     const { Component, pageProps } = this.props;
     return (
-      <div data-dzq-theme="light">
+      <div className={`dzq-theme--${this.appStore.site.theme}`}>
         <Provider {...this.appStore}>
           <Head>
             <meta

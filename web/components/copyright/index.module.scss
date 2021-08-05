@@ -18,10 +18,10 @@
     margin-top: rem($margin-10);
     margin-bottom: rem($margin-10);
     .text > a {
-      color: $h5-copyright-color;
+      color: $copyright-text-color;
     }
   }
-  
+
   &.pc {
     margin-top: rem($margin-5n);
     margin-bottom: rem($margin-5n);
