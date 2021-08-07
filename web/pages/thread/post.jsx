@@ -718,6 +718,7 @@ class PostPage extends React.Component {
           contentText = contentText.replace(images[index], images[index].replace('alt=\"\"', 'alt=\"uploadError\"'));
         } else {
           uploadError.push('');
+          contentText = contentText.replace(images[index], images[index].replace('alt=\"\"', 'alt=\"uploadError\"'));
         }
       });
       threadPost.setPostData({ contentText });
