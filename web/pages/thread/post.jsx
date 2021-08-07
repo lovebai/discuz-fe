@@ -17,7 +17,7 @@ import { tencentVodUpload } from '@common/utils/tencent-vod';
 import { plus } from '@common/utils/calculate';
 import { defaultOperation } from '@common/constants/const';
 import ViewAdapter from '@components/view-adapter';
-import { attachmentUploadMultiple } from '@common/utils/attachment-upload';
+import upload from '@common/utils/upload';
 import { formatDate } from '@common/utils/format-date';
 
 @inject('site')
@@ -693,7 +693,7 @@ class PostPage extends React.Component {
 
     let contentText = threadPost.postData.contentText;
     const images = contentText.match(/<img.*?\/>/g)?.filter(image => (!image.match('alt="attachmentId-') && !image.includes('emoji')));
-    if (images) {
+    if (images && images.length) {
       const fileurls = images.map(img => {
         const src = img.match(/\"(.*?)\"/);
         if (src) return src[1];
@@ -705,7 +705,10 @@ class PostPage extends React.Component {
         hasMask: true,
         duration: 0,
       });
-      const res = await attachmentUploadMultiple(fileurls);
+      const res = await upload({
+        fileurls,
+        type: 1,
+      });
       const sensitiveArr = [];
       const uploadError = [];
       res.forEach((ret, index) => {
