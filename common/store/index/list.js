@@ -1,4 +1,4 @@
-import { observable, computed, action } from 'mobx';
+import { observable, computed, action, extendObservable } from 'mobx';
 import { readThreadList } from '@server';
 import { get } from '@common/utils/get';
 
@@ -12,15 +12,16 @@ export default class ListStore {
     namespace,
   }) => {
     if (this.lists[namespace]) return;
-    this.lists[namespace] = {
-      data: {},
-      requestError: {
-        isError: false,
-        errorText: '加载失败',
+    extendObservable(this.lists, {
+      [namespace]: {
+        data: observable.ref({}),
+        requestError: observable.ref({
+          isError: false,
+          errorText: '加载失败',
+        }),
+        attribs: observable.ref({}),
       },
-      attribs: {},
-    };
-    this.lists = { ...this.lists };
+    });
   }
 
   /**
@@ -110,9 +111,6 @@ export default class ListStore {
         pageData.splice(pageData.indexOf(item), 1);
       }
     });
-
-    // 全量赋值，才能触发渲染
-    this.lists = { ...this.lists };
   }
 
 
@@ -133,9 +131,6 @@ export default class ListStore {
     }
     this.setAttribute({ namespace, key: 'totalPage', value: get(data, 'data.totalPage') });
     this.setAttribute({ namespace, key: 'totalCount', value: get(data, 'data.totalCount') });
-
-    // 全量赋值，才能触发渲染
-    this.lists = { ...this.lists };
   }
 
   /**
