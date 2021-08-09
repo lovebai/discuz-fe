@@ -674,9 +674,14 @@ class PostPage extends React.Component {
   }
 
   async createThread(isDraft, isAutoSave = false) {
-    const { threadPost, thread } = this.props;
+    const { threadPost, thread, site } = this.props;
 
     // 图文混排：第三方图片转存
+    const { webConfig: { setAttach, qcloud } } = site;
+    const { supportImgExt, supportMaxSize } = setAttach;
+    const { qcloudCosBucketName, qcloudCosBucketArea, qcloudCosSignUrl, qcloudCos } = qcloud;
+
+
     const errorTips = '帖子内容中，有部分图片转存失败，请先替换相关图片再重新发布';
     const vditorEl = document.getElementById('dzq-vditor');
     if (vditorEl) {
@@ -708,6 +713,12 @@ class PostPage extends React.Component {
       const res = await upload({
         fileurls,
         type: 1,
+        supportImgExt,
+        supportMaxSize,
+        qcloudCosBucketName,
+        qcloudCosBucketArea,
+        qcloudCosSignUrl,
+        qcloudCos,
       });
       const sensitiveArr = [];
       const uploadError = [];

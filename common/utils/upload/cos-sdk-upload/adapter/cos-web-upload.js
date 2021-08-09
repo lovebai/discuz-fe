@@ -12,7 +12,7 @@ export default (options) => {
       qcloudCosBucketArea: Region,
       qcloudCosSignUrl: isOpenSign,
     } = options;
-
+    debugger;
     if (!qcloudCos) {
       reject('error');
       return;
