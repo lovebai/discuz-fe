@@ -48,6 +48,8 @@ class Index extends React.Component {
   render() {
     const { index } = this.props;
 
+    const { lists } = index;
+
     const collectThreadsList = index.getList({
       namespace: 'collect',
     });

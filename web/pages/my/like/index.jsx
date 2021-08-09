@@ -76,6 +76,7 @@ class Index extends React.Component {
     this.page = 1;
     if (!hasThreadsData) {
       const threadsResp = await index.fetchList({
+        namespace: 'like',
         perPage: 10,
         page: this.state.page,
         filter: {
@@ -132,6 +133,7 @@ class Index extends React.Component {
     const { index } = this.props;
     this.page += 1;
     const threadsResp = await index.fetchList({
+      namespace: 'like',
       perPage: 10,
       page: this.state.page,
       filter: {
@@ -153,7 +155,7 @@ class Index extends React.Component {
   };
 
   render() {
-    const { site } = this.props;
+    const { site, index } = this.props;
     const { platform } = site;
     const { firstLoading } = this.state;
 

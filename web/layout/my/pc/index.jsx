@@ -22,6 +22,7 @@ import { Toast } from '@discuzq/design';
 
 @inject('site')
 @inject('user')
+@inject('index')
 @observer
 class PCMyPage extends React.Component {
   constructor(props) {
@@ -36,9 +37,15 @@ class PCMyPage extends React.Component {
 
   fetchUserThreads = async () => {
     try {
-      const userThreadsList = await this.props.user.getUserThreads();
+      const userThreadsList = await this.props.index.fetchList({
+        namespace: 'my',
+        filter: {
+          toUserId: 0,
+          complex: 5,
+        },
+      });
       if (!this.unMount) {
-        this.props.user.setUserThreads(userThreadsList);
+        this.props.index.setList({ namespace: 'my', data: userThreadsList });
       }
     } catch (err) {
       console.error(err);
@@ -53,7 +60,7 @@ class PCMyPage extends React.Component {
         hasMask: false,
       });
     }
-  }
+  };
 
   async componentDidMount() {
     await this.props.user.updateUserInfo(this.props.user.id);
@@ -62,11 +69,10 @@ class PCMyPage extends React.Component {
     this.setState({ isLoading: false });
   }
 
-
   componentWillUnmount = () => {
     this.unMount = true;
     this.props.user.clearUserThreadsInfo();
-  }
+  };
 
   loginOut() {
     clearLoginStatus();
@@ -123,7 +129,7 @@ class PCMyPage extends React.Component {
             <div className={styles.userInfoWrapper}>
               <div className={styles.userInfoKey}>微信</div>
               <div className={`${styles.userInfoValue} ${styles.wxContent}`}>
-                <Avatar size="small" image={this.props.user.wxHeadImgUrl} name={this.props.user.wxNickname}/>
+                <Avatar size="small" image={this.props.user.wxHeadImgUrl} name={this.props.user.wxNickname} />
                 <span className={styles.wecahtNickname}>{this.props.user.wxNickname}</span>
               </div>
             </div>
@@ -150,12 +156,21 @@ class PCMyPage extends React.Component {
 
   renderContent = () => {
     const { isLoading } = this.state;
-    const { user } = this.props;
-    const { userThreads, userThreadsTotalCount } = user;
-    const formattedUserThreads = this.formatUserThreadsData(userThreads);
+    const { user, index } = this.props;
+    const { lists } = index;
+
+    const myThreadsList = index.getList({
+      namespace: 'my',
+    });
+
+    const totalCount = index.getAttribute({
+      namespace: 'my',
+      key: 'totalCount',
+    });
+
     let showUserThreadsTotalCount = true;
 
-    if (userThreadsTotalCount === undefined || userThreadsTotalCount === null) {
+    if (totalCount === undefined || totalCount === null) {
       showUserThreadsTotalCount = false;
     }
 
@@ -172,12 +187,12 @@ class PCMyPage extends React.Component {
           title="主题"
           type="normal"
           isShowMore={false}
-          noData={!formattedUserThreads?.length}
+          noData={!myThreadsList?.length}
           isLoading={isLoading}
-          leftNum={showUserThreadsTotalCount ? `${userThreadsTotalCount}个主题` : ''}
+          leftNum={showUserThreadsTotalCount ? `${totalCount}个主题` : ''}
           mold="plane"
         >
-          {formattedUserThreads?.map((item, index) => (
+          {myThreadsList?.map((item, index) => (
             <Thread
               data={item}
               key={`${item.threadId}-${item.updatedAt}`}
@@ -191,14 +206,30 @@ class PCMyPage extends React.Component {
 
   render() {
     const { isLoading } = this.state;
-    const { user } = this.props;
-    const { userThreadsPage, userThreadsTotalPage, getUserThreads, userThreads } = user;
-    const formattedUserThreads = this.formatUserThreadsData(userThreads);
+    const { index } = this.props;
+    const { lists } = index;
+
+    const myThreadsList = index.getList({
+      namespace: 'my',
+    });
+
+    const totalPage = index.getAttribute({
+      namespace: 'my',
+      key: 'totalPage',
+    });
+
+    const currentPage = index.getAttribute({
+      namespace: 'my',
+      key: 'currentPage',
+    });
+
+    const requestError = index.getListRequestError({ namespace: 'my' });
+
     // 判断用户信息loading状态
     const IS_USER_INFO_LOADING = !this.props.user?.username;
     // store中，userThreadsPage会比真实页数多1
-    let currentPageNum = userThreadsPage;
-    if (userThreadsTotalPage > 1) {
+    let currentPageNum = currentPage;
+    if (totalPage > 1) {
       currentPageNum -= 1;
     }
 
@@ -209,9 +240,9 @@ class PCMyPage extends React.Component {
           onSearch={this.onSearch}
           right={this.renderRight}
           immediateCheck={false}
-          noMore={userThreadsTotalPage <= currentPageNum}
+          noMore={totalPage <= currentPage}
           onRefresh={this.fetchUserThreads}
-          showLayoutRefresh={!isLoading && !!formattedUserThreads?.length}
+          showLayoutRefresh={!isLoading && !!myThreadsList?.length}
           showHeaderLoading={IS_USER_INFO_LOADING}
         >
           {this.renderContent()}

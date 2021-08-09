@@ -60,6 +60,7 @@ class Index extends React.Component {
     const hasThreadsData = !!index.threads;
     if (!hasThreadsData) {
       const threadsResp = await index.fetchList({
+        namespace: 'collect',
         perPage: 10,
         page: this.state.page,
         filter: {
@@ -109,6 +110,7 @@ class Index extends React.Component {
   dispatch = async () => {
     const { index } = this.props;
     const threadsResp = await index.fetchList({
+      namespace: 'collect',
       perPage: 10,
       page: this.state.page,
       filter: {

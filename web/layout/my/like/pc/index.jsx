@@ -26,6 +26,7 @@ class LikePCPage extends React.Component {
     const { dispatch } = this.props;
     return dispatch('moreData');
   };
+
   // 右侧 - 潮流话题 粉丝 版权信息
   renderRight = () => {
     const { pageData = [] } = this.props.search.topics || { pageData: [] };
@@ -36,8 +37,11 @@ class LikePCPage extends React.Component {
       </>
     );
   };
+
   render() {
     const { index } = this.props;
+
+    const { lists } = index;
 
     const likeThreadList = index.getList({ namespace: 'like' });
 

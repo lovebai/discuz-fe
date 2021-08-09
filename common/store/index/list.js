@@ -14,12 +14,12 @@ export default class ListStore {
     if (this.lists[namespace]) return;
     extendObservable(this.lists, {
       [namespace]: {
-        data: observable.ref({}),
-        requestError: observable.ref({
+        data: {},
+        requestError: {
           isError: false,
           errorText: '加载失败',
-        }),
-        attribs: observable.ref({}),
+        },
+        attribs: {},
       },
     });
   }
@@ -55,7 +55,11 @@ export default class ListStore {
    * @param {*} param0
    */
   @action
-  fetchList = async ({ namespace, filter = {}, sequence = 0, perPage = 10, page = 1 }) => {
+  fetchList = async ({ namespace, filter = {}, sequence = 0, perPage = 10, page }) => {
+    let requestPage = page;
+    if (!page) {
+      requestPage = this.getAttribute({ namespace, key: 'currentPage' }) + 1 || 1;
+    }
     const newFilter = filter;
     if (filter.categoryids && (filter.categoryids instanceof Array)) {
       const newCategoryIds = filter.categoryids?.filter(item => item);
@@ -63,10 +67,11 @@ export default class ListStore {
         delete newFilter.categoryids;
       }
     }
-    const result = await readThreadList({ params: { perPage, page, filter: newFilter, sequence } });
+    const result = await readThreadList({ params: { perPage, page: requestPage, filter: newFilter, sequence } });
     if (result.code === 0 && result.data) {
       return result;
     }
+
     this.setListRequestError({ namespace, errorText: result?.msg || '' });
 
     return Promise.reject(result?.msg || '');
@@ -80,7 +85,10 @@ export default class ListStore {
    */
   @action
   setListRequestError = ({ namespace, errorText }) => {
-    if (!this.lists[namespace]) return;
+    if (!this.lists[namespace]) {
+      this.registerList({ namespace });
+    };
+
     this.lists[namespace].requestError.isError = true;
     this.lists[namespace].requestError.errorText = errorText;
 
@@ -111,6 +119,8 @@ export default class ListStore {
         pageData.splice(pageData.indexOf(item), 1);
       }
     });
+
+    this.lists = { ...this.lists };
   }
 
 
@@ -120,17 +130,23 @@ export default class ListStore {
    */
   @action
   setList = ({ namespace, data, page }) => {
+    let listPage = page;
+    if (!page) {
+      listPage = this.getAttribute({ namespace, key: 'currentPage' }) + 1 || 1;
+    }
     if (!this.lists[namespace]) {
       this.registerList({ namespace });
     }
 
-    this.lists[namespace].data[page] = get(data, 'data.pageData');
+    this.lists[namespace].data[listPage] = get(data, 'data.pageData');
 
     if (!this.getAttribute({ namespace, key: 'currentPage' }) || Number(this.getAttribute({ namespace, key: 'currentPage' })) <= Number(get(data, 'data.currentPage'))) {
       this.setAttribute({ namespace, key: 'currentPage', value: get(data, 'data.currentPage') });
     }
     this.setAttribute({ namespace, key: 'totalPage', value: get(data, 'data.totalPage') });
     this.setAttribute({ namespace, key: 'totalCount', value: get(data, 'data.totalCount') });
+
+    this.lists = { ...this.lists };
   }
 
   /**
@@ -170,6 +186,8 @@ export default class ListStore {
     if (!this.lists[namespace]) return;
 
     this.lists[namespace].attribs[key] = value;
+
+    this.lists = { ...this.lists };
   }
 
 
@@ -178,6 +196,7 @@ export default class ListStore {
    * @param {*} param0
    * @returns
    */
+  @action
   getAttribute = ({ namespace, key }) => {
     if (!this.lists[namespace]) return null;
 
