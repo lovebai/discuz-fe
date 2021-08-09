@@ -37,7 +37,7 @@ const BaseLayoutControl = forwardRef((props, ref) => {
 
   const [listRef, setListRef] = useState(null);
   const [baseLayoutWhiteList, setBaseLayoutWhiteList]
-         = useState(['home', 'search', 'my', 'like', 'collect', 'buy', 'result-topic']);
+         = useState(['home', 'search', 'my', 'like', 'collect', 'buy', 'result-topic', 'result-user']);
   const layoutRef = useRef(null);
 
   const disableEffect = useRef(false)
