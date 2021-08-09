@@ -1,7 +1,7 @@
 import cosSdkUpload from './cos-sdk-upload';
 import attachmentApiUpload from './attachment-api-upload';
 
-const fileUpload = (options) => {
+const upload = (options) => {
   const {
     files,
     type,
@@ -30,4 +30,4 @@ const fileUpload = (options) => {
   }));
 };
 
-export default fileUpload;
+export default upload;
