@@ -57,6 +57,15 @@ class CopyRight extends React.Component {
             </div>
           )
         }
+        {
+          setSite.siteRecordCode && (
+            <div className={styles.text}>
+              <a href="http://www.beian.gov.cn/portal/registerSystemInfo?spm=a2c4g.11186623.J_9220772140.112.70de7150y6WVxv" target="_blank">
+                {setSite.siteRecordCode}
+              </a>
+            </div>
+          )
+        }
       </div>
     );
   }
