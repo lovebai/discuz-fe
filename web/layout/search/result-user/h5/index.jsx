@@ -62,6 +62,7 @@ class SearchResultUserH5Page extends React.Component {
         noMore={currentPage >= totalPage}
         requestError={usersError.isError}
         errorText={usersError.errorText}
+        pageName="result-user"
       >
         <SearchInput onSearch={this.onSearch} onCancel={this.onCancel} defaultValue={keyword} searchWhileTyping/>
         {
