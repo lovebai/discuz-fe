@@ -1,5 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import classnames from 'classnames';
 import styles from './index.module.scss';
 import clearLoginStatus from '@common/utils/clear-login-status';
 import UserCenterPost from '@components/user-center-post-pc';
@@ -16,9 +17,10 @@ import NoData from '@components/no-data';
 import UserCenterFansPc from '@components/user-center/fans-pc';
 import UserCenterFollowsPc from '../../../components/user-center/follows-pc';
 import Thread from '@components/thread';
-import SectionTitle from '@components/section-title';
-import BaseLayout from '../../../components/user-center-base-laout-pc';
+import BaseLayout from '@components/base-layout';
 import { Toast } from '@discuzq/design';
+import { withRouter } from 'next/router';
+import UserCenterHeaderPc from '@components/user-center/header-pc';
 
 @inject('site')
 @inject('user')
@@ -28,12 +30,25 @@ class PCMyPage extends React.Component {
   constructor(props) {
     super(props);
     this.isUnmount = false;
+
+    const formattedUserThreads = this.formatUserThreadsData(this.props.user.userThreads);
+
     this.state = {
       showFansPopup: false, // 是否弹出粉丝框
       showFollowPopup: false, // 是否弹出关注框
-      isLoading: true,
+      isLoading: formattedUserThreads.length > 0 ? false : true,
     };
   }
+
+  beforeRouterChange = (url) => {
+    if (url === '/my') {
+      return;
+    }
+    // 如果不是进入 thread 详情页面
+    if (!/thread\//.test(url)) {
+      this.props.user.clearUserThreadsInfo();
+    }
+  };
 
   fetchUserThreads = async () => {
     try {
@@ -63,6 +78,8 @@ class PCMyPage extends React.Component {
   };
 
   async componentDidMount() {
+    this.props.router.events.on('routeChangeStart', this.beforeRouterChange);
+
     await this.props.user.updateUserInfo(this.props.user.id);
     await this.fetchUserThreads();
 
@@ -71,7 +88,7 @@ class PCMyPage extends React.Component {
 
   componentWillUnmount = () => {
     this.unMount = true;
-    this.props.user.clearUserThreadsInfo();
+    this.props.router.events.off('routeChangeStart', this.beforeRouterChange);
   };
 
   loginOut() {
@@ -238,18 +255,37 @@ class PCMyPage extends React.Component {
         <BaseLayout
           showRefresh={false}
           onSearch={this.onSearch}
-          right={this.renderRight}
+          // right={this.renderRight}
           immediateCheck={false}
+          curr={'my'}
+          pageName="my"
           noMore={totalPage <= currentPage}
           onRefresh={this.fetchUserThreads}
           showLayoutRefresh={!isLoading && !!myThreadsList?.length}
           showHeaderLoading={IS_USER_INFO_LOADING}
         >
-          {this.renderContent()}
+          <div>
+            <div>
+              <div className={styles.headerbox}>
+                <div className={styles.userHeader}>
+                  <UserCenterHeaderPc showHeaderLoading={IS_USER_INFO_LOADING} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.userCenterBody}>
+            <div className={classnames(styles.userCenterBodyItem, styles.userCenterBodyLeftItem)}>
+              {this.renderContent()}
+            </div>
+            <div className={classnames(styles.userCenterBodyItem, styles.userCenterBodyRightItem)}>
+              {this.renderRight()}
+            </div>
+          </div>
         </BaseLayout>
       </>
     );
   }
 }
 
-export default PCMyPage;
+export default withRouter(PCMyPage);

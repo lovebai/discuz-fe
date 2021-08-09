@@ -1,18 +1,16 @@
 import React from 'react';
 import styles from './index.module.scss';
 import { inject, observer } from 'mobx-react';
-import UserBaseLaout from '@components/user-center-base-laout-pc';
+import classnames from 'classnames';
+import BaseLayout from '@components/base-layout';
 import SidebarPanel from '@components/sidebar-panel';
-import ThreadContent from '@components/thread';
 import Copyright from '@components/copyright';
 import { withRouter } from 'next/router';
 import UserCenterFansPc from '@components/user-center/fans-pc';
 import UserCenterFollowsPc from '@components/user-center/follows-pc';
-import UserCenterFansPopup from '@components/user-center-fans-popup';
-import UserCenterFollowPopup from '@components/user-center-follow-popup';
 import Router from '@discuzq/sdk/dist/router';
 import UserCenterThreads from '@components/user-center-threads';
-import List from '@components/list';
+import UserCenterHeaderPc from '@components/user-center/header-pc';
 
 @inject('site')
 @inject('index')
@@ -217,20 +215,36 @@ class PCMyPage extends React.Component {
     const requestError = index.getListRequestError({ namespace: `user/${query.id}` });
     return (
       <>
-        <UserBaseLaout
+        <BaseLayout
           isOtherPerson={true}
           allowRefresh={false}
           onRefresh={this.fetchTargetUserThreads}
           noMore={totalPage < currentPage}
           showRefresh={false}
           onSearch={this.onSearch}
-          right={this.renderRight}
           immediateCheck={true}
           showLayoutRefresh={!!userThreadsList?.length && !fetchUserInfoLoading}
           showHeaderLoading={fetchUserInfoLoading}
         >
-          {this.renderContent()}
-        </UserBaseLaout>
+          <div>
+            <div>
+              <div className={styles.headerbox}>
+                <div className={styles.userHeader}>
+                  <UserCenterHeaderPc showHeaderLoading={fetchUserInfoLoading} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.userCenterBody}>
+            <div className={classnames(styles.userCenterBodyItem, styles.userCenterBodyLeftItem)}>
+              {this.renderContent()}
+            </div>
+            <div className={classnames(styles.userCenterBodyItem, styles.userCenterBodyRightItem)}>
+              {this.renderRight()}
+            </div>
+          </div>
+        </BaseLayout>
       </>
     );
   }

@@ -61,6 +61,7 @@ class BuyPCPage extends React.Component {
         noMore={currentPage >= totalPage}
         onRefresh={this.props.dispatch}
         showRefresh={false}
+        pageName={'buy'}
         rightClass={styles.rightSide}
         isShowLayoutRefresh={!!buyThreadsList?.length}
         className="mybuy"

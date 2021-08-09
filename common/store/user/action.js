@@ -470,12 +470,15 @@ class UserAction extends SiteStore {
   setUserThreads = async (userThreadList) => {
     const pageData = get(userThreadList, 'data.pageData', []);
     const totalPage = get(userThreadList, 'data.totalPage', 1);
+    const currPage = get(userThreadList, 'data.currentPage', 1);
 
     this.userThreadsTotalPage = totalPage;
+
     this.userThreads = {
       ...this.userThreads,
-      [this.userThreadsPage]: pageData,
+      [currPage]: pageData,
     };
+
     this.userThreadsTotalCount = get(userThreadList, 'data.totalCount', 0);
 
     if (this.userThreadsPage <= this.userThreadsTotalPage) {

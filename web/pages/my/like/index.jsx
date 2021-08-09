@@ -123,7 +123,6 @@ class Index extends React.Component {
   };
 
   componentWillUnmount() {
-    this.clearStoreThreads();
     if (!isServer()) {
       window.removeEventListener('popstate', this.clearStoreThreads);
     }

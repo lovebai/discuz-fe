@@ -60,6 +60,7 @@ class CollectPCPage extends React.Component {
     return (
       <div className={styles.container}>
         <BaseLayout
+          pageName={'collect'}
           showRefresh={false}
           noMore={currentPage >= totalPage}
           onRefresh={this.fetchMoreData}
