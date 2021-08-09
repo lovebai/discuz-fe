@@ -66,7 +66,7 @@ class H5MyPage extends React.Component {
     }
     // 如果不是进入 thread 详情页面
     if (!/thread\//.test(url)) {
-      this.props.user.clearUserThreadsInfo();
+      this.props.index.clearList({ namespace: 'my' });
     }
   };
 
@@ -181,7 +181,7 @@ class H5MyPage extends React.Component {
           <div className={styles.unit}>
             <div className={styles.threadUnit}>
               <div className={styles.threadTitle}>主题</div>
-              <div className={styles.threadCount}>{totalCount}个主题</div>
+              <div className={styles.threadCount}>{totalCount !== undefined ? `${totalCount}个主题` : ''}</div>
             </div>
 
             <div className={styles.dividerContainer}>

@@ -114,19 +114,12 @@ class Index extends React.Component {
     if (!/thread\//.test(url)) {
       this.clearStoreThreads();
     }
-  }
-
+  };
 
   clearStoreThreads = () => {
     const { index } = this.props;
-    index.setThreads(null);
+    index.clearList({ namespace: 'like' });
   };
-
-  componentWillUnmount() {
-    if (!isServer()) {
-      window.removeEventListener('popstate', this.clearStoreThreads);
-    }
-  }
 
   dispatch = async () => {
     const { index } = this.props;

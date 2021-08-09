@@ -12,27 +12,27 @@ import { withRouter } from 'next/router';
 @inject('index')
 @observer
 class Index extends React.Component {
-  static async getInitialProps(ctx) {
-    // const threads = await readThreadList(
-    //   {
-    //     params: {
-    //       filter: {
-    //         complex: 3,
-    //       },
-    //       perPage: 10,
-    //     },
-    //   },
-    //   ctx,
-    // );
-    const threads = null;
-    return {
-      serverIndex: {
-        threads: threads && threads.code === 0 ? threads.data : null,
-        totalPage: threads && threads.code === 0 ? threads.data.totalPage : null,
-        totalCount: threads && threads.code === 0 ? threads.data.totalCount : null,
-      },
-    };
-  }
+  // static async getInitialProps(ctx) {
+  // const threads = await readThreadList(
+  //   {
+  //     params: {
+  //       filter: {
+  //         complex: 3,
+  //       },
+  //       perPage: 10,
+  //     },
+  //   },
+  //   ctx,
+  // );
+  //   const threads = null;
+  //   return {
+  //     serverIndex: {
+  //       threads: threads && threads.code === 0 ? threads.data : null,
+  //       totalPage: threads && threads.code === 0 ? threads.data.totalPage : null,
+  //       totalCount: threads && threads.code === 0 ? threads.data.totalCount : null,
+  //     },
+  //   };
+  // }
 
   constructor(props) {
     super(props);
@@ -100,7 +100,7 @@ class Index extends React.Component {
 
   clearStoreThreads = () => {
     const { index } = this.props;
-    index.setThreads(null);
+    index.clearList({ namespace: 'collect' });
   };
 
   componentWillUnmount() {

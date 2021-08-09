@@ -93,7 +93,7 @@ class Index extends React.Component {
 
   clearStoreThreads = () => {
     const { index } = this.props;
-    index.setThreads(null);
+    index.clearList({ namespace: 'buy' });
   };
 
   beforeRouterChange = (url) => {

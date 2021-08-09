@@ -192,7 +192,7 @@ class H5OthersPage extends React.Component {
           <div className={styles.unit}>
             <div className={styles.threadUnit}>
               <div className={styles.threadTitle}>主题</div>
-              <div className={styles.threadCount}>{totalCount}个主题</div>
+              <div className={styles.threadCount}>{totalCount === undefined ? '' : `${totalCount}个主题`}</div>
             </div>
 
             <div className={styles.dividerContainer}>

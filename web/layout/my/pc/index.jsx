@@ -44,7 +44,7 @@ class PCMyPage extends React.Component {
     }
     // 如果不是进入 thread 详情页面
     if (!/thread\//.test(url)) {
-      this.props.user.clearUserThreadsInfo();
+      this.props.index.clearList({ namespace: 'my' })
     }
   };
 

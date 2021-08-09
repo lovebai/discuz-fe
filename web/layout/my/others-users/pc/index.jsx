@@ -149,19 +149,9 @@ class PCMyPage extends React.Component {
       namespace: `user/${query.id}`,
     });
 
-    const totalPage = index.getAttribute({
-      namespace: `user/${query.id}`,
-      key: 'totalPage',
-    });
-
     const totalCount = index.getAttribute({
       namespace: `user/${query.id}`,
       key: 'totalCount',
-    });
-
-    const currentPage = index.getAttribute({
-      namespace: `user/${query.id}`,
-      key: 'currentPage',
     });
 
     const requestError = index.getListRequestError({ namespace: `user/${query.id}` });
@@ -174,9 +164,11 @@ class PCMyPage extends React.Component {
           bigSize={true}
           isShowMore={false}
           isLoading={fetchUserThreadsLoading}
-          leftNum={`${totalCount}个主题`}
+          leftNum={totalCount !== undefined ? `${totalCount}个主题` : ''}
           noData={!userThreadsList?.length}
           mold="plane"
+          isError={requestError.isError}
+          errorText={requestError.errorText}
         >
           {userThreadsList.length > 0 && <UserCenterThreads data={userThreadsList} />}
         </SidebarPanel>
@@ -198,11 +190,6 @@ class PCMyPage extends React.Component {
     const totalPage = index.getAttribute({
       namespace: `user/${query.id}`,
       key: 'totalPage',
-    });
-
-    const totalCount = index.getAttribute({
-      namespace: `user/${query.id}`,
-      key: 'totalCount',
     });
 
     const currentPage = index.getAttribute({
