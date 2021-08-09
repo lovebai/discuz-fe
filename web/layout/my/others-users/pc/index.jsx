@@ -178,9 +178,7 @@ class PCMyPage extends React.Component {
           noData={!userThreadsList?.length}
           mold="plane"
         >
-          {userThreadsList.length > 0 && (
-              <UserCenterThreads data={userThreadsList} />
-          )}
+          {userThreadsList.length > 0 && <UserCenterThreads data={userThreadsList} />}
         </SidebarPanel>
       </div>
     );
@@ -212,7 +210,6 @@ class PCMyPage extends React.Component {
       key: 'currentPage',
     });
 
-    const requestError = index.getListRequestError({ namespace: `user/${query.id}` });
     return (
       <>
         <BaseLayout

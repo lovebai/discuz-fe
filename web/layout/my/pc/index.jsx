@@ -31,12 +31,10 @@ class PCMyPage extends React.Component {
     super(props);
     this.isUnmount = false;
 
-    const formattedUserThreads = this.formatUserThreadsData(this.props.user.userThreads);
-
     this.state = {
       showFansPopup: false, // 是否弹出粉丝框
       showFollowPopup: false, // 是否弹出关注框
-      isLoading: formattedUserThreads.length > 0 ? false : true,
+      isLoading: false,
     };
   }
 
