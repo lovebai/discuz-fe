@@ -13,7 +13,6 @@ const upload = (options) => {
     supportMaxSize,
   } = options;
 
-  debugger;
   return Promise.all(files.map(file => {
     const opts = {
       file,

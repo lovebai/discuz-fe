@@ -15,6 +15,7 @@ import locals from '@common/utils/local-bridge';
 import constants from '@common/constants';
 import { THREAD_TYPE } from '@common/constants/thread-post';
 import { attachmentUploadOne } from '@common/utils/upload';
+import upload from '@common/utils/upload';
 
 export default inject('threadPost', 'site')(observer(({ type, threadPost, site, audioUpload, children, pageScrollTo }) => {
   const { postData, setPostData } = threadPost;

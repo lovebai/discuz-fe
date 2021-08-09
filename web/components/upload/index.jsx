@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 import classNames from 'classnames';
 import ProgressRender from './progress-render';
 import { fixImageOrientation } from '@common/utils/exif';
-import fileUpload from '@common/utils/upload';
+import upload from '@common/utils/upload';
 
 
 export default function DzqUpload(props) {
@@ -34,7 +34,7 @@ export default function DzqUpload(props) {
     if (cosOptions) {
       file.status = 'uploading';
       updater(list);
-      const response = await fileUpload({
+      const response = await upload({
         files: [fileImg],
         type: 1,
         ...cosOptions,
