@@ -5,6 +5,9 @@
   line-height: $font-line-height-xs;
   &.center {
     text-align: center;
+    .beian > a {
+      justify-content: center;
+    }
   }
   .text > a {
     text-decoration: unset;
@@ -12,6 +15,13 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+  .beian {
+    padding-top: rem($padding-1n);
+  }
+
+  .beian > a > img {
+    padding-right: rem($padding-2n);
   }
 
   &.h5 {

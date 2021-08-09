@@ -107,7 +107,7 @@ function VList(props, ref) {
       if (list.length <= 2) {
         return winHeight - 230 - 65 + 10; // +10 底部tab栏高度计算修正
       }
-      return 125;
+      return 149;
     }
     return cache.rowHeight({ index, data });
   };
@@ -172,6 +172,7 @@ function VList(props, ref) {
 
   // 滚动事件
   const onScroll = ({ scrollTop, clientHeight, scrollHeight }) => {
+    console.log(scrollTop, clientHeight, scrollHeight);
     // scrollToPosition = scrollTop;
     setScrollTop(scrollTop);
     setFlag(!(scrollTop < preScrollTop));
