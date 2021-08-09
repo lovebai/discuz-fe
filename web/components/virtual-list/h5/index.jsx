@@ -172,7 +172,6 @@ function VList(props, ref) {
 
   // 滚动事件
   const onScroll = ({ scrollTop, clientHeight, scrollHeight }) => {
-    console.log(scrollTop, clientHeight, scrollHeight);
     // scrollToPosition = scrollTop;
     setScrollTop(scrollTop);
     setFlag(!(scrollTop < preScrollTop));
