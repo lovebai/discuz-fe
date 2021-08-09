@@ -12,10 +12,10 @@ class SearchResultTopicH5Page extends React.Component {
   constructor(props) {
     super(props);
 
-    const keyword = this.props.router.query.keyword || '';
+    const keyword = this.props.search.currentTopicKeyword || '';
 
     this.state = {
-      keyword,
+      keyword: keyword,
       refreshing: false,
     };
   }
@@ -39,6 +39,7 @@ class SearchResultTopicH5Page extends React.Component {
   };
 
   onSearch = (keyword) => {
+    this.props.search.currentTopicKeyword = keyword;
     this.setState({ keyword }, () => {
       this.refreshData();
     });
