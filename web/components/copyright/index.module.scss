@@ -20,6 +20,12 @@
     .text > a {
       color: $h5-copyright-color;
     }
+    .beian > a {
+      display: flex;
+      text-align: center;
+      align-content: center;
+      justify-content: center;
+    }
   }
   
   &.pc {
@@ -31,6 +37,11 @@
     }
     .text > a {
       color: $text-color-secondary;
+    }
+    .beian > a {
+      display: flex;
+      text-align: center;
+      align-content: center;
     }
   }
 }
