@@ -14,7 +14,7 @@ class SearchResultUserH5Page extends React.Component {
   constructor(props) {
     super(props);
 
-    const keyword = this.props.router.query.keyword || '';
+    const keyword = this.props.search.currentUserKeyword || '';
 
     this.state = {
       keyword,
@@ -41,6 +41,7 @@ class SearchResultUserH5Page extends React.Component {
   };
 
   onSearch = (keyword) => {
+    this.props.search.currentUserKeyword = keyword;
     this.setState({ keyword }, () => {
       this.refreshData();
     });
