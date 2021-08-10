@@ -14,12 +14,19 @@ import styles from './index.module.scss';
 import locals from '@common/utils/local-bridge';
 import constants from '@common/constants';
 import { THREAD_TYPE } from '@common/constants/thread-post';
-import { attachmentUploadOne } from '@common/utils/upload';
 import upload from '@common/utils/upload';
 
 export default inject('threadPost', 'site')(observer(({ type, threadPost, site, audioUpload, children, pageScrollTo }) => {
   const { postData, setPostData } = threadPost;
-  const { webConfig, envConfig } = site;
+  const { webConfig = {}, envConfig } = site;
+  const { setAttach, qcloud } = webConfig;
+  const { supportImgExt, supportMaxSize } = setAttach;
+  const { qcloudCosBucketName, qcloudCosBucketArea, qcloudCosSignUrl, qcloudCos } = qcloud;
+
+
+
+
+
   const localData = JSON.parse(JSON.stringify(postData));
 
   const { images, files, audio } = localData;
@@ -46,7 +53,21 @@ export default inject('threadPost', 'site')(observer(({ type, threadPost, site, 
       const isLegalSize = fileSize > 0 && fileSize < supportMaxSize * 1024 * 1024;
 
       if (isLegalType && isLegalSize) {
-        uploadPromise.push(attachmentUploadOne(cloneList[i]));
+        uploadPromise.push(upload({
+          files: [cloneList[i]],
+          type: (() => {
+            switch (type) {
+              case THREAD_TYPE.image: return 1;
+              case THREAD_TYPE.file: return 0;
+            }
+          })(),
+          qcloudCos,
+          qcloudCosBucketName,
+          qcloudCosBucketArea,
+          qcloudCosSignUrl,
+          supportImgExt,
+          supportMaxSize,
+        }));
       } else {
         cloneList.splice(i, 1);
         i--;
@@ -82,66 +103,66 @@ export default inject('threadPost', 'site')(observer(({ type, threadPost, site, 
   }
 
   // 执行上传
-  const upload = (file) => {
-    return new Promise((resolve, reject) => {
-      const tempFilePath = file.path || file.tempFilePath;
-      const token = locals.get(constants.ACCESS_TOKEN_NAME);
-      const formData = {
-        'type': (() => {
-          switch (type) {
-            case THREAD_TYPE.image: return 1;
-            case THREAD_TYPE.file: return 0;
-          }
-        })(),
-      };
-      if (type === THREAD_TYPE.file) {
-        formData.name = file.name; // 附件文件名，用于后端替换file中的临时文件名
-      }
-      Taro.uploadFile({
-        url: `${envConfig.COMMON_BASE_URL}/apiv3/attachments`,
-        filePath: tempFilePath,
-        name: 'file',
-        header: {
-          'authorization': `Bearer ${token}`
-        },
-        formData: formData,
-        success(res) {
-          if (res.statusCode === 200) {
-            const ret = JSON.parse(res.data);
-            if (ret.Code === 0) {
-              const data = ret.Data;
-              switch (type) {
-                case THREAD_TYPE.image:
-                  images[data.id] = {
-                    thumbUrl: tempFilePath,
-                    ...data,
-                  };
-                  setPostData({ images });
-                  break;
-                case THREAD_TYPE.file:
-                  files[data.id] = {
-                    thumbUrl: tempFilePath,
-                    name: file.name,
-                    size: file.size,
-                    ...data,
-                  };
-                  setPostData({ files });
-                  break;
-              }
-            }
-          } else {
-            console.log(res);
-            const msg = res.statusCode === 413 ? '上传大小超过了服务器限制' : res.msg;
-            Toast.error({ content: `上传失败：${msg}` });
-          }
-          resolve(res);
-        },
-        fail(res) {
-          console.log(res);
-        }
-      });
-    });
-  };
+  // const upload = (file) => {
+  //   return new Promise((resolve, reject) => {
+  //     const tempFilePath = file.path || file.tempFilePath;
+  //     const token = locals.get(constants.ACCESS_TOKEN_NAME);
+  //     const formData = {
+        // 'type': (() => {
+        //   switch (type) {
+        //     case THREAD_TYPE.image: return 1;
+        //     case THREAD_TYPE.file: return 0;
+        //   }
+        // })(),
+  //     };
+  //     if (type === THREAD_TYPE.file) {
+  //       formData.name = file.name; // 附件文件名，用于后端替换file中的临时文件名
+  //     }
+  //     Taro.uploadFile({
+  //       url: `${envConfig.COMMON_BASE_URL}/apiv3/attachments`,
+  //       filePath: tempFilePath,
+  //       name: 'file',
+  //       header: {
+  //         'authorization': `Bearer ${token}`
+  //       },
+  //       formData: formData,
+  //       success(res) {
+  //         if (res.statusCode === 200) {
+  //           const ret = JSON.parse(res.data);
+  //           if (ret.Code === 0) {
+  //             const data = ret.Data;
+  //             switch (type) {
+  //               case THREAD_TYPE.image:
+  //                 images[data.id] = {
+  //                   thumbUrl: tempFilePath,
+  //                   ...data,
+  //                 };
+  //                 setPostData({ images });
+  //                 break;
+  //               case THREAD_TYPE.file:
+  //                 files[data.id] = {
+  //                   thumbUrl: tempFilePath,
+  //                   name: file.name,
+  //                   size: file.size,
+  //                   ...data,
+  //                 };
+  //                 setPostData({ files });
+  //                 break;
+  //             }
+  //           }
+  //         } else {
+  //           console.log(res);
+  //           const msg = res.statusCode === 413 ? '上传大小超过了服务器限制' : res.msg;
+  //           Toast.error({ content: `上传失败：${msg}` });
+  //         }
+  //         resolve(res);
+  //       },
+  //       fail(res) {
+  //         console.log(res);
+  //       }
+  //     });
+  //   });
+  // };
 
   // 选择图片
   const chooseImage = () => {

@@ -1,6 +1,5 @@
 import { getCosTmpKey, updateAttachment } from '@common/server';
 import time from '@discuzq/sdk/dist/time';
-import sha1 from 'js-sha1';
 var COS = require('cos-wx-sdk-v5');
 
 export default (options) => {
@@ -19,13 +18,19 @@ export default (options) => {
       return;
     }
 
+    debugger;
+    const filePath = file.path;
+    const filename = filePath.substr(filePath.lastIndexOf('/') + 1);
+    const fileSize = file.size;
+    const path = `public/attachments/${time.formatDate(new Date(), 'YYYY/MM/DD')}/`;
+
     // 初始化cos实例
     const cos = new COS({
       getAuthorization: async (_options, callback) => {
         const res = await getCosTmpKey({
           type,
           fileSize,
-          fileName: attachmentId,
+          fileName: filename,
         });
         const { code, data } = res;
         if (code === 0) {
@@ -44,16 +49,10 @@ export default (options) => {
       }
     });
 
-    const filePath = res.tempFiles[0].path;
-    const filename = filePath.substr(filePath.lastIndexOf('/') + 1);
-    const fileSize = file.size;
-    const path = `public/attachments/${time.formatDate(new Date(), 'YYYY/MM/DD')}/`;
-    const attachmentId = sha1(new Date().getTime() + fileName) + fileName;
-    const key = path + attachmentId;
     cos.postObject({
       Bucket,
       Region,
-      Key: key,
+      Key: path + filename,
       FilePath: filePath,
       onProgress: function (info) {
           console.log(JSON.stringify(info));
@@ -63,7 +62,7 @@ export default (options) => {
         cos.getObjectUrl({
           Bucket: Bucket,
           Region: Region,
-          Key: key,
+          Key: path + filename,
           Sign: isOpenSign,
         }, async (err, data) => {
           if (err === null) {
@@ -71,17 +70,19 @@ export default (options) => {
             const res = await updateAttachment({
               type,
               cosUrl,
-              fileName,
+              filename,
             });
             resolve(res);
           } else if (err) {
+            debugger;
             // todo: 异常情况处理，上传失败
-            reject('error');
+            reject(err);
           }
         });
       } else if (err) {
+        debugger;
         // todo: 异常情况处理，上传失败
-        reject('error');
+        reject(err);
       }
     });
 

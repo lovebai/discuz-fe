@@ -1,19 +1,9 @@
-// 使用attachment接口上传
-import { createAttachment } from '@common/server';
+let attachmentApiUpload = () => {};
 
-const attachmentApiUpload =  options => {
-  const { file, type } = options;
+if (process.env.DISCUZ_ENV === 'mini') {
+  attachmentApiUpload = require('./adapter/attachment-api-mini-upload.js');
+} else if (process.env.DISCUZ_ENV === 'web') {
+  attachmentApiUpload = require('./adapter/attachment-api-web-upload.js');
+}
 
-  const formData = new FormData();
-  formData.append('type', type);
-
-  if (typeof file === 'string') {
-    formData.append('fileUrl', file);
-  } else {
-    formData.append('file', file);
-  }
-
-  return createAttachment(formData);
-};
-
-export default attachmentApiUpload;
+export default attachmentApiUpload.default;

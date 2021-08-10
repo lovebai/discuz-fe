@@ -20,13 +20,13 @@ const upload = (options) => {
     };
 
     return new Promise(async resolve => {
-      try {
+      // try {
         const res = await cosSdkUpload(opts);
         resolve(res);
-      } catch (error) {
-        const res = await attachmentApiUpload(opts);
-        resolve(res);
-      }
+      // } catch (error) {
+      //   const res = await attachmentApiUpload(opts);
+      //   resolve(res);
+      // }
     });
 
   }));
