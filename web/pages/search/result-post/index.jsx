@@ -48,6 +48,7 @@ class Index extends React.Component {
    
     if (type === 'refresh') {
       this.page = 1;
+      search.setThreads(null);
     } else if (type === 'moreData') {
       this.page += 1;
     }
