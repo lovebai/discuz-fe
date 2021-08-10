@@ -51,7 +51,7 @@ const SearchInput = ({
 
     timeoutID.current = setTimeout(() => {
       onSearch(val);
-    }, searchWhileTyping ? 5000 : 0);
+    }, searchWhileTyping ? 500 : 0);
   };
 
   const clearInput = () => {
