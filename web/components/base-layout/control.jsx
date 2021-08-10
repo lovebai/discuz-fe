@@ -47,7 +47,8 @@ const BaseLayoutControl = forwardRef((props, ref) => {
            'result-topic',
            'result-user',
            'result-post',
-           'h5-search-result'
+           'h5-search-result',
+           'topic-detail'
           ]);
   const layoutRef = useRef(null);
 
