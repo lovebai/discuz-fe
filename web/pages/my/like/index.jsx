@@ -16,31 +16,31 @@ import { withRouter } from 'next/router';
 class Index extends React.Component {
   page = 1;
   prePage = 10;
-  static async getInitialProps(ctx) {
-    const result = await readTopicsList();
-    const threads = await readThreadList(
-      {
-        params: {
-          filter: {
-            complex: 2,
-          },
-          perPage: 10,
-        },
-      },
-      ctx,
-    );
+  // static async getInitialProps(ctx) {
+  //   const result = await readTopicsList();
+  //   const threads = await readThreadList(
+  //     {
+  //       params: {
+  //         filter: {
+  //           complex: 2,
+  //         },
+  //         perPage: 10,
+  //       },
+  //     },
+  //     ctx,
+  //   );
 
-    return {
-      serverIndex: {
-        threads: threads && threads.code === 0 ? threads.data : null,
-        totalPage: threads && threads.code === 0 ? threads.data.totalPage : null,
-        totalCount: threads && threads.code === 0 ? threads.data.totalCount : null,
-      },
-      serverSearch: {
-        topics: result?.data,
-      },
-    };
-  }
+  //   return {
+  //     serverIndex: {
+  //       threads: threads && threads.code === 0 ? threads.data : null,
+  //       totalPage: threads && threads.code === 0 ? threads.data.totalPage : null,
+  //       totalCount: threads && threads.code === 0 ? threads.data.totalCount : null,
+  //     },
+  //     serverSearch: {
+  //       topics: result?.data,
+  //     },
+  //   };
+  // }
 
   constructor(props) {
     super(props);
@@ -78,7 +78,6 @@ class Index extends React.Component {
       const threadsResp = await index.fetchList({
         namespace: 'like',
         perPage: 10,
-        page: this.state.page,
         filter: {
           complex: 2,
         },
@@ -87,7 +86,6 @@ class Index extends React.Component {
       index.setList({
         namespace: 'like',
         data: threadsResp,
-        page: this.state.page,
       });
 
       this.setState({
@@ -127,7 +125,6 @@ class Index extends React.Component {
     const threadsResp = await index.fetchList({
       namespace: 'like',
       perPage: 10,
-      page: this.state.page,
       filter: {
         complex: 2,
       },
@@ -136,7 +133,6 @@ class Index extends React.Component {
     index.setList({
       namespace: 'like',
       data: threadsResp,
-      page: this.state.page,
     });
 
     if (this.state.page <= threadsResp.data.totalPage) {
