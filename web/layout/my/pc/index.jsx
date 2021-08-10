@@ -106,10 +106,6 @@ class PCMyPage extends React.Component {
     this.setState({ showFollowPopup: true });
   };
 
-  onSearch = (value) => {
-    this.props.router.replace(`/search?keyword=${value}`);
-  };
-
   onContainerClick = ({ id }) => {
     Router.push({ url: `/user/${id}` });
   };
@@ -252,6 +248,7 @@ class PCMyPage extends React.Component {
           showRefresh={false}
           onSearch={this.onSearch}
           // right={this.renderRight}
+          right={this.renderRight}
           immediateCheck={false}
           curr={'my'}
           pageName="my"
