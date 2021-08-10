@@ -76,7 +76,7 @@ class CollectPCPage extends React.Component {
             noData={!collectThreadsList?.length}
             isLoading={!totalCount}
             icon={{ type: 3, name: 'CollectOutlined' }}
-            rightText={`共有${totalCount}条收藏`}
+            rightText={totalCount !== undefined ? `共有${totalCount}条收藏` : ''}
             mold="plane"
             isError={requestError.isError}
             errorText={requestError.errorText}

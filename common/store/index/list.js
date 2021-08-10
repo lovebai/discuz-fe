@@ -111,16 +111,8 @@ export default class ListStore {
 
 
   @action
-  deleteListItem = ({ namespace, item }) => {
-    if (!this.lists[namespace]) return;
-    Object.keys(this.lists[namespace].data).forEach((pageNum) => {
-      const pageData = this.lists[namespace].data[pageNum];
-      if (pageData.indexOf(item) !== -1) {
-        pageData.splice(pageData.indexOf(item), 1);
-      }
-    });
-
-    this.lists = { ...this.lists };
+  deleteListItem = ({ item }) => {
+    this.deleteAssignThreadInLists({ threadId: item.threadId });
   }
 
 
@@ -201,5 +193,94 @@ export default class ListStore {
     if (!this.lists[namespace]) return null;
 
     return this.lists[namespace].attribs[key];
+  }
+
+  /**
+   * 在指定列表新增帖子
+   * @param {*} param0
+   */
+  @action
+  addThreadInTargetList = ({ namespace, threadInfo }) => {
+    if (!this.lists[namespace]) {
+      this.registerList({ namespace });
+      this.lists[namespace].data[1] = [];
+    }
+
+    this.lists[namespace].data[1].unshift(threadInfo);
+
+    this.lists = { ...this.lists };
+  }
+
+  /**
+   * 在所有的列表中找到指定 id 的 thread
+   * @param {*} param0
+   */
+  @action
+  findAssignThreadInLists = ({ threadId }) => {
+    let resultList = [];
+
+    Object.keys(this.lists).forEach((listName) => {
+      const listSearchResult = this.findAssignThreadInTargetList({ namespace: listName, threadId });
+
+      resultList = [...resultList, ...listSearchResult];
+    });
+
+    return resultList;
+  }
+
+  /**
+   * 在指定的列表里找到指定 id 的 thread
+   * @param {*} param0
+   */
+  @action
+  findAssignThreadInTargetList = ({ threadId, namespace }) => {
+    if (!this.lists[namespace]) return null;
+
+    const resultList = [];
+
+    const { data } = this.lists[namespace];
+
+    Object.keys(data).forEach((page) => {
+      data[page].forEach((thread, index) => {
+        if (thread.threadId === threadId) {
+          resultList.push({
+            listName: namespace,
+            page,
+            index,
+            data: thread,
+          });
+        }
+      });
+    });
+
+    return resultList;
+  }
+
+  /**
+   * 在所有的列表里更新指定的 thread
+   * @param {*} param0
+   */
+  @action
+  updateAssignThreadInfoInLists = ({ threadId, threadInfo }) => {
+    const targetThreads = this.findAssignThreadInLists({ threadId });
+
+    targetThreads.forEach(({ listName, page, index }) => {
+      this.lists[listName].data[page][index] = threadInfo;
+    });
+  }
+
+  /**
+   * 在列表中删除指定的 thread
+   * @param {*} param0
+   */
+  @action
+  deleteAssignThreadInLists = ({ threadId }) => {
+    const targetThreads = this.findAssignThreadInLists({ threadId });
+
+    targetThreads.forEach(({ listName, page, index }) => {
+      this.lists[listName].data[page].splice(index, 1);
+    });
+
+    this.lists = { ...this.lists };
   }
 }

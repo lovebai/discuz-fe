@@ -5,15 +5,10 @@ import styles from './index.module.scss';
 import clearLoginStatus from '@common/utils/clear-login-status';
 import UserCenterPost from '@components/user-center-post-pc';
 import UserCenterAction from '@components/user-center-action-pc';
-import UserBaseLaout from '@components/user-center-base-laout-pc';
 import SidebarPanel from '@components/sidebar-panel';
 import Avatar from '@components/avatar';
 import Copyright from '@components/copyright';
-import List from '@components/list';
 import Router from '@discuzq/sdk/dist/router';
-import UserCenterFollowPopup from '@components/user-center-follow-popup';
-import UserCenterThreads from '@components/user-center-threads';
-import NoData from '@components/no-data';
 import UserCenterFansPc from '@components/user-center/fans-pc';
 import UserCenterFollowsPc from '../../../components/user-center/follows-pc';
 import Thread from '@components/thread';
@@ -31,11 +26,19 @@ class PCMyPage extends React.Component {
     super(props);
     this.isUnmount = false;
 
+    const myThreadsList = this.props.index.getList({
+      namespace: 'my',
+    });
+
     this.state = {
       showFansPopup: false, // 是否弹出粉丝框
       showFollowPopup: false, // 是否弹出关注框
       isLoading: false,
     };
+
+    if (myThreadsList.length === 0) {
+     this.state.isLoading = true; 
+    }
   }
 
   beforeRouterChange = (url) => {
@@ -109,11 +112,6 @@ class PCMyPage extends React.Component {
 
   onContainerClick = ({ id }) => {
     Router.push({ url: `/user/${id}` });
-  };
-
-  formatUserThreadsData = (userThreads) => {
-    if (Object.keys(userThreads).length === 0) return [];
-    return Object.values(userThreads).reduce((fullData, pageData) => [...fullData, ...pageData]);
   };
 
   renderRight = () => {
