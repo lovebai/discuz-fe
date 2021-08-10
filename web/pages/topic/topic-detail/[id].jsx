@@ -46,10 +46,13 @@ class Index extends React.Component {
   async componentDidMount() {
     const { topic, router } = this.props;
     const { id = '' } = router.query;
+    const topicId = topic?.topicDetail?.pageData[0]?.topicId || '';
     // 当服务器无法获取数据时，触发浏览器渲染
     const hasTopics = !!topic.topicDetail;
-
-    if (!hasTopics) { // 需要请求新的数据
+    if (!hasTopics || Number(id) !== topicId) {
+      this.setState({
+        fetchTopicInfoLoading: true,
+      });
       this.props.baselayout['topic-detail'] = -1;
       try {
         await topic.getTopicsDetail({ topicId: id });
