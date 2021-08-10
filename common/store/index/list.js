@@ -267,6 +267,8 @@ export default class ListStore {
     targetThreads.forEach(({ listName, page, index }) => {
       this.lists[listName].data[page][index] = threadInfo;
     });
+
+    this.lists = { ...this.lists };
   }
 
   /**
