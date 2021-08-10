@@ -38,8 +38,8 @@ class Draft extends React.Component {
 
   beforeRouterChange = (url) => {
     // 如果不是进入 发帖 页面
-    if (!/thread\/post/.test(url)) {
-      // this.props.index.drafts = null;
+    if (!/thread\//.test(url)) {
+      this.props.index.drafts = null;
     }
   };
 
