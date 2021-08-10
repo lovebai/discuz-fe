@@ -207,7 +207,7 @@ class PCMyPage extends React.Component {
           showRefresh={false}
           onSearch={this.onSearch}
           immediateCheck={true}
-          showLayoutRefresh={!!userThreadsList?.length && !fetchUserInfoLoading}
+          isShowLayoutRefresh={!!userThreadsList?.length && !fetchUserInfoLoading}
           showHeaderLoading={fetchUserInfoLoading}
         >
           <div>

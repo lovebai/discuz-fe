@@ -73,7 +73,7 @@ class BuyPCPage extends React.Component {
           noData={!buyThreadsList?.length}
           isLoading={!buyThreadsList}
           icon={{ type: 3, name: 'ShoppingCartOutlined' }}
-          rightText={`共有${totalCount}条购买`}
+          rightText={totalCount !== undefined ? `共有${totalCount}条购买` : null}
           mold='plane'
           isError={requestError.isError}
           errorText={requestError.errorText}
