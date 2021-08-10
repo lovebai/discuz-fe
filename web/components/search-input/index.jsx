@@ -44,6 +44,7 @@ const SearchInput = ({
   };
 
   const onEnter = (e) => {
+    const val = e.target.value || "";
     if (timeoutID.current !== null) {
       clearTimeout(timeoutID.current);
       timeoutID.current = null;
