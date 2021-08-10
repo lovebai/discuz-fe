@@ -12,13 +12,13 @@ const commonUpload = (options) => {
     supportImgExt,
     supportMaxSize,
   } = options;
-  debugger;
+
   return Promise.all(files.map(file => {
     const opts = {
       file,
       ...options
     };
-    // opts.qcloudCos = false;
+
     return new Promise(async resolve => {
       try {
         const res = await cosSdkUpload(opts);

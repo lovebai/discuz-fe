@@ -31,10 +31,8 @@ export default function DzqUpload(props) {
   const type = data.type;
   const multiple = limit > 1;
   const post = async (file, list, updater) => {
-    debugger;
     const fileImg = await fixImageOrientation(file.originFileObj);
     if (cosOptions) {
-      debugger;
       file.status = 'uploading';
       updater(list);
       const response = await commonUpload({

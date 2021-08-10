@@ -18,46 +18,50 @@ export default (options) => {
       return;
     }
 
-    debugger;
     const filePath = file.path;
     const filename = filePath.substr(filePath.lastIndexOf('/') + 1);
     const fileSize = file.size;
     const path = `public/attachments/${time.formatDate(new Date(), 'YYYY/MM/DD')}/`;
 
     // 初始化cos实例
-    const cos = new COS({
-      getAuthorization: async (_options, callback) => {
-        const res = await getCosTmpKey({
-          type,
-          fileSize,
-          fileName: filename,
-        });
-        const { code, data } = res;
-        if (code === 0) {
-          const credentials = data && data.credentials;
-          callback({
-            TmpSecretId: credentials.tmpSecretId,
-            TmpSecretKey: credentials.tmpSecretKey,
-            SecurityToken: credentials.sessionToken,
-            StartTime: data.startTime,
-            ExpiredTime: data.expiredTime,
-          });
-        } else {
-          // todo: 处理异常情况，获取临时密钥失败
-          reject('error');
-        }
-      }
+    var cos = new COS({
+      SecretId: 'AKIDCJAnwjKjthEk6HBm6fwzhCLFRRBlsBxG',
+      SecretKey: 'DF1SjllSwlna8i9D6jAGFPPzT6TXHnac',
     });
+    // const cos = new COS({
+    //   getAuthorization: async (_options, callback) => {
+    //     const res = await getCosTmpKey({
+    //       type,
+    //       fileSize,
+    //       fileName: filename,
+    //     });
+    //     const { code, data } = res;
+    //     if (code === 0) {
+    //       const credentials = data && data.credentials;
+    //       callback({
+    //         TmpSecretId: credentials.tmpSecretId,
+    //         TmpSecretKey: credentials.tmpSecretKey,
+    //         SecurityToken: credentials.sessionToken,
+    //         StartTime: data.startTime,
+    //         ExpiredTime: data.expiredTime,
+    //       });
+    //     } else {
+    //       // todo: 处理异常情况，获取临时密钥失败
+    //       reject('error');
+    //     }
+    //   }
+    // });
 
+    // 使用cos实例上传并生成url
     cos.postObject({
       Bucket,
       Region,
       Key: path + filename,
       FilePath: filePath,
-      onProgress: function (info) {
+      onProgress: (info) => {
           console.log(JSON.stringify(info));
       }
-    }, function (err, data) {
+    }, (err) => {
       if (err === null) {
         cos.getObjectUrl({
           Bucket: Bucket,
@@ -70,17 +74,15 @@ export default (options) => {
             const res = await updateAttachment({
               type,
               cosUrl,
-              filename,
+              fileName: filename,
             });
             resolve(res);
           } else if (err) {
-            debugger;
             // todo: 异常情况处理，上传失败
             reject(err);
           }
         });
       } else if (err) {
-        debugger;
         // todo: 异常情况处理，上传失败
         reject(err);
       }
