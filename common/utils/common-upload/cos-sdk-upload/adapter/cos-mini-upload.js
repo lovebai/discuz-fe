@@ -24,33 +24,33 @@ export default (options) => {
     const path = `public/attachments/${time.formatDate(new Date(), 'YYYY/MM/DD')}/`;
 
     // 初始化cos实例
-    var cos = new COS({
-      SecretId: 'AKIDCJAnwjKjthEk6HBm6fwzhCLFRRBlsBxG',
-      SecretKey: 'DF1SjllSwlna8i9D6jAGFPPzT6TXHnac',
-    });
-    // const cos = new COS({
-    //   getAuthorization: async (_options, callback) => {
-    //     const res = await getCosTmpKey({
-    //       type,
-    //       fileSize,
-    //       fileName: filename,
-    //     });
-    //     const { code, data } = res;
-    //     if (code === 0) {
-    //       const credentials = data && data.credentials;
-    //       callback({
-    //         TmpSecretId: credentials.tmpSecretId,
-    //         TmpSecretKey: credentials.tmpSecretKey,
-    //         SecurityToken: credentials.sessionToken,
-    //         StartTime: data.startTime,
-    //         ExpiredTime: data.expiredTime,
-    //       });
-    //     } else {
-    //       // todo: 处理异常情况，获取临时密钥失败
-    //       reject('error');
-    //     }
-    //   }
+    // var cos = new COS({
+    //   SecretId: 'AKIDCJAnwjKjthEk6HBm6fwzhCLFRRBlsBxG',
+    //   SecretKey: 'DF1SjllSwlna8i9D6jAGFPPzT6TXHnac',
     // });
+    const cos = new COS({
+      getAuthorization: async (_options, callback) => {
+        const res = await getCosTmpKey({
+          type,
+          fileSize,
+          fileName: filename,
+        });
+        const { code, data } = res;
+        if (code === 0) {
+          const credentials = data && data.credentials;
+          callback({
+            TmpSecretId: credentials.tmpSecretId,
+            TmpSecretKey: credentials.tmpSecretKey,
+            SecurityToken: credentials.sessionToken,
+            StartTime: data.startTime,
+            ExpiredTime: data.expiredTime,
+          });
+        } else {
+          // todo: 处理异常情况，获取临时密钥失败
+          reject('error');
+        }
+      }
+    });
 
     // 使用cos实例上传并生成url
     cos.postObject({

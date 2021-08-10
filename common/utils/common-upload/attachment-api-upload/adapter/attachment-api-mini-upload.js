@@ -2,22 +2,25 @@
 import locals from '@common/utils/local-bridge';
 import constants from '@common/constants';
 import Taro from '@tarojs/taro';
+import Toast from '@discuzq/design/dist/components/toast/index';
 
 const attachmentApiUpload = (options) => {
   return new Promise(async (resolve, reject) => {
     const { file, type, host } = options;
     const tempFilePath = file.path || file.tempFilePath;
-    const name = file.name || '图片';
     const token = locals.get(constants.ACCESS_TOKEN_NAME);
     const formData = {
       type,
-      name,
     };
+
+    if (type === 0) {
+      formData.name = file.name;
+    }
 
     Taro.uploadFile({
       url: `${host}/apiv3/attachments`,
       filePath: tempFilePath,
-      name: '图片',
+      name: 'file',
       header: {
         'authorization': `Bearer ${token}`
       },
@@ -25,6 +28,13 @@ const attachmentApiUpload = (options) => {
       success(res) {
         if (res.statusCode === 200) {
           const ret = JSON.parse(res.data);
+
+          for (const key in ret) {
+            if (Object.hasOwnProperty.call(ret, key)) {
+              ret[key.toLowerCase()] = ret[key];
+            }
+          }
+
           resolve(ret);
         } else {
           console.log(res);

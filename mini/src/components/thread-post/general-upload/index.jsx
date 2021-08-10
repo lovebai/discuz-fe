@@ -65,7 +65,7 @@ export default inject('threadPost', 'site')(observer(({ type, threadPost, site, 
     const res = await commonUpload({
       files: cloneList,
       type,
-      qcloudCos: false,
+      qcloudCos,
       qcloudCosBucketName,
       qcloudCosBucketArea,
       qcloudCosSignUrl,
@@ -101,7 +101,7 @@ export default inject('threadPost', 'site')(observer(({ type, threadPost, site, 
 
     if (count > 0 && isAllLegal) {
       Toast.error({
-        content: `${count} 张照片上传失败`,
+        content: `${count} ${isImage ? '张照片' : '个文件'}上传失败`,
       });
     }
 
