@@ -28,7 +28,6 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     const { serverSearch, search } = this.props;
-    console.log('数据:', serverSearch, search);
     // 初始化数据到store中
     serverSearch && serverSearch.threads && search.setThreads(serverSearch.threads);
   }
