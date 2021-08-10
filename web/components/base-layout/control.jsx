@@ -49,7 +49,7 @@ const BaseLayoutControl = forwardRef((props, ref) => {
   );
 
   const baseLayoutWhiteList = useMemo(() => {
-    const defaultWhiteList = ['home', 'search', 'my', 'like', 'collect', 'buy', 'block'];
+    const defaultWhiteList = ['home', 'search', 'my', 'like', 'collect', 'buy', 'block', 'draft'];
     if (Array.isArray(jumpRuleList)) {
       return [...defaultWhiteList, ...jumpRuleList];
     }

@@ -248,7 +248,6 @@ class PCMyPage extends React.Component {
           showRefresh={false}
           onSearch={this.onSearch}
           // right={this.renderRight}
-          right={this.renderRight}
           immediateCheck={false}
           curr={'my'}
           pageName="my"

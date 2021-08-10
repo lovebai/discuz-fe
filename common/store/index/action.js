@@ -210,7 +210,7 @@ class IndexAction extends IndexStore {
           });
         } else {
           // 首次加载
-          this.drafts = null;
+          // this.drafts = null;
           this.setDrafts(result.data);
         }
       } else {
@@ -495,7 +495,7 @@ class IndexAction extends IndexStore {
         })
       })
     }
-    
+
   }
 
   /**
