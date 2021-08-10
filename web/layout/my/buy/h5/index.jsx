@@ -38,6 +38,7 @@ class Index extends React.Component {
       <BaseLayout
         requestError={requestError.isError}
         errorText={requestError.errorText}
+        quickScroll={true}
         pageName={'buy'}
         showHeader={true}
         noMore={currentPage >= totalPage}

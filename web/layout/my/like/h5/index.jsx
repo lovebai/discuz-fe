@@ -31,6 +31,7 @@ class Index extends React.Component {
       <BaseLayout
         pageName={'like'}
         showHeader={true}
+        quickScroll={true}
         noMore={currentPage >= totalPage}
         onRefresh={this.props.dispatch}
         requestError={requestError.isError}

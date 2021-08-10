@@ -74,6 +74,7 @@ class Index extends React.Component {
     return (
       <BaseLayout
         pageName={'collect'}
+        quickScroll={true}
         showLoadingInCenter={!collectThreadsList?.length}
         showHeader={true}
         noMore={currentPage >= totalPage}
