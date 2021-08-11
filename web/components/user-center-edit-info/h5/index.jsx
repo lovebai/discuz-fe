@@ -144,7 +144,8 @@ class index extends Component {
     const { isConfirm } = this.state;
     const { user, site } = this.props;
     // 条件都满足时才显示微信
-    const IS_WECHAT_ACCESSABLE = this.props.site.wechatEnv !== 'none' && !!this.user.wxNickname;
+    const IS_WECHAT_ACCESSABLE = this.props.site.wechatEnv !== 'none';
+    const IS_WECHAT_HAS_BIND = Boolean(this.user.wxNickname);
     const ISEXT_FIELD_OPENS = isExtFieldsOpen(this.props?.site);
     return (
       <div>
@@ -202,15 +203,22 @@ class index extends Component {
               <div className={styles.userCenterEditLabel}>
                 <label>微信</label>
                 <div className={styles.userCenterEditWeChat}>
-                  <Avatar size="small" image={this.user.wxHeadImgUrl} name={this.user.wxNickname} />
-                  <span>{this.user.wxNickname}</span>
+                  {IS_WECHAT_HAS_BIND && <Avatar size="small" image={this.user.wxHeadImgUrl} name={this.user.wxNickname} />}
+                  {IS_WECHAT_HAS_BIND ? <span>{this.user.wxNickname}</span> : '未绑定'}
                   {
                     site.isDomainWhiteList
+                    && IS_WECHAT_HAS_BIND
                     && user.isWhiteLsit
                     && <div className={styles.linkText} onClick={() => {
                       Router.push({ url: '/user/rebind' });
                     }}
                     >换绑</div>
+                  }
+                  {
+                    !IS_WECHAT_HAS_BIND && <div className={styles.linkText} onClick={() => {
+                      Router.push({ url: '/user/rebind' });
+                    }}
+                    >绑定微信</div>
                   }
                 </div>
               </div>
