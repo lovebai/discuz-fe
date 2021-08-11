@@ -33,7 +33,6 @@ class Index extends React.Component {
     onShare = (e) => {
       e && e.stopPropagation();
       Toast.info({ content: '复制链接成功' });
-      this.updateViewCount();
       this.handleShare();
     }
     handleShare = debounce(() => {

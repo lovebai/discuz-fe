@@ -29,10 +29,10 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "7.7.7",
-    "@discuzq/design": "^1.0.58",
+    "@discuzq/design": "^1.0.63",
     "@discuzq/discuz-babel-plugin-import": "0.0.1",
     "@discuzq/plugin": "^1.0.31",
-    "@discuzq/sdk": "^1.0.32",
+    "@discuzq/sdk": "^1.0.34",
     "@discuzq/vditor": "^1.0.25",
     "@tarojs/components": "3.2.2",
     "@tarojs/react": "3.2.2",

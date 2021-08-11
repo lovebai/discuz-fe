@@ -45,11 +45,13 @@ class BindNicknameH5Page extends React.Component {
           const { needToCompleteExtraInfo: isNeedToCompleteExtraInfo } = router.query;
           // 扩展信息的判断跳转
           const needToCompleteExtraInfo = commonLogin.needToCompleteExtraInfo || isNeedToCompleteExtraInfo;
+
           // 跳转补充信息页
           if (needToCompleteExtraInfo) {
             if (isExtFieldsOpen(site)) {
               commonLogin.needToCompleteExtraInfo = true;
-              this.props.router.push('/user/supplementary');
+              // this.props.router.push('/user/supplementary')
+              window.location.href = '/user/supplementary';  // this.props.router.push 无法跳转
               return;
             }
             return window.location.href = '/';

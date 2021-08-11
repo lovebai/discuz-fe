@@ -47,8 +47,9 @@ export default class ReplyList extends React.Component {
   }
 
   transformer = (parsedDom) => {
+    const hasAvatarImage = !!this.props?.data?.commentUser?.avatar;
     const element = this.props.data.commentUserId ? (
-      <div className={styles.commentUser}>
+      <div className={`${styles.commentUser} ${hasAvatarImage ? '' : styles.positionTop}`}>
         <div
           className={styles.replyedAvatar}
           onClick={() => {
@@ -113,7 +114,7 @@ export default class ReplyList extends React.Component {
           ></Avatar>
         </div>
         <div className={styles.replyListContent}>
-          <div className={styles.replyListContentText}>
+          <div className={`${styles.replyListContentText} ${this.props.active && styles.active}`}>
             <div className={styles.replyListName}>
               <div className={styles.userInfo}>
                 <div className={styles.replyListName} onClick={() => {this.avatarClick(2)}}>
