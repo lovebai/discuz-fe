@@ -422,11 +422,20 @@ function DVditor(props) {
             });
             toastInstance.destroy();
             if (error.length) {
-              let content = `${error.length}张图片上传失败，请重新尝试上传。`;
+              const errorLength = error.length;
+
+              let content = `${errorLength}张图片上传失败，请重新尝试上传。`;
+
               const sensitiveLen = error.filter(item => item?.msg.includes('敏感图')).length;
-              if (sensitiveLen > 0) {
-                content += `(其中包含${sensitiveLen}张敏感图)`;
+
+              if (errorLength === sensitiveLen) {
+                content = `有${sensitiveLen}张敏感图片上传失败，请更换图片重新上传。`;
               }
+
+              if (errorLength > sensitiveLen && sensitiveLen) {
+                content = `${error.length}张图片上传失败，其中有${sensitiveLen}张为敏感图，请处理后重新尝试上传。`;
+              }
+
               Toast.info({
                 content,
                 duration: 2000,
