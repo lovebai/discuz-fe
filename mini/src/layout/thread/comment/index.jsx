@@ -397,7 +397,6 @@ class CommentH5Page extends React.Component {
 
   render() {
     const { commentDetail: commentData, isReady } = this.props.comment;
-
     // 更多弹窗权限
     const morePermissions = {
       canEdit: false,
@@ -455,9 +454,10 @@ class CommentH5Page extends React.Component {
                   replyDeleteClick={(reply) => this.replyDeleteClick(reply, commentData)}
                   replyAvatarClick={(reply, floor) => this.replyAvatarClick(reply, commentData, floor)}
                   onMoreClick={() => this.onMoreClick()}
-                  isHideEdit={true}
+                  isHideEdit
                   postId={this.props.comment.postId}
                   positionRef={this.positionRef}
+                  threadId={this.props.thread.threadData.userId}
                 ></CommentList>
               )}
             </View>
