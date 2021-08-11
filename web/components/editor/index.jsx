@@ -294,7 +294,7 @@ export default function DVditor(props) {
               Toast.info({ content: `最多输入${MAX_COUNT}字` });
             }
           },
-          type: 'markdown',
+          type: 'text',
           max: MAX_COUNT,
         },
         toolbarConfig: {
