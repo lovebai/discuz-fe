@@ -216,7 +216,7 @@ class CommentH5Page extends React.Component {
     });
   }
 
-  //删除回复评论
+  // 删除回复评论
   async replyDeleteComment() {
     if (!this.replyData.id) return;
 
@@ -307,7 +307,7 @@ class CommentH5Page extends React.Component {
 
     if (imageList?.length) {
       params.attachments = imageList
-        .filter((item) => item.status === 'success' && item.response)
+        .filter(item => item.status === 'success' && item.response)
         .map((item) => {
           const { id } = item.response;
           return {
@@ -389,7 +389,6 @@ class CommentH5Page extends React.Component {
 
   render() {
     const { commentDetail: commentData, isReady } = this.props.comment;
-
     // 更多弹窗权限
     const morePermissions = {
       // canEdit: commentData?.canEdit,
@@ -447,6 +446,7 @@ class CommentH5Page extends React.Component {
               replyDeleteClick={(reply) => this.replyDeleteClick(reply, commentData)}
               onMoreClick={() => this.onMoreClick()}
               isHideEdit={true}
+              threadId={this.props.thread?.threadData?.userId}
               postId={this.props.comment.postId}
               positionRef={this.positionRef}
             ></CommentList>
@@ -470,7 +470,7 @@ class CommentH5Page extends React.Component {
             visible={this.state.showMorePopup}
             onClose={() => this.setState({ showMorePopup: false })}
             onSubmit={() => this.setState({ showMorePopup: false })}
-            onOperClick={(type) => this.onOperClick(type)}
+            onOperClick={type => this.onOperClick(type)}
           />
 
           {/* 删除弹层 */}
@@ -493,7 +493,7 @@ class CommentH5Page extends React.Component {
             inputText={this.inputText}
             visible={this.state.showReportPopup}
             onCancel={() => this.setState({ showReportPopup: false })}
-            onOkClick={(data) => this.onReportOk(data)}
+            onOkClick={data => this.onReportOk(data)}
           ></ReportPopup>
         </div>
       </div>
