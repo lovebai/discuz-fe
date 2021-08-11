@@ -37,7 +37,7 @@ class Index extends React.Component {
     // 初始化数据到store中
     serverTopic && serverTopic.topicDetail && topic.setTopicDetail(serverTopic.topicDetail);
     this.state = {
-      fetchTopicInfoLoading: !topic?.topicDetail,
+      fetchTopicInfoLoading: !topic?.topicDetail, // 如果有缓存，不显示“加载中”
       isError: false,
       errorText: '加载失败',
     };
@@ -46,13 +46,10 @@ class Index extends React.Component {
   async componentDidMount() {
     const { topic, router } = this.props;
     const { id = '' } = router.query;
-    const topicId = topic?.topicDetail?.pageData[0]?.topicId || '';
     // 当服务器无法获取数据时，触发浏览器渲染
     const hasTopics = !!topic.topicDetail;
-    if (!hasTopics || Number(id) !== topicId) {
-      this.setState({
-        fetchTopicInfoLoading: true,
-      });
+
+    if (!hasTopics) { // 需要请求新的数据
       this.props.baselayout['topic-detail'] = -1;
       try {
         await topic.getTopicsDetail({ topicId: id });
