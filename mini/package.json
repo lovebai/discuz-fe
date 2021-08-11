@@ -50,11 +50,7 @@
     "@babel/core": "7.8.0",
     "@commitlint/cli": "12.0.1",
     "@commitlint/config-conventional": "12.0.1",
-<<<<<<< HEAD
     "@discuzq/cli": "^1.0.32",
-=======
-    "@discuzq/cli": "1.0.31",
->>>>>>> origin/releases
     "@tarojs/cli": "3.2.2",
     "@tarojs/mini-runner": "3.2.2",
     "@tarojs/webpack-runner": "3.2.2",
