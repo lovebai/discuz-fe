@@ -156,36 +156,12 @@ export default class mobileLoginStore {
       }
     }
 
-    checkCompleteUserInfo = (smsLoginResp) => {
-      // 如果没有填写昵称，抛出需要填写昵称的状态码
-      const isMissNickname = get(smsLoginResp, 'data.isMissNickname', false);// 缺少昵称
-      const isMissRequireInfo = get(smsLoginResp, 'data.userStatus') === 10; // 缺少补充信息
-
-      if (isMissRequireInfo && isMissNickname) {
-        this.needToCompleteExtraInfo = true;
-        this.needToSetNickname = true;
-        throw MOBILE_LOGIN_STORE_ERRORS.NEED_ALL_INFO;
-      }
-
-      // TODO: 页面还没做好，暂时不做扩展信息的判断跳转
-      // if (isMissRequireInfo) {
-      //   this.needToCompleteExtraInfo = true;
-      //   throw MOBILE_LOGIN_STORE_ERRORS.NEED_COMPLETE_REQUIRED_INFO;
-      // }
-
-      if (isMissNickname) {
-        this.needToSetNickname = true;
-        throw MOBILE_LOGIN_STORE_ERRORS.NEED_BIND_USERNAME;
-      }
-    }
-
     @action
     login = async () => {
       this.beforeLoginVerify();
 
       try {
         const smsLoginResp = await smsLogin({
-
           data: {
             mobile: this.mobile,
             code: this.code,
@@ -202,23 +178,18 @@ export default class mobileLoginStore {
             accessToken,
           });
 
-          this.checkCompleteUserInfo(smsLoginResp);
-
           return smsLoginResp.data;
         }
 
         if (smsLoginResp.code === NEED_BIND_TOKEN_FLAG) {
           const uid = get(smsLoginResp, 'data.uid', '');
           // 去除登录态，防止用户携带登录态跳入其他页面
-          // const accessToken = get(smsLoginResp, 'data.accessToken', '');
-          // 种下 access_token
-          // setAccessToken({
-          //   accessToken,
-          // });
+          const accessToken = get(smsLoginResp, 'data.accessToken', '');
           throw {
             ...MOBILE_LOGIN_STORE_ERRORS.NEED_BIND_WECHAT,
             sessionToken: get(smsLoginResp, 'data.sessionToken'),
             nickname: get(smsLoginResp, 'data.nickname'),
+            accessToken,
             uid,
           };
         }

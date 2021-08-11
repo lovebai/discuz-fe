@@ -18,6 +18,10 @@
 .content{
   padding: 0 rem($padding-4n);
   box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  min-height: calc(100vh - 205px);
   .list{
     border-bottom: $border-solid-1;
     height: rem(52);

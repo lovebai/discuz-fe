@@ -83,7 +83,6 @@
   }
   .miniCodeMask {
     border-radius: $border-radius-circle;
-    padding: $padding-4n;
   }
   &.orCode {
     .codeMask {
@@ -93,5 +92,8 @@
       margin-left: 50%;
       transform: translate(-50%, 0);
     }
+  }
+  .h5_miniCodeMask {
+    padding: $padding-4n;
   }
 }

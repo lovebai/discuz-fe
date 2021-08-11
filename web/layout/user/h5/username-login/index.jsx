@@ -36,6 +36,19 @@ class UsernameH5Login extends React.Component {
   }
 
   loginErrorHandler = async (e) => {
+    // 补充昵称
+    if (e.Code === MOBILE_LOGIN_STORE_ERRORS.NEED_BIND_USERNAME.Code || e.Code === MOBILE_LOGIN_STORE_ERRORS.NEED_ALL_INFO.Code) {
+      const uid = get(e, 'uid', '');
+      uid && this.props.user.updateUserInfo(uid);
+
+      if (e.Code === MOBILE_LOGIN_STORE_ERRORS.NEED_ALL_INFO.Code) {
+        this.props.commonLogin.needToCompleteExtraInfo = true;
+      }
+
+      this.props.router.push('/user/bind-nickname');
+      return;
+    }
+
     // 跳转补充信息页
     if (e.Code === MOBILE_LOGIN_STORE_ERRORS.NEED_COMPLETE_REQUIRED_INFO.Code) {
       const uid = get(e, 'uid', '');
@@ -54,23 +67,10 @@ class UsernameH5Login extends React.Component {
       if (e.uid) {
         this.props.commonLogin.setUserId(e.uid);
       }
-      if (wechatEnv === 'miniProgram' && platform === 'h5') {
-        this.props.commonLogin.needToBindMini = true;
-        const resp = await genMiniScheme();
-        if (resp.code === 0) {
-          window.location.href = `${get(resp, 'data.openLink', '')}&sessionToken=${e.sessionToken}`;
-          return;
-        }
-        Toast.error({
-          content: '网络错误',
-          hasMask: false,
-          duration: 1000,
-        });
-        return;
-      }
+      e.accessToken && this.props.commonLogin.setLoginToken(e.accessToken);
       this.props.commonLogin.needToBindWechat = true;
       this.props.commonLogin.sessionToken = e.sessionToken;
-      this.props.router.push(`/user/wx-bind-qrcode?sessionToken=${e.sessionToken}&loginType=${platform}&nickname=${e.nickname}`);
+      this.props.router.push(`/user/wx-bind-qrcode?sessionToken=${e.sessionToken}&loginType=${platform}&nickname=${e.nickname}&isSkip=${true}`);
       return;
     }
 
