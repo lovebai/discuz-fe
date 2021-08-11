@@ -294,7 +294,7 @@ export default function DVditor(props) {
               Toast.info({ content: `最多输入${MAX_COUNT}字` });
             }
           },
-          type: 'markdown',
+          type: 'text',
           max: MAX_COUNT,
         },
         toolbarConfig: {
@@ -415,8 +415,13 @@ export default function DVditor(props) {
             });
             toastInstance.destroy();
             if (error.length) {
+              let content = `${error.length}张图片上传失败，请重新尝试上传。`;
+              const sensitiveLen = error.filter(item => item?.msg.includes('敏感图')).length;
+              if (sensitiveLen > 0) {
+                content += `(其中包含${sensitiveLen}张敏感图)`;
+              }
               Toast.info({
-                content: `${error.length}张图片上传失败，请重新尝试上传`,
+                content,
                 duration: 2000,
               });
             }
