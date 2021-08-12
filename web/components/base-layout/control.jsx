@@ -52,14 +52,33 @@ const BaseLayoutControl = forwardRef((props, ref) => {
           ]);
   const layoutRef = useRef(null);
 
-  const disableEffect = useRef(false)
+  const disableEffect = useRef(false);
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      listRef
-    }),
-  );
+  useImperativeHandle(ref, () => ({
+    listRef,
+  }));
+
+  const baseLayoutWhiteList = useMemo(() => {
+    const defaultWhiteList = [
+      'home',
+      'search',
+      'my',
+      'like',
+      'collect',
+      'buy',
+      'block',
+      'draft',
+      'resultTopic',
+      'resultUser',
+      'resultPost',
+      'h5SearchResult',
+      'topicDetail',
+    ];
+    if (Array.isArray(jumpRuleList)) {
+      return [...defaultWhiteList, ...jumpRuleList];
+    }
+    return defaultWhiteList;
+  }, [jumpRuleList]);
 
   useEffect(() => {
     ready();
