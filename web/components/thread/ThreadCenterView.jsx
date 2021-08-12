@@ -7,6 +7,7 @@ import VideoPlay from './video-play';
 import { handleAttachmentData } from './utils';
 import AttachmentView from './attachment-view';
 import ImageDisplay from './image-display';
+import VoteDisplay from './vote-display';
 import Packet from './packet';
 import styles from './index.module.scss';
 
@@ -86,15 +87,15 @@ const Index = (props) => {
                     updateViewCount={updateViewCount}
                   />
                 </WrapperView>
-                
+
               )}
               {imageData?.length > 0 && (
                   <ImageDisplay
-                      platform={props.platform} 
-                      imgData={imageData} 
+                      platform={props.platform}
+                      imgData={imageData}
                       isPay={needPay}
                       onPay={onPay}
-                      onClickMore={onClick} 
+                      onClickMore={onClick}
                       onImageReady={props.onImageReady}
                       updateViewCount={updateViewCount}
                   />
@@ -113,7 +114,9 @@ const Index = (props) => {
                   onClick={onClick}
               />}
               {audioData && <AudioPlay url={audioData.mediaUrl} isPay={needPay} onPay={onPay} updateViewCount={updateViewCount}/>}
-              {fileData?.length > 0 && <AttachmentView threadId={threadId} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount}/>}
+            {fileData?.length > 0 && <AttachmentView threadId={threadId} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount} />}
+            {/* 投票帖子展示 */}
+            <VoteDisplay />
           </>
         );
     }
@@ -125,16 +128,16 @@ const Index = (props) => {
 
             {renderThreadContent(props.data)}
           </div>
-            
+
           {
               needPay && (
                 <div className={styles.pay}>
                   <Button className={styles.button} type="primary" onClick={onPay}>
                       <Icon className={styles.payIcon} name="GoldCoinOutlined" size={16}></Icon>
                       {payType === 1 ? <p className={styles.payText}>{`支付${price}元查看剩余内容`}</p> : <p className={styles.payText}>{`支付${attachmentPrice}元查看附件内容`}</p>}
-                  </Button>                  
+                  </Button>
                 </div>
-                
+
               )
           }
         </>
