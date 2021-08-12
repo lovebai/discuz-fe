@@ -403,8 +403,9 @@ class PostPage extends React.Component {
     if (!webConfig) return false;
     // 站点支持的文件类型、文件大小
     const { supportFileExt, supportImgExt, supportMaxSize } = webConfig.setAttach;
+    const { qcloudCos } = webConfig.qcloud;
 
-    const photoMaxSize = type === THREAD_TYPE.image ? 15 : supportMaxSize;
+    const photoMaxSize = (type === THREAD_TYPE.image && qcloudCos) ? 15 : supportMaxSize;
 
     const remainLength = 9 - showFileList.length; // 剩余可传数量
     cloneList.splice(remainLength, cloneList.length - remainLength);

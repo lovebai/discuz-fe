@@ -346,6 +346,7 @@ function DVditor(props) {
             const { canInsertThreadImage } = other;
             const { supportImgExt, supportMaxSize } = setAttach;
             const { qcloudCosBucketName, qcloudCosBucketArea, qcloudCosSignUrl, qcloudCos } = qcloud;
+            const photoMaxSize = qcloudCos ? 15 : supportMaxSize;
 
             if (!canInsertThreadImage) {
               Toast.error({
@@ -380,9 +381,9 @@ function DVditor(props) {
                 return;
               }
 
-              if (file.size > (15 * 1024 * 1024)) {
+              if (file.size > (photoMaxSize * 1024 * 1024)) {
                 Toast.error({
-                  content: `仅支持上传小于15MB的图片，请重新选择`,
+                  content: `仅支持上传小于${photoMaxSize}MB的图片，请重新选择`,
                   duration: 3000,
                 });
                 return;
