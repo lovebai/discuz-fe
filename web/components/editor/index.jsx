@@ -346,7 +346,12 @@ function DVditor(props) {
             const { canInsertThreadImage } = other;
             const { supportImgExt, supportMaxSize } = setAttach;
             const { qcloudCosBucketName, qcloudCosBucketArea, qcloudCosSignUrl, qcloudCos } = qcloud;
-            const photoMaxSize = qcloudCos ? 15 : supportMaxSize;
+
+
+            let photoMaxSize = supportMaxSize;
+            if (qcloudCos) {
+              photoMaxSize = supportMaxSize > 15 ? 15 : supportMaxSize;
+            }
 
             if (!canInsertThreadImage) {
               Toast.error({

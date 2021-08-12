@@ -124,8 +124,7 @@ function _level_7_quality(viewWidth, conversion) {
 }
 
 function _level_100_quality(viewWidth, conversion) {
-    let zoom = QUALITY_0;
-    return `${IMAGEMOGR2}${conversion ? _conversion(conversion) : ''}${QUALITY_NAME}${zoom}${INTERLACE}${ERROR_IGNORE}`;
+    return `imageView2/2/w/500/h/500/format/webp/rq/1`;
 }
 
 export default function calcImageQuality(viewWidth, type, level) {
