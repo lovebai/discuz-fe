@@ -470,12 +470,15 @@ class UserAction extends SiteStore {
   setUserThreads = async (userThreadList) => {
     const pageData = get(userThreadList, 'data.pageData', []);
     const totalPage = get(userThreadList, 'data.totalPage', 1);
+    const currPage = get(userThreadList, 'data.currentPage', 1);
 
     this.userThreadsTotalPage = totalPage;
+
     this.userThreads = {
       ...this.userThreads,
-      [this.userThreadsPage]: pageData,
+      [currPage]: pageData,
     };
+
     this.userThreadsTotalCount = get(userThreadList, 'data.totalCount', 0);
 
     if (this.userThreadsPage <= this.userThreadsTotalPage) {
@@ -541,7 +544,6 @@ class UserAction extends SiteStore {
     if (updateAvatarRes.code === 0) {
       this.userInfo.avatarUrl = updateAvatarRes.data.avatarUrl;
       this.userInfo = { ...this.userInfo };
-      this.updateUserThreadsAvatar(updateAvatarRes.data.avatarUrl);
       return updateAvatarRes.data;
     }
 
@@ -549,19 +551,6 @@ class UserAction extends SiteStore {
       Code: updateAvatarRes.code,
       Msg: updateAvatarRes.msg,
     };
-  }
-
-  // 更新头像后，更新用户 threads 列表的 avatar url
-  @action
-  updateUserThreadsAvatar(avatarUrl) {
-    Object.keys(this.userThreads).forEach((key) => {
-      this.userThreads[key].forEach((thread) => {
-        if (!thread.user) {
-          thread.user = {};
-        }
-        thread.user.avatar = avatarUrl;
-      });
-    });
   }
 
   /**
