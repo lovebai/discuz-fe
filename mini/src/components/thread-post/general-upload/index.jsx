@@ -35,6 +35,7 @@ export default inject('threadPost', 'site')(observer(({ type, threadPost, site, 
     const supportExt = isImage ? supportImgExt : supportFileExt; // 支持的文件格式
     const showList = isImage ? images : files; // 已上传文件列表
     const remainLength = 9 - Object.keys(showList).length; // 剩余可传数量
+    const photoMaxSize = isImage ? 15 : supportMaxSize;
 
     // 1 删除多余文件
     cloneList.splice(remainLength, cloneList.length - remainLength);
