@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import Checkbox from '@discuzq/design/dist/components/checkbox/index';
+import Button from '@discuzq/design/dist/components/button/index';
+import Icon from '@discuzq/design/dist/components/icon/index';
+import Radio from '@discuzq/design/dist/components/radio/index';
+import Progress from '@discuzq/design/dist/components/progress/index';
+import { View, Text } from '@tarojs/components'
 import styles from './index.module.scss';
-import { Checkbox, Button, Icon, Radio, Progress } from '@discuzq/design';
 
 const CHOICE_TYPE = {
   mutiple: 2, // 多选
@@ -23,24 +28,24 @@ const VoteDisplay = (props = {}) => {
       className={!isFold ? styles.foldbtn : styles.expandbtn}
       onClick={() => setIsFold(!isFold)}
     >
-      <span className={styles['fold-expand']}>{!isFold ? '展开' : '收起'}{text}</span>
+      <Text className={styles['fold-expand']}>{!isFold ? '展开' : '收起'}{text}</Text>
       <Icon name="RightOutlined" size="10"></Icon>
     </Button>
   );
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <div className={styles['header-right']}>
+      <View className={styles.container}>
+        <View className={styles.header}>
+          <View className={styles['header-right']}>
             {voteTitle}
-            { isVotedEnd && <span className={styles['header-right__text']}>（{typeText}）</span>}
-          </div>
+            { isVotedEnd && <Text className={styles['header-right__text']}>（{typeText}）</Text>}
+          </View>
           {!isVotedEnd && (
-            <div className={styles['header-left']}>
+            <View className={styles['header-left']}>
               {voteUsers}人参与
-            </div>
+            </View>
           )}
-        </div>
+        </View>
         {!isVotedEnd
           && (
             <CheckboxRadio.Group defaultValue={defaultValue} className={styles.content} onChange={(val) => {
@@ -56,23 +61,23 @@ const VoteDisplay = (props = {}) => {
             </CheckboxRadio.Group>
           )}
         {isVotedEnd && (
-          <div className={styles.content}>
+          <View className={styles.content}>
             {subitems.map((item, index) => {
               if ((!isFold && index < 5) || isFold) {
                 const voteCount = parseInt(item.voteRate, 10) > 100 ? 100 : parseInt(item.voteRate, 10);
                 return (
-                  <div className={styles['result-item']} key={index}>
-                    <div className={styles['result-item__header']}>
-                      <div className={styles['item-header-left']}>
+                  <View className={styles['result-item']} key={index}>
+                    <View className={styles['result-item__header']}>
+                      <View className={styles['item-header-left']}>
                         {item.content}
-                        {item.isVoted && <span className={styles.primaryText}>（已选）</span>}
-                      </div>
-                      <div className={styles['item-header-right']}>
+                        {item.isVoted && <Text className={styles.primaryText}>（已选）</Text>}
+                      </View>
+                      <View className={styles['item-header-right']}>
                         {item.voteCount || 0}票 {item.voteRate}
-                      </div>
-                    </div>
+                      </View>
+                    </View>
                     <Progress percent={voteCount}></Progress>
-                  </div>
+                  </View>
                 );
               }
               return null;
@@ -81,19 +86,19 @@ const VoteDisplay = (props = {}) => {
             <Button full disabled type="primary" className={styles.disabledbtn}>
               投票已结束（{voteUsers}人参与投票）
             </Button>
-          </div>
+          </View>
         )}
-      </div>
+      </View>
       {!isVotedEnd && (
-        <div className={styles.footer}>
-          <div className={styles.left}>
-            <div className={styles['left-type']}>{typeText}</div>
-            <div className={styles['left-time']}>
-              <span className={styles['time-primary']}>6</span>天<span className={styles['time-primary']}>23</span>小时<span className={styles['time-primary']}>34</span>分
-            </div>
-          </div>
+        <View className={styles.footer}>
+          <View className={styles.left}>
+            <View className={styles['left-type']}>{typeText}</View>
+            <View className={styles['left-time']}>
+              <Text className={styles['time-primary']}>6</Text>天<Text className={styles['time-primary']}>23</Text>小时<Text className={styles['time-primary']}>34</Text>分
+            </View>
+          </View>
           <Button type="primary" className={styles.vote}>投票</Button>
-        </div>
+        </View>
       )}
     </>
   );

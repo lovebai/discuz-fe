@@ -59,6 +59,7 @@ const Index = (props) => {
           redPacketData,
           rewardData,
           fileData,
+          voteData,
           threadId,
         } = handleAttachmentData(data);
 
@@ -116,7 +117,7 @@ const Index = (props) => {
               {audioData && <AudioPlay url={audioData.mediaUrl} isPay={needPay} onPay={onPay} updateViewCount={updateViewCount}/>}
             {fileData?.length > 0 && <AttachmentView threadId={threadId} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount} />}
             {/* 投票帖子展示 */}
-            <VoteDisplay />
+            {voteData && <VoteDisplay voteData={voteData} />}
           </>
         );
     }
