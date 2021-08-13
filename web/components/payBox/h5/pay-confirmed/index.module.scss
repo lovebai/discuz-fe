@@ -72,11 +72,16 @@
           color: var(--color-text-secondary);
           margin-right: rem($margin-4n);
         }
+
+        .textButton {
+          font-size: rem($font-size-label);
+        }
+
         :global {
           .dzq-checkbox--radio {
-            border-radius: rem(var(--border-radius-small));
+            border-radius: rem($border-radius-small);
             &::after {
-              border-radius: rem(var(--border-radius-small));
+              border-radius: rem($border-radius-small);
             }
           }
         }

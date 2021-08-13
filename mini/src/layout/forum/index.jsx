@@ -4,7 +4,6 @@ import { View } from '@tarojs/components';
 import Popup from '@discuzq/design/dist/components/popup/index';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import Avatar from '@components/avatar';
-import '@discuzq/design/dist/styles/index.scss';
 import HomeHeader from '@components/home-header';
 import UserCenterUsers from '@components/user-center-users';
 import { get } from '@common/utils/get';
@@ -82,7 +81,7 @@ class ForumH5Page extends React.Component {
             <View className={layout.label}>站长</View>
             <View className={layout.right}>
               <View className={layout.forum_agent}>
-                <Avatar size="small" className={layout.forum_agent_img} image={siteAuthor.avatar} text={siteAuthor?.nickname?.substring(0, 1)?.toUpperCase()}/>
+                <Avatar size="small" className={layout.forum_agent_img} image={siteAuthor.avatar} name={siteAuthor?.nickname?.substring(0, 1)?.toUpperCase()}/>
                 <View className={layout.forum_agent_name}>{siteAuthor.nickname}</View>
               </View>
             </View>
