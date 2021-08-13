@@ -405,7 +405,10 @@ class PostPage extends React.Component {
     const { supportFileExt, supportImgExt, supportMaxSize } = webConfig.setAttach;
     const { qcloudCos } = webConfig.qcloud;
 
-    const photoMaxSize = (type === THREAD_TYPE.image && qcloudCos) ? 15 : supportMaxSize;
+    let photoMaxSize = supportMaxSize;
+    if (type === THREAD_TYPE.image && qcloudCos) {
+      photoMaxSize = supportMaxSize > 15 ? 15 : supportMaxSize;
+    }
 
     const remainLength = 9 - showFileList.length; // 剩余可传数量
     cloneList.splice(remainLength, cloneList.length - remainLength);
