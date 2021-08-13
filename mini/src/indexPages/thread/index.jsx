@@ -60,7 +60,8 @@ class Detail extends React.Component {
       };
     }
     if (data.from === 'menu')  {
-      const isApproved = this.props?.thread?.threadData?.isApproved === 1;const { thread, user } = this.props
+      const isApproved = this.props?.thread?.threadData?.isApproved === 1;
+      const { thread, user } = this.props
       const {nickname} = thread.threadData?.user || ''
       const {avatar} = thread.threadData?.user || ''
       // 处理匿名情况
