@@ -11,6 +11,7 @@ import {
   createReports,
   reward,
   deleteThread,
+  createVote,
 } from '@server';
 import { plus } from '@common/utils/calculate';
 import threadReducer from './reducer';
@@ -739,6 +740,25 @@ class ThreadAction extends ThreadStore {
       success: false,
     };
   }
+
+  // 参与投票（属于帖子的操作，所以放到帖子里的）
+  @action
+  async createVote(params) {
+    const { threadId } = params;
+    if (!threadId) {
+      return {
+        msg: '参数不完整',
+        success: false,
+      };
+    }
+    const { data, code, msg } = await createVote({ data: params });
+    return { data, success: code === 0, threadId, msg };
+  }
+
+  // @action
+  // updateThread(threadId, data) {
+
+  // }
 }
 
 export default ThreadAction;

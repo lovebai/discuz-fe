@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import { Checkbox, Button, Icon, Radio, Progress } from '@discuzq/design';
+import { Checkbox, Button, Icon, Radio, Progress, Toast } from '@discuzq/design';
+import CountDown from '@common/utils/count-down';
+import { debounce } from '@common/utils/throttle-debounce';
 
 const CHOICE_TYPE = {
   mutiple: 2, // 多选
@@ -8,8 +11,17 @@ const CHOICE_TYPE = {
 };
 const VoteDisplay = (props = {}) => {
   const [isFold, setIsFold] = useState(false);
-  const { voteData } = props;
-  const { choiceType, voteTitle = '', subitems = [], voteUsers, isExpired, isVoted } = voteData;
+  const { voteData, threadId } = props;
+  const {
+    choiceType,
+    voteTitle = '',
+    subitems = [],
+    voteUsers,
+    isExpired,
+    isVoted,
+    expiredAt = '',
+    voteId,
+  } = voteData;
   if (!voteTitle) return null;
   const isVotedEnd = isExpired || isVoted; // 投票是否已结束
   const isMutiple = choiceType === CHOICE_TYPE.mutiple;
@@ -17,6 +29,51 @@ const VoteDisplay = (props = {}) => {
   const CheckboxRadio = isMutiple ? Checkbox : Radio;
   const votedItem = subitems.filter(item => item.isVoted).map(item => item.id);
   const defaultValue = isMutiple ? votedItem : (votedItem[0] || '');
+
+  let countDownIns = null;
+  const [day, setDay] = useState(0);
+  const [hour, setHour] = useState(0);
+  const [minute, setMinute] = useState(0);
+  const [value, setValue] = useState([]);
+  useEffect(() => {
+    if (!countDownIns) countDownIns = new CountDown();
+    return () => {
+      countDownIns.stop();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (countDownIns) {
+      const time = expiredAt.replace(/-/g, '/');
+      countDownIns.start(time, (res) => {
+        const { days, hours, minutes } = res;
+        setDay(days);
+        setHour(hours);
+        setMinute(minutes);
+      });
+    }
+  }, [expiredAt]);
+
+  const handleVote = debounce(async () => {
+    if (value.length <= 0) {
+      Toast.info({ content: '请先选择投票选项' });
+      return;
+    }
+    const params = {
+      threadId,
+      vote: {
+        id: voteId,
+        subitemIds: value,
+      },
+    };
+    const { thread } = props;
+    const result = thread.createVote(params);
+    const { success, data, msg } = result;
+    if (!success) Toast.info({ content: msg });
+    else {
+      console.log(data);
+    }
+  }, 1000);
 
   const UnfoldOrExpand = ({ text }) => (
     <Button full type="primary"
@@ -43,9 +100,14 @@ const VoteDisplay = (props = {}) => {
         </div>
         {!isVotedEnd
           && (
-            <CheckboxRadio.Group defaultValue={defaultValue} className={styles.content} onChange={(val) => {
-              console.log(val);
-            }}>
+            <CheckboxRadio.Group
+              defaultValue={defaultValue}
+              className={styles.content}
+              onChange={(val) => {
+                if (isMutiple) setValue(val);
+                else setValue([val]);
+              }}
+            >
               {subitems.map((item, index) => {
                 if ((!isFold && index < 5) || isFold) {
                   return <CheckboxRadio key={index} name={item.id}>{item.content}</CheckboxRadio>;
@@ -89,14 +151,14 @@ const VoteDisplay = (props = {}) => {
           <div className={styles.left}>
             <div className={styles['left-type']}>{typeText}</div>
             <div className={styles['left-time']}>
-              <span className={styles['time-primary']}>6</span>天<span className={styles['time-primary']}>23</span>小时<span className={styles['time-primary']}>34</span>分
+              <span className={styles['time-primary']}>{ day }</span>天<span className={styles['time-primary']}>{hour}</span>小时<span className={styles['time-primary']}>{minute}</span>分
             </div>
           </div>
-          <Button type="primary" className={styles.vote}>投票</Button>
+          <Button type="primary" className={styles.vote} onClick={handleVote}>投票</Button>
         </div>
       )}
     </>
   );
 };
 
-export default VoteDisplay;
+export default inject('thread', 'index')(observer(VoteDisplay));

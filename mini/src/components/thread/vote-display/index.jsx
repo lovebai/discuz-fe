@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Checkbox from '@discuzq/design/dist/components/checkbox/index';
 import Button from '@discuzq/design/dist/components/button/index';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import Radio from '@discuzq/design/dist/components/radio/index';
 import Progress from '@discuzq/design/dist/components/progress/index';
+import Toast from '@discuzq/design/dist/components/toast/index';
 import { View, Text } from '@tarojs/components'
+import CountDown from '@common/utils/count-down';
+import { debounce } from '@common/utils/throttle-debounce';
 import styles from './index.module.scss';
 
 const CHOICE_TYPE = {
@@ -12,9 +15,66 @@ const CHOICE_TYPE = {
   single: 1, // 单选
 };
 const VoteDisplay = (props = {}) => {
+  const { voteData, threadId } = props;
+  const {
+    choiceType,
+    voteTitle = '',
+    subitems = [],
+    voteUsers,
+    isExpired,
+    isVoted,
+    expiredAt = '',
+    voteId,
+  } = voteData;
+
   const [isFold, setIsFold] = useState(false);
-  const { voteData } = props;
-  const { choiceType, voteTitle = '', subitems = [], voteUsers, isExpired, isVoted } = voteData;
+  const [day, setDay] = useState(0);
+  const [hour, setHour] = useState(0);
+  const [minute, setMinute] = useState(0);
+  const [value, setValue] = useState([]);
+
+  let countDownIns = null;
+  useEffect(() => {
+    if (!countDownIns) countDownIns = new CountDown();
+    return () => {
+      countDownIns.stop();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (countDownIns) {
+      const time = expiredAt.replace(/-/g, '/');
+      countDownIns.start(time, (res) => {
+        const { days, hours, minutes } = res;
+        setDay(days);
+        setHour(hours);
+        setMinute(minutes);
+      });
+    }
+  }, [expiredAt]);
+
+  const handleVote = debounce(async () => {
+    if (value.length <= 0) {
+      Toast.info({ content: '请先选择投票选项' });
+      return;
+    }
+    const params = {
+      threadId,
+      vote: {
+        id: voteId,
+        subitemIds: value,
+      },
+    };
+    const { thread } = props;
+    const result = thread.createVote(params);
+    const { success, data, msg } = result;
+    if (!success) Toast.info({ content: msg });
+    else {
+      console.log(data);
+    }
+  }, 1000);
+
+
   if (!voteTitle) return null;
   const isVotedEnd = isExpired || isVoted; // 投票是否已结束
   const isMutiple = choiceType === CHOICE_TYPE.mutiple;
@@ -49,7 +109,8 @@ const VoteDisplay = (props = {}) => {
         {!isVotedEnd
           && (
             <CheckboxRadio.Group defaultValue={defaultValue} className={styles.content} onChange={(val) => {
-              console.log(val);
+              if (isMutiple) setValue(val);
+              else setValue([val]);
             }}>
               {subitems.map((item, index) => {
                 if ((!isFold && index < 5) || isFold) {
@@ -94,10 +155,10 @@ const VoteDisplay = (props = {}) => {
           <View className={styles.left}>
             <View className={styles['left-type']}>{typeText}</View>
             <View className={styles['left-time']}>
-              <Text className={styles['time-primary']}>6</Text>天<Text className={styles['time-primary']}>23</Text>小时<Text className={styles['time-primary']}>34</Text>分
+              <Text className={styles['time-primary']}>{day}</Text>天<Text className={styles['time-primary']}>{hour}</Text>小时<Text className={styles['time-primary']}>{minute}</Text>分
             </View>
           </View>
-          <Button type="primary" className={styles.vote}>投票</Button>
+          <Button type="primary" className={styles.vote} onClick={handleVote}>投票</Button>
         </View>
       )}
     </>

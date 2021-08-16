@@ -115,7 +115,7 @@ const Index = (props) => {
         {fileData?.length ? <AttachmentView threadId={threadId} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount} /> : null}
 
         {/* 投票帖子展示 */}
-        {voteData && <VoteDisplay voteData={voteData} />}
+        {voteData && <VoteDisplay voteData={voteData} threadId={threadId} />}
       </>
     );
   };

@@ -244,7 +244,8 @@ const RenderThreadContent = inject('user')(
           )}
 
           {/* 投票 */}
-          {parseContent.VOTE_THREAD && <VoteDisplay voteData={parseContent.VOTE_THREAD} />}
+          {parseContent.VOTE_THREAD
+            && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} />}
           {/* 付费附件 */}
           {needAttachmentPay && (
             <View style={{ textAlign: 'center' }} onClick={onContentClick}>
