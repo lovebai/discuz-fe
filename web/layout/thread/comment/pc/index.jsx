@@ -320,7 +320,6 @@ class CommentPCPage extends React.Component {
   render() {
     const { commentDetail: commentData, isReady, isAuthorInfoError } = this.props.comment;
     const isSelf = this.props.user?.userInfo?.id && this.props.user?.userInfo?.id === commentData?.userId;
-    console.log(this.props);
     return (
       <div className={styles.container}>
         <div className={styles.header}>

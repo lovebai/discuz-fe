@@ -47,7 +47,7 @@ export default class ReplyList extends React.Component {
   }
 
   transformer = (parsedDom) => {
-    const isSelf = this.props.threadId === this.props?.data?.userId || (this.props.threadId === this.props?.data?.commentUserId)
+    const isSelf =(this.props.threadId === this.props?.data?.commentUserId)
     const hasAvatarImage = !!this.props?.data?.commentUser?.avatar;
     const element = this.props.data.commentUserId ? (
       <div className={`${styles.commentUser} ${hasAvatarImage ? '' : styles.positionTop}`}>
@@ -99,7 +99,7 @@ export default class ReplyList extends React.Component {
   render() {
     const { canLike, canDelete, canHide } = this.generatePermissions(this.props.data);
     const { groups } = this.props.data?.user || {};
-    const isSelf = this.props.threadId === this.props?.data?.userId; 
+    const isSelf = this.props.threadId === this.props?.data?.userId;
     // 评论内容是否通过审核
     const isApproved = this.props?.data?.isApproved === 1;
     return (

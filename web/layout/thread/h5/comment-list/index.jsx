@@ -399,7 +399,7 @@ class RenderCommentList extends React.Component {
     if (this.props.isPositionComment) {
       commentList = commentPositionList || [];
     }
-
+    
     // 是否作者自己
     const isSelf =    this.props.user?.userInfo?.id && this.props.user?.userInfo?.id === this.props.thread?.threadData?.userId;
     const isReward = this.props.thread?.threadData?.displayTag?.isReward;
