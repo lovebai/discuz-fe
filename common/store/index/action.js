@@ -355,6 +355,29 @@ class IndexAction extends IndexStore {
   }
 
   /**
+   * 更新帖子列表插件信息
+   * @param {number} threadId 帖子id
+   * @param {number} tomId 插件id
+   * @param {array|object} tomValue 插件值
+   * @returns
+   */
+  updateListThreadIndexes(threadId, tomId, tomValue) {
+    const targetThread = this.findAssignThread(threadId);
+    if (!targetThread || targetThread.length === 0) return;
+
+    const { index, data } = targetThread;
+    const { content = {} } = data || {};
+    const { indexes = {} } = content || {};
+    const newIndexes = { ...indexes };
+    newIndexes[tomId] = tomValue;
+    const threadData = { ...data, content: { ...content, indexes: newIndexes } };
+
+    if (this.thread?.pageData) {
+      this.threads.pageData[index] = threadData;
+    }
+  }
+
+  /**
    * 更新帖子所有内容，重新编辑
    * @param {string} threadId
    * @param {object} threadInfo
@@ -404,10 +427,10 @@ class IndexAction extends IndexStore {
     // newText = replaceStringInRegex(newText, "paragraph", '');
     // newText = replaceStringInRegex(newText, "imgButEmoj", '');
     // newText = replaceStringInRegex(newText, "list", '');
-    // this.sticks[index] = { 
-    //   canViewPosts: threadInfo?.ability?.canViewPost, 
-    //   categoryId: threadInfo?.categoryId, 
-    //   title: threadInfo.title || threadInfo?.content?.text, 
+    // this.sticks[index] = {
+    //   canViewPosts: threadInfo?.ability?.canViewPost,
+    //   categoryId: threadInfo?.categoryId,
+    //   title: threadInfo.title || threadInfo?.content?.text,
     //   updatedAt: threadInfo?.updatedAt,
     //   threadId: threadInfo?.threadId
     // };
@@ -443,30 +466,30 @@ class IndexAction extends IndexStore {
         const { isLiked, likePayCount = 0 } = updatedInfo;
         const theUserId = user.userId || user.id;
         data.isLike = isLiked;
-  
+
         const userData = threadReducer.createUpdateLikeUsersData(user, 1);
         // 添加当前用户到按过赞的用户列表
         const newLikeUsers = threadReducer.setThreadDetailLikedUsers(data.likeReward, !!isLiked, userData);
-  
+
         data.likeReward.users = newLikeUsers;
         data.likeReward.likePayCount = likePayCount;
       }
-  
+
       // 更新评论
       if (updateType === 'comment' && data?.likeReward) {
         data.likeReward.postCount = data.likeReward.postCount + 1;
       }
-  
+
       // 更新分享
       if (updateType === 'share') {
         data.likeReward.shareCount = data.likeReward.shareCount + 1;
       }
-  
+
       // 更新帖子浏览量
       if (updateType === 'viewCount') {
         data.viewCount = updatedInfo.viewCount;
       }
-  
+
       if (updateType === 'openedMore') {
         data.openedMore = openedMore;
       }
@@ -487,7 +510,7 @@ class IndexAction extends IndexStore {
 
     if (targetThreadsInLists && targetThreadsInLists.length !== 0) {
       targetThreadsInLists.forEach(({ index, page, listName, data }) => {
-        threadUpdater({ 
+        threadUpdater({
           data,
           callback: (updatedInfo) => {
             this.lists[listName].data[page][index] = updatedInfo;

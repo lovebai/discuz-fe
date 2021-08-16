@@ -755,10 +755,15 @@ class ThreadAction extends ThreadStore {
     return { data, success: code === 0, threadId, msg };
   }
 
-  // @action
-  // updateThread(threadId, data) {
-
-  // }
+  // 更新帖子
+  @action
+  updateThread(tomId, tomValue) {
+    const { content = {} } = this.threadData || {};
+    const { indexes = {} } = content || {};
+    const newIndexes = { ...indexes };
+    newIndexes[tomId] = tomValue;
+    this.threadData = { ...this.threadData, content: { ...content, indexes: newIndexes } };
+  }
 }
 
 export default ThreadAction;

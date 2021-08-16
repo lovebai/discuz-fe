@@ -279,7 +279,7 @@ export default inject('user')(
 
           {/* 投票 */}
           {parseContent.VOTE_THREAD
-            && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} />}
+            && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
 
           {/* 付费附件：不能免费查看付费帖 && 需要付费 && 不是作者 && 没有付费 */}
           {needAttachmentPay && (

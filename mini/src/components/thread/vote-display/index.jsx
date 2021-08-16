@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { inject, observer } from 'mobx-react';
 import Checkbox from '@discuzq/design/dist/components/checkbox/index';
 import Button from '@discuzq/design/dist/components/button/index';
 import Icon from '@discuzq/design/dist/components/icon/index';
@@ -8,6 +9,7 @@ import Toast from '@discuzq/design/dist/components/toast/index';
 import { View, Text } from '@tarojs/components'
 import CountDown from '@common/utils/count-down';
 import { debounce } from '@common/utils/throttle-debounce';
+import LoginHelper from '@common/utils/login-helper';
 import styles from './index.module.scss';
 
 const CHOICE_TYPE = {
@@ -15,7 +17,8 @@ const CHOICE_TYPE = {
   single: 1, // 单选
 };
 const VoteDisplay = (props = {}) => {
-  const { voteData, threadId } = props;
+  const { voteData, threadId, page } = props;
+  const [voteObj] = voteData;
   const {
     choiceType,
     voteTitle = '',
@@ -25,7 +28,7 @@ const VoteDisplay = (props = {}) => {
     isVoted,
     expiredAt = '',
     voteId,
-  } = voteData;
+  } = voteObj;
 
   const [isFold, setIsFold] = useState(false);
   const [day, setDay] = useState(0);
@@ -54,6 +57,11 @@ const VoteDisplay = (props = {}) => {
   }, [expiredAt]);
 
   const handleVote = debounce(async () => {
+    const { thread, user, index } = props;
+    if (!user.isLogin()) {
+      LoginHelper.saveAndLogin();
+      return;
+    }
     if (value.length <= 0) {
       Toast.info({ content: '请先选择投票选项' });
       return;
@@ -65,12 +73,16 @@ const VoteDisplay = (props = {}) => {
         subitemIds: value,
       },
     };
-    const { thread } = props;
-    const result = thread.createVote(params);
+    const result = await thread.createVote(params);
     const { success, data, msg } = result;
     if (!success) Toast.info({ content: msg });
     else {
-      console.log(data);
+      const [tomId] = Object.keys(data);
+      const [tomValue] = Object.values(data);
+      // 详情页数据更新
+      if (page === 'detail') thread.updateThread(tomId, tomValue);
+      // 列表页数据更新
+      else index.updateListThreadIndexes(threadId, tomId, tomValue);
     }
   }, 1000);
 
@@ -165,4 +177,4 @@ const VoteDisplay = (props = {}) => {
   );
 };
 
-export default VoteDisplay;
+export default inject('thread', 'index', 'user')(observer(VoteDisplay));

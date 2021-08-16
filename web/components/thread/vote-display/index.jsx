@@ -4,6 +4,7 @@ import styles from './index.module.scss';
 import { Checkbox, Button, Icon, Radio, Progress, Toast } from '@discuzq/design';
 import CountDown from '@common/utils/count-down';
 import { debounce } from '@common/utils/throttle-debounce';
+import LoginHelper from '@common/utils/login-helper';
 
 const CHOICE_TYPE = {
   mutiple: 2, // 多选
@@ -11,7 +12,8 @@ const CHOICE_TYPE = {
 };
 const VoteDisplay = (props = {}) => {
   const [isFold, setIsFold] = useState(false);
-  const { voteData, threadId } = props;
+  const { voteData, threadId, page } = props;
+  const [voteObj] = voteData;
   const {
     choiceType,
     voteTitle = '',
@@ -21,7 +23,7 @@ const VoteDisplay = (props = {}) => {
     isVoted,
     expiredAt = '',
     voteId,
-  } = voteData;
+  } = voteObj;
   if (!voteTitle) return null;
   const isVotedEnd = isExpired || isVoted; // 投票是否已结束
   const isMutiple = choiceType === CHOICE_TYPE.mutiple;
@@ -55,6 +57,11 @@ const VoteDisplay = (props = {}) => {
   }, [expiredAt]);
 
   const handleVote = debounce(async () => {
+    const { thread, user, index } = props;
+    if (!user.isLogin()) {
+      LoginHelper.saveAndLogin();
+      return;
+    }
     if (value.length <= 0) {
       Toast.info({ content: '请先选择投票选项' });
       return;
@@ -66,12 +73,14 @@ const VoteDisplay = (props = {}) => {
         subitemIds: value,
       },
     };
-    const { thread } = props;
-    const result = thread.createVote(params);
-    const { success, data, msg } = result;
+    const result = await thread.createVote(params);
+    const { success, data = {}, msg } = result;
     if (!success) Toast.info({ content: msg });
     else {
-      console.log(data);
+      const [tomId] = Object.keys(data);
+      const [tomValue] = Object.values(data);
+      if (page === 'detail') thread.updateThread(tomId, tomValue);
+      else index.updateListThreadIndexes(threadId, tomId, tomValue);
     }
   }, 1000);
 
@@ -161,4 +170,4 @@ const VoteDisplay = (props = {}) => {
   );
 };
 
-export default inject('thread', 'index')(observer(VoteDisplay));
+export default inject('thread', 'index', 'user')(observer(VoteDisplay));

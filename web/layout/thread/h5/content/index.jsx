@@ -238,7 +238,7 @@ const RenderThreadContent = inject('user')(observer((props) => {
 
           {/* 投票 */}
         {parseContent.VOTE_THREAD
-          && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} />}
+          && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
 
           {/* 付费附件 */}
           {needAttachmentPay && (
