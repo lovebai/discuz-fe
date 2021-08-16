@@ -76,7 +76,7 @@ export default class ReplyList extends React.Component {
         >
           {this.props.data.commentUser.nickname || this.props.data.commentUser.userName || '用户异常'}
         </span>
-        {isSelf && (
+        {(isSelf && !this.props.isAnonymous) && (
           <div className={styles.masterBox}>
             <span className={styles.masterText}>楼主</span>
           </div>
@@ -126,7 +126,7 @@ export default class ReplyList extends React.Component {
                 <div className={styles.replyListName} onClick={() => {this.avatarClick(2)}}>
                     {this.props.data?.user?.nickname || this.props.data?.user?.userName || '用户异常'}
                 </div>
-                {isSelf && (
+                {(isSelf && !this.props.isAnonymous) && (
                     <div className={styles.masterBox}>
                       <span className={styles.masterText}>楼主</span>
                     </div>

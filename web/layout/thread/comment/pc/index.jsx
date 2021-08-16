@@ -320,6 +320,8 @@ class CommentPCPage extends React.Component {
   render() {
     const { commentDetail: commentData, isReady, isAuthorInfoError } = this.props.comment;
     const isSelf = this.props.user?.userInfo?.id && this.props.user?.userInfo?.id === commentData?.userId;
+    const { isAnonymous } = this.props.thread?.threadData || '';
+
     return (
       <div className={styles.container}>
         <div className={styles.header}>
@@ -376,6 +378,7 @@ class CommentPCPage extends React.Component {
                   threadId={this.props.thread?.threadData?.userId}
                   postId={this.props.comment.postId}
                   positionRef={this.positionRef}
+                  isAnonymous={isAnonymous}
                 ></CommentList>
               ) : (
                 <LoadingTips type="init"></LoadingTips>
