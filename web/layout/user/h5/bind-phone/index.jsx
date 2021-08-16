@@ -13,6 +13,7 @@ import { get } from '@common/utils/get';
 import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 import { isExtFieldsOpen } from '@common/store/login/util';
 import { MOBILE_LOGIN_STORE_ERRORS } from '@common/store/login/mobile-login-store';
+import LoginHelper from '@common/utils/login-helper';
 
 
 @inject('site')
@@ -54,7 +55,7 @@ class BindPhoneH5Page extends React.Component {
       });
       setTimeout(() => {
         commonLogin.loginLoading = true;
-        window.location.href = '/';
+        LoginHelper.restore();
       }, 1000);
     } catch (e) {
       this.props.commonLogin.loginLoading = true;
@@ -64,7 +65,7 @@ class BindPhoneH5Page extends React.Component {
           this.props.commonLogin.needToCompleteExtraInfo = true;
           return this.props.router.push('/user/supplementary');
         }
-        return window.location.href = '/';
+        return LoginHelper.restore();
       }
 
       // 跳转状态页
