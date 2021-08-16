@@ -355,6 +355,20 @@ class IndexAction extends IndexStore {
   }
 
   /**
+   * 合并组合新数据
+   * @param {object} sourceData 原帖子数据
+   * @param {number} tomId 插件id
+   * @param {array|object}} tomValue 插件值
+   * @returns
+   */
+  combineThreadIndexes(sourceData, tomId, tomValue) {
+    const { content = {} } = sourceData || {};
+    const { indexes = {} } = content || {};
+    const newIndexes = { ...indexes };
+    newIndexes[tomId] = tomValue;
+    return { ...sourceData, content: { ...content, indexes: newIndexes }, _time: new Date().getTime() };
+  }
+  /**
    * 更新帖子列表插件信息
    * @param {number} threadId 帖子id
    * @param {number} tomId 插件id
@@ -363,18 +377,24 @@ class IndexAction extends IndexStore {
    */
   updateListThreadIndexes(threadId, tomId, tomValue) {
     const targetThread = this.findAssignThread(threadId);
-    if (!targetThread || targetThread.length === 0) return;
+    // 更新其他列表，个人中心
+    this.updataThreadIndexesAllData(threadId, tomId, tomValue);
+    if (!targetThread || targetThread?.length === 0) return;
 
     const { index, data } = targetThread;
-    const { content = {} } = data || {};
-    const { indexes = {} } = content || {};
-    const newIndexes = { ...indexes };
-    newIndexes[tomId] = tomValue;
-    const threadData = { ...data, content: { ...content, indexes: newIndexes } };
-
-    if (this.thread?.pageData) {
+    const threadData = this.combineThreadIndexes(data, tomId, tomValue);
+    if (this.threads?.pageData) {
       this.threads.pageData[index] = threadData;
+      this.threads.pageData = [...this.threads.pageData];
     }
+  }
+
+  updataThreadIndexesAllData(threadId, tomId, tomValue) {
+    const [targetThread] = this.findAssignThreadInLists(threadId);
+    if (!targetThread) return;
+    const { index, data } = targetThread;
+    const threadData = this.combineThreadIndexes(data, tomId, tomValue);
+    this.updateAssignThreadInfoInLists({ threadId, threadData });
   }
 
   /**

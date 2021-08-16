@@ -165,11 +165,11 @@ function Home(props, ref) {
     }
 
     return (
-      <CellMeasurer cache={cache} columnIndex={0} key={key} rowIndex={index} parent={parent}>
+      <CellMeasurer cache={cache} columnIndex={0} key={`${key}-${data._time || ''}`} rowIndex={index} parent={parent}>
         {({ measure, registerChild }) => (
           <div
             ref={registerChild}
-            key={`${key}-${data.threadId}`}
+            key={`${key}-${data.threadId}-${data._time || ''}`}
             style={style}
             className={layout.center}
             data-index={index}
@@ -178,7 +178,7 @@ function Home(props, ref) {
           >
             {renderListItem(data.type, data, flag ? measure : null, {
               index,
-              key,
+              key: `${key}-${data._time || ''}`,
               parent,
               style,
             })}

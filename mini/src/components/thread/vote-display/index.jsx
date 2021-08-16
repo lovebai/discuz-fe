@@ -77,6 +77,7 @@ const VoteDisplay = (props = {}) => {
     const { success, data, msg } = result;
     if (!success) Toast.info({ content: msg });
     else {
+      Toast.info({ content: '投票成功' });
       const [tomId] = Object.keys(data);
       const [tomValue] = Object.values(data);
       // 详情页数据更新
@@ -157,7 +158,7 @@ const VoteDisplay = (props = {}) => {
             })}
             {/* {subitems?.length > 5 && <UnfoldOrExpand />} */}
             <Button full disabled type="primary" className={styles.disabledbtn}>
-              投票已结束（{voteUsers}人参与投票）
+              {isExpired ? '投票已结束' : '你已投票'}（{voteUsers}人参与投票）
             </Button>
           </View>
         )}
