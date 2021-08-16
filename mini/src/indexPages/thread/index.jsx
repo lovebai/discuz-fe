@@ -152,6 +152,8 @@ class Detail extends React.Component {
   }
 
   async getPageDate(id, postId) {
+    // 如果存在缓存且和路由id不同,先清除缓存
+    this.canUseCache();
     // 先尝试从列表store中获取帖子数据
     this.getThreadDataFromList(id);
 
@@ -202,6 +204,17 @@ class Detail extends React.Component {
       };
       this.props.thread.loadCommentList(params);
     }
+  }
+
+  // 判断缓存是否可用
+  canUseCache() {
+    const oldId = this.props?.thread?.threadData?.threadId;
+    if (!oldId) return;
+
+    const { id } = getCurrentInstance().router.params;
+    if (id && oldId && Number(id) === oldId) return;
+
+    this.props.thread.reset();
   }
 
   // 获取指定评论位置的相关信息
