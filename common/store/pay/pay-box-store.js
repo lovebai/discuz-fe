@@ -167,6 +167,8 @@ class PayBoxStore {
       });
       if (get(createRes, 'code') === 0) {
         this.orderInfo = get(createRes, 'data', {});
+        locals.set('PAY_ORDER_INFO', JSON.stringify(this.orderInfo));
+        locals.set('PAY_ORDER_OPTIONS', JSON.stringify(this.options));
         if (this.onOrderCreated) {
           this.onOrderCreated(this.orderInfo);
         }
@@ -591,6 +593,8 @@ class PayBoxStore {
   clear = () => {
     clearInterval(this.timer);
     clearTimeout(this.qrCodeCheckTimer);
+    locals.set('PAY_ORDER_INFO', '');
+    locals.set('PAY_ORDER_OPTIONS', '');
     this.options = {};
     this.visible = false;
     this.orderInfo = null;

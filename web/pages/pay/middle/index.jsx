@@ -15,6 +15,8 @@ class PayMiddlePage extends React.Component {
     const link = getQueryString('link');
     const iframe = document.createElement('iframe');
 
+    const payOrderOptions = locals.get('PAY_ORDER_OPTIONS');
+
     if (!link) return;
 
     // UC 浏览器使用 iframe 有兼容性问题，使用直接跳转
@@ -24,11 +26,13 @@ class PayMiddlePage extends React.Component {
 
       const h5IOSPaidFlag = locals.get('H5_IOS_PAID_FLAG');
 
-      if (h5IOSPaidFlag !== 'true') {
+      if (h5IOSPaidFlag !== 'true' && payOrderOptions) {
         locals.set('H5_IOS_PAID_FLAG', 'true');
 
         const parsedLink = decodeURIComponent(link);
         window.location.href = parsedLink;
+      } else {
+        window.close();
       }
     } else {
       const parsedLink = decodeURIComponent(link);

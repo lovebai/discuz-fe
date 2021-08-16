@@ -3,6 +3,7 @@ import { Dialog, Button } from '@discuzq/design';
 import styles from './index.module.scss';
 import { inject, observer } from 'mobx-react';
 import browser from '@common/utils/browser';
+import locals from '@common/utils/local-bridge';
 
 @inject('site')
 @inject('user')
@@ -13,6 +14,31 @@ class PayResultDialog extends React.Component {
     setTimeout(() => {
       this.props.payBox.clear();
     }, 500);
+  }
+
+  componentDidMount() {
+    if (browser.env('uc') || browser.env('safari')) {
+      const payOrderInfo = locals.get('PAY_ORDER_INFO');
+      const payOrderOptions = locals.get('PAY_ORDER_OPTIONS');
+
+      if (payOrderInfo) {
+        try {
+          const parsedOrderInfo = JSON.parse(payOrderInfo);
+          this.props.payBox.orderInfo = parsedOrderInfo;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      if (payOrderOptions) {
+        try {
+          const parsedOrderOptions = JSON.parse(payOrderOptions);
+          this.props.payBox.options = parsedOrderOptions;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
   }
 
   // 在 uc 或 safari 上，由于只能使用 link 拉起，这里主动进行一次回退

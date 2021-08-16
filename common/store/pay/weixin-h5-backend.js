@@ -34,13 +34,6 @@ export const onBridgeReady = data => new Promise((resolve, reject) => {
 export const onBridgeReadyH5 = data => new Promise((resolve, reject) => {
   const link = `/pay/middle?link=${encodeURIComponent(data)}`;
 
-  // safari 保留当前页面直接跳转
-  if (browser.env('safari')) {
-    window.location.href = data;
-    resolve();
-    return;
-  }
-
   Router.push({ url: link });
 
   resolve();
