@@ -35,7 +35,7 @@ function withShare(options = {}) {
       onShareTimeline = () => {
         if (this.getShareData && typeof this.getShareData === 'function') {
           const  shareData  = this.getShareData({from: 'timeLine'})
-
+          console.log(shareData);
           const { title=defalutTitle, query} = shareData
           return {
             title,
