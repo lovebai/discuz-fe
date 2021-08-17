@@ -59,13 +59,15 @@ export const tags = {
   },
 };
 
-//fixby hechongwei 添加是否有代码块标识hasCode，如果有，过滤掉html转移 http://bug.eims.com.cn/bug-view-3099.html
-function parse(text,hasCode) {
+//fixby hechongwei 添加是否有代码块标识isCode，如果有，过滤掉html转移 http://bug.eims.com.cn/bug-view-3099.html
+function parse(text) {
+  const isCode = text.indexOf('<pre><code>') >= 0;
+
   for (const tag in tags) {
-    if(hasCode && (tag==='parseHtml1'||tag==='parseHtml2')){
+    if (isCode && (tag === 'parseHtml1' || tag === 'parseHtml2')) {
       return text
     }
-    
+
     if (tag === 'emotion') {
       const storage = new Storage({ storageType: 'local' })
       const emojis = JSON.parse(storage.get('DZQ_EMOJI') || `{}`);
@@ -103,7 +105,7 @@ const handleEmoji = (value, emojis) => {
   } else {
     return { isAllow: false }
   }
-  
+
 }
 
 export default { parse };

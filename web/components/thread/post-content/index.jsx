@@ -47,7 +47,7 @@ const PostContent = ({
 
   // 过滤内容
   const filterContent = useMemo(() => {
-    let newContent = content ? s9e.parse(content, true) : '';
+    let newContent = content ? s9e.parse(content) : '';
     newContent = xss(newContent);
     return newContent;
   }, [content]);
@@ -118,7 +118,7 @@ const PostContent = ({
     const _text = replaceStringInRegex(text, "emoj", '');
     const images = _text.match(/<img\s+[^<>]*src=[\"\'\\]+([^\"\']*)/gm) || [];
 
-    for(let i = 0; i < images.length; i++) {
+    for (let i = 0; i < images.length; i++) {
       images[i] = images[i].replace(/<img\s+[^<>]*src=[\"\'\\]+/gm, "") || "";
     }
     return images;
@@ -144,7 +144,7 @@ const PostContent = ({
     }
 
     const imageUrlList = getImagesFromText(filterContent);
-    if(imageUrlList.length) {
+    if (imageUrlList.length) {
       setImageUrlList(imageUrlList);
     }
 
