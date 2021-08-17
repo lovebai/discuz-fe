@@ -10,6 +10,7 @@ import { numberFormat } from '@common/utils/number-format';
 import browser from '@common/utils/browser';
 import throttle from '@common/utils/thottle.js';
 import LoginHelper from '@common/utils/login-helper.js';
+import MemberShipCard from '@components/MemberShipCard';
 
 @inject('user')
 @inject('site')
@@ -293,6 +294,7 @@ class index extends Component {
             </>
           )}
         </div>
+        <MemberShipCard />
         {/* 右上角屏蔽按钮 */}
         {this.props.isOtherPerson && (
           <div
