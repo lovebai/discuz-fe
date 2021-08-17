@@ -72,7 +72,6 @@ class UserCenterFans extends React.Component {
       return;
     }
 
-    const pageData = get(fansRes, 'data.pageData', []);
     const totalPage = get(fansRes, 'data.totalPage', 1);
 
     this.totalPage = totalPage;
@@ -80,7 +79,7 @@ class UserCenterFans extends React.Component {
     this.props.user.setUserFanses({
       userId: this.props.userId,
       page: this.page,
-      fans: pageData,
+      fansData: fansRes,
     });
 
     if (this.page <= this.totalPage) {
@@ -262,7 +261,7 @@ class UserCenterFans extends React.Component {
   };
 
   render() {
-    const dataSource = followerAdapter(this.props.user.fansStore[this.props.userId] || {});
+    const dataSource = followerAdapter(this.props.user.fansStore[this.props.userId]?.data || {});
     const isNoData = dataSource.length === 0 && !this.state.loading;
 
     console.log(dataSource);

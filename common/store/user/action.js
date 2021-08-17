@@ -93,9 +93,7 @@ class UserAction extends SiteStore {
   // 获取指定用户的关注
   @action
   getTargetUserFollowers({ userId, page }) {
-    if (!this.followStore[userId]) {
-      this.followStore[userId] = {};
-    }
+
   }
 
   // 获取用户的关注者
@@ -107,13 +105,29 @@ class UserAction extends SiteStore {
   }
 
   @action
-  setUserFollowers({ userId, page, followers }) {
+  setUserFollowers({ userId, page, followersData }) {
     if (!this.followStore[userId]) {
-      this.followStore[userId] = {};
+      this.followStore[userId] = {
+        data: {},
+        attribs: {}
+      };
     }
 
-    this.followStore[userId][page] = followers;
+    this.followStore[userId].data[page] = get(followersData, 'data.pageData', []);
 
+    this.followStore[userId].attribs.totalPage = get(followersData, 'data.totalPage', 1);
+    this.followStore[userId].attribs.totalCount = get(followersData, 'data.totalCount', 0);
+
+    if (!this.followStore[userId].attribs.currentPage) {
+      this.followStore[userId].attribs.currentPage =  get(followersData, 'data.currentPage', 1);
+    } else {
+      const prevCurrentPage = this.followStore[userId].attribs.currentPage;
+      const currentPage = get(followersData, 'data.currentPage', 1);
+
+      if (Number(currentPage) > prevCurrentPage) {
+        this.followStore[userId].attribs.currentPage =  get(followersData, 'data.currentPage');
+      }
+    }
     this.followStore = { ...this.followStore };
   }
 
@@ -137,22 +151,34 @@ class UserAction extends SiteStore {
       },
     };
 
-    if (!this.fansStore[userId]) {
-      this.fansStore[userId] = {};
-    }
-
     return await getUserFans(opts);
   }
 
   @action
-  setUserFanses({ userId, page, fans }) {
+  setUserFanses({ userId, page, fansData }) {
     if (!this.fansStore[userId]) {
-      this.fansStore[userId] = {};
+      this.fansStore[userId] = {
+        data: {},
+        attribs: {}
+      };
     }
 
-    this.fansStore[userId][page] = fans;
+    this.fansStore[userId].data[page] = get(fansData, 'data.pageData', []);
 
-    this.fansStore = { ...this.fansStore }
+    this.fansStore[userId].attribs.totalPage = get(fansData, 'data.totalPage', 1);
+    this.fansStore[userId].attribs.totalCount = get(fansData, 'data.totalCount', 0);
+
+    if (!this.fansStore[userId].attribs.currentPage) {
+      this.fansStore[userId].attribs.currentPage =  get(fansData, 'data.currentPage', 1);
+    } else {
+      const prevCurrentPage = this.fansStore[userId].attribs.currentPage;
+      const currentPage = get(fansData, 'data.currentPage', 1);
+
+      if (Number(currentPage) > prevCurrentPage) {
+        this.fansStore[userId].attribs.currentPage =  get(fansData, 'data.currentPage');
+      }
+    }
+    this.fansStore = { ...this.fansStore };
   }
 
   @action
