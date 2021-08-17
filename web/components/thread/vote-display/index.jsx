@@ -82,6 +82,10 @@ const VoteDisplay = (props = {}) => {
       const [tomValue] = Object.values(data);
       if (page === 'detail') thread.updateThread(tomId, tomValue);
       else index.updateListThreadIndexes(threadId, tomId, tomValue);
+
+      const { code, data: threadData } = await props.thread.fetchThreadDetail(threadId);
+      const { recomputeRowHeights = () => {} } = props;
+      recomputeRowHeights(threadData);
     }
   }, 1000);
 

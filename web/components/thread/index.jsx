@@ -292,6 +292,7 @@ class Index extends React.Component {
             platform={platform}
             onOpen={this.onOpen}
             updateViewCount={this.updateViewCount}
+            recomputeRowHeights={data => this.props.recomputeRowHeights(data)}
           />
 
           <BottomEvent
