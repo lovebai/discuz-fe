@@ -90,22 +90,30 @@ class UserAction extends SiteStore {
     this.targetUsers = { ...this.targetUsers };
   }
 
-  // 获取指定用户的关注
-  @action
-  getTargetUserFollowers({ userId, page }) {
-
-  }
-
   // 获取用户的关注者
   @action
-  async getUserFollowers({ userId, page }) {
-    if (!this.followStore[userId]) {
-      this.followStore[userId] = {};
+  async getUserFollowers({ userId, page, searchValue }) {
+    this.initFollowersStore({ userId });
+
+    const opts = {
+      params: {
+        page: this.page,
+        perPage: 20,
+        filter: {
+          userId: this.props.userId,
+        },
+      },
+    };
+
+    if (searchValue) {
+      opts.params.filter['nickName'] = this.state.searchValue;
     }
+
+    return await getUserFollow(opts);
   }
 
   @action
-  setUserFollowers({ userId, page, followersData }) {
+  initFollowersStore({ userId }) {
     if (!this.followStore[userId]) {
       this.followStore[userId] = {
         data: {},
@@ -113,6 +121,11 @@ class UserAction extends SiteStore {
       };
     }
 
+    this.followStore = { ...this.followStore };
+  }
+
+  @action
+  setUserFollowers({ userId, page, followersData }) {
     this.followStore[userId].data[page] = get(followersData, 'data.pageData', []);
 
     this.followStore[userId].attribs.totalPage = get(followersData, 'data.totalPage', 1);
@@ -151,18 +164,24 @@ class UserAction extends SiteStore {
       },
     };
 
+    this.initFansesStore({ userId });
+
     return await getUserFans(opts);
   }
 
   @action
-  setUserFanses({ userId, page, fansData }) {
+  initFansesStore({ userId }) {
     if (!this.fansStore[userId]) {
       this.fansStore[userId] = {
         data: {},
         attribs: {}
       };
     }
+    this.fansStore = { ...this.fansStore };
+  }
 
+  @action
+  setUserFanses({ userId, page, fansData }) {
     this.fansStore[userId].data[page] = get(fansData, 'data.pageData', []);
 
     this.fansStore[userId].attribs.totalPage = get(fansData, 'data.totalPage', 1);
