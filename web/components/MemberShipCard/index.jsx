@@ -12,7 +12,7 @@ export default class MemberShipCard extends Component {
   }
 
   handleRenewalFee = () => {
-    this.props.handleRenewalFee && this.props.handleRenewalFee()
+    this.props.onRenewalFeeClick && this.props.onRenewalFeeClick()
   }
 
   render() {

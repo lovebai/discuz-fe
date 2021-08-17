@@ -17,6 +17,7 @@ import { Toast } from '@discuzq/design';
 import { withRouter } from 'next/router';
 import UserCenterHeaderPc from '@components/user-center/header-pc';
 import MemberShipCard from '@components/MemberShipCard';
+import RenewalFee from '@components/user-center/renewal-fee';
 
 @inject('site')
 @inject('user')
@@ -35,6 +36,7 @@ class PCMyPage extends React.Component {
       showFansPopup: false, // 是否弹出粉丝框
       showFollowPopup: false, // 是否弹出关注框
       isLoading: false,
+      isRenewalFeeVisible: false, // 是否弹出续费弹窗
     };
 
     if (myThreadsList.length === 0) {
@@ -111,12 +113,19 @@ class PCMyPage extends React.Component {
     Router.push({ url: `/user/${id}` });
   };
 
+  // 点击续费弹窗
+  onRenewalFeeClick = () => {
+    this.setState({
+      isRenewalFeeVisible: !this.state.isRenewalFeeVisible,
+    });
+  };
+
   renderRight = () => {
     // 条件都满足时才显示微信
     const IS_WECHAT_ACCESSABLE = this.props.site.wechatEnv !== 'none' && !!this.props.user.wxNickname;
     return (
       <>
-        <MemberShipCard shipCardClassName={styles.MemberShipCardWrapperPc} />
+        <MemberShipCard shipCardClassName={styles.MemberShipCardWrapperPc} onRenewalFeeClick={this.onRenewalFeeClick} />
         <SidebarPanel
           platform="h5"
           type="normal"
@@ -277,6 +286,7 @@ class PCMyPage extends React.Component {
             </div>
           </div>
         </BaseLayout>
+        <RenewalFee visible={this.state.isRenewalFeeVisible} onClose={this.onRenewalFeeClick} />
       </>
     );
   }
