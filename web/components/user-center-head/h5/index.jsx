@@ -294,7 +294,11 @@ class index extends Component {
             </>
           )}
         </div>
-        <MemberShipCard />
+        {
+          !this.props.isOtherPerson && (
+            <MemberShipCard />
+          )
+        }
         {/* 右上角屏蔽按钮 */}
         {this.props.isOtherPerson && (
           <div

@@ -5,14 +5,18 @@
   width: 100%;
   height: rem(140);
   border-radius: rem(5);
-  border: rem(1) solid $white;
+  // border: rem(1) solid $white;
   box-shadow: $border-shadow-color-8;
   margin-top: rem($margin-4n);
+  padding: rem($padding-4n);
+  box-sizing: border-box;
+  background-image: url('/dzq-img/ship-card-mini.png');
+  background-size: 100% rem(140);
+  background-repeat: no-repeat;
 }
 
 .MemberShipCardContent {
-  padding: rem($padding-4n);
-  box-sizing: border-box;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
