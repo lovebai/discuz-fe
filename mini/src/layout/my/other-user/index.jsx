@@ -78,12 +78,7 @@ class H5OthersPage extends React.Component {
         fetchUserInfoLoading: true,
       });
 
-      // FIXME: 缓存所有加载的用户，利用缓存特性进行加载，避免此类问题
-      // TODO: 需要重新进行存储的设计
-      // 清空操作在 onshow 时再进行，避免数据更新导致的视图错误
-      this.props.user.removeTargetUserInfo();
-
-      await this.props.user.getTargetUserInfo(this.targetUserId);
+      await this.props.user.getTargetUserInfo({ userId: this.targetUserId });
 
       this.setState({
         fetchUserInfoLoading: false,

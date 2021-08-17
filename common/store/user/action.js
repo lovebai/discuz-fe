@@ -36,55 +36,71 @@ class UserAction extends SiteStore {
   }
 
   // 获取指定 userid 的 用户信息
-  getTargetUserInfo({ userId }) {
+  @action
+  async getTargetUserInfo({ userId }) {
+    const targetUserInfo = await this.getAssignUserInfo(userId);
 
-  }
+    if (targetUserInfo) {
+      this.targetUsers[userId] = targetUserInfo;
 
-  // 拉取指定 userid 的 用户信息
-  fetchTargetUserInfo({ userId }) {
-
-  }
-
-  // 设置指定 userid 的 用户信息
-  setTargetUserInfo({
-    userId,
-    userInfo,
-  }) {
-
+      this.targetUsers = { ...this.targetUsers };
+    }
   }
 
   // 更新指定 userid 的 用户信息
+  @action
   updateTargetUserInfo({
     userId,
-    updater,
+    userInfo,
   }) {
-
+    this.targetUsers[userId] = userInfo;
+    this.targetUsers = { ...this.targetUsers };
   }
 
   // 删除指定 userid 的 用户信息
+  @action
   deleteTargetUserInfo({
     userId,
   }) {
+    if (!this.targetUsers[userId]) return;
+    delete this.targetUsers[userId];
 
+    this.targetUsers = { ...this.targetUsers };
   }
 
   // 获取指定用户的关注
+  @action
   getTargetUserFollowers({ userId, page }) {
 
   }
 
   // 获取指定用户的粉丝
+  @action
   getTargetUserFanses({ userId, page }) {
 
   }
 
   // 获取用户的关注者
-  getUserFollowers({ page }) {
+  @action
+  getUserFollowers({ userId, page }) {
 
   }
 
   // 获取用户的粉丝
-  getUserFanses({ page }) {
+  @action
+  getUserFanses({ userId, page }) {
+
+  }
+
+  // 关注某个用户
+  @action
+  followUser({ userId }) {
+
+  }
+
+  // 取消关注某个用户
+  @action
+  unFollowUser({ userId }) {
 
   }
 
@@ -216,13 +232,13 @@ class UserAction extends SiteStore {
   }
 
   // 获取指定用户的用户信息，用于获取他人首页
-  @action
-  async getTargetUserInfo(id) {
-    this.targetUserId = id;
-    const userInfo = await this.getAssignUserInfo(id);
-    this.targetUser = this.diffPicAndUpdateTargetUserInfo(userInfo);
-    return userInfo;
-  }
+  // @action
+  // async getTargetUserInfo(id) {
+  //   this.targetUserId = id;
+  //   const userInfo = await this.getAssignUserInfo(id);
+  //   this.targetUser = this.diffPicAndUpdateTargetUserInfo(userInfo);
+  //   return userInfo;
+  // }
 
   @action
   getUserFollow = async () => {
@@ -365,13 +381,21 @@ class UserAction extends SiteStore {
   }
 
   @action
-  setTargetUserDenied() {
-    set(this.targetUser, 'isDeny', true);
+  setTargetUserDenied({ userId }) {
+    if (this.targetUsers[userId]) {
+      this.targetUsers[userId].isDeny = true;
+    }
+
+    this.targetUsers = { ...this.targetUsers };
   }
 
   @action
-  setTargetUserNotBeDenied() {
-    set(this.targetUser, 'isDeny', false);
+  setTargetUserNotBeDenied({ userId }) {
+    if (this.targetUsers[userId]) {
+      this.targetUsers[userId].isDeny = false;
+    }
+
+    this.targetUsers = { ...this.targetUsers };
   }
 
   /**

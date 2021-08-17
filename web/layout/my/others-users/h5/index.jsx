@@ -20,11 +20,15 @@ import setWxShare from '@common/utils/set-wx-share';
 class H5OthersPage extends React.Component {
   constructor(props) {
     super(props);
-    this.props.user.cleanTargetUserThreads();
+    const { query } = this.props.router;
     this.state = {
       fetchUserInfoLoading: true,
       isPreviewBgVisible: false, // 是否预览背景图
     };
+
+    if (this.props.user.targetUsers[query.id]) {
+      this.state.fetchUserInfoLoading = false;
+    }
   }
 
   targetUserId = null;
@@ -40,7 +44,7 @@ class H5OthersPage extends React.Component {
       return;
     }
     if (query.id) {
-      await this.props.user.getTargetUserInfo(query.id);
+      await this.props.user.getTargetUserInfo({ userId: query.id });
       this.setWeixinShare();
       this.targetUserId = query.id;
       this.setState({
@@ -67,12 +71,18 @@ class H5OthersPage extends React.Component {
     if (String(this.targetUserId) === String(query.id)) return;
     this.targetUserId = query.id;
     if (query.id) {
+      if (!this.props.user.targetUsers[query.id]) {
+        this.setState({
+          fetchUserInfoLoading: true,
+        });
+      }
+
       this.setState({
-        fetchUserInfoLoading: true,
         fetchUserThreadsLoading: true,
       });
+
       this.props.user.removeTargetUserInfo();
-      await this.props.user.getTargetUserInfo(query.id);
+      await this.props.user.getTargetUserInfo({ userId: query.id });
       this.setWeixinShare();
       this.setState({
         fetchUserInfoLoading: false,
