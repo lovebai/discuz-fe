@@ -93,7 +93,9 @@ class UserAction extends SiteStore {
   // 获取指定用户的关注
   @action
   getTargetUserFollowers({ userId, page }) {
-
+    if (!this.followStore[userId]) {
+      this.followStore[userId] = {};
+    }
   }
 
   // 获取指定用户的粉丝
@@ -111,7 +113,9 @@ class UserAction extends SiteStore {
   // 获取用户的粉丝
   @action
   getUserFanses({ userId, page }) {
-
+    if (!this.fansStore[userId]) {
+      this.fansStore[userId] = {};
+    }
   }
 
   // 关注某个用户
