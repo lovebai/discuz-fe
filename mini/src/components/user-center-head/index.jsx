@@ -21,10 +21,13 @@ import LoginHelper from '@common/utils/login-helper';
 class index extends Component {
   constructor(props) {
     super(props);
+    const { id } = getCurrentInstance().router.params;
     this.state = {
       isFollowedLoading: false, // 是否点击关注
       isPreviewAvatar: false, // 是否预览头像
     };
+
+    this.targetUserId = id;
   }
 
   static defaultProps = {
@@ -229,23 +232,21 @@ class index extends Component {
 
 
   @computed get targetUser() {
-    const { id } = getCurrentInstance().router.params;
-
-    if (id) {
-      return this.props.user.targetUsers[id];
+    if (this.targetUserId) {
+      return this.props.user.targetUsers[this.targetUserId];
     }
-
     return {};
   }
 
   render() {
     const { targetUser } = this;
     const user = this.props.isOtherPerson ? targetUser || {} : this.props.user;
+
     return (
       <View className={styles.h5box}>
         {/* 上 */}
         <View className={styles.h5boxTop}>
-          <View className={styles.headImgBox} onClick={user.avatarUrl && this.handlePreviewAvatar}>
+          <View className={styles.headImgBox} key={user.avatarUrl || new Date()} onClick={user.avatarUrl && this.handlePreviewAvatar}>
             <Avatar image={user.avatarUrl} size="big" name={user.nickname} />
           </View>
           {/* 粉丝|关注|点赞 */}
