@@ -25,25 +25,24 @@ export const tags = {
     });
   },
 
-  // 注释by贺重威：fix http://bug.eims.com.cn/bug-view-3099.html
-  // parseHtml1: text => { // 恢复 <
-  //   if (!text) return;
-  //   const regexp = /&lt;/gimu;
-  //   return text.replace(regexp, match => {
-  //     return match.replace(regexp, (content, value, text) => {
-  //       return `<`;
-  //     });
-  //   });
-  // },
-  // parseHtml2: text => {  // 恢复 >
-  //   if (!text) return;
-  //   const regexp = /&gt;/gimu;
-  //   return text.replace(regexp, match => {
-  //     return match.replace(regexp, (content, value, text) => {
-  //       return `>`;
-  //     });
-  //   });
-  // },
+  parseHtml1: text => { // 恢复 <
+    if (!text) return;
+    const regexp = /&lt;/gimu;
+    return text.replace(regexp, match => {
+      return match.replace(regexp, (content, value, text) => {
+        return `<`;
+      });
+    });
+  },
+  parseHtml2: text => {  // 恢复 >
+    if (!text) return;
+    const regexp = /&gt;/gimu;
+    return text.replace(regexp, match => {
+      return match.replace(regexp, (content, value, text) => {
+        return `>`;
+      });
+    });
+  },
   emotion: (text, emojis) => {  // 转义表情
     if (!text) return '';
     const regexp = /:(?<value>[A-Za-z]{2,20}):/gimu;
@@ -59,9 +58,14 @@ export const tags = {
     });
   },
 };
-function parse(text) {
-  console.log(text,3)
+
+//fixby hechongwei 添加是否有代码块标识hasCode，如果有，过滤掉html转移 http://bug.eims.com.cn/bug-view-3099.html
+function parse(text,hasCode) {
   for (const tag in tags) {
+    if(hasCode && (tag==='parseHtml1'||tag==='parseHtml2')){
+      return text
+    }
+    
     if (tag === 'emotion') {
       const storage = new Storage({ storageType: 'local' })
       const emojis = JSON.parse(storage.get('DZQ_EMOJI') || `{}`);
@@ -69,8 +73,6 @@ function parse(text) {
     } else {
       text = tags[tag](text);
     }
-
-    console.log(text,tag);
   }
 
   return text;
