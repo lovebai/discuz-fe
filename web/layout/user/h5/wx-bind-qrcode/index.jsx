@@ -147,13 +147,15 @@ class WeixinBindQrCodePage extends React.Component {
   onOkClick = async () => {
     this.props.commonLogin.needToBindMini = true;
     const { sessionToken, jumpType, bindPhone = '' } = this.props.router.query;
+    const { platform } = this.props.site;
     const resp = await genMiniBindScheme({
       params: {
         type: 'bind_mini',
         query: {
           scene: sessionToken,
           jumpType,
-          bindPhone
+          bindPhone,
+          loginType: platform
         }
       }
     });
