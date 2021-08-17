@@ -25,7 +25,7 @@ class CommentList extends React.Component {
       isHideEdit: this.props.isHideEdit, // 隐藏评论编辑删除
       isShowOne: this.props.isShowOne || false, // 是否只显示一条评论回复
     };
-    this.needReply = this.props.data.lastThreeComments; // 评论的回复
+    this.needReply = this.props?.data?.lastThreeComments; // 评论的回复
   }
 
   toCommentDetail = () => {
@@ -91,11 +91,11 @@ class CommentList extends React.Component {
 
   generatePermissions(data = {}) {
     return {
-      canApprove: data.canApprove || false,
-      canDelete: data.canDelete || false,
-      canEdit: data.canEdit || false,
-      canHide: data.canHide || false,
-      canLike: data.canLike || false,
+      canApprove: data?.canApprove || false,
+      canDelete: data?.canDelete || false,
+      canEdit: data?.canEdit || false,
+      canHide: data?.canHide || false,
+      canLike: data?.canLike || false,
     };
   }
 
