@@ -91,11 +91,12 @@ class WeixinBindQrCodePage extends React.Component {
           params: { sessionToken: this.props.h5QrCode.sessionToken },
         });
         const uid = get(res, 'data.uid');
-        this.props.user.updateUserInfo(uid);
+        const userData = await this.props.user.updateUserInfo(uid);
         const { router } = this.props;
         const { bindPhone = null } = router.query;
-        if (bindPhone && !this.props.user.mobile) { // 需要绑定手机，但是用户未绑定手机时，跳转到绑定手机页面
-          router.push({ url: '/user/bind-phone' });
+        const mobile = get(userData, 'mobile', '');
+        if (bindPhone && !mobile) { // 需要绑定手机，但是用户未绑定手机时，跳转到绑定手机页面
+          router.replace('/user/bind-phone');
           return;
         }
         LoginHelper.restore();

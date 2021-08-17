@@ -1,5 +1,4 @@
 import loginHelper from './login-helper';
-import Router from '@discuzq/sdk/dist/router';
 /**
  * 判断是否可以发布内容
  */
@@ -11,7 +10,7 @@ export default function canPublish(userStore, siteStore) {
   if (!siteStore.publishNeedBindPhone && !siteStore.publishNeedBindWechat) { // 如果没有开启发帖需要绑定手机或者微信，则不做逻辑处理
     return true;
   }
-  const type = `bind${siteStore.publishNeedBindPhone ? 'Mobile' : ''}${siteStore.publishNeedBindWechat ? 'Wechat' : ''}`;
+  const type = `bind${siteStore.publishNeedBindPhone && !userStore.mobile ? 'Mobile' : ''}${siteStore.publishNeedBindWechat && !userStore.isBindWechat ? 'Wechat' : ''}`;
   const mode = `${(siteStore.isSmsOpen && 'mobile') || ''}${(siteStore.wechatEnv !== 'none' && 'wechat') || ''}`;
   let url = '';
   switch (mode) {
@@ -35,7 +34,6 @@ export default function canPublish(userStore, siteStore) {
       }
       break;
   }
-  url && loginHelper.setUrl(url);
-  url && Router.push({url});
+  url && loginHelper.saveAndPush(url);
   return !url;
 }
