@@ -58,17 +58,10 @@ class UserCenterFans extends React.Component {
   totalPage = 1;
 
   fetchFans = async () => {
-    const opts = {
-      params: {
-        page: this.page,
-        perPage: 20,
-        filter: {
-          userId: this.props.userId,
-        },
-      },
-    };
-
-    const fansRes = await getUserFans(opts);
+    const fansRes = await this.props.user.getUserFanses({
+      userId: this.props.userId || this.props.user.id,
+      page: this.page,
+    });
 
     if (fansRes.code !== 0) {
       console.error(fansRes);
@@ -81,26 +74,16 @@ class UserCenterFans extends React.Component {
 
     const pageData = get(fansRes, 'data.pageData', []);
     const totalPage = get(fansRes, 'data.totalPage', 1);
-    if (this.props.updateSourceTotalPage) {
-      this.props.updateSourceTotalPage(totalPage);
-    }
+
     this.totalPage = totalPage;
 
-    const newFans = Object.assign({}, this.props.dataSource || this.state.fans);
-
-    newFans[this.page] = pageData;
-
-    if (this.props.setDataSource) {
-      this.props.setDataSource(newFans);
-    }
-    this.setState({
-      fans: newFans,
+    this.props.user.setUserFanses({
+      userId: this.props.userId,
+      page: this.page,
+      fans: pageData,
     });
 
     if (this.page <= this.totalPage) {
-      if (this.props.updateSourcePage) {
-        this.props.updateSourcePage(this.props.sourcePage + 1);
-      }
       this.page += 1;
     }
   };
@@ -203,7 +186,12 @@ class UserCenterFans extends React.Component {
 
   async componentDidMount() {
     // 第一次加载完后，才允许加载更多页面
-    await this.fetchFans();
+    if (
+      !this.props.user.fansStore[this.props.userId || this.props.user.id] ||
+      !this.props.user.fansStore[this.props.userId || this.props.user.id][1]
+    ) {
+      await this.fetchFans();
+    }
     this.firstLoaded = true;
     this.setState({
       loading: false,
@@ -216,18 +204,6 @@ class UserCenterFans extends React.Component {
     if (prevProps.userId !== this.props.userId) {
       this.page = 1;
       this.totalPage = 1;
-      if (this.props.updateSourcePage) {
-        this.props.updateSourcePage(1);
-      }
-      if (this.props.updateSourceTotalPage) {
-        this.props.updateSourceTotalPage(1);
-      }
-      if (this.props.setDataSource) {
-        this.props.setDataSource({});
-      }
-      this.setState({
-        fans: {},
-      });
       await this.loadMore();
     }
   }
@@ -286,7 +262,10 @@ class UserCenterFans extends React.Component {
   };
 
   render() {
-    const isNoData = followerAdapter(this.props.dataSource || this.state.fans).length === 0 && !this.state.loading;
+    const dataSource = followerAdapter(this.props.user.fansStore[this.props.userId] || {});
+    const isNoData = dataSource.length === 0 && !this.state.loading;
+
+    console.log(dataSource);
     return (
       <div
         className={`${this.props.className} user-center-friends`}
@@ -297,7 +276,7 @@ class UserCenterFans extends React.Component {
           ...this.props.styles,
         }}
       >
-        {followerAdapter(this.props.dataSource || this.state.fans).map((user, index) => {
+        {dataSource.map((user, index) => {
           if (index + 1 > this.props.limit) return null;
           return (
             <div key={user.id} className="user-center-friends-item">
@@ -320,7 +299,7 @@ class UserCenterFans extends React.Component {
         <div
           className={`${friendsStyle.friendWrap} ${styles.friendWrap} ${styles['display-none']} user-center-friends-mini`}
         >
-          {followerAdapter(this.props.dataSource || this.state.fans).map((user, index) => {
+          {dataSource.map((user, index) => {
             if (index + 1 > this.props.limit) return null;
             return (
               <div

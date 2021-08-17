@@ -98,24 +98,68 @@ class UserAction extends SiteStore {
     }
   }
 
-  // 获取指定用户的粉丝
-  @action
-  getTargetUserFanses({ userId, page }) {
-
-  }
-
   // 获取用户的关注者
   @action
-  getUserFollowers({ userId, page }) {
+  async getUserFollowers({ userId, page }) {
+    if (!this.followStore[userId]) {
+      this.followStore[userId] = {};
+    }
+  }
 
+  @action
+  setUserFollowers({ userId, page, followers }) {
+    if (!this.followStore[userId]) {
+      this.followStore[userId] = {};
+    }
+
+    this.followStore[userId][page] = followers;
+
+    this.followStore = { ...this.followStore };
+  }
+
+  @action
+  clearUserFollowers({ userId }) {
+    if (!this.followStore[userId]) return;
+    this.followStore[userId] = {};
+    this.followStore = { ...this.followStore };
   }
 
   // 获取用户的粉丝
   @action
-  getUserFanses({ userId, page }) {
+  async getUserFanses({ userId, page }) {
+    const opts = {
+      params: {
+        page: page,
+        perPage: 20,
+        filter: {
+          userId: userId,
+        },
+      },
+    };
+
     if (!this.fansStore[userId]) {
       this.fansStore[userId] = {};
     }
+
+    return await getUserFans(opts);
+  }
+
+  @action
+  setUserFanses({ userId, page, fans }) {
+    if (!this.fansStore[userId]) {
+      this.fansStore[userId] = {};
+    }
+
+    this.fansStore[userId][page] = fans;
+
+    this.fansStore = { ...this.fansStore }
+  }
+
+  @action
+  clearUserFanses({ userId }) {
+    if (!this.fansStore[userId]) return;
+    this.fansStore[userId] = {};
+    this.fansStore = { ... this.fansStore }
   }
 
   // 关注某个用户
@@ -253,31 +297,6 @@ class UserAction extends SiteStore {
       this.userFollowsPage += 1;
     }
     this.userFollows = { ...this.userFollows };
-  };
-
-  @action
-  getUserFans = async () => {
-    const fansRes = await getUserFans({
-      params: {
-        page: this.userFansPage,
-        perPage: 20,
-      },
-    });
-
-    if (fansRes.code !== 0) {
-      console.error(fansRes);
-      return;
-    }
-
-    const pageData = get(fansRes, 'data.pageData', []);
-    const totalPage = get(fansRes, 'data.totalPage', 1);
-    this.userFans[this.userFansPage] = pageData;
-    this.userFansTotalPage = totalPage;
-    this.userFans[this.userFansPage] = pageData;
-    if (this.userFansPage <= this.userFansTotalPage) {
-      this.userFansPage += 1;
-    }
-    this.userFans = { ...this.userFans };
   };
 
   /**
