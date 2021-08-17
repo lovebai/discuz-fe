@@ -141,8 +141,10 @@ class H5OthersPage extends React.Component {
 
   getBackgroundUrl = () => {
     let backgroundUrl = null;
-    if (this.props.user?.targetOriginalBackGroundUrl) {
-      backgroundUrl = this.props.user?.targetOriginalBackGroundUrl;
+    const { query } = this.props.router;
+    const id = query?.id;
+    if (id && this.props.user?.targetUsers[id]) {
+      backgroundUrl = this.props.user.targetUsers[id].originalBackGroundUrl;
     }
     if (!backgroundUrl) return false;
     return backgroundUrl;

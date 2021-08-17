@@ -41,7 +41,29 @@ class UserAction extends SiteStore {
     const targetUserInfo = await this.getAssignUserInfo(userId);
 
     if (targetUserInfo) {
-      this.targetUsers[userId] = targetUserInfo;
+      if (!this.targetUsers[userId]) {
+        this.targetUsers[userId] = targetUserInfo;
+      } else {
+        if (targetUserInfo.backgroundUrl && this.targetUsers[userId].backgroundUrl) {
+          const originBackgroundFilename = this.targetUsers[userId].backgroundUrl?.split('?')[0];
+          const nextBackgroundFilename = targetUserInfo.backgroundUrl?.split('?')[0];
+
+          if (originBackgroundFilename === nextBackgroundFilename) {
+            targetUserInfo.backgroundUrl = this.targetUsers[userId].backgroundUrl;
+          }
+        }
+
+        if (targetUserInfo.avatarUrl && this.targetUsers[userId].avatarUrl) {
+          const originAvatarFilename = this.targetUsers[userId].avatarUrl?.split('?')[0];
+          const nextAvatarFilename = targetUserInfo.avatarUrl?.split('?')[0];
+
+          if (originAvatarFilename === nextAvatarFilename) {
+            targetUserInfo.avatarUrl = this.targetUsers[userId].avatarUrl;
+          }
+        }
+
+        this.targetUsers[userId] = targetUserInfo;
+      }
 
       this.targetUsers = { ...this.targetUsers };
     }
@@ -1081,7 +1103,7 @@ class UserAction extends SiteStore {
 
   // 生成微信换绑二维码，仅在 PC 使用
   @action
-  genRebindQrCode = async ({ scanSuccess = () => {}, scanFail = () => {}, onTimeOut = () => {}, option = {} }) => {
+  genRebindQrCode = async ({ scanSuccess = () => { }, scanFail = () => { }, onTimeOut = () => { }, option = {} }) => {
     clearInterval(this.rebindTimer);
     this.isQrCodeValid = true;
     const qrCodeRes = await wechatRebindQrCodeGen(option);
