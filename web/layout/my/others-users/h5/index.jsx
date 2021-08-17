@@ -81,7 +81,6 @@ class H5OthersPage extends React.Component {
         fetchUserThreadsLoading: true,
       });
 
-      this.props.user.removeTargetUserInfo();
       await this.props.user.getTargetUserInfo({ userId: query.id });
       this.setWeixinShare();
       this.setState({
@@ -106,10 +105,6 @@ class H5OthersPage extends React.Component {
         setWxShare(title, desc, link, img);
       }
     }, 500);
-  }
-
-  componentWillUnmount() {
-    this.props.user.removeTargetUserInfo();
   }
 
   fetchTargetUserThreads = async () => {

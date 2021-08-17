@@ -228,41 +228,6 @@ class UserAction extends SiteStore {
   }
 
   @action
-  diffPicAndUpdateTargetUserInfo(data) {
-    const transformedData = Object.assign({}, data);
-
-    // 如下操作是为了避免因为签名导致的图片重加载问题
-    if (data.backgroundUrl && this.targetUserBackgroundUrl) {
-      const originBackgroundFilename = this.targetUserBackgroundUrl?.split('?')[0];
-      const nextBackgroundFilename = data.backgroundUrl?.split('?')[0];
-
-      if (originBackgroundFilename === nextBackgroundFilename) {
-        transformedData.backgroundUrl = this.targetUserBackgroundUrl;
-      }
-    }
-
-    if (data.avatarUrl && this.targetUserAvatarUrl) {
-      const originAvatarFilename = this.targetUserAvatarUrl?.split('?')[0];
-      const nextAvatarFilename = data.avatarUrl?.split('?')[0];
-
-      if (originAvatarFilename === nextAvatarFilename) {
-        transformedData.avatarUrl = this.targetUserAvatarUrl;
-      }
-    }
-
-    return transformedData;
-  }
-
-  // 获取指定用户的用户信息，用于获取他人首页
-  // @action
-  // async getTargetUserInfo(id) {
-  //   this.targetUserId = id;
-  //   const userInfo = await this.getAssignUserInfo(id);
-  //   this.targetUser = this.diffPicAndUpdateTargetUserInfo(userInfo);
-  //   return userInfo;
-  // }
-
-  @action
   getUserFollow = async () => {
     const followsRes = await getUserFollow({
       params: {
@@ -462,107 +427,6 @@ class UserAction extends SiteStore {
       data: null,
       success: false,
     };
-  }
-
-  /**
-   * 获取用户自己发的主题列表
-   * @returns
-   */
-  @action
-  getUserThreads = async () => {
-    const userThreadList = await readThreadList({
-      params: {
-        page: this.userThreadsPage,
-        filter: {
-          toUserId: 0,
-          complex: 5,
-        },
-      },
-    });
-    if (userThreadList.code !== 0) {
-      throw {
-        Code: userThreadList.code,
-        Msg: userThreadList.msg || '获取用户主题列表失败',
-      };
-    }
-
-    return userThreadList;
-  };
-
-  /**
-   * 删除指定 id 的用户帖子
-   * @param {*} id
-   */
-  @action
-  deleteUserThreads = (id) => {
-    Object.keys(this.userThreads).forEach((pageNum) => {
-      const pageDataSet = this.userThreads[pageNum];
-
-      const itemIdx = pageDataSet.findIndex(item => item.threadId === id);
-
-      if (itemIdx === -1) return;
-
-      pageDataSet.splice(itemIdx, 1);
-
-      // 计数减少
-      this.userThreadsTotalCount -= 1;
-
-      this.userThreads[pageNum] = [...pageDataSet];
-    });
-  };
-
-  // 获取用户主题列表的写方法
-  // 读写分离，用于阻止多次请求的数据错乱
-  setUserThreads = async (userThreadList) => {
-    const pageData = get(userThreadList, 'data.pageData', []);
-    const totalPage = get(userThreadList, 'data.totalPage', 1);
-    const currPage = get(userThreadList, 'data.currentPage', 1);
-
-    this.userThreadsTotalPage = totalPage;
-
-    this.userThreads = {
-      ...this.userThreads,
-      [currPage]: pageData,
-    };
-
-    this.userThreadsTotalCount = get(userThreadList, 'data.totalCount', 0);
-
-    if (this.userThreadsPage <= this.userThreadsTotalPage) {
-      this.userThreadsPage += 1;
-    }
-  };
-
-  /**
-   * 获取指定用户发的主题列表
-   * @param {*} id
-   * @returns
-   */
-  @action
-  async getTargetUserThreads(id) {
-    const targetUserThreadList = await readThreadList({
-      params: {
-        page: this.targetUserThreadsPage,
-        filter: {
-          toUserId: id,
-          complex: 5,
-        },
-      },
-    });
-
-    const pageData = get(targetUserThreadList, 'data.pageData', []);
-    const totalPage = get(targetUserThreadList, 'data.totalPage', 1);
-    this.targetUserThreadsTotalPage = totalPage;
-    this.targetUserThreads = {
-      ...this.targetUserThreads,
-      [this.targetUserThreadsPage]: pageData,
-    };
-    this.targetUserThreadsTotalCount = get(targetUserThreadList, 'data.totalCount', 0);
-
-    if (this.targetUserThreadsPage <= this.targetUserThreadsTotalPage) {
-      this.targetUserThreadsPage += 1;
-    }
-
-    return this.targetUserThreads;
   }
 
   /**
@@ -946,14 +810,6 @@ class UserAction extends SiteStore {
   };
 
   @action
-  cleanTargetUserThreads = () => {
-    this.targetUserThreads = [];
-    this.targetUserThreadsPage = 1;
-    this.targetUserThreadsTotalCount = 0;
-    this.targetUserThreadsTotalPage = 1;
-  };
-
-  @action
   cleanTargetUserFans = () => {
     this.targetUserFans = {};
     this.targetUserFansPage = 1;
@@ -981,17 +837,6 @@ class UserAction extends SiteStore {
   };
 
   /**
-   * 清理他人用户数据函数
-   */
-  @action
-  removeTargetUserInfo = () => {
-    this.targetUser = null;
-    this.cleanTargetUserThreads();
-    this.cleanTargetUserFans();
-    this.cleanTargetUserFollows();
-  };
-
-  /**
    * 支付成功后，更新帖子列表指定帖子状态
    * @param {number} threadId 帖子id
    * @param {object}  obj 更新数据
@@ -1008,97 +853,6 @@ class UserAction extends SiteStore {
         store[key][index] = obj;
       }
     });
-  }
-
-  /**
-   * 更新帖子列表指定帖子状态
-   * @param {number} threadId 帖子id
-   * @param {object}  obj 更新数据
-   * @param {boolean} obj.isLike 是否更新点赞
-   * @param {boolean} obj.isPost 是否更新评论数
-   * @param {boolean} obj.user 当前操作的用户
-   * @returns
-   */
-  @action
-  updateAssignThreadInfo(threadId, obj = {}) {
-    const targetThreads = this.findAssignThread(threadId);
-
-    if (!targetThreads || targetThreads.length === 0) return;
-
-    targetThreads.forEach((targetThread) => {
-      if (!targetThread) return;
-
-      const { index, key, data, store } = targetThread; // 这里是数组
-      const { updateType, updatedInfo, user } = obj;
-
-      if (!data && !data?.likeReward && !data?.likeReward?.users) return;
-
-      // 更新点赞
-      if (
-        updateType === 'like'
-        && !typeofFn.isUndefined(updatedInfo.isLiked)
-        && !typeofFn.isNull(updatedInfo.isLiked)
-        && user
-      ) {
-        const { isLiked, likePayCount = 0 } = updatedInfo;
-        const theUserId = user.userId || user.id;
-        data.isLike = isLiked;
-
-        const userData = threadReducer.createUpdateLikeUsersData(user, 1);
-        // 添加当前用户到按过赞的用户列表
-        const newLikeUsers = threadReducer.setThreadDetailLikedUsers(data.likeReward, !!isLiked, userData);
-
-        data.likeReward.users = newLikeUsers;
-        data.likeReward.likePayCount = likePayCount;
-      }
-
-      // 更新评论
-      if (updateType === 'comment' && data?.likeReward) {
-        data.likeReward.postCount = data.likeReward.postCount + 1;
-      }
-
-      // 更新分享
-      if (updateType === 'share') {
-        data.likeReward.shareCount = data.likeReward.shareCount + 1;
-      }
-
-      if (store[key] && store[key][index]) {
-        store[key][index] = data;
-      }
-    });
-  }
-
-  // 获取指定的帖子数据
-  findAssignThread(threadId) {
-    const threadArr = [];
-
-    if (this.userThreads) {
-      const keys = Object.keys(this.userThreads);
-      keys.forEach((item) => {
-        const pageData = this.userThreads[item];
-
-        for (let i = 0; i < pageData.length; i++) {
-          if (pageData[i].threadId === threadId) {
-            threadArr.push({ key: item, index: i, data: pageData[i], store: this.userThreads });
-          }
-        }
-      });
-    }
-
-    if (this.targetUserThreads) {
-      const keys = Object.keys(this.targetUserThreads);
-      keys.forEach((item) => {
-        const pageData = this.targetUserThreads[item];
-
-        for (let i = 0; i < pageData.length; i++) {
-          if (pageData[i].threadId === threadId) {
-            threadArr.push({ key: item, index: i, data: pageData[i], store: this.targetUserThreads });
-          }
-        }
-      });
-    }
-
-    return threadArr;
   }
 
   // 生成微信换绑二维码，仅在 PC 使用
