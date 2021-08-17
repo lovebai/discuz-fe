@@ -24,6 +24,7 @@ const Index = ({ confirm, cancel, pc, visible, threadPost }) => {
   const [title, setTitle] = useState(hasVoteData ? data.vote.voteTitle : '');
   const [type, setType] = useState(hasVoteData ? data.vote.choiceType : 1);
   const [time, setTime] = useState(hasVoteData ? data.vote.expiredAt : formatDate(new Date(), 'yyyy/MM/dd hh:mm'));
+  const [show, setShow] = useState(false);
 
 
   const vote = () => {
@@ -32,7 +33,7 @@ const Index = ({ confirm, cancel, pc, visible, threadPost }) => {
         voteId: '',
         voteTitle: title,
         choiceType: type,
-        expiredAt: formatDate(time, 'yyyy/MM/dd hh:mm:ss'),
+        expiredAt: formatDate(time, 'yyyy-MM-dd hh:mm:ss'),
         subitems: subitems,
       }
     });
@@ -129,7 +130,7 @@ const Index = ({ confirm, cancel, pc, visible, threadPost }) => {
             </>
           ) : (
             <>
-              <div>hahaha</div>
+              <div onClick={() => setShow(true)}>{time}</div>
               <Icon name="RightOutlined" />
             </>
           )}
@@ -139,14 +140,15 @@ const Index = ({ confirm, cancel, pc, visible, threadPost }) => {
         <>
           <DatePickers
             onSelects={(e) => {
-              setTimes(e);
+              setTime(e);
               setShow(false);
             }}
-            isOpen={show} onCancels={() => setShow(false)}
+            isOpen={show}
+            onCancels={() => setShow(false)}
           />
           <div className={styles.btn}>
             <Button onClick={() => cancel()}>取消</Button>
-            <Button type="primary" onClick={redbagconfirm}>确定</Button>
+            <Button type="primary" onClick={() => {}}>确定</Button>
           </div>
         </>
       )}
