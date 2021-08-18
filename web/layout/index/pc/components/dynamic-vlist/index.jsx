@@ -114,9 +114,6 @@ export default class DynamicVList extends React.Component {
         top={this.renderTop()}
         visible={visible}
         renderItem={(item, index, recomputeRowHeights, onContentHeightChange, measure) => {
-          console.log(item);
-          return null;
-
           return (
             <ThreadContent
               onContentHeightChange={measure}
