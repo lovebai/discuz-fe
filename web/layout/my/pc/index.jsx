@@ -116,9 +116,16 @@ class PCMyPage extends React.Component {
   // 点击续费弹窗
   onRenewalFeeClick = () => {
     this.setState({
-      isRenewalFeeVisible: !this.state.isRenewalFeeVisible,
+      isRenewalFeeVisible: true,
     });
   };
+
+  // 关闭续费弹窗
+  onRenewalFeeClose = () => {
+    this.setState({
+      isRenewalFeeVisible: false,
+    });
+  }
 
   renderRight = () => {
     // 条件都满足时才显示微信
@@ -286,7 +293,7 @@ class PCMyPage extends React.Component {
             </div>
           </div>
         </BaseLayout>
-        <RenewalFee visible={this.state.isRenewalFeeVisible} onClose={this.onRenewalFeeClick} />
+        <RenewalFee visible={this.state.isRenewalFeeVisible} onClose={this.onRenewalFeeClose} />
       </>
     );
   }

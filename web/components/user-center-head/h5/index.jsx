@@ -206,6 +206,13 @@ class index extends Component {
     });
   };
 
+  // 点击去到续费页面
+  onRenewalFeeClick = () => {
+    Router.push({
+      url: '/my/renew',
+    });
+  };
+
   render() {
     const { site } = this.props;
     const { targetUser } = this.props.user;
@@ -294,11 +301,7 @@ class index extends Component {
             </>
           )}
         </div>
-        {
-          !this.props.isOtherPerson && (
-            <MemberShipCard />
-          )
-        }
+        {!this.props.isOtherPerson && <MemberShipCard onRenewalFeeClick={this.onRenewalFeeClick} />}
         {/* 右上角屏蔽按钮 */}
         {this.props.isOtherPerson && (
           <div

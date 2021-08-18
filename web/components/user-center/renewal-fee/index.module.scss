@@ -8,11 +8,11 @@
       border-radius: rem(5);
     }
   }
-	.renewalFeeClose {
-		position: absolute;
-		right: rem(24);
-		top: rem(30);
-	}
+  .renewalFeeClose {
+    position: absolute;
+    right: rem(24);
+    top: rem(30);
+  }
   .siteBg {
     background-color: palevioletred;
     height: rem(120);
@@ -48,9 +48,9 @@
       padding: rem($padding-4n) 0;
       border-bottom: $border-solid-1;
       font-size: rem($font-size-primary);
-			&:nth-last-child(1) {
-				border-bottom: none;
-			}
+      &:nth-last-child(1) {
+        border-bottom: none;
+      }
     }
     .menuTitle {
       color: $text-color-primary;
@@ -59,23 +59,23 @@
       color: $text-color-regular;
     }
   }
-	.feeBtn {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: space-between;
-		.btn {
-			width: rem(360);
-			padding: 0;
-			height: rem(36);
-			line-height: rem(36);
-			margin-bottom: rem($margin-4n);
-		}
-		.effectTimer {
-			font-size: rem($font-size-primary);
-			color: $text-color-primary;
-			height: rem(20);
-			line-height: rem(20);
-		}
-	}
+  .feeBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    .btn {
+      width: rem(360);
+      padding: 0;
+      height: rem(36);
+      line-height: rem(36);
+      margin-bottom: rem($margin-4n);
+    }
+    .effectTimer {
+      font-size: rem($font-size-primary);
+      color: $text-color-primary;
+      height: rem(20);
+      line-height: rem(20);
+    }
+  }
 }
