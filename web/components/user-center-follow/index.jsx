@@ -290,7 +290,7 @@ class UserCenterFollows extends React.Component {
   };
 
   render() {
-    const dataSource = followerAdapter(this.props.user.followStore[this.props.userId]?.data || {});
+    const dataSource = followerAdapter(this.props.user.followStore[this.props.userId || this.props.user.id]?.data || {});
 
     return (
       <>
