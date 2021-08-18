@@ -93,18 +93,13 @@ const VoteDisplay = (props = {}) => {
   const isMutiple = choiceType === CHOICE_TYPE.mutiple;
   const typeText = isMutiple ? '多选' : '单选';
   const CheckboxRadio = isMutiple ? Checkbox : Radio;
-  const votedItem = subitems.filter(item => item.isVoted).map(item => item.id);
+
+  const votedItem = useMemo(() => {
+    return subitems.filter(item => item.isVoted).map(item => item.id);;
+  }, [voteData]);
   const defaultValue = isMutiple ? votedItem : (votedItem[0] || '');
 
-  const UnfoldOrExpand = ({ text }) => (
-    <Button full type="primary"
-      className={!isFold ? styles.foldbtn : styles.expandbtn}
-      onClick={() => setIsFold(!isFold)}
-    >
-      <Text className={styles['fold-expand']}>{!isFold ? '展开' : '收起'}{text}</Text>
-      <Icon name="RightOutlined" size="10"></Icon>
-    </Button>
-  );
+
   return (
     <>
       <View className={styles.container}>
@@ -131,7 +126,16 @@ const VoteDisplay = (props = {}) => {
                 }
                 return null;
               })}
-              {subitems?.length > 5 && <UnfoldOrExpand text="投票" />}
+              {
+                subitems?.length > 5 &&
+                <Button full type="primary"
+                  className={!isFold ? styles.foldbtn : styles.expandbtn}
+                  onClick={() => setIsFold(!isFold)}
+                >
+                  <Text className={styles['fold-expand']}>{!isFold ? '展开' : '收起'}投票</Text>
+                  <Icon name="RightOutlined" size="10"></Icon>
+                </Button>
+              }
             </CheckboxRadio.Group>
           )}
         {isVotedEnd && (
@@ -156,7 +160,16 @@ const VoteDisplay = (props = {}) => {
               }
               return null;
             })}
-            {subitems?.length > 5 && <UnfoldOrExpand />}
+            {
+              subitems?.length > 5 &&
+              <Button full type="primary"
+                className={!isFold ? styles.foldbtn : styles.expandbtn}
+                onClick={() => setIsFold(!isFold)}
+              >
+                <Text className={styles['fold-expand']}>{!isFold ? '展开' : '收起'}</Text>
+                <Icon name="RightOutlined" size="10"></Icon>
+              </Button>
+            }
             <Button full disabled type="primary" className={styles.disabledbtn}>
               {isExpired ? '投票已结束' : '你已投票'}（{voteUsers}人参与投票）
             </Button>

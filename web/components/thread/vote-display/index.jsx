@@ -37,7 +37,6 @@ const VoteDisplay = (props = {}) => {
     return subitems.filter(item => item.isVoted).map(item => item.id);;
   }, [voteData]);
   const defaultValue = isMutiple ? votedItem : (votedItem[0] || '');
-  console.log(defaultValue)
   let countDownIns = null;
   const [day, setDay] = useState(0);
   const [hour, setHour] = useState(0);
@@ -94,28 +93,6 @@ const VoteDisplay = (props = {}) => {
       recomputeRowHeights(threadData);
     }
   }, 1000);
-
-  // const UnfoldOrExpand = useCallback((text) => {
-  //   return (
-  //     <Button full type="primary"
-  //       className={!isFold ? styles.foldbtn : styles.expandbtn}
-  //       onClick={() => setIsFold(!isFold)}
-  //     >
-  //       <span className={styles['fold-expand']}>{!isFold ? '展开' : '收起'}{text}</span>
-  //       <Icon name="RightOutlined" size="10"></Icon>
-  //     </Button>
-  //   );
-  // }, [isFold])
-
-  // const UnfoldOrExpand = ({ text }) => (
-  //   <Button full type="primary"
-  //     className={!isFold ? styles.foldbtn : styles.expandbtn}
-  //     onClick={() => setIsFold(!isFold)}
-  //   >
-  //     <span className={styles['fold-expand']}>{!isFold ? '展开' : '收起'}{text}</span>
-  //     <Icon name="RightOutlined" size="10"></Icon>
-  //   </Button>
-  // );
 
   return (
     <>
