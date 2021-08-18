@@ -589,7 +589,7 @@ class PostPage extends React.Component {
     if (!this.checkAudioRecordStatus()) return;
 
     if (!this.isHaveContent()) {
-      this.postToast('请至少填写您要发布的内容或者上传图片、附件、视频、语音');
+      this.postToast('请至少填写您要发布的内容或者上传图片、附件、视频、语音、投票等');
       return;
     }
     if (!this.checkAttachPrice()) {
