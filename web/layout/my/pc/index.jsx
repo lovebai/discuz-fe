@@ -125,14 +125,19 @@ class PCMyPage extends React.Component {
     this.setState({
       isRenewalFeeVisible: false,
     });
-  }
+  };
 
   renderRight = () => {
     // 条件都满足时才显示微信
     const IS_WECHAT_ACCESSABLE = this.props.site.wechatEnv !== 'none' && !!this.props.user.wxNickname;
     return (
       <>
-        <MemberShipCard shipCardClassName={styles.MemberShipCardWrapperPc} onRenewalFeeClick={this.onRenewalFeeClick} />
+        {this.props.site?.siteMode === 'pay' && (
+          <MemberShipCard
+            shipCardClassName={styles.MemberShipCardWrapperPc}
+            onRenewalFeeClick={this.onRenewalFeeClick}
+          />
+        )}
         <SidebarPanel
           platform="h5"
           type="normal"

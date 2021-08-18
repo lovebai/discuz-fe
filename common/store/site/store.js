@@ -128,6 +128,31 @@ class SiteStore {
   @computed get siteBackgroundImage() {
     return get(this.webConfig, 'setSite.siteBackgroundImage')
   }
+
+  // 站长
+  @computed get siteAuthor() {
+    return get(this.webConfig, 'setSite.siteAuthor')
+  }
+
+  // 是否付费模式
+  @computed get siteMode() {
+    return get(this.webConfig, 'setSite.siteMode')
+  }
+
+  // 站点付费金额
+  @computed get sitePrice() {
+    return get(this.webConfig,'setSite.sitePrice')
+  }
+
+  // 站点成员数
+  @computed get countUsers() {
+    return get(this.webConfig,'other.countUsers')
+  }
+
+  // 站点主题数
+  @computed get countThreads() {
+    return get(this.webConfig,'other.countThreads')
+  }
 }
 
 export default SiteStore;

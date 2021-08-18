@@ -4,31 +4,42 @@ import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';
 import Button from '@discuzq/design/dist/components/button/index';
 import { inject, observer } from 'mobx-react';
+import time from '@discuzq/sdk/dist/time';
 
 @inject('site')
 @inject('user')
 @observer
 export default class MemberShipCard extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   handleRenewalFee = () => {
-    this.props.onRenewalFeeClick && this.props.onRenewalFeeClick()
-  }
+    this.props.onRenewalFeeClick && this.props.onRenewalFeeClick();
+  };
 
   render() {
-    const { shipCardClassName } = this.props
+    const { shipCardClassName } = this.props;
     return (
       <View className={`${styles.memberShipCardWrapper} ${shipCardClassName}`}>
         <View className={styles.MemberShipCardContent}>
-          <View className={styles.roleType}>普通会员</View>
+          <View className={styles.roleType}>{this.props.user?.groupName}</View>
           <View className={styles.tagline}>访问海量站点内容•发布内容</View>
           <View className={styles.RenewalFee}>
-            <Button onClick={this.handleRenewalFee} type="primary" className={styles.btn}>续费</Button>
+            <Button onClick={this.handleRenewalFee} type="primary" className={styles.btn}>
+              续费
+            </Button>
             <Text className={styles.feeTimer}>
-              <Text className={styles.feeDay}>5</Text>天•8月15日到期
+              {this.props.user?.expiredDays === 0 ? (
+                <>
+                  <Text className={styles.feeDay}>{this.props.user?.expiredDays}</Text>天
+                </>
+              ) : (
+                <>
+                  <Text className={styles.feeDay}>{this.props.user?.expiredDays}</Text>天•
+                  {time.formatDate(this.props.user?.expiredAt, 'YYYY年MM月DD')}
+                </>
+              )}
             </Text>
           </View>
         </View>

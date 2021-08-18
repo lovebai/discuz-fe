@@ -301,7 +301,7 @@ class index extends Component {
             </>
           )}
         </div>
-        {!this.props.isOtherPerson && <MemberShipCard onRenewalFeeClick={this.onRenewalFeeClick} />}
+        {this.props.site?.siteMode === 'pay' && !this.props.isOtherPerson && <MemberShipCard onRenewalFeeClick={this.onRenewalFeeClick} />}
         {/* 右上角屏蔽按钮 */}
         {this.props.isOtherPerson && (
           <div
