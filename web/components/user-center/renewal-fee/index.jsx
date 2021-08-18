@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 import { Dialog, Button, Icon } from '@discuzq/design';
+import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
+@inject('site')
+@observer
+class RenewalFee extends Component {
 
-export default class RenewalFee extends Component {
+  constructor(props) {
+    super(props)
+  }
+
   onClose = () => {
     this.props.onClose && this.props.onClose();
   };
@@ -16,7 +24,9 @@ export default class RenewalFee extends Component {
             <div className={styles.renewalFeeClose} onClick={this.onClose}>
               <Icon name="CloseOutlined" size={12} color="#fff" />
             </div>
-            <div className={styles.siteBg}></div>
+            <div className={styles.siteBg}>
+              <img className={styles.siteBgImage} src={this.props.site?.siteBackgroundImage} />
+            </div>
             <div className={styles.menuInfo}>
               <div className={styles.menuItem}>
                 <div className={styles.menuTitle}>站点名称</div>
@@ -63,3 +73,5 @@ export default class RenewalFee extends Component {
     );
   }
 }
+
+export default HOCFetchSiteData(RenewalFee);

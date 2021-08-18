@@ -123,6 +123,11 @@ class SiteStore {
   @computed get isIOSWechatPayOpen() {
     return get(this.webConfig, 'paycenter.wxpayIos', false);
   }
+
+  // 站点背景图
+  @computed get siteBackgroundImage() {
+    return get(this.webConfig, 'setSite.siteBackgroundImage')
+  }
 }
 
 export default SiteStore;

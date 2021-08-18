@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 import { Button, Icon } from '@discuzq/design';
 import Header from '@components/header';
-export default class RenewalFee extends Component {
+import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
+
+@inject('site')
+@observer
+class RenewalFee extends Component {
   render() {
     return (
       <div className={styles.renewalFeeWrapper}>
         <Header />
         <div className={styles.renewalFeeContent}>
-          <div className={styles.siteBg}></div>
+          <div className={styles.siteBg}>
+            <img className={styles.siteBgImage} src={this.props.site?.siteBackgroundImage} />
+          </div>
           <div className={styles.menuInfo}>
             <div className={styles.menuItem}>
               <div className={styles.menuTitle}>站点名称</div>
@@ -89,3 +96,5 @@ export default class RenewalFee extends Component {
     );
   }
 }
+
+export default HOCFetchSiteData(RenewalFee);
