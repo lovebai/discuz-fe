@@ -264,7 +264,6 @@ class UserCenterFans extends React.Component {
     const dataSource = followerAdapter(this.props.user.fansStore[this.props.userId]?.data || {});
     const isNoData = dataSource.length === 0 && !this.state.loading;
 
-    console.log(dataSource);
     return (
       <div
         className={`${this.props.className} user-center-friends`}

@@ -71,19 +71,14 @@ class UserAction extends SiteStore {
 
   // 更新指定 userid 的 用户信息
   @action
-  updateTargetUserInfo({
-    userId,
-    userInfo,
-  }) {
+  updateTargetUserInfo({ userId, userInfo }) {
     this.targetUsers[userId] = userInfo;
     this.targetUsers = { ...this.targetUsers };
   }
 
   // 删除指定 userid 的 用户信息
   @action
-  deleteTargetUserInfo({
-    userId,
-  }) {
+  deleteTargetUserInfo({ userId }) {
     if (!this.targetUsers[userId]) return;
     delete this.targetUsers[userId];
 
@@ -97,16 +92,16 @@ class UserAction extends SiteStore {
 
     const opts = {
       params: {
-        page: this.page,
+        page: page,
         perPage: 20,
         filter: {
-          userId: this.props.userId,
+          userId: userId,
         },
       },
     };
 
     if (searchValue) {
-      opts.params.filter['nickName'] = this.state.searchValue;
+      opts.params.filter['nickName'] = searchValue;
     }
 
     return await getUserFollow(opts);
@@ -117,7 +112,7 @@ class UserAction extends SiteStore {
     if (!this.followStore[userId]) {
       this.followStore[userId] = {
         data: {},
-        attribs: {}
+        attribs: {},
       };
     }
 
@@ -132,22 +127,23 @@ class UserAction extends SiteStore {
     this.followStore[userId].attribs.totalCount = get(followersData, 'data.totalCount', 0);
 
     if (!this.followStore[userId].attribs.currentPage) {
-      this.followStore[userId].attribs.currentPage =  get(followersData, 'data.currentPage', 1);
+      this.followStore[userId].attribs.currentPage = get(followersData, 'data.currentPage', 1);
     } else {
       const prevCurrentPage = this.followStore[userId].attribs.currentPage;
       const currentPage = get(followersData, 'data.currentPage', 1);
 
       if (Number(currentPage) > prevCurrentPage) {
-        this.followStore[userId].attribs.currentPage =  get(followersData, 'data.currentPage');
+        this.followStore[userId].attribs.currentPage = get(followersData, 'data.currentPage');
       }
     }
+    console.log(this.followStore);
     this.followStore = { ...this.followStore };
   }
 
   @action
   clearUserFollowers({ userId }) {
     if (!this.followStore[userId]) return;
-    this.followStore[userId] = {};
+    this.followStore[userId] = null;
     this.followStore = { ...this.followStore };
   }
 
@@ -174,7 +170,7 @@ class UserAction extends SiteStore {
     if (!this.fansStore[userId]) {
       this.fansStore[userId] = {
         data: {},
-        attribs: {}
+        attribs: {},
       };
     }
     this.fansStore = { ...this.fansStore };
@@ -188,13 +184,13 @@ class UserAction extends SiteStore {
     this.fansStore[userId].attribs.totalCount = get(fansData, 'data.totalCount', 0);
 
     if (!this.fansStore[userId].attribs.currentPage) {
-      this.fansStore[userId].attribs.currentPage =  get(fansData, 'data.currentPage', 1);
+      this.fansStore[userId].attribs.currentPage = get(fansData, 'data.currentPage', 1);
     } else {
       const prevCurrentPage = this.fansStore[userId].attribs.currentPage;
       const currentPage = get(fansData, 'data.currentPage', 1);
 
       if (Number(currentPage) > prevCurrentPage) {
-        this.fansStore[userId].attribs.currentPage =  get(fansData, 'data.currentPage');
+        this.fansStore[userId].attribs.currentPage = get(fansData, 'data.currentPage');
       }
     }
     this.fansStore = { ...this.fansStore };
@@ -203,21 +199,17 @@ class UserAction extends SiteStore {
   @action
   clearUserFanses({ userId }) {
     if (!this.fansStore[userId]) return;
-    this.fansStore[userId] = {};
-    this.fansStore = { ... this.fansStore }
+    this.fansStore[userId] = null;
+    this.fansStore = { ...this.fansStore };
   }
 
   // 关注某个用户
   @action
-  followUser({ userId }) {
-
-  }
+  followUser({ userId }) {}
 
   // 取消关注某个用户
   @action
-  unFollowUser({ userId }) {
-
-  }
+  unFollowUser({ userId }) {}
 
   @action
   removeUserInfo() {
@@ -925,7 +917,7 @@ class UserAction extends SiteStore {
 
   // 生成微信换绑二维码，仅在 PC 使用
   @action
-  genRebindQrCode = async ({ scanSuccess = () => { }, scanFail = () => { }, onTimeOut = () => { }, option = {} }) => {
+  genRebindQrCode = async ({ scanSuccess = () => {}, scanFail = () => {}, onTimeOut = () => {}, option = {} }) => {
     clearInterval(this.rebindTimer);
     this.isQrCodeValid = true;
     const qrCodeRes = await wechatRebindQrCodeGen(option);

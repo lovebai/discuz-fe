@@ -61,21 +61,11 @@ class UserCenterFollows extends React.Component {
 
   fetchFollows = async () => {
     try {
-      const opts = {
-        params: {
-          page: this.page,
-          perPage: 20,
-          filter: {
-            userId: this.props.userId,
-          },
-        },
-      };
-
-      if (this.state.searchValue) {
-        opts.params.filter['nickName'] = this.state.searchValue;
-      }
-
-      const followRes = await getUserFollow(opts);
+      const followRes = await this.props.user.getUserFollowers({
+        userId: this.props.userId || this.props.user.id,
+        page: this.page,
+        searchValue: this.state.searchValue,
+      });
 
       if (followRes.code !== 0) {
         console.error(followRes);
@@ -86,29 +76,17 @@ class UserCenterFollows extends React.Component {
         return;
       }
 
-      const pageData = get(followRes, 'data.pageData', []);
-      const totalPage = get(followRes, 'data.totalPage', 1);
-
-      if (this.props.updateSourceTotalPage) {
-        this.props.updateSourceTotalPage(totalPage);
-      }
-      this.totalPage = totalPage;
-
-      const newFollows = Object.assign({}, this.props.dataSource || this.state.follows);
-
-      newFollows[this.page] = pageData;
-
-      if (this.props.setDataSource) {
-        this.props.setDataSource(newFollows);
-      }
-      this.setState({
-        follows: newFollows,
+      this.props.user.setUserFollowers({
+        userId: this.props.userId || this.props.user.id,
+        page: this.page,
+        followersData: followRes,
       });
 
+      const totalPage = get(followRes, 'data.totalPage', 1);
+
+      this.totalPage = totalPage;
+
       if (this.page <= this.totalPage) {
-        if (this.props.updateSourcePage) {
-          this.props.updateSourcePage(this.props.sourcePage + 1);
-        }
         this.page += 1;
       }
     } catch (error) {
@@ -258,18 +236,6 @@ class UserCenterFollows extends React.Component {
     if (prevProps.userId !== this.props.userId) {
       this.page = 1;
       this.totalPage = 1;
-      if (this.props.updateSourcePage) {
-        this.props.updateSourcePage(1);
-      }
-      if (this.props.updateSourceTotalPage) {
-        this.props.updateSourceTotalPage(1);
-      }
-      if (this.props.setDataSource) {
-        this.props.setDataSource({});
-      }
-      this.setState({
-        follows: {},
-      });
       await this.loadMore();
     }
   }
@@ -320,13 +286,6 @@ class UserCenterFollows extends React.Component {
   };
 
   searchDispatch = debounce(async () => {
-    if (this.props.updateSourcePage) {
-      this.props.updateSourcePage(1);
-    }
-    if (this.props.updateSourceTotalPage) {
-      this.props.updateSourceTotalPage(1);
-    }
-
     this.page = 1;
     this.totalPage = 1;
 
@@ -334,12 +293,10 @@ class UserCenterFollows extends React.Component {
       loading: true,
     });
 
-    this.setState({
-      follows: [],
+    this.props.user.clearUserFollowers({
+      userId: this.props.userId || this.props.user.id,
     });
-    if (this.props.setDataSource) {
-      this.props.setDataSource({});
-    }
+
     await this.fetchFollows();
 
     this.setState({
@@ -355,6 +312,8 @@ class UserCenterFollows extends React.Component {
   };
 
   render() {
+    const dataSource = followerAdapter(this.props.user.followStore[this.props.userId]?.data || {});
+
     return (
       <>
         {this.props.messageMode && (
@@ -376,7 +335,7 @@ class UserCenterFollows extends React.Component {
             ...this.props.style,
           }}
         >
-          {followerAdapter(this.props.dataSource || this.state.follows).map((user, index) => {
+          {dataSource.map((user, index) => {
             if (index + 1 > this.props.limit) return null;
             return (
               <div key={user.id} className="user-center-follow-item">
@@ -419,7 +378,7 @@ class UserCenterFollows extends React.Component {
           <div
             className={`${friendsStyle.friendWrap} ${styles.friendWrap} ${styles['display-none']} user-center-follow-mini`}
           >
-            {followerAdapter(this.props.dataSource || this.state.follows).map((user, index) => {
+            {dataSource.map((user, index) => {
               if (index + 1 > this.props.limit) return null;
               return (
                 <div key={'id' + user.id} className={friendsStyle.friendItem}>
@@ -431,9 +390,7 @@ class UserCenterFollows extends React.Component {
               );
             })}
           </div>
-          {followerAdapter(this.props.dataSource || this.state.follows).length === 0 && !this.state.loading && (
-            <NoData defaultShow={true} />
-          )}
+          {dataSource.length === 0 && !this.state.loading && <NoData defaultShow={true} />}
           {this.state.loading && (
             <div className={styles.loadMoreContainer}>
               <Spin type={'spinner'}>加载中 ...</Spin>
