@@ -27,6 +27,7 @@
       text-align: right;
       font-size: $font-size-primary;
       color: $text-color-secondary;
+      word-break: break-all;
     }
   }
 
@@ -91,6 +92,7 @@
       font-size: $font-size-primary;
       color: $text-color-regular;
       line-height: $font-line-height-base;
+      word-break: break-all;
     }
 
     .item-header-right {
