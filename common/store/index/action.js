@@ -379,15 +379,13 @@ class IndexAction extends IndexStore {
   @action
   updateListThreadIndexes(threadId, tomId, tomValue) {
     const targetThread = this.findAssignThread(threadId);
-    // 更新其他列表，个人中心
-    this.updataThreadIndexesAllData(threadId, tomId, tomValue);
-    if (!targetThread || targetThread?.length === 0) return;
-
+    if (!targetThread) return;
     const { index, data } = targetThread;
     const threadData = this.combineThreadIndexes(data, tomId, tomValue);
     if (this.threads?.pageData) {
       this.threads.pageData[index] = threadData;
       this.threads.pageData = [...this.threads.pageData];
+      this.updateAssignThreadAllData(threadId, threadData);
     }
   }
 
