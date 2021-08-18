@@ -31,7 +31,7 @@ const VoteDisplay = (props = {}) => {
   const CheckboxRadio = isMutiple ? Checkbox : Radio;
 
 
-  
+
 
   const votedItem = useMemo(() => {
     return subitems.filter(item => item.isVoted).map(item => item.id);;
@@ -125,7 +125,7 @@ const VoteDisplay = (props = {}) => {
                 return null;
               })}
               {
-                subitems?.length > 5 && 
+                subitems?.length > 5 &&
                   <Button full type="primary"
                     className={!isFold ? styles.foldbtn : styles.expandbtn}
                     onClick={() => setIsFold(!isFold)}
@@ -159,7 +159,7 @@ const VoteDisplay = (props = {}) => {
               return null;
             })}
             {
-              subitems?.length > 5 && 
+              subitems?.length > 5 &&
               <Button full type="primary"
                 className={!isFold ? styles.foldbtn : styles.expandbtn}
                 onClick={() => setIsFold(!isFold)}

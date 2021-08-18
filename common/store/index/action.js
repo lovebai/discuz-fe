@@ -393,11 +393,11 @@ class IndexAction extends IndexStore {
 
   @action
   updataThreadIndexesAllData(threadId, tomId, tomValue) {
-    const [targetThread] = this.findAssignThreadInLists(threadId);
+    const [targetThread] = this.findAssignThreadInLists({ threadId });
     if (!targetThread) return;
-    const { index, data } = targetThread;
+    const { data } = targetThread;
     const threadData = this.combineThreadIndexes(data, tomId, tomValue);
-    this.updateAssignThreadInfoInLists({ threadId, threadData });
+    this.updateAssignThreadInfoInLists({ threadId, threadInfo: threadData });
   }
 
   /**
