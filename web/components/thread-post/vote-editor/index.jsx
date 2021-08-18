@@ -61,7 +61,7 @@ const Index = ({ cancel, pc, visible, threadPost }) => {
       <div className={styles['line-box']}>
         <div className={styles.label}>标题</div>
         <div className={styles.item}>
-          <Input mode="text" placeholder="标题最多支持25个字" value={title} onChange={e => setTitle(e.target.value.trim())} />
+          <Input mode="text" placeholder="标题最多支持25个字" value={title} onChange={e => setTitle(e.target.value.trim().substr(0, 25))} />
         </div>
       </div>
 
@@ -78,7 +78,7 @@ const Index = ({ cancel, pc, visible, threadPost }) => {
           <div className={styles.item}>
             <Input mode="text" value={item.content} onChange={e => {
               const arr = [...subitems];
-              arr[index].content = e.target.value.trim();
+              arr[index].content = e.target.value.trim().substr(0, 20);
               setSubitems(arr);
             }} />
 
