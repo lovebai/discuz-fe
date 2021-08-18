@@ -549,8 +549,8 @@ class PostPage extends React.Component {
   // 是否有内容
   isHaveContent() {
     const { postData } = this.props.threadPost;
-    const { images, video, files, audio } = postData;
-    if (!(postData.contentText || video.id || audio.id || Object.values(images).length
+    const { images, video, files, audio, vote } = postData;
+    if (!(postData.contentText || video.id || vote.voteTitle || audio.id || Object.values(images).length
       || Object.values(files).length)) {
       return false;
     }
