@@ -40,6 +40,7 @@
         justify-content: space-between;
         border-radius: $border-radius-small;
         background-color: $text-bg-color2;
+        word-break: break-all;
 
         &.is-checked {
 
