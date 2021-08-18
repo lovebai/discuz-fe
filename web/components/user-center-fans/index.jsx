@@ -87,45 +87,6 @@ class UserCenterFans extends React.Component {
     }
   };
 
-  setFansBeFollowed({ id, isMutual }) {
-    const targetFans = deepClone(this.props.dataSource || this.state.fans);
-    Object.keys(targetFans).forEach((key) => {
-      targetFans[key].forEach((user) => {
-        if (get(user, 'user.pid') !== id) return;
-        user.userFollow.isMutual = isMutual;
-        user.userFollow.isFollow = true;
-      });
-    });
-    if (this.props.setDataSource) {
-      this.props.setDataSource(targetFans);
-    }
-
-    this.props.user.userInfo.followCount += 1;
-
-    this.setState({
-      fans: targetFans,
-    });
-  }
-
-  setFansBeUnFollowed(id) {
-    const targetFans = deepClone(this.props.dataSource || this.state.fans);
-    Object.keys(targetFans).forEach((key) => {
-      targetFans[key].forEach((user) => {
-        if (get(user, 'user.pid') !== id) return;
-        user.userFollow.isFollow = false;
-      });
-    });
-    if (this.props.setDataSource) {
-      this.props.setDataSource(targetFans);
-    }
-
-    this.props.user.userInfo.followCount -= 1;
-
-    this.setState({
-      fans: targetFans,
-    });
-  }
-
   followUser = async ({ id: userId }) => {
     const res = await createFollow({ data: { toUserId: userId } });
     if (res.code === 0 && res.data) {
@@ -134,10 +95,7 @@ class UserCenterFans extends React.Component {
         hasMask: false,
         duration: 2000,
       });
-      this.setFansBeFollowed({
-        id: userId,
-        isMutual: res.data.isMutual,
-      });
+      this.props.user.followUser({ userId, followRes: res });
       return {
         msg: '操作成功',
         data: res.data,
@@ -164,7 +122,7 @@ class UserCenterFans extends React.Component {
         hasMask: false,
         duration: 2000,
       });
-      this.setFansBeUnFollowed(id);
+      this.props.user.unFollowUser({ userId: id });
       return {
         msg: '操作成功',
         data: res.data,
@@ -185,12 +143,7 @@ class UserCenterFans extends React.Component {
 
   async componentDidMount() {
     // 第一次加载完后，才允许加载更多页面
-    if (
-      !this.props.user.fansStore[this.props.userId || this.props.user.id] ||
-      !this.props.user.fansStore[this.props.userId || this.props.user.id][1]
-    ) {
-      await this.fetchFans();
-    }
+    await this.fetchFans();
     this.firstLoaded = true;
     this.setState({
       loading: false,

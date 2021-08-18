@@ -100,25 +100,6 @@ class UserCenterFollows extends React.Component {
     }
   };
 
-  setFansBeFollowed({ id, isMutual }) {
-    const targetFollows = deepClone(this.props.dataSource || this.state.follows);
-    Object.keys(targetFollows).forEach((key) => {
-      targetFollows[key].forEach((user) => {
-        if (get(user, 'user.pid') !== id) return;
-        user.userFollow.isMutual = isMutual;
-        user.userFollow.isFollow = true;
-      });
-    });
-    if (this.props.setDataSource) {
-      this.props.setDataSource(targetFollows);
-    }
-
-    this.props.user.userInfo.followCount += 1;
-    this.setState({
-      follows: targetFollows,
-    });
-  }
-
   setFansBeUnFollowed(id) {
     const targetFollows = deepClone(this.props.dataSource || this.state.follows);
     Object.keys(targetFollows).forEach((key) => {
@@ -145,10 +126,7 @@ class UserCenterFollows extends React.Component {
           hasMask: false,
           duration: 2000,
         });
-        this.setFansBeFollowed({
-          id: userId,
-          isMutual: res.data.isMutual,
-        });
+        this.props.user.followUser({ userId, followRes: res });
         return {
           msg: '操作成功',
           data: res.data,
@@ -184,7 +162,7 @@ class UserCenterFollows extends React.Component {
           hasMask: false,
           duration: 2000,
         });
-        this.setFansBeUnFollowed(id);
+        this.props.user.unFollowUser({ userId: id });
         return {
           msg: '操作成功',
           data: res.data,
