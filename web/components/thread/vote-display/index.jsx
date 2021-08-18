@@ -86,8 +86,8 @@ const VoteDisplay = (props = {}) => {
       Toast.info({ content: '投票成功' });
       const [tomId] = Object.keys(data);
       const [tomValue] = Object.values(data);
-      if (page === 'detail') thread.updateThread(tomId, tomValue);
-      else index.updateListThreadIndexes(threadId, tomId, tomValue);
+      thread.updateThread(tomId, tomValue);
+      index.updateListThreadIndexes(threadId, tomId, tomValue);
 
       const { code, data: threadData } = await props.thread.fetchThreadDetail(threadId);
       const { recomputeRowHeights = () => {} } = props;
@@ -135,7 +135,7 @@ const VoteDisplay = (props = {}) => {
           && (
             <CheckboxRadio.Group
               defaultValue={defaultValue}
-              className={styles.content}
+              className={`${styles.content} ${styles.foldexpend}`}
               onChange={(val) => {
                 if (isMutiple) setValue(val);
                 else setValue([val]);
@@ -161,7 +161,7 @@ const VoteDisplay = (props = {}) => {
           )}
         {isVotedEnd && (
           <div className={styles.content}>
-            {false && subitems.map((item, index) => {
+            {subitems.map((item, index) => {
               if ((!isFold && index < 5) || isFold) {
                 const voteCount = parseInt(item.voteRate, 10) > 100 ? 100 : parseInt(item.voteRate, 10);
                 return (
@@ -181,6 +181,16 @@ const VoteDisplay = (props = {}) => {
               }
               return null;
             })}
+            {
+              subitems?.length > 5 && 
+              <Button full type="primary"
+                className={!isFold ? styles.foldbtn : styles.expandbtn}
+                onClick={() => setIsFold(!isFold)}
+              >
+                <span className={styles['fold-expand']}>{!isFold ? '展开' : '收起'}</span>
+                <Icon name="RightOutlined" size="10"></Icon>
+              </Button>
+            }
             <Button full disabled type="primary" className={styles.disabledbtn}>
               {isExpired ? '投票已结束' : '你已投票'}（{voteUsers}人参与投票）
             </Button>
