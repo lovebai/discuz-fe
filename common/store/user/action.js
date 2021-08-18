@@ -121,6 +121,7 @@ class UserAction extends SiteStore {
 
   @action
   setUserFollowers({ userId, page, followersData }) {
+    this.initFollowersStore({ userId });
     this.followStore[userId].data[page] = get(followersData, 'data.pageData', []);
 
     this.followStore[userId].attribs.totalPage = get(followersData, 'data.totalPage', 1);
@@ -178,6 +179,7 @@ class UserAction extends SiteStore {
 
   @action
   setUserFanses({ userId, page, fansData }) {
+    this.initFansesStore({ userId });
     this.fansStore[userId].data[page] = get(fansData, 'data.pageData', []);
 
     this.fansStore[userId].attribs.totalPage = get(fansData, 'data.totalPage', 1);
