@@ -56,9 +56,16 @@
     }
   }
 
+  .foldexpend {
+    .foldbtn,
+    .expandbtn {
+      margin-bottom: 0 !important;
+    }
+  }
   .content {
     .foldbtn {
       border-radius: $border-radius-small;
+      margin-bottom: $margin-4n;
 
       :global {
         .dzq-icon-RightOutlined {
@@ -69,6 +76,7 @@
 
     .expandbtn {
       border-radius: $border-radius-small;
+      margin-bottom: $margin-4n;
 
       :global {
         .dzq-icon-RightOutlined {

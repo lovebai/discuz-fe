@@ -80,8 +80,8 @@ const VoteDisplay = (props = {}) => {
       Toast.info({ content: '投票成功' });
       const [tomId] = Object.keys(data);
       const [tomValue] = Object.values(data);
-      if (page === 'detail') thread.updateThread(tomId, tomValue);
-      else index.updateListThreadIndexes(threadId, tomId, tomValue);
+      thread.updateThread(tomId, tomValue);
+      index.updateListThreadIndexes(threadId, tomId, tomValue);
 
       const { code, data: threadData } = await props.thread.fetchThreadDetail(threadId);
       const { recomputeRowHeights = () => {} } = props;
@@ -116,7 +116,7 @@ const VoteDisplay = (props = {}) => {
           && (
             <CheckboxRadio.Group
               defaultValue={defaultValue}
-              className={styles.content}
+              className={`${styles.content} ${styles.foldexpend}`}
               onChange={(val) => {
                 if (isMutiple) setValue(val);
                 else setValue([val]);
@@ -153,7 +153,7 @@ const VoteDisplay = (props = {}) => {
               }
               return null;
             })}
-            {/* {subitems?.length > 5 && <UnfoldOrExpand />} */}
+            {subitems?.length > 5 && <UnfoldOrExpand />}
             <Button full disabled type="primary" className={styles.disabledbtn}>
               {isExpired ? '投票已结束' : '你已投票'}（{voteUsers}人参与投票）
             </Button>
