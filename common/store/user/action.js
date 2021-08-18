@@ -24,9 +24,6 @@ import {
   miniRebind,
 } from '@server';
 import { get } from '../../utils/get';
-import set from '../../utils/set';
-import typeofFn from '@common/utils/typeof';
-import threadReducer from '../thread/reducer';
 import locals from '@common/utils/local-bridge';
 import constants from '@common/constants';
 
@@ -199,6 +196,36 @@ class UserAction extends SiteStore {
   }
 
   @action
+  findAssignedUserInFollowersAndFans({ userId }) {
+    const resultArray = [];
+    Object.values(this.followStore).forEach((follows) => {
+      if (follows && follows.data) {
+        Object.keys(follows.data).forEach((page) => {
+          follows.data[page].forEach((userInfo) => {
+            if (get(userInfo, 'user.pid') !== userId) return;
+
+            resultArray.push(userInfo);
+          });
+        });
+      }
+    });
+
+    Object.values(this.fansStore).forEach((fans) => {
+      if (fans && fans.data) {
+        Object.keys(fans.data).forEach((page) => {
+          fans.data[page].forEach((userInfo) => {
+            if (get(userInfo, 'user.pid') !== userId) return;
+
+            resultArray.push(userInfo);
+          });
+        });
+      }
+    });
+
+    return resultArray;
+  }
+
+  @action
   clearUserFanses({ userId }) {
     if (!this.fansStore[userId]) return;
     this.fansStore[userId] = null;
@@ -207,11 +234,102 @@ class UserAction extends SiteStore {
 
   // 关注某个用户
   @action
-  followUser({ userId }) {}
+  followUser({ userId, followRes }) {
+    const followTransformer = (userInfo) => {
+      if (get(userInfo, 'user.pid') !== userId) return;
+      userInfo.userFollow.isMutual = followRes.data.isMutual;
+      userInfo.userFollow.isFollow = true;
+    };
+
+    Object.values(this.followStore).forEach((follows) => {
+      if (follows && follows.data) {
+        Object.keys(follows.data).forEach((page) => {
+          follows.data[page].forEach((userInfo) => {
+            followTransformer(userInfo);
+          });
+        });
+      }
+    });
+
+    Object.values(this.fansStore).forEach((fans) => {
+      if (fans && fans.data) {
+        Object.keys(fans.data).forEach((page) => {
+          fans.data[page].forEach((userInfo) => {
+            followTransformer(userInfo);
+          });
+        });
+      }
+    });
+
+    if (this.followStore[this.id] && this.followStore[this.id].data) {
+      let searchFlag = false;
+      Object.keys(this.followStore[this.id].data).forEach((page) => {
+        this.followStore[this.id].data[page].forEach((userInfo) => {
+          if (userInfo.user.pid === userId) {
+            searchFlag = true;
+          }
+        });
+      });
+
+      if (!searchFlag) {
+        const { currentPage = 1 } = this.followStore[this.id].attribs;
+
+        const findResult = this.findAssignedUserInFollowersAndFans({ userId });
+
+        if (findResult.length > 0) {
+          this.followStore[this.id].data[currentPage].push(findResult[0]);
+        }
+      }
+    }
+
+    if (this.userInfo) {
+      this.userInfo.followCount += 1;
+    }
+
+    this.followStore = { ...this.followStore };
+    this.fansStore = { ...this.fansStore };
+  }
 
   // 取消关注某个用户
   @action
-  unFollowUser({ userId }) {}
+  unFollowUser({ userId }) {
+    const unfollowTransformer = (userInfo) => {
+      if (get(userInfo, 'user.pid') !== userId) return;
+      userInfo.userFollow.isFollow = false;
+    };
+
+    Object.values(this.followStore).forEach((follows) => {
+      if (follows && follows.data) {
+        Object.keys(follows.data).forEach((page) => {
+          follows.data[page].forEach((userInfo) => {
+            unfollowTransformer(userInfo);
+          });
+        });
+      }
+    });
+
+    Object.values(this.fansStore).forEach((fans) => {
+      if (fans && fans.data) {
+        Object.keys(fans.data).forEach((page) => {
+          fans.data[page].forEach((userInfo) => {
+            unfollowTransformer(userInfo);
+          });
+        });
+      }
+    });
+
+    if (this.userInfo) {
+      this.userInfo.followCount -= 1;
+
+      // 如果删除为 0，清空 followers
+      if (this.userInfo.followCount === 0) {
+        this.clearUserFollowers({ userId: this.id });
+      }
+    }
+
+    this.followStore = { ...this.followStore };
+    this.fansStore = { ...this.fansStore };
+  }
 
   @action
   removeUserInfo() {
