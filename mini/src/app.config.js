@@ -74,6 +74,7 @@ const config = {
         'forum/partner-invite/index',
         'invite/index',
         'user/index',
+        'my/renew/index',
       ],
     },
   ],

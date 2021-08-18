@@ -13,6 +13,7 @@ import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';
 import throttle from '@common/utils/thottle.js';
 import LoginHelper from '@common/utils/login-helper';
+import MemberShipCard from '@components/MemberShipCard';
 
 @inject('site')
 @inject('user')
@@ -226,6 +227,13 @@ class index extends Component {
     this.showPreviewerRef();
   };
 
+  // 点击去到续费页面
+  onRenewalFeeClick = () => {
+    Router.push({
+      url: '/subPages/my/renew/index',
+    });
+  };
+
   render() {
     const { targetUser } = this.props.user;
     const user = this.props.isOtherPerson ? targetUser || {} : this.props.user;
@@ -308,6 +316,7 @@ class index extends Component {
             </>
           )}
         </View>
+        {!this.props.isOtherPerson && <MemberShipCard onRenewalFeeClick={this.onRenewalFeeClick} />}
         {/* 右上角屏蔽按钮 */}
         {this.props.isOtherPerson && (
           <View
