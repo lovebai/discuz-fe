@@ -18,6 +18,14 @@ class RenewalFee extends Component {
     this.props.onClose && this.props.onClose();
   };
 
+  renderFeeDateContent = () => {
+    if (this.props.user?.expiredDays === 0) {
+      return `有效期：${0}天`;
+    } else {
+      return `有效期：${this.props.user?.expiredDays}天•${time.formatDate(this.props.user?.expiredAt, 'YYYY年MM月DD日')}`;
+    }
+  };
+
   render() {
     return (
       <div className={styles.renewalFeeWrapper}>
@@ -59,12 +67,7 @@ class RenewalFee extends Component {
                 ￥{this.props.site?.sitePrice} 立即续费
               </Button>
               <div className={styles.effectTimer}>
-                {this.props.user?.expiredDays === 0
-                  ? `有效期：${0}天`
-                  : `有效期：${this.props.user?.expiredDays}天•${time.formatDate(
-                      this.props.user?.expiredAt,
-                      'YYYY年MM月DD',
-                    )}`}
+                {this.renderFeeDateContent()}
               </div>
             </div>
           </div>

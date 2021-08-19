@@ -10,6 +10,15 @@ import time from '@discuzq/sdk/dist/time';
 @inject('user')
 @observer
 class RenewalFee extends Component {
+
+  renderFeeDateContent = () => {
+    if (this.props.user?.expiredDays === 0) {
+      return `有效期：${0}天`;
+    } else {
+      return `有效期：${this.props.user?.expiredDays}天•${time.formatDate(this.props.user?.expiredAt, 'YYYY年MM月DD日')}`;
+    }
+  };
+
   render() {
     const siteBackgroundImage = this.props.site?.siteBackgroundImage;
     return (
@@ -47,12 +56,7 @@ class RenewalFee extends Component {
             <View className={styles.menuItem}>
               <View className={styles.menuTitle}>有效期</View>
               <View className={styles.menuValue}>
-                {this.props.user?.expiredDays === 0
-                  ? `有效期：${0}天`
-                  : `有效期：${this.props.user?.expiredDays}天•${time.formatDate(
-                      this.props.user?.expiredAt,
-                      'YYYY年MM月DD',
-                    )}`}
+                {this.renderFeeDateContent()}
               </View>
             </View>
           </View>

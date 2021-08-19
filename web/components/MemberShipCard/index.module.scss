@@ -45,6 +45,7 @@
       padding: 0;
       line-height: rem(36);
       border-radius: rem(5);
+      flex-shrink: 0;
     }
     .feeTimer {
       color: $text-color-regular;

@@ -16,6 +16,23 @@ export default class MemberShipCard extends Component {
     this.props.onRenewalFeeClick && this.props.onRenewalFeeClick();
   };
 
+  renderFeeDateContent = () => {
+    if (this.props.user?.expiredDays === 0) {
+      return (
+        <>
+          <span className={styles.feeDay}>{this.props.user?.expiredDays}</span>天
+        </>
+      );
+    } else {
+      return (
+        <>
+          <span className={styles.feeDay}>{this.props.user?.expiredDays}</span>天•
+          {time.formatDate(this.props.user?.expiredAt, 'YYYY年MM月DD日')}
+        </>
+      );
+    }
+  };
+
   render() {
     const { shipCardClassName } = this.props;
     return (
@@ -27,18 +44,7 @@ export default class MemberShipCard extends Component {
             <Button onClick={this.handleRenewalFee} type="primary" className={styles.btn}>
               续费
             </Button>
-            <span className={styles.feeTimer}>
-              {this.props.user?.expiredDays === 0 ? (
-                <>
-                  <span className={styles.feeDay}>{this.props.user?.expiredDays}</span>天
-                </>
-              ) : (
-                <>
-                  <span className={styles.feeDay}>{this.props.user?.expiredDays}</span>天•
-                  {time.formatDate(this.props.user?.expiredAt, 'YYYY年MM月DD')}
-                </>
-              )}
-            </span>
+            <span className={styles.feeTimer}>{this.renderFeeDateContent()}</span>
           </div>
         </div>
       </div>
