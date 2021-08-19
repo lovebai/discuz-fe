@@ -54,7 +54,10 @@ class Index extends React.Component {
           this.props.user.updateAssignThreadInfo(threadId, { updateType: 'share', updatedInfo: result.data, user: user.userInfo });
 
           const { recomputeRowHeights = noop } = this.props;
-          recomputeRowHeights();
+
+          if (recomputeRowHeights && typeof recomputeRowHeights === 'function') {
+            recomputeRowHeights();
+          }
         }
       });
     }, 500)
@@ -292,6 +295,11 @@ class Index extends React.Component {
             platform={platform}
             onOpen={this.onOpen}
             updateViewCount={this.updateViewCount}
+            recomputeRowHeights={data => {
+              if (this.props.recomputeRowHeights && typeof this.props.recomputeRowHeights === 'function') {
+                this.props.recomputeRowHeights(data);
+              }
+            }}
             onTextItemClick={onTextItemClick}
           />
 
