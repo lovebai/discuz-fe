@@ -423,7 +423,7 @@ class CommentH5Page extends React.Component {
       canStick: false,
       isAdmini: this.props?.user?.isAdmini,
     };
-
+    const { isAnonymous } = this.props.thread?.threadData || '';
     // 更多弹窗界面
     const moreStatuses = {
       isEssence: false,
@@ -476,6 +476,7 @@ class CommentH5Page extends React.Component {
                 postId={this.props.comment.postId}
                 positionRef={this.positionRef}
                 threadId={this.props.thread.threadData.userId}
+                isAnonymous={isAnonymous}
               ></CommentList>
             )}
           </View>
