@@ -9,7 +9,7 @@ import Page from '@components/page';
 import { get } from '@common/utils/get';
 import { BANNED_USER, REVIEWING, REVIEW_REJECT, checkUserStatus, isExtFieldsOpen } from '@common/store/login/util';
 import { MOBILE_LOGIN_STORE_ERRORS } from '@common/store/login/mobile-login-store';
-import LoginHelper from '@common/utils/login-helper';
+import loginHelper from '@common/utils/login-helper';
 import setAccessToken from '@common/utils/set-access-token';
 import { getParamCode, getUserProfile } from '../common/utils';
 import layout from './index.module.scss';
@@ -52,6 +52,7 @@ class WXBind extends Component {
         this.props.h5QrCode.bindTitle = '已成功绑定';
         this.props.h5QrCode.isBtn = false;
       }
+      toPage && loginHelper.setUrl(decodeURIComponent(toPage));
       if (res.code === 0 && loginType === 'h5') {
         const accessToken = get(res, 'data.accessToken');
         const uid = get(res, 'data.uid');
@@ -62,15 +63,11 @@ class WXBind extends Component {
         const userData = await this.props.user.updateUserInfo(uid);
         const mobile = get(userData, 'mobile', '');
         if (bindPhone && !mobile) { // 需要绑定手机，但是用户未绑定手机时，跳转到绑定手机页面
-          redirectTo({ url: `/subPages/user/bind-phone/index?toPage=${toPage}` });
+          redirectTo({ url: `/subPages/user/bind-phone/index` });
           return;
         }
-        if (toPage) {
-          redirectTo({ url: decodeURIComponent(toPage) });
-          return;
-        };
         this.props.h5QrCode.bindTitle = '已成功绑定，正在跳转到首页';
-        LoginHelper.gotoIndex();
+        loginHelper.restore();
         return;
       }
       if (res.code === 0) {
@@ -90,7 +87,7 @@ class WXBind extends Component {
           redirectTo({ url: '/subPages/user/supplementary/index' });
           return;
         }
-        LoginHelper.restore();
+        loginHelper.restore();
         return;
       }
 

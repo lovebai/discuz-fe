@@ -194,7 +194,7 @@ export default class PayBox extends React.Component {
     this.props.payBox.visible = false;
     const { currentPage: { type, threadId = '' } } = this.props.payBox;
     let path = '';
-    if (this.props.site.isMiniProgramOpen) {
+    if (this.props.site.wechatEnv === 'miniProgram') {
       // 跳小程序绑定后继续访问的页面路径
       switch(type) {
         case 1: // 帖子详情
@@ -205,7 +205,7 @@ export default class PayBox extends React.Component {
           break;
       }
     }
-    if (this.props.site.isOffiaccountOpen) {
+    if (this.props.site.wechatEnv === 'openPlatform') {
       loginHelper.saveCurrentUrl();
       path = loginHelper.getUrl();
     }

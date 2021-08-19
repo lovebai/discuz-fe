@@ -101,7 +101,7 @@ class BindPhoneH5Page extends React.Component {
       if (!commonLogin.loginLoading) {
         return;
       }
-      const { sessionToken, from = '', toPage = '' } = getCurrentInstance().router.params;
+      const { sessionToken, from = '' } = getCurrentInstance().router.params;
       commonLogin.setLoginLoading(false);
       const resp = await this.props.mobileBind.bind(sessionToken);
       const uid = get(resp, 'uid', '');
@@ -120,10 +120,6 @@ class BindPhoneH5Page extends React.Component {
         hasMask: false,
         duration: 2000,
         onClose: () => {
-          if (toPage) {
-            redirectTo({ url: decodeURIComponent(toPage) });
-            return;
-          };
           if (IS_FROM_BIND_SOURCE) {
             navigateBack();
             return;

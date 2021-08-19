@@ -94,7 +94,7 @@ class WeixinBindH5Page extends React.Component {
           status: 'success'
         });
       }
-      toPage && loginHelper.setUrl(toPage);
+      toPage && loginHelper.setUrl(decodeURIComponent(toPage));
       if (res.code === 0 && loginType === 'h5') {
         const accessToken = get(res, 'data.accessToken');
         const uid = get(res, 'data.uid');
