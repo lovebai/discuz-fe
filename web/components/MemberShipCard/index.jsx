@@ -16,6 +16,15 @@ export default class MemberShipCard extends Component {
     this.props.onRenewalFeeClick && this.props.onRenewalFeeClick();
   };
 
+  // 获取日期格式
+  getDateFormat = () => {
+    if (time.isCurrentYear(this.props.user?.expiredAt)) {
+      return 'MM月DD日';
+    } else {
+      return 'YYYY年MM月DD日';
+    }
+  };
+
   renderFeeDateContent = () => {
     if (this.props.user?.expiredDays === 0) {
       return (
@@ -27,7 +36,7 @@ export default class MemberShipCard extends Component {
       return (
         <>
           <span className={styles.feeDay}>{this.props.user?.expiredDays}</span>天•
-          {time.formatDate(this.props.user?.expiredAt, 'YYYY年MM月DD日')}
+          {time.formatDate(this.props.user?.expiredAt, this.getDateFormat())}
         </>
       );
     }

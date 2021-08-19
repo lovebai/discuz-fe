@@ -12,7 +12,6 @@ import renewPay from '@common/pay-bussiness/renew-pay';
 @inject('user')
 @observer
 class RenewalFee extends Component {
-
   handleRenewPay = async () => {
     const sitePrice = this.props.site?.sitePrice;
     const siteName = this.props.site?.siteName;
@@ -21,7 +20,16 @@ class RenewalFee extends Component {
     try {
       await renewPay({ sitePrice, siteName, userStore, siteStore });
     } catch (error) {
-      console.error(error)
+      console.error(error);
+    }
+  };
+
+  // 获取日期格式
+  getDateFormat = () => {
+    if (time.isCurrentYear(this.props.user?.expiredAt)) {
+      return 'MM月DD日';
+    } else {
+      return 'YYYY年MM月DD日';
     }
   };
 
@@ -29,7 +37,10 @@ class RenewalFee extends Component {
     if (this.props.user?.expiredDays === 0) {
       return `有效期：${0}天`;
     } else {
-      return `有效期：${this.props.user?.expiredDays}天•${time.formatDate(this.props.user?.expiredAt, 'YYYY年MM月DD日')}`;
+      return `有效期：${this.props.user?.expiredDays}天•${time.formatDate(
+        this.props.user?.expiredAt,
+        this.getDateFormat(),
+      )}`;
     }
   };
 
@@ -66,9 +77,7 @@ class RenewalFee extends Component {
             </div>
             <div className={styles.menuItem}>
               <div className={styles.menuTitle}>有效期</div>
-              <div className={styles.menuValue}>
-                {this.renderFeeDateContent()}
-              </div>
+              <div className={styles.menuValue}>{this.renderFeeDateContent()}</div>
             </div>
           </div>
           <div className={styles.feeBtn}>
