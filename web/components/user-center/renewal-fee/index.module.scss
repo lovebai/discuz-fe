@@ -59,9 +59,12 @@
     }
     .menuTitle {
       color: $text-color-primary;
+      flex-shrink: 0;
+      margin-right: rem($margin-2n);
     }
     .menuValue {
       color: $text-color-regular;
+      @include text-ellipsis();
     }
   }
   .feeBtn {
