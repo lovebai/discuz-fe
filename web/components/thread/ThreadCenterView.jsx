@@ -37,7 +37,8 @@ const Index = (props) => {
       onPay,
       onOpen,
       platform,
-      updateViewCount
+      updateViewCount,
+      onTextItemClick
     } = props
 
     // 标题显示37个字符
@@ -71,7 +72,8 @@ const Index = (props) => {
                 updateViewCount={updateViewCount}
                 useShowMore={!openedMore}
                 onRedirectToDetail={onClick}
-                onOpen={onOpen}/>
+                onOpen={onOpen}
+                onTextItemClick={onTextItemClick} />
               }
 
               {videoData && (

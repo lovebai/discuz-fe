@@ -91,7 +91,8 @@ export default class DynamicVList extends React.Component {
       renderLeft,
       requestError,
       noMore,
-      errorText
+      errorText,
+      onScroll = () => {}
     } = this.props;
     const { sticks, threads } = data;
     const { pageData } = threads || {};
@@ -104,7 +105,7 @@ export default class DynamicVList extends React.Component {
         sticks={sticks}
         platform="pc"
         pageName="home"
-        // onScroll={this.handleScroll}
+        onScroll={onScroll}
         loadNextPage={loadNextPage}
         noMore={noMore}
         requestError={requestError}
