@@ -25,9 +25,6 @@ class WXBind extends Component {
   constructor(props) {
     super(props);
     this.handleBindButtonClick = this.handleBindButtonClick.bind(this);
-    this.state = {
-      status: ''
-    }
   }
 
   async componentDidMount() {
@@ -39,7 +36,7 @@ class WXBind extends Component {
   }
 
   getUserProfileCallback = async (params) => {
-    const { scene: sessionToken, bindPhone = '', loginType, jumpType } = getCurrentInstance().router.params;
+    const { scene: sessionToken, bindPhone = '', loginType, toPage = '' } = getCurrentInstance().router.params;
 
     try {
       const res = await this.props.miniBind.mobilebrowserBind({
@@ -54,11 +51,8 @@ class WXBind extends Component {
       if (res.code === 0) {
         this.props.h5QrCode.bindTitle = '已成功绑定';
         this.props.h5QrCode.isBtn = false;
-        this.setState({
-          status: 'success'
-        });
       }
-      if (res.code === 0 && loginType === 'h5' && jumpType !== '1') {
+      if (res.code === 0 && loginType === 'h5') {
         const accessToken = get(res, 'data.accessToken');
         const uid = get(res, 'data.uid');
         // 注册成功后，默认登录
@@ -68,9 +62,13 @@ class WXBind extends Component {
         const userData = await this.props.user.updateUserInfo(uid);
         const mobile = get(userData, 'mobile', '');
         if (bindPhone && !mobile) { // 需要绑定手机，但是用户未绑定手机时，跳转到绑定手机页面
-          redirectTo({ url: '/subPages/user/bind-phone/index' });
+          redirectTo({ url: `/subPages/user/bind-phone/index?toPage=${toPage}` });
           return;
         }
+        if (toPage) {
+          redirectTo({ url: decodeURIComponent(toPage) });
+          return;
+        };
         this.props.h5QrCode.bindTitle = '已成功绑定，正在跳转到首页';
         LoginHelper.gotoIndex();
         return;
@@ -83,9 +81,6 @@ class WXBind extends Component {
         Message: res.msg,
       };
     } catch (error) {
-      this.setState({
-        status: 'error'
-      });
       this.props.commonLogin.setLoginLoading(true);
       await getParamCode(this.props.commonLogin);
       // 注册信息补充
@@ -136,8 +131,7 @@ class WXBind extends Component {
   }
 
   render() {
-    const { nickname, jumpType = '' } = getCurrentInstance().router.params;
-    const { status } = this.state;
+    const { nickname } = getCurrentInstance().router.params;
 
     return (
       <Page>
@@ -147,7 +141,6 @@ class WXBind extends Component {
               <View className={layout.title}>绑定小程序</View>
               <View className={layout.tips}>
                 {nickname ? `${nickname}，` : ''}{this.props.h5QrCode.bindTitle}
-                { jumpType === '1' && status === 'success' && <Text>请返回原页面继续支付</Text>}
               </View>
               {
                 this.props.h5QrCode.isBtn

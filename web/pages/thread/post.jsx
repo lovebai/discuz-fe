@@ -645,6 +645,7 @@ class PostPage extends React.Component {
       }
       PayBox.createPayBox({
         data: { ...data, title, type },
+        currentPage: { type: 2 },
         orderCreated: async (orderInfo) => {
           const { orderSn } = orderInfo;
           this.setPostData({ orderInfo });
