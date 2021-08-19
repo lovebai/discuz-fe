@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import { Dialog, Button, Icon } from '@discuzq/design';
+import { Dialog, Button, Icon, Toast } from '@discuzq/design';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 import { numberFormat } from '@common/utils/number-format';
 import time from '@discuzq/sdk/dist/time';
+import renewPay from '@common/pay-bussiness/renew-pay';
 
 @inject('site')
 @inject('user')
@@ -18,11 +19,26 @@ class RenewalFee extends Component {
     this.props.onClose && this.props.onClose();
   };
 
+  handleRenewPay = async () => {
+    const sitePrice = this.props.site?.sitePrice;
+    const siteName = this.props.site?.siteName;
+    const userStore = this.props.user;
+    const siteStore = this.props.site;
+    try {
+      await renewPay({ sitePrice, siteName, userStore, siteStore });
+    } catch (error) {
+      console.error(error)
+    }
+  };
+
   renderFeeDateContent = () => {
     if (this.props.user?.expiredDays === 0) {
       return `有效期：${0}天`;
     } else {
-      return `有效期：${this.props.user?.expiredDays}天•${time.formatDate(this.props.user?.expiredAt, 'YYYY年MM月DD日')}`;
+      return `有效期：${this.props.user?.expiredDays}天•${time.formatDate(
+        this.props.user?.expiredAt,
+        'YYYY年MM月DD日',
+      )}`;
     }
   };
 
@@ -63,12 +79,10 @@ class RenewalFee extends Component {
               </div>
             </div>
             <div className={styles.feeBtn}>
-              <Button type="primary" className={styles.btn}>
+              <Button type="primary" className={styles.btn} onClick={this.handleRenewPay}>
                 ￥{this.props.site?.sitePrice} 立即续费
               </Button>
-              <div className={styles.effectTimer}>
-                {this.renderFeeDateContent()}
-              </div>
+              <div className={styles.effectTimer}>{this.renderFeeDateContent()}</div>
             </div>
           </div>
         </Dialog>

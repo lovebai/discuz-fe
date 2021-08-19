@@ -5,17 +5,32 @@ import Button from '@discuzq/design/dist/components/button/index';
 import { View, Text } from '@tarojs/components';
 import { numberFormat } from '@common/utils/number-format';
 import time from '@discuzq/sdk/dist/time';
+import renewPay from '@common/pay-bussiness/renew-pay';
 
 @inject('site')
 @inject('user')
 @observer
 class RenewalFee extends Component {
+  handleRenewPay = async () => {
+    const sitePrice = this.props.site?.sitePrice;
+    const siteName = this.props.site?.siteName;
+    const userStore = this.props.user;
+    const siteStore = this.props.site;
+    try {
+      await renewPay({ sitePrice, siteName, userStore, siteStore });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   renderFeeDateContent = () => {
     if (this.props.user?.expiredDays === 0) {
       return `有效期：${0}天`;
     } else {
-      return `有效期：${this.props.user?.expiredDays}天•${time.formatDate(this.props.user?.expiredAt, 'YYYY年MM月DD日')}`;
+      return `有效期：${this.props.user?.expiredDays}天•${time.formatDate(
+        this.props.user?.expiredAt,
+        'YYYY年MM月DD日',
+      )}`;
     }
   };
 
@@ -55,13 +70,11 @@ class RenewalFee extends Component {
             </View>
             <View className={styles.menuItem}>
               <View className={styles.menuTitle}>有效期</View>
-              <View className={styles.menuValue}>
-                {this.renderFeeDateContent()}
-              </View>
+              <View className={styles.menuValue}>{this.renderFeeDateContent()}</View>
             </View>
           </View>
           <View className={styles.feeBtn}>
-            <Button type="primary" className={styles.btn}>
+            <Button type="primary" className={styles.btn} onClick={this.handleRenewPay}>
               ￥{this.props.site?.sitePrice} 立即续费
             </Button>
           </View>

@@ -1,11 +1,11 @@
 import PayBox from '@components/payBox';
 
 export default ({ sitePrice, siteName, userStore, siteStore }) => {
-  const { amount, threadId, payeeId } = payData;
+  // const { amount, threadId, payeeId } = payData;
 
-  if (!amount || !threadId || !payeeId) {
-    return Promise.resolve({ success: false, data: '参数错误' });
-  }
+  // if (!amount || !threadId || !payeeId) {
+  //   return Promise.resolve({ success: false, data: '参数错误' });
+  // }
 
   return new Promise((resolve, reject) => {
     PayBox.createPayBox({
