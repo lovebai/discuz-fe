@@ -138,7 +138,7 @@ class TopicSelect extends Component {
           immediateCheck={false}
           platform={platform}
         >
-          {showNewTopic && this.renderItem({ content: searchWord.trim(), newTopic: '新话题' })}
+          {showNewTopic && this.renderItem({ content: searchWord, newTopic: '新话题' })}
           {topics.map(item => (
             <React.Fragment key={item.topicId}>
               {this.renderItem(item)}
