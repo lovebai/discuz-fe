@@ -299,6 +299,11 @@ class UserStore {
     return get(this.userInfo, 'expiredAt')
   }
 
+  // 判断是否是无限期
+  @computed get isIndefiniteDuration() {
+    return Number(get(this.userInfo, 'expiredDays')) >= 10000
+  }
+
   // 发帖扩展的权限
   @computed get threadExtendPermissions() {
     const { permissions: pm } = this;

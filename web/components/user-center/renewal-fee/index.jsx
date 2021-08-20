@@ -26,8 +26,10 @@ class RenewalFee extends Component {
     const siteStore = this.props.site;
     try {
       await renewPay({ sitePrice, siteName, userStore, siteStore });
+      this.onClose();
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      this.onClose();
     }
   };
 
