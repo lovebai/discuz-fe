@@ -192,7 +192,7 @@ export default class PayBox extends React.Component {
   gotoBind = () => {
     this.props.payBox.visible = false;
     Router.push({ url: '/user/wx-bind-qrcode?jumpType=1' });
-  }
+  };
 
   renderRightChoices = (item) => {
     const { options = {} } = this.props.payBox;
@@ -203,7 +203,7 @@ export default class PayBox extends React.Component {
         return <Radio name={item.paymentType} />;
       }
 
-      return this.walletPaySubText();
+      // return this.walletPaySubText();
     }
 
     if (item.paymentType === PAYWAY_MAP.WX) {
@@ -244,7 +244,10 @@ export default class PayBox extends React.Component {
                     <Icon className={styles.icon} name={item.icon} color={item.color} size={20} />
                     <p className={styles.text}>{item.name}</p>
                   </div>
-                  <div className={styles.right}>{this.renderRightChoices(item)}</div>
+                  <div className={styles.right}>
+                    {item.paymentType === PAYWAY_MAP.WALLET && this.walletPaySubText()}
+                    {this.renderRightChoices(item)}
+                  </div>
                 </div>
               );
             })}
