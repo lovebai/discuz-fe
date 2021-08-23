@@ -6,10 +6,10 @@ import { inject } from 'mobx-react';
 import ThreadMiniPage from '@layout/thread/index';
 // import PayBoxProvider from '@components/payBox/payBoxProvider';
 import withShare from '@common/utils/withShare/withShare';
-import ErrorMiniPage from '../../layout/error/index';
 import { priceShare } from '@common/utils/priceShare';
 import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@components/toast';
+import ErrorMiniPage from '../../layout/error/index';
 
 // const MemoToastProvider = React.memo(ToastProvider);
 @inject('site')
