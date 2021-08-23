@@ -69,6 +69,11 @@ const Index = ({
       goToLoginPage({ url: '/subPages/user/wx-auth/index' });
       return;
     }
+    const isApproved = data?.isApproved === 1;
+    if (!isApproved) {
+      Toast.info({content: '内容正在审核中'});
+      return ;
+    }
     setShow(true)
   }
   useEffect(() => {
