@@ -286,6 +286,7 @@ class Index extends React.Component {
           </div>
 
           <ThreadCenterView
+            site={site}
             onContentHeightChange={onContentHeightChange}
             onImageReady={onImageReady}
             onVideoReady={onVideoReady}

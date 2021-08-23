@@ -10,7 +10,9 @@ import ImageDisplay from './image-display';
 import VoteDisplay from './vote-display';
 import Packet from './packet';
 import styles from './index.module.scss';
-
+import DZQPluginCenter from '@common/plugin';
+import CustomIframDisplay from '@common/plugin/post/CustomIframDisplay';
+DZQPluginCenter.register(CustomIframDisplay);
 /**
  * 帖子内容组件
  * @prop {object} data 帖子数据
@@ -50,7 +52,7 @@ const Index = (props) => {
     }, [title])
 
     // 帖子属性内容
-    const renderThreadContent = ({ content: data, attachmentPrice, payType, paid } = {}) => {
+    const renderThreadContent = ({ content: data, attachmentPrice, payType, paid, site } = {}) => {
         const {
           text,
           imageData,
@@ -62,8 +64,8 @@ const Index = (props) => {
           fileData,
           voteData,
           threadId,
+          plugin
         } = handleAttachmentData(data);
-
         return (
           <>
               {text && <PostContent
@@ -120,6 +122,19 @@ const Index = (props) => {
             {fileData?.length > 0 && <AttachmentView threadId={threadId} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount} />}
             {/* 投票帖子展示 */}
             {voteData && <VoteDisplay recomputeRowHeights={props.recomputeRowHeights} voteData={voteData} threadId={threadId} />}
+
+            {
+              DZQPluginCenter.injection('plugin_index', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
+                return (
+                  <div key={pluginInfo.name}>
+                    {render({
+                      site: props.site,
+                      renderData: plugin
+                    })} 
+                  </div>
+                )
+              })
+            }
           </>
         );
     }

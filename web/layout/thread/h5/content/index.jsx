@@ -17,9 +17,13 @@ import UserInfo from '@components/thread/user-info';
 import styles from './index.module.scss';
 import { debounce } from '@common/utils/throttle-debounce';
 
+import DZQPluginCenter from '@common/plugin';
+import CustomIframDisplay from '@common/plugin/post/CustomIframDisplay';
+DZQPluginCenter.register(CustomIframDisplay);
+
 // 帖子内容
-const RenderThreadContent = inject('user')(observer((props) => {
-  const { store: threadStore } = props;
+const RenderThreadContent = inject('site', 'user')(observer((props) => {
+  const { store: threadStore, site } = props;
   const { text, indexes } = threadStore?.threadData?.content || {};
   const { parentCategoryName, categoryName } = threadStore?.threadData;
   const tipData = {
@@ -249,6 +253,19 @@ const RenderThreadContent = inject('user')(observer((props) => {
               </Button>
             </div>
           )}
+
+          {
+            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
+              return (
+                <div key={pluginInfo.name}>
+                  {render({
+                    site: site,
+                    renderData: parseContent.plugin
+                  })} 
+                </div>
+              )
+            })
+          }
 
           {/* 标签 */}
           {(parentCategoryName || categoryName) && (

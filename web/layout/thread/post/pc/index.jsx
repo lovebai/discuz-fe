@@ -28,6 +28,10 @@ import MoneyDisplay from '@components/thread-post/money-display';
 import TagLocalData from '@components/thread-post/tag-localdata';
 import VoteWidget from '@components/thread-post/vote-widget';
 
+import DZQPluginCenter from '@common/plugin';
+import CustomIframPost from '@common/plugin/post/CustomIframPost';
+DZQPluginCenter.register(CustomIframPost);
+
 @inject('threadPost')
 @inject('index')
 @inject('thread')
@@ -62,6 +66,8 @@ class ThreadPCPage extends React.Component {
       }
     });
     resizeObserver.observe(this.pluginContainer.current);
+
+
   }
 
   hintCustom = (type, key, textareaPosition, lastindex, vditor) => {
@@ -168,6 +174,7 @@ class ThreadPCPage extends React.Component {
                       onCancel={this.hintHide}
                     />
                   }
+                
 
                   {/* 插入图片 */}
                   {(currentAttachOperation === THREAD_TYPE.image
@@ -245,6 +252,21 @@ class ThreadPCPage extends React.Component {
                       onDelete={() => this.props.setPostData({ product: {} })}
                     />
                   )}
+
+                  {
+                    DZQPluginCenter.injection('plugin_post', 'post_extension_content_hook').map(({render, pluginInfo}) => {
+                      return (
+                        <div key={1}>
+                          {render({
+                            site: this.props.site,
+                            renderData: postData.plugin,
+                            deletePlugin: this.props.threadPost.deletePluginPostData,
+                            updatePlugin: this.props.threadPost.setPluginPostData
+                          })} 
+                        </div>
+                      )
+                    })
+                  }
                 </div>
 
               </div>
@@ -310,11 +332,13 @@ class ThreadPCPage extends React.Component {
                 <AttachmentToolbar
                   pc
                   isOpenQcloudVod={this.props.site.isOpenQcloudVod}
+                  site={this.props.site}
                   postData={postData}
                   onAttachClick={(item, ...props) => {
                     this.hintHide();
                     this.props.handleAttachClick(item, ...props);
                   }}
+                  onPluginSetPostData={this.props.threadPost.setPluginPostData}
                   onVideoUpload={this.props.handleVideoUpload}
                   onUploadComplete={this.props.handleVideoUploadComplete}
                   permission={user.threadExtendPermissions}

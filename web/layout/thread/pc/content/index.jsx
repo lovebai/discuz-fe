@@ -18,10 +18,14 @@ import { minus } from '@common/utils/calculate';
 import { parseContentData } from '../../utils';
 import { debounce } from '@common/utils/throttle-debounce';
 
+import DZQPluginCenter from '@common/plugin';
+import CustomIframDisplay from '@common/plugin/post/CustomIframDisplay';
+DZQPluginCenter.register(CustomIframDisplay);
+
 // 帖子内容
-export default inject('user')(
+export default inject('site', 'user')(
   observer((props) => {
-    const { store: threadStore } = props;
+    const { store: threadStore, site } = props;
     const { text, indexes } = threadStore?.threadData?.content || {};
     const { parentCategoryName, categoryName } = threadStore?.threadData;
     const tipData = {
@@ -113,7 +117,6 @@ export default inject('user')(
       e && e.stopPropagation();
       typeof props.onUserClick === 'function' && props.onUserClick();
     };
-
     return (
       <div className={`${topic.container}`}>
         <div className={topic.header}>
@@ -292,6 +295,19 @@ export default inject('user')(
               </Button>
             </div>
           )}
+
+          {
+            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
+              return (
+                <div key={pluginInfo.name}>
+                  {render({
+                    site: site,
+                    renderData: parseContent.plugin
+                  })} 
+                </div>
+              )
+            })
+          }
 
           {/* 标签 */}
           {(parentCategoryName || categoryName) && (
