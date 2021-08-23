@@ -14,10 +14,10 @@ import { priceShare } from '@common/utils/priceShare';
 @inject('user')
 @inject('baselayout')
 @observer
-@withShare({
-  needLogin: true,
-  showShareTimeline: true
-})
+// @withShare({
+//   needLogin: true,
+//   showShareTimeline: false
+// })
 class Index extends React.Component {
   state = {
     isError: false,
