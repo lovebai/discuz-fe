@@ -35,6 +35,7 @@ import toolbarStyles from '@components/editor/toolbar/index.module.scss';
 import TagLocalData from '@components/thread-post/tag-localdata';
 import VoteWidget from '@components/thread-post/vote-widget';
 import VoteEditor from '@components/thread-post/vote-editor';
+import IframeVideo from '@components/thread-post/iframe-video';
 
 function judgeDeviceType() {
   const ua = window.navigator.userAgent.toLowerCase();
@@ -557,6 +558,8 @@ class ThreadCreate extends React.Component {
             }}
           />
         )}
+        {/* 插入视频或者外部音视频iframe链接 */}
+        <IframeVideo />
       </div>
     );
   }

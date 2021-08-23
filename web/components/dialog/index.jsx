@@ -8,6 +8,7 @@ export default function DDialog(props) {
     onClose = () => { },
     onCacel = () => { },
     onConfirm = () => { },
+    confirmDisabled = false,
     isCustomBtn = false,
     className,
     confirmText = '确定',
@@ -36,7 +37,7 @@ export default function DDialog(props) {
       {!isCustomBtn && (
         <div className={styles.btn}>
           <Button onClick={() => onCacel()}>取消</Button>
-          <Button type="primary" onClick={() => onConfirm()}>{confirmText}</Button>
+          <Button type="primary" disabled={confirmDisabled} onClick={() => onConfirm()}>{confirmText}</Button>
         </div>
       )}
     </Dialog>

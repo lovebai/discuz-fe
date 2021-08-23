@@ -50,6 +50,10 @@
         &:last-child {
           @include button-primary;
         }
+        &.is-disabled {
+          color: $white;
+          background-color: $disabled-color;
+        }
       }
     }
   }

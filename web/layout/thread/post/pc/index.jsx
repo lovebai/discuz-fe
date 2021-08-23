@@ -27,6 +27,7 @@ import VideoDisplay from '@components/thread-post/video-display';
 import MoneyDisplay from '@components/thread-post/money-display';
 import TagLocalData from '@components/thread-post/tag-localdata';
 import VoteWidget from '@components/thread-post/vote-widget';
+import IframeVideo from '@components/thread-post/iframe-video';
 
 @inject('threadPost')
 @inject('index')
@@ -367,6 +368,8 @@ class ThreadPCPage extends React.Component {
               }}
             />
           )}
+          {/* 插入视频或者外部音视频iframe链接 */}
+          <IframeVideo pc />
           {/* 插入付费 */}
           {!!this.props.curPaySelect && (
             <AllPostPaid
