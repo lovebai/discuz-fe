@@ -201,16 +201,35 @@ class PostPage extends React.Component {
   };
 
   // 上传视频之前判断是否已经有了视频，如果有了视频提示只能上传一个视频
-  handleVideoUpload = (isStart) => {
+  // 这个和选择文件之前的回调放到一起了，所以注意一下
+  handleVideoUpload = (files) => {
     const { postData } = this.props.threadPost;
     if (postData.video && postData.video.id) {
       Toast.info({ content: '只能上传一个视频' });
       return false;
     }
-    if (isStart) { // 视频选择完毕，即将上传
-      this.isVideoUploadDone = false;
-    }
-    return true;
+    if (!files) return true;
+
+    const [file] = files;
+    let toastInstance = null;
+    toastInstance = Toast.loading({
+      content: '上传中...',
+      duration: 0,
+      hasMask: true,
+    });
+    tencentVodUpload({
+      file,
+      onUploading: () => {},
+      onComplete: (res, file) => {
+        this.handleVodUploadComplete(res, file, THREAD_TYPE.video);
+        toastInstance?.destroy();
+      },
+      onError: (err) => {
+        this.handleVodUploadComplete(null, file, THREAD_TYPE.video);
+        Toast.error({ content: err.message });
+        toastInstance?.destroy();
+      },
+    });
   };
 
   // 通过云点播上传成功之后处理：主要是针对语音和视频

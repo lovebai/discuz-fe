@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DDialog from '@components/dialog';
 import { Radio, Input, Popup, Button } from '@discuzq/design';
+import ChooseFile from '@components/choose-file';
 import classNames from 'classnames';
 import styles from './index.module.scss';
 
@@ -11,7 +12,14 @@ const CHOOSE_TYPE = {
   [NETWORK]: '网络插入',
 };
 
-const IframeVideo = ({ visible = true, pc, onConfirm, onClose }) => {
+const IframeVideo = ({
+  visible,
+  pc,
+  onConfirm = () => { },
+  onCancel = () => { },
+  onUploadChange = () => { },
+  beforeUpload,
+}) => {
   const [value, setValue] = useState(LOCAL);
   const [confirmText, setConfirmText] = useState('上传');
   const [iframe, setIframe] = useState('');
@@ -47,23 +55,39 @@ const IframeVideo = ({ visible = true, pc, onConfirm, onClose }) => {
       position="bottom" // 从哪个地方弹出 'bottom' | 'top' | 'center';
       maskClosable={true} // 点击遮罩层是否关闭弹出层，但好像没什么用
       visible={visible} // 是否显示弹出层
-      onClose={() => {
-        // 遮罩层点击关闭回调,传一个'取消'，可自定义更改
-        // handleClose();
-      }}
+      onClose={onCancel}
     >
       {content}
       <div className={styles.btn}>
-        <Button onClick={onClose}>取消</Button>
-        <Button type="primary" disabled={value === NETWORK && !iframe} onClick={() => onConfirm()}>{confirmText}</Button>
+        <Button onClick={onCancel}>取消</Button>
+        <ChooseFile
+            isChoose={true}
+            onChange={onUploadChange}
+            accept="video/*"
+            limit={1}
+            beforeUpload={beforeUpload}
+          >
+          <Button
+            className={styles.confirmbtn}
+            type="primary"
+            disabled={value === NETWORK && !iframe}
+            onClick={() => onConfirm()}>{confirmText}</Button>
+        </ChooseFile>
       </div>
     </Popup>
   );
 
   return (
     <DDialog
+      accept="video/*"
+      limit={1}
       visible={visible}
       confirmText={confirmText}
+      confirmType="upload"
+      beforeUpload={beforeUpload}
+      onUploadChange={onUploadChange}
+      onCacel={onCancel}
+      onClose={onCancel}
       confirmDisabled={value === NETWORK && !iframe}
       className={value === LOCAL ? styles.local : styles.network}>
       {content}

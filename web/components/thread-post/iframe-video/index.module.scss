@@ -131,5 +131,9 @@
         }
       }
     }
+    .confirmbtn {
+      margin-right: 0 !important;
+      @include button-primary;
+    }
   }
 }

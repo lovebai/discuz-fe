@@ -316,8 +316,6 @@ class ThreadPCPage extends React.Component {
                     this.hintHide();
                     this.props.handleAttachClick(item, ...props);
                   }}
-                  onVideoUpload={this.props.handleVideoUpload}
-                  onUploadComplete={this.props.handleVideoUploadComplete}
                   permission={user.threadExtendPermissions}
                   currentSelectedToolbar={threadPost.currentSelectedToolbar}
                 />
@@ -369,7 +367,21 @@ class ThreadPCPage extends React.Component {
             />
           )}
           {/* 插入视频或者外部音视频iframe链接 */}
-          <IframeVideo pc />
+          {currentAttachOperation === THREAD_TYPE.video && (
+            <IframeVideo pc
+              visible={currentAttachOperation === THREAD_TYPE.video}
+              onCancel={() => {
+                this.props.handleSetState({ currentAttachOperation: false });
+                this.props.threadPost.setCurrentSelectedToolbar(false);
+              }}
+              beforeUpload={this.props.handleVideoUpload}
+              onUploadChange={(files) => {
+                this.props.handleSetState({ currentAttachOperation: false });
+                this.props.threadPost.setCurrentSelectedToolbar(false);
+                this.props.handleVideoUpload(files);
+              }}
+            />
+          )}
           {/* 插入付费 */}
           {!!this.props.curPaySelect && (
             <AllPostPaid
