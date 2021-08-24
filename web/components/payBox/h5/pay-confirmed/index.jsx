@@ -81,9 +81,11 @@ export default class PayBox extends React.Component {
         </Button>
       );
     }
+
     if (Number(this.props.payBox?.walletAvaAmount) < Number(amount)) {
       return <p className={styles.subText}>余额不足</p>;
     }
+
     return (
       <>
         {this.props.payBox?.walletAvaAmount ? (
@@ -200,7 +202,12 @@ export default class PayBox extends React.Component {
 
     if (item.paymentType === PAYWAY_MAP.WALLET) {
       if (canWalletPay && Number(this.props.payBox?.walletAvaAmount) >= Number(options.amount)) {
-        return <Radio name={item.paymentType} />;
+        return (
+          <>
+            {this.walletPaySubText()}
+            <Radio name={item.paymentType} />
+          </>
+        );
       }
 
       // return this.walletPaySubText();

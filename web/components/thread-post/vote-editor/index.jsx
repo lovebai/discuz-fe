@@ -19,6 +19,7 @@ const Index = ({ cancel, pc, visible, threadPost }) => {
   }];
 
   const hasVoteData = data?.vote?.voteTitle;
+  const voteId = data?.vote?.voteId || '';
 
   const [subitems, setSubitems] = useState(hasVoteData ? data.vote.subitems : initSubitems);
   const [title, setTitle] = useState(hasVoteData ? data.vote.voteTitle : '');
@@ -43,11 +44,17 @@ const Index = ({ cancel, pc, visible, threadPost }) => {
       return;
     }
 
-    setSubitems(subitemsCopy);
+    if (new Date(time) < new Date()) {
+      Toast.info({ content: '投票结束时间必须大于当前时间' });
+      return;
+    }
 
+
+
+    setSubitems(subitemsCopy);
     threadPost.setPostData({
       vote: {
-        voteId: '',
+        voteId: voteId,
         voteTitle: title,
         choiceType: type,
         expiredAt: formatDate(new Date(time), 'yyyy/MM/dd hh:mm:ss'),

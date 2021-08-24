@@ -4,23 +4,12 @@ import { View, Text } from '@tarojs/components';
 import Radio from '@discuzq/design/dist/components/radio/index';
 import Input from '@discuzq/design/dist/components/input/index';
 import Button from '@discuzq/design/dist/components/button/index';
+import Toast from '@discuzq/design/dist/components/toast/index';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import DateTimePicker from '../date-time-picker';
 import { formatDate } from '@common/utils/format-date';
 import { observer, inject } from 'mobx-react';
 import styles from './index.module.scss';
-
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import { Radio, Button, Input, Toast, Icon } from '@discuzq/design';
-// import { inject, observer } from 'mobx-react';
-// import styles from './index.module.scss';
-// import DDialog from '@components/dialog';
-// import DatePicker from 'react-datepicker';
-// import DatePickers from '@components/thread/date-picker'
-// import { formatDate } from '@common/utils/format-date';
 
 const Index = ({ threadPost }) => {
 
@@ -34,6 +23,7 @@ const Index = ({ threadPost }) => {
   }];
 
   const hasVoteData = data?.vote?.voteTitle;
+  const voteId = data?.vote?.voteId || '';
 
   const [subitems, setSubitems] = useState(hasVoteData ? data.vote.subitems : initSubitems);
   const [title, setTitle] = useState(hasVoteData ? data.vote.voteTitle : '');
@@ -69,11 +59,16 @@ const Index = ({ threadPost }) => {
       return;
     }
 
+    if (new Date(time) < new Date()) {
+      Toast.info({ content: '投票结束时间必须大于当前时间' });
+      return;
+    }
+
     setSubitems(subitemsCopy);
 
     threadPost.setPostData({
       vote: {
-        voteId: '',
+        voteId: voteId,
         voteTitle: title,
         choiceType: type,
         expiredAt: formatDate(time, 'yyyy/MM/dd hh:mm:ss'),
