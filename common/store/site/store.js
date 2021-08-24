@@ -153,6 +153,11 @@ class SiteStore {
   @computed get countThreads() {
     return get(this.webConfig,'other.countThreads')
   }
+
+  // 站点有效期
+  @computed get siteExpire() {
+    return get(this.webConfig,'setSite.siteExpire')
+  }
 }
 
 export default SiteStore;
