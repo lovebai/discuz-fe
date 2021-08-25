@@ -241,8 +241,7 @@ class H5OthersPage extends React.Component {
           {this.state.fetchUserInfoLoading && <BottomView className={styles.loadingBox} isBox loadingText="加载中..." />}
           <View
             style={{
-              visibility: !this.state.fetchUserInfoLoading ? 'visible' : 'hidden',
-              height: !this.state.fetchUserInfoLoading ? 'auto' : '0px',
+              display: !this.state.fetchUserInfoLoading ? 'block' : 'none'
             }}
           >
             <View onClick={this.handlePreviewBgImage}>
