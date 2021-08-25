@@ -39,6 +39,7 @@ const Index = inject('user', 'threadPost')(observer((props) => {
     if (item.type === THREAD_TYPE.voice && postData?.audio?.mediaUrl) return activeCls;
     if (item.type === THREAD_TYPE.video && postData?.video?.thumbUrl) return activeCls;
     if (item.type === THREAD_TYPE.image && Object.keys(postData?.images || []).length > 0) return activeCls;
+    if (item.type === THREAD_TYPE.vote && postData?.vote?.voteTitle) return activeCls;
     if (item.type === THREAD_TYPE.anonymity && postData?.anonymous) return activeCls;
     return cls;
   };
