@@ -138,7 +138,7 @@ const Index = inject('site', 'user', 'threadPost')(observer((props) => {
   );
 
   return (
-    <View className={styles['container']}>
+    <View className={`${styles['container']} ${plugShow ? styles['container-plugin-show'] : ''}`}>
       <View className={styles['category']}>
         {plugShow ? plug : category}
       </View>

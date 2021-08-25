@@ -11,8 +11,8 @@ const INJECTION_LIST = {
 
                 const { 
                     renderData, 
-                    onConfirm, 
                     site, 
+                    onConfirm = () => {},
                     showPluginDialog = () => {},  
                     closePluginDialog = () => {}
                 } = props;
@@ -44,7 +44,7 @@ const INJECTION_LIST = {
                 // 只会提供属于插件自身的数据
                 // 必须严格控制可传入到插件的数据
 
-                const { renderData, site, deletePlugin = () => {}, updatePlugin = () => {} } = props;
+                const { renderData, site, onConfirm = () => {}, deletePlugin = () => {}, updatePlugin = () => {} } = props;
 
                 if ( !checkProps(props) ) {
                     console.warn(`${pluginData.pluginName} -> 缺失插件必须提供参数！`);
@@ -58,6 +58,7 @@ const INJECTION_LIST = {
                 return <PluginCompoent
                     renderData={_renderData}
                     siteData={site}
+                    onConfirm={dispatchEvent(pluginData, onConfirm)}
                     deletePlugin={dispatchEvent(pluginData, deletePlugin)}
                     updatePlugin={dispatchEvent(pluginData, updatePlugin)}
                     _pluginInfo={{...pluginData}}

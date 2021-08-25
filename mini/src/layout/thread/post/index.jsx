@@ -865,7 +865,8 @@ class Index extends Component {
                           site: this.props.site,
                           renderData: postData.plugin,
                           deletePlugin: this.props.threadPost.deletePluginPostData,
-                          updatePlugin: this.props.threadPost.setPluginPostData
+                          updatePlugin: this.props.threadPost.setPluginPostData,
+                          onConfirm: this.props.threadPost.setPluginPostData,
                         })}
                       </View>
                     )

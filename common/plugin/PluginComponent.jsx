@@ -7,7 +7,7 @@ export default class PluginComponent extends Component {
     }
 
     componentDidCatch(err) {
-        console.log('===========', err);
+        console.error(err);
     }
 
     render() {
