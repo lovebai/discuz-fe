@@ -92,7 +92,7 @@ class ThreadH5Page extends React.Component {
     this.isPositioned = false;
   }
 
-  componentWillMount () {
+  componentWillMount() {
     const onShowEventId = this.$instance.router.onShow
     // 监听
     eventCenter.on(onShowEventId, this.onShow.bind(this))
@@ -198,7 +198,7 @@ class ThreadH5Page extends React.Component {
       }
       this.flag = !this.flag;
     }
-    this.setState({ stateFlag: this.flag})
+    this.setState({ stateFlag: this.flag })
   }
 
   // 点击收藏icon
@@ -230,8 +230,8 @@ class ThreadH5Page extends React.Component {
 
   // 加载第二段评论列表
   async loadCommentList() {
-    const { isCommentReady } = this.props.thread;
-    if (this.state.isCommentLoading || !isCommentReady) {
+    const { isCommentReady, isCommentListError } = this.props.thread;
+    if (this.state.isCommentLoading || (!isCommentReady && !isCommentListError)) {
       return;
     }
 
@@ -410,22 +410,22 @@ class ThreadH5Page extends React.Component {
   // wx分享
   onWxShare() {
     const { thread, user } = this.props
-    const {nickname} = thread.threadData?.user || ''
-    const {avatar} = thread.threadData?.user || ''
+    const { nickname } = thread.threadData?.user || ''
+    const { avatar } = thread.threadData?.user || ''
     const threadId = thread?.threadData?.id
-    if(thread.threadData?.isAnonymous) {
-      user.getShareData({nickname, avatar,threadId})
+    if (thread.threadData?.isAnonymous) {
+      user.getShareData({ nickname, avatar, threadId })
       thread.threadData.user.nickname = '匿名用户'
       thread.threadData.user.avatar = ''
     }
   }
   onShow() {
     const { thread, user } = this.props
-    if(user.shareThreadid === thread?.threadData?.id) {
-      if(thread.threadData?.isAnonymous){
-          thread.threadData.user.nickname = user.shareNickname
-          thread.threadData.user.avatar = user.shareAvatar
-          user.getShareData({})
+    if (user.shareThreadid === thread?.threadData?.id) {
+      if (thread.threadData?.isAnonymous) {
+        thread.threadData.user.nickname = user.shareNickname
+        thread.threadData.user.avatar = user.shareAvatar
+        user.getShareData({})
       }
     }
   }
@@ -943,6 +943,10 @@ class ThreadH5Page extends React.Component {
     this.setState({ showAboptPopup: false });
   }
 
+  onRetryClick() {
+    this.loadCommentList()
+  }
+
   render() {
     const { thread: threadStore } = this.props;
     const { isReady, isCommentReady, isNoMore, totalCount, isCommentListError } = threadStore;
@@ -1077,7 +1081,7 @@ class ThreadH5Page extends React.Component {
                     </View>
                   </Fragment>
                 ) : (
-                  <LoadingTips isError={isCommentListError} type="init"></LoadingTips>
+                  <LoadingTips isError={isCommentListError} type="init" onErrorClick={() => this.onRetryClick()}></LoadingTips>
                 )}
               </View>
             )}
@@ -1102,18 +1106,18 @@ class ThreadH5Page extends React.Component {
               {/* 操作区 */}
               <View className={footer.operate}>
                 <View className={footer.icon} onClick={() => this.onMessageClick()}>
-                  {this.state.stateFlag ? 
+                  {this.state.stateFlag ?
                     totalCount > 0 ? (
-                    <View className={classNames(footer.badge, totalCount < 10 && footer.isCricle)}>
-                      {totalCount > 99 ? '99+' : `${totalCount || '0'}`}
-                    </View>
-                  ) : (
-                    ''
-                  ) : (
-                    <View className={footer.content}>
-                      正文
-                    </View>
-                  )}
+                      <View className={classNames(footer.badge, totalCount < 10 && footer.isCricle)}>
+                        {totalCount > 99 ? '99+' : `${totalCount || '0'}`}
+                      </View>
+                    ) : (
+                      ''
+                    ) : (
+                      <View className={footer.content}>
+                        正文
+                      </View>
+                    )}
                   <Icon size="20" name="MessageOutlined"></Icon>
                 </View>
                 <Icon
