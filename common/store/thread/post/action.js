@@ -200,7 +200,8 @@ class ThreadPostAction extends ThreadPostStore {
    */
   @action
   gettContentIndexes() {
-    const { images, video, files, product, audio, redpacket, rewardQa, orderInfo = {}, vote = {} } = this.postData;
+    const { images, video, files, product, audio, redpacket,
+      rewardQa, orderInfo = {}, vote = {}, iframe = {} } = this.postData;
     const imageIds = Object.values(images).map(item => item.id);
     const docIds = Object.values(files).map(item => item.id);
     const contentIndexes = {};
@@ -258,6 +259,13 @@ class ThreadPostAction extends ThreadPostStore {
       };
     }
 
+    // 网络插入视频
+    if (iframe.content) {
+      contentIndexes[THREAD_TYPE.iframe] = {
+        tomId: THREAD_TYPE.iframe,
+        body: { ...iframe },
+      };
+    }
 
     return contentIndexes;
   }
@@ -334,6 +342,7 @@ class ThreadPostAction extends ThreadPostStore {
     const images = {};
     const files = {};
     let vote = {};
+    let iframe = {};
     // 插件格式化
     Object.keys(contentindexes).forEach((index) => {
       const tomId = Number(contentindexes[index].tomId);
@@ -380,6 +389,9 @@ class ThreadPostAction extends ThreadPostStore {
           value,
         };
       }
+      if (tomId === THREAD_TYPE.iframe) {
+        iframe = contentindexes[index].body || {};
+      }
     });
     const anonymous = isAnonymous ? 1 : 0;
     this.setPostData({
@@ -403,6 +415,7 @@ class ThreadPostAction extends ThreadPostStore {
       anonymous,
       orderInfo,
       threadId,
+      iframe,
     });
   }
 

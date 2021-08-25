@@ -36,6 +36,7 @@ import TagLocalData from '@components/thread-post/tag-localdata';
 import VoteWidget from '@components/thread-post/vote-widget';
 import VoteEditor from '@components/thread-post/vote-editor';
 import IframeVideo from '@components/thread-post/iframe-video';
+import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
 
 function judgeDeviceType() {
   const ua = window.navigator.userAgent.toLowerCase();
@@ -310,6 +311,14 @@ class ThreadCreate extends React.Component {
               src={postData.video.thumbUrl}
               onDelete={() => this.props.setPostData({ video: {} })}
               onReady={this.props.onVideoReady} />
+          )}
+          {/* 外部视频iframe插入和上面的视频组件是互斥的 */}
+          {(postData.iframe && postData.iframe.content) && (
+            <div id="dzq-post-video">
+              <IframeVideoDisplay
+                content={postData.iframe.content}
+              />
+            </div>
           )}
           {/* 录音组件 */}
           {(currentAttachOperation === THREAD_TYPE.voice

@@ -6,7 +6,7 @@ import DVditor from '@components/editor';
 import Title from '@components/thread-post/title';
 import { AttachmentToolbar, DefaultToolbar } from '@components/editor/toolbar';
 import Position from '@components/thread-post/position';
-import { Button, Audio, AudioRecord, Tag } from '@discuzq/design';
+import { Button, Audio, AudioRecord } from '@discuzq/design';
 import ClassifyPopup from '@components/thread-post/classify-popup';
 import { withRouter } from 'next/router';
 import Emoji from '@components/editor/emoji';
@@ -28,6 +28,7 @@ import MoneyDisplay from '@components/thread-post/money-display';
 import TagLocalData from '@components/thread-post/tag-localdata';
 import VoteWidget from '@components/thread-post/vote-widget';
 import IframeVideo from '@components/thread-post/iframe-video';
+import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
 
 @inject('threadPost')
 @inject('index')
@@ -199,6 +200,14 @@ class ThreadPCPage extends React.Component {
                       onReady={this.props.onVideoReady} />
                   )}
 
+                  {/* 外部视频iframe插入和上面的视频组件是互斥的 */}
+                  {(postData.iframe && postData.iframe.content) && (
+                    <div id="dzq-post-video">
+                      <IframeVideoDisplay
+                        content={postData.iframe.content}
+                      />
+                    </div>
+                  )}
                   {/* 录音组件 */}
                   {(currentAttachOperation === THREAD_TYPE.voice) && (
                     <div id="dzq-post-audio-record">

@@ -204,7 +204,7 @@ class PostPage extends React.Component {
   // 这个和选择文件之前的回调放到一起了，所以注意一下
   handleVideoUpload = (files) => {
     const { postData } = this.props.threadPost;
-    if (postData.video && postData.video.id) {
+    if ((postData.video && postData.video.id) || (postData.iframe && postData.iframe.content)) {
       Toast.info({ content: '只能上传一个视频' });
       return false;
     }
@@ -337,6 +337,14 @@ class PostPage extends React.Component {
     if (item.type === THREAD_TYPE.vote && postData?.vote?.voteUsers > 0) {
       Toast.info({ content: '投票已生效，不允许编辑' });
       return false;
+    }
+
+    if (item.type === THREAD_TYPE.video) {
+      // 本地上传的视频和网络插入的iframe是互斥的关系
+      if ((postData.video && postData.video.id) || (postData.iframe && postData.iframe.content)) {
+        Toast.info({ content: '只能上传一个视频' });
+        return false;
+      }
     }
 
     if (item.type === THREAD_TYPE.anonymity) {
@@ -574,8 +582,10 @@ class PostPage extends React.Component {
   // 是否有内容
   isHaveContent() {
     const { postData } = this.props.threadPost;
-    const { images, video, files, audio, vote } = postData;
-    if (!(postData.contentText || video.id || vote.voteTitle || audio.id || Object.values(images).length
+    const { images, video, files, audio, vote, iframe = {} } = postData;
+    if (!(postData.contentText || video.id || vote.voteTitle || audio.id
+      || iframe.content
+      || Object.values(images).length
       || Object.values(files).length)) {
       return false;
     }

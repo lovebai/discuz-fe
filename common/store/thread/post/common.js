@@ -24,4 +24,5 @@ export const initPostData = {
   threadId: '', // 文章id
   autoSaveTime: '', // 自动保存时间
   isResetContentText: false, // 是否重置编辑器中的值
+  iframe: {}, // 网络插入视频，都是iframe
 };

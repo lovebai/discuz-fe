@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { inject, observer } from 'mobx-react';
 import DDialog from '@components/dialog';
-import { Radio, Input, Popup, Button } from '@discuzq/design';
+import { Radio, Input, Popup, Button, Toast } from '@discuzq/design';
 import ChooseFile from '@components/choose-file';
 import classNames from 'classnames';
 import styles from './index.module.scss';
@@ -12,17 +13,51 @@ const CHOOSE_TYPE = {
   [NETWORK]: '网络插入',
 };
 
+const urlDomain = [
+  'player.bilibili.com',
+  'em.iq.com',
+  'player.youku.com',
+  'music.163.com',
+  'iqiyi',
+];
+
 const IframeVideo = ({
   visible,
   pc,
-  onConfirm = () => { },
   onCancel = () => { },
   onUploadChange = () => { },
   beforeUpload,
+  threadPost,
 }) => {
   const [value, setValue] = useState(LOCAL);
   const [confirmText, setConfirmText] = useState('上传');
   const [iframe, setIframe] = useState('');
+
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setIframe(value);
+  };
+
+  const handleConfirm = () => {
+    let isMatch = false;
+    const iframeReg = /<iframe[\s]*[^<>]*src="([\S]*[^\s<>"']*)"/gi;
+    if (iframeReg.test(iframe)) {
+      const [srcValue] = iframe.match(/src="([\S]*[^\s<>"']*)"/ig);
+      urlDomain.map((item) => {
+        if (srcValue.indexOf(item) > -1) isMatch = true;
+        return item;
+      });
+    }
+    if (isMatch) {
+      threadPost.setPostData({
+        iframe: {
+          content: iframe,
+          type: 'iframe',
+        },
+      });
+      onCancel();
+    } else Toast.info({ content: 'iframe地址不符合要求' });
+  };
 
   const content = (
     <>
@@ -33,7 +68,7 @@ const IframeVideo = ({
         <>
           <div className={styles.item}>
             <span className={styles.label}>网络音视频iframe代码</span>
-            <Input value={iframe} onChange={e => setIframe(e.target.value)} />
+            <Input value={iframe} onChange={e => handleInputChange(e)} />
           </div>
           <div className={classNames(styles.item, styles.flextop)}>
             <span className={styles.left}>*</span>
@@ -61,7 +96,7 @@ const IframeVideo = ({
       <div className={styles.btn}>
         <Button onClick={onCancel}>取消</Button>
         <ChooseFile
-            isChoose={true}
+            isChoose={value === LOCAL}
             onChange={onUploadChange}
             accept="video/*"
             limit={1}
@@ -71,7 +106,7 @@ const IframeVideo = ({
             className={styles.confirmbtn}
             type="primary"
             disabled={value === NETWORK && !iframe}
-            onClick={() => onConfirm()}>{confirmText}</Button>
+            onClick={handleConfirm}>{confirmText}</Button>
         </ChooseFile>
       </div>
     </Popup>
@@ -83,11 +118,12 @@ const IframeVideo = ({
       limit={1}
       visible={visible}
       confirmText={confirmText}
-      confirmType="upload"
+      confirmType={value === LOCAL ? 'upload' : ''}
       beforeUpload={beforeUpload}
       onUploadChange={onUploadChange}
       onCacel={onCancel}
       onClose={onCancel}
+      onConfirm={handleConfirm}
       confirmDisabled={value === NETWORK && !iframe}
       className={value === LOCAL ? styles.local : styles.network}>
       {content}
@@ -95,4 +131,4 @@ const IframeVideo = ({
   );
 };
 
-export default IframeVideo;
+export default inject('threadPost')(observer(IframeVideo));
