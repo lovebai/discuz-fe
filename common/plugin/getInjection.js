@@ -9,8 +9,14 @@ const INJECTION_LIST = {
                 // 只会提供属于插件自身的数据
                 // 必须严格控制可传入到插件的数据
 
-                const { renderData, onConfirm, site } = props;
-                
+                const { 
+                    renderData, 
+                    onConfirm, 
+                    site, 
+                    showPluginDialog = () => {},  
+                    closePluginDialog = () => {}
+                } = props;
+
                 if ( !checkProps(props) ) {
                     console.warn(`${pluginData.pluginName} -> 缺失插件必须提供参数！`);
                     return null;
@@ -24,6 +30,8 @@ const INJECTION_LIST = {
                     onConfirm={dispatchEvent(pluginData, onConfirm)}
                     renderData={_renderData}
                     siteData={site}
+                    showPluginDialog={dispatchEvent(pluginData, showPluginDialog)}
+                    closePluginDialog={dispatchEvent(pluginData, closePluginDialog)}
                     _pluginInfo={{...pluginData}}
                 />
             },

@@ -16,15 +16,21 @@ class DZQPluginCenterClass extends PluginStore {
 
     // 注入插件
     injection(target, hookName) {
-        const pluginList = this.getStore(target, hookName) || [];
-        const injectList = [];
-        for ( let i = 0; i < pluginList.length; i++ ) {
-            const currInjection = getInjection(`${target}@${pluginList[i].hookName}`);
-            if (currInjection) {
-                injectList.push(currInjection(pluginList[i]))
+        try {
+            const pluginList = this.getStore(target, hookName) || [];
+            const injectList = [];
+            for ( let i = 0; i < pluginList.length; i++ ) {
+                const currInjection = getInjection(`${target}@${pluginList[i].hookName}`);
+                if (currInjection) {
+                    injectList.push(currInjection(pluginList[i]))
+                }
             }
+            return injectList
+        } catch(err) {
+            console.log(err);
+            return [];
         }
-        return injectList
+        
     }
 
     // 检查插件必要属性

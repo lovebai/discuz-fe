@@ -11,7 +11,13 @@ import { attachIcon } from '@common/constants/const';
 import { Units } from '@components/common';
 import { THREAD_TYPE } from '@common/constants/thread-post';
 
-const Index = inject('user', 'threadPost')(observer((props) => {
+// 插件引入
+import DZQPluginCenter from '@common/plugin';
+import CustomIfram from '@common/plugin/post/CustomIfram';
+
+DZQPluginCenter.register(CustomIfram);
+
+const Index = inject('site', 'user', 'threadPost')(observer((props) => {
   const { threadPost, clickCb, onCategoryClick, onSetplugShow, user, operationType } = props;
 
   // 控制插件icon的显示/隐藏
@@ -31,6 +37,7 @@ const Index = inject('user', 'threadPost')(observer((props) => {
 
   const getIconCls = (item) => {
     const cls = styles['plug-icon'];
+    if (!item) return cls;
     const activeCls = `${styles['plug-icon']} ${styles.active}`;
     if (item.type === operationType && item.type !== THREAD_TYPE.anonymity) return activeCls;
     const { postData } = threadPost;
@@ -57,7 +64,7 @@ const Index = inject('user', 'threadPost')(observer((props) => {
     setCanInsertplugsin(canInsert);
 
     // 根据筛选后的插件渲染图标
-    const plugs = canInsert.map((item, index) => {
+    let plugs = canInsert.map((item, index) => {
       return (
         <Icon
           key={index}
@@ -73,6 +80,22 @@ const Index = inject('user', 'threadPost')(observer((props) => {
         />
       );
     });
+
+    // 插件注入
+    plugs = plugs.concat(DZQPluginCenter.injection('plugin_post', 'post_extension_entry_hook').map(({render, pluginInfo}) => {
+      const clsName = getIconCls(null);
+      return (
+        <View key={pluginInfo.pluginName} className={clsName}>
+          {render({
+            site: props.site,
+            onConfirm: props.threadPost.setPluginPostData,
+            renderData: props.threadPost.postData.plugin,
+            showPluginDialog: props.showPluginDialog,
+            closePluginDialog: props.closePluginDialog
+          })}
+        </View>
+      )
+    }));
 
     return (
       <View className={styles['plugin-icon-container']}>

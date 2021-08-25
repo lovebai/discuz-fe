@@ -20,10 +20,14 @@ import { setClipboardData } from '@tarojs/taro';
 import { parseContentData } from '../../utils';
 import styles from './index.module.scss';
 
+import DZQPluginCenter from '@common/plugin';
+import CustomIframDisplay from '@common/plugin/post/CustomIframDisplay';
+DZQPluginCenter.register(CustomIframDisplay);
+
 // 帖子内容
-const RenderThreadContent = inject('user')(
+const RenderThreadContent = inject('site','user')(
   observer((props) => {
-    const { store: threadStore } = props;
+    const { store: threadStore, site } = props;
     const { text, indexes } = threadStore?.threadData?.content || {};
     const { parentCategoryName, categoryName } = threadStore?.threadData;
     const tipData = {
@@ -255,6 +259,19 @@ const RenderThreadContent = inject('user')(
               </Button>
             </View>
           )}
+
+          {
+            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
+              return (
+                <View key={pluginInfo.name}>
+                  {render({
+                    site: site,
+                    renderData: parseContent.plugin
+                  })}
+                </View>
+              )
+            })
+          }
 
           {/* 标签 */}
           {(parentCategoryName || categoryName) && (

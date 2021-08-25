@@ -1,4 +1,4 @@
-import Component from './CustomIfram';
+import Component from './adapter';
 
 export default class CustomIfram {
     static pluginName = 'CustomIfram' // 插件名称

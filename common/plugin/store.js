@@ -51,8 +51,7 @@ export default class PluginStore {
 
     getStore(target, hookName) {
         let list = [];
-        if ( this.store[target] ) {
-
+        if ( this.store[target] && this.store[target][hookName] ) {
             for ( let key in this.store[target][hookName]  ) {
                 list.push({
                     ...this.store[target][hookName][key]

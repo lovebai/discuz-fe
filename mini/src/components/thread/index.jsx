@@ -280,6 +280,7 @@ class Index extends React.Component {
             </View>
 
             <ThreadCenterView
+              site={site}
               text={text}
               data={data}
               onClick={unifyOnClick || this.onClick}
