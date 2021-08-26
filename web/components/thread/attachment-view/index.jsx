@@ -10,6 +10,9 @@ import FilePreview from './../file-preview';
 import getAttachmentIconLink from '@common/utils/get-attachment-icon-link';
 import { ATTACHMENT_FOLD_COUNT } from '@common/constants';
 import { get } from '@common/utils/get';
+import { readDownloadAttachmentStatus } from '@server';
+import { downloadAttachment } from '@common/utils/download-attachment-web';
+import goToLoginPage from '@common/utils/go-to-login-page';
 
 import styles from './index.module.scss';
 import Router from '@discuzq/sdk/dist/router';
@@ -32,6 +35,7 @@ const Index = ({
   site = null,
   updateViewCount = noop,
 }) => {
+  let itemUrl = null;
   // 处理文件大小的显示
   const handleFileSize = (fileSize) => {
     if (fileSize > 1000000) {
@@ -53,11 +57,11 @@ const Index = ({
 
     await thread.fetchThreadAttachmentUrl(threadId, attachmentId).then((res) => {
       if(res?.code === 0 && res?.data) {
-        const { url } = res.data;
+        const { url, fileName } = res.data;
         if(!url) {
           Toast.info({ content: '获取下载链接失败' });
         }
-        callback(url);
+        callback(url, fileName);
       } else {
         if(res?.msg || res?.Message) Toast.info({ content: res?.msg || res?.Message });
       }
@@ -75,6 +79,15 @@ const Index = ({
 
   const onDownLoad = (item, index) => {
     updateViewCount();
+
+    // 下载需要登录态，判断是否登录
+    if (!user.isLogin()) {
+      Toast.info({ content: '请先登录!' });
+      goToLoginPage({ url: '/user/login' });
+      return;
+    }
+    itemUrl = item.url; // 暂用于微信下载
+
     if (!isPay) {
       if(!item || !threadId) return;
 
@@ -82,16 +95,17 @@ const Index = ({
       // setDownloading([...downloading]);
 
 
-      if(isWeiXin()) {
-        window.location.href = item.url;
-        Toast.info({ content: '下载成功' });
-      } else {
+      // if(isWeiXin()) {
+      //   window.location.href = item.url;
+        
+      //   Toast.info({ content: '下载成功' });
+      // } else {
         const attachmentId = item.id;
-        fetchDownloadUrl(threadId, attachmentId, (url) => {
-          window.location.href = url;
-          Toast.info({ content: '下载成功' });
+        fetchDownloadUrl(threadId, attachmentId, (url, fileName) => {
+          // window.location.href = url;
+          download(url, fileName);
         });
-      }
+      // }
 
       // downloading[index] = false;
       // setDownloading([...downloading]);
@@ -101,13 +115,65 @@ const Index = ({
     }
   };
 
+  const download = async (url, fileName) => {
+    const params = downloadAttachmentParams(url);
+    if (params) {
+      const isDownload = await downloadAttachmentStatus(params);
+      if (isDownload) {
+        if (isWeiXin()) {
+          window.location.href = itemUrl;
+          downloadAttachment(url, null, false); // 携带登录态请求一下数据，后端记录下载次数
+        } else {
+          downloadAttachment(url, fileName); // 下载文件
+        }
+        Toast.info({ content: '下载成功' });
+      }
+    }
+  }
+
+  const downloadAttachmentParams = (url) => {
+    if (!url) return;
+    const paramArr = url.split('?')[1].split('&');
+    const params = {
+      sign: paramArr[0].split('=')[1],
+      attachmentsId: Number(paramArr[1].split('=')[1]),
+      isCode: 1,
+    }
+    return params;
+  }
+
+  const downloadAttachmentStatus = async (params) => {
+    const res = await readDownloadAttachmentStatus(params);
+
+    if (res?.code === 0) {
+      // 弹出下载弹框
+      return true;
+    }
+
+    if (res?.code === -7083) {  // 超过今天可下载附件的最大次数
+      Toast.info({ content: res?.msg });
+    }
+
+    if (res?.code === -7082) {  // 下载资源已失效
+      Toast.info({ content: res?.msg });
+    }
+
+    if (res?.code === -4004) {  // 资源不存在
+      Toast.info({ content: res?.msg });
+    }
+    return false;
+  }
+
   const onLinkShare = (item, e) => {
     updateViewCount();
     if (!isPay) {
       if(!item || !threadId) return;
 
       const attachmentId = item.id;
-      fetchDownloadUrl(threadId, attachmentId, async (url) => {
+      fetchDownloadUrl(threadId, attachmentId, async (url, fileName) => {
+        // 链接拼接
+        url = splicingLink(url, fileName);
+        
         setTimeout(() => {
           if(!h5Share({url: url})) {
             navigator.clipboard.writeText(url); // qq浏览器不支持异步document.execCommand('Copy')
@@ -122,6 +188,12 @@ const Index = ({
       onPay();
     }
   };
+
+  const splicingLink = (url, fileName) => {
+    const host = window.location.host; // 域名
+    const protocol = window.location.protocol; // 协议
+    return `${protocol}//${host}/download?url=${url}&fileName=${fileName}`;
+  }
 
   // 文件是否可预览
   const isAttachPreviewable = (file) => {
