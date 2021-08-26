@@ -63,6 +63,8 @@ export const handleAttachmentData = (data) => {
       newData.fileData = item.body;
     } else if (conversionTomID === '109') { // 投票
       newData.voteData = item.body;
+    } else if (conversionTomID === '10002') { // iframe外插视频
+      newData.iframeData = item.body;
     }
     newData.threadId = threadId;
   });

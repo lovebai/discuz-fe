@@ -17,6 +17,7 @@ import topic from './index.module.scss';
 import { minus } from '@common/utils/calculate';
 import { parseContentData } from '../../utils';
 import { debounce } from '@common/utils/throttle-debounce';
+import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
 
 // 帖子内容
 export default inject('user')(
@@ -196,6 +197,10 @@ export default inject('user')(
               status={parseContent.VIDEO.status}
             />
           )}
+          {/* 外部视频iframe插入和上面的视频组件是互斥的 */}
+          {parseContent.IFRAME && <IframeVideoDisplay
+              content={parseContent.IFRAME.content}
+            />}
 
           {/* 图片 */}
           {parseContent.IMAGE && (

@@ -202,11 +202,10 @@ class ThreadPCPage extends React.Component {
 
                   {/* 外部视频iframe插入和上面的视频组件是互斥的 */}
                   {(postData.iframe && postData.iframe.content) && (
-                    <div id="dzq-post-video">
-                      <IframeVideoDisplay
-                        content={postData.iframe.content}
-                      />
-                    </div>
+                    <IframeVideoDisplay
+                      content={postData.iframe.content}
+                      isDeleteShow
+                    />
                   )}
                   {/* 录音组件 */}
                   {(currentAttachOperation === THREAD_TYPE.voice) && (

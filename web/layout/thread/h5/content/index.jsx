@@ -16,6 +16,7 @@ import classnames from 'classnames';
 import UserInfo from '@components/thread/user-info';
 import styles from './index.module.scss';
 import { debounce } from '@common/utils/throttle-debounce';
+import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
 
 // 帖子内容
 const RenderThreadContent = inject('user')(observer((props) => {
@@ -146,6 +147,10 @@ const RenderThreadContent = inject('user')(observer((props) => {
               status={parseContent.VIDEO.status}
             />
           )}
+          {/* 外部视频iframe插入和上面的视频组件是互斥的 */}
+          {parseContent.IFRAME && <IframeVideoDisplay
+              content={parseContent.IFRAME.content}
+            />}
 
           {/* 图片 */}
           {parseContent.IMAGE && (

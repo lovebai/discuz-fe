@@ -8,6 +8,7 @@ import { handleAttachmentData } from './utils';
 import AttachmentView from './attachment-view';
 import ImageDisplay from './image-display';
 import VoteDisplay from './vote-display';
+import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
 import Packet from './packet';
 import styles from './index.module.scss';
 
@@ -62,6 +63,7 @@ const Index = (props) => {
           fileData,
           voteData,
           threadId,
+          iframeData,
         } = handleAttachmentData(data);
 
         return (
@@ -91,6 +93,12 @@ const Index = (props) => {
                   />
                 </WrapperView>
 
+              )}
+              {/* 外部视频iframe插入和上面的视频组件是互斥的 */}
+              {(iframeData && iframeData.content) && (
+                <IframeVideoDisplay
+                  content={iframeData.content}
+                />
               )}
               {imageData?.length > 0 && (
                   <ImageDisplay
