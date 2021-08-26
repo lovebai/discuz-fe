@@ -11,6 +11,7 @@ import { numberFormat } from '@common/utils/number-format';
 import browser from '@common/utils/browser';
 import throttle from '@common/utils/thottle.js';
 import LoginHelper from '@common/utils/login-helper.js';
+import MemberShipCard from '@components/MemberShipCard';
 
 @inject('user')
 @inject('site')
@@ -206,6 +207,17 @@ class index extends Component {
     });
   };
 
+  // 点击去到续费页面
+  onRenewalFeeClick = () => {
+    Router.push({
+      url: '/my/renew',
+    });
+  };
+
+  // 是否显示续费卡片
+  whetherIsShowRenewalCard = () => {
+    return this.props.site?.siteMode === 'pay' && !this.props.user?.isAdmini && !this.props.isOtherPerson;
+  };
 
   @computed get targetUser() {
     const { query } = this.props.router;
@@ -305,6 +317,7 @@ class index extends Component {
             </>
           )}
         </div>
+        {this.whetherIsShowRenewalCard() && <MemberShipCard onRenewalFeeClick={this.onRenewalFeeClick} />}
         {/* 右上角屏蔽按钮 */}
         {this.props.isOtherPerson && (
           <div
