@@ -188,7 +188,7 @@ const RenderThreadContent = inject('user')(observer((props) => {
           <div className={styles.reward}>
             {/* 悬赏 */}
             {parseContent.REWARD && (
-              <div className={styles.rewardBody}>
+              <div className={styles.rewardBody} style={{ width: '100%' }}>
                 {/* <PostRewardProgressBar
                   type={POST_TYPE.BOUNTY}
                   remaining={Number(parseContent.REWARD.remainMoney || 0)}
@@ -206,7 +206,7 @@ const RenderThreadContent = inject('user')(observer((props) => {
             )}
             {/* 红包 */}
             {parseContent.RED_PACKET && (
-              <div>
+              <div style={{ width: '100%' }}>
                 {/* <PostRewardProgressBar
                     remaining={Number(parseContent.RED_PACKET.remainNumber || 0)}
                     received={
@@ -255,19 +255,19 @@ const RenderThreadContent = inject('user')(observer((props) => {
           <AttachmentView attachments={parseContent.VOTE} threadId={threadStore?.threadData?.threadId} />
         )}
 
-          {/* 投票 */}
+        {/* 投票 */}
         {parseContent.VOTE_THREAD
           && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
 
-          {/* 付费附件 */}
-          {needAttachmentPay && (
-            <div style={{ textAlign: 'center' }} onClick={onContentClick}>
-              <Button className={styles.payButton} type="primary">
-                <Icon className={styles.payIcon} name="GoldCoinOutlined" size={16}></Icon>
-                <p>支付{attachmentPrice}元查看附件内容</p>
-              </Button>
-            </div>
-          )}
+        {/* 付费附件 */}
+        {needAttachmentPay && (
+          <div style={{ textAlign: 'center' }} onClick={onContentClick}>
+            <Button className={styles.payButton} type="primary">
+              <Icon className={styles.payIcon} name="GoldCoinOutlined" size={16}></Icon>
+              <p>支付{attachmentPrice}元查看附件内容</p>
+            </Button>
+          </div>
+        )}
 
         {/* 标签 */}
         {(parentCategoryName || categoryName) && (
