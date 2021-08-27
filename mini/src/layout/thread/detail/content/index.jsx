@@ -193,7 +193,7 @@ const RenderThreadContent = inject('user')(
           )}
 
           {(parseContent.RED_PACKET || parseContent.REWARD) && (
-            <View className={styles.reward}>
+            <View className={styles.reward} style={{ width: '100%' }}>
               {/* 悬赏 */}
               {parseContent.REWARD && (
                 <View className={styles.rewardBody}>
@@ -214,7 +214,7 @@ const RenderThreadContent = inject('user')(
               )}
               {/* 红包 */}
               {parseContent.RED_PACKET && (
-                <View>
+                <View style={{ width: '100%' }}>
                   {/* <PostRewardProgressBar
                     remaining={Number(parseContent.RED_PACKET.remainNumber || 0)}
                     received={

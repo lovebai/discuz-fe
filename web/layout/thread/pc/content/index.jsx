@@ -218,10 +218,10 @@ export default inject('user')(observer((props) => {
         )}
 
         {(parseContent.RED_PACKET || parseContent.REWARD) && (
-          <div className={topic.reward}>
+          <div className={topic.reward} style={{ width: '100%' }} >
             {/* 悬赏 */}
             {parseContent.REWARD && (
-              <div className={topic.rewardBody}>
+              <div className={topic.rewardBody} style={{ width: '100%' }}>
                 {/* <PostRewardProgressBar
                   type={POST_TYPE.BOUNTY}
                   remaining={Number(parseContent.REWARD.remainMoney || 0)}
@@ -246,7 +246,7 @@ export default inject('user')(observer((props) => {
 
             {/* 红包 */}
             {parseContent.RED_PACKET && (
-              <div>
+              <div style={{ width: '100%' }}>
                 {/* <PostRewardProgressBar
                   remaining={Number(parseContent.RED_PACKET.remainNumber || 0)}
                   received={
@@ -299,7 +299,7 @@ export default inject('user')(observer((props) => {
 
         {/* 投票 */}
         {parseContent.VOTE_THREAD
-            && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
+          && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
 
         {/* 付费附件：不能免费查看付费帖 && 需要付费 && 不是作者 && 没有付费 */}
         {needAttachmentPay && (
