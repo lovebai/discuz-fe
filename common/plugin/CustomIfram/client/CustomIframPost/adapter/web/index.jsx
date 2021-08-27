@@ -17,7 +17,16 @@ export default class CustomIframPostContent extends React.PureComponent {
       const { url } = body;
       return (
           <div style={{display: 'flex', 'flexDirection': 'column'}}>
-            <button>编辑</button>
+            <button onClick={() => {
+              updatePlugin({
+                postData: {
+                  tomId,
+                  body: {
+                    url: 'https://baidu.com',
+                  }
+                }
+              })
+            }}>编辑</button>
             <button onClick={() => {deletePlugin()}}>删除</button>
             <iframe src={url} width='450' height='500'></iframe>
           </div>
