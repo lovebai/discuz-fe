@@ -46,6 +46,7 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     const { serverIndex, index } = this.props;
+    index.registerList({ namespace: index.namespace });
     // 初始化数据到store中
     // serverIndex && serverIndex.categories && index.setCategories(serverIndex.categories);
     // serverIndex && serverIndex.sticks && index.setSticks(serverIndex.sticks);
@@ -65,7 +66,6 @@ class Index extends React.Component {
     // 当服务器无法获取数据时，触发浏览器渲染
     const hasCategoriesData = !!index.categories;
     const hasSticksData = !!index.sticks;
-    const hasThreadsData = !!index.threads;
 
     if (!hasCategoriesData) {
       this.props.index.getReadCategories();
@@ -74,8 +74,8 @@ class Index extends React.Component {
     if (!hasSticksData) {
       this.props.index.getRreadStickList(categoryIds);
     }
-   
-    if (!hasThreadsData) {
+
+    if (!index.hasThreadsData) {
       this.props.index.getReadThreadList({
         sequence, 
         filter: { categoryids: categoryIds, types: newTypes, essence, attention, sort } 

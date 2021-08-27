@@ -24,6 +24,12 @@ class Index extends React.Component {
     errorText: '加载失败'
   }
 
+  constructor(props) {
+    super(props);
+    const { index } = this.props;
+    index.registerList({ namespace: index.namespace });
+  }
+
   componentDidHide() {
     const { baselayout } = this.props;
 
@@ -96,7 +102,8 @@ class Index extends React.Component {
 
   componentDidShow() {
     const { threads } = this.props.index || {}
-    if (!threads) {
+    console.log(threads)
+    if (!threads?.pageData?.length) {
       this.loadData()
     }
   }

@@ -1,5 +1,6 @@
 import { observable, computed } from 'mobx';
 import ListStore from './list';
+import listProxy from './proxy';
 
 class IndexStore extends ListStore {
   constructor(props) {
@@ -10,11 +11,55 @@ class IndexStore extends ListStore {
 
   @observable sticks = null;
 
-  @observable threads = null;
+  // @observable threads = null;
 
   @observable drafts = null;
 
   @observable latestReq = 0;
+
+  @observable namespace = 'home';
+
+  @computed get threads() {
+    let newData = null;
+
+    const homeData = this.lists?.[this.namespace];
+    const attrs = this.lists?.[this.namespace]?.attribs;
+    if (homeData?.data) {
+      const pageData = this.listAdapter(homeData);
+      newData = {
+        pageData,
+        ...attrs,
+      };
+    }
+    const updateAssignThreadInfoInLists = this.updateAssignThreadInfoInLists.bind(this);
+    const deleteAssignThreadInLists = this.deleteAssignThreadInLists.bind(this);
+    const addThreadInTargetList = this.addThreadInTargetList.bind(this);
+    const setAttribute = this.setAttribute.bind(this);
+    const setTargetListDataByList = this.setTargetListDataByList.bind(this);
+    const namespace = this.namespace;
+
+    const listHandlers = {
+      updateAssignThreadInfoInLists, // 更新
+      deleteAssignThreadInLists, // 删除
+      addThreadInTargetList, // 新增
+      setTargetListDataByList, // 批量更新
+      setAttribute, // 更新属性
+      namespace,
+    };
+
+    return listProxy(newData, listHandlers);
+  }
+  set threads(data) {
+    if (!data) {
+      this.clearList({ namespace: this.namespace });
+    }
+  }
+
+  @computed get hasThreadsData() {
+    const pageData = this.getList({ namespace: this.namespace });
+
+    return !!pageData?.length;
+  }
 
   // 是否出现推荐选项
   @observable needDefault = false
@@ -63,11 +108,19 @@ class IndexStore extends ListStore {
   // 小程序scroll-view被scroll-view嵌套，子元素不能使用同名属性来触发事件
   @observable hasOnScrollToLower = true; // 值为false时，第一层嵌套onScrollToLower被设置为null用于执行下一层onScrollToLower
 
+  // @observable threadError = {
+  //   isError: false,
+  //   errorText: '加载失败',
+  // };
+
   // 首页帖子报错信息
-  @observable threadError = {
-    isError: false,
-    errorText: '加载失败',
-  };
+  @computed get threadError() {
+    const requestError = this.lists?.[this.namespace]?.requestError;
+    return requestError;
+  }
+  set threadError(data) {
+    this.lists[this.namespace].requestError = data;
+  }
 
   // 首页分类报错信息
   @observable categoryError = {

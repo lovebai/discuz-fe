@@ -11,6 +11,7 @@ export default class ListStore {
   registerList = ({
     namespace,
   }) => {
+    window.lists = this.lists;
     if (this.lists[namespace]) return;
     extendObservable(this.lists, {
       [namespace]: {
@@ -53,6 +54,18 @@ export default class ListStore {
   @action
   forceUpdateList = () => {
     this.lists = { ...this.lists };
+  }
+
+  // 通过列表数据更新data
+  @action
+  setTargetListDataByList({ namespace, list }) {
+    if (!this.lists[namespace]) {
+      this.registerList({ namespace });
+    }
+
+    this.lists[namespace].data = {
+      1: list,
+    };
   }
 
   /**
@@ -135,7 +148,7 @@ export default class ListStore {
       this.registerList({ namespace });
     }
 
-    this.lists[namespace].data[listPage] = get(data, 'data.pageData');
+    this.lists[namespace].data[listPage] = observable(get(data, 'data.pageData'));
 
     if (!this.getAttribute({ namespace, key: 'currentPage' }) || Number(this.getAttribute({ namespace, key: 'currentPage' })) <= Number(get(data, 'data.currentPage'))) {
       this.setAttribute({ namespace, key: 'currentPage', value: get(data, 'data.currentPage') });
@@ -187,7 +200,6 @@ export default class ListStore {
     this.lists = { ...this.lists };
   }
 
-
   /**
    * 获取指定的附加属性
    * @param {*} param0
@@ -198,7 +210,19 @@ export default class ListStore {
     if (!this.lists[namespace]) return null;
 
     return this.lists[namespace].attribs[key];
-  }
+  };
+
+  /**
+   * 获取指定的所有附加属性
+   * @param {*} param0
+   * @returns
+   */
+  @action
+  getAttributes = ({ namespace }) => {
+    if (!this.lists[namespace]) return null;
+
+    return this.lists[namespace].attribs;
+  };
 
   /**
    * 在指定列表新增帖子

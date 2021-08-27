@@ -3,7 +3,6 @@ import IndexStore from './store';
 import {
   readCategories,
   readStickList,
-  readThreadList,
   updatePosts,
   createThreadShare,
   readRecommends,
@@ -224,17 +223,10 @@ class IndexAction extends IndexStore {
    */
   @action
   async getReadThreadList({ filter = {}, sequence = 0, perPage = 10, page = 1, isDraft = false } = {}) {
-    // 过滤空字符串
-    const newFilter = filter;
-    if (filter.categoryids && (filter.categoryids instanceof Array)) {
-      const newCategoryIds = filter.categoryids?.filter(item => item);
-      if (!newCategoryIds.length) {
-        delete newFilter.categoryids;
-      }
-    }
     this.latestReq += 1;
     const currentReq = this.latestReq;
-    const result = await readThreadList({ params: { perPage, page, filter: newFilter, sequence } });
+
+    const result = await this.fetchList({ namespace: this.namespace, perPage, page, filter, sequence });
     if (currentReq !== this.latestReq) {
       return;
     }
@@ -254,25 +246,11 @@ class IndexAction extends IndexStore {
           this.setDrafts(result.data);
         }
       } else {
-        if (this.threads && result.data.pageData && page !== 1) {
-          const nextThreads = result.data.pageData.map((item) => {
-            item.openedMore = false;
-            item.commentList = [];
-            item.isLoading = false;
-            item.requestError = {
-              isError: false,
-              errorText: '加载失败',
-            };
-            return item;
-          });
-
-          this.threads.pageData.push(...nextThreads);
-          this.threads.currentPage = result.data.currentPage;
-        } else {
-          // 首次加载
-          this.threads = null;
-          this.setThreads(this.adapterList(result.data));
-        }
+        this.setList({
+          namespace: this.namespace,
+          data: { data: this.adapterList(result.data) },
+          page,
+        });
       }
       return result.data;
     } else {
@@ -431,7 +409,7 @@ class IndexAction extends IndexStore {
     const threadData = this.combineThreadIndexes(data, tomId, tomValue);
     if (this.threads?.pageData) {
       this.threads.pageData[index] = threadData;
-      this.threads.pageData = [...this.threads.pageData];
+      // this.threads.pageData = [...this.threads.pageData];
     }
     this.updateAssignThreadAllData(threadId, threadData);
   }
@@ -617,7 +595,7 @@ class IndexAction extends IndexStore {
 
       if (pageData) {
         pageData.unshift(threadInfo);
-        this.threads.pageData = this.threads.pageData.slice();
+        // this.threads.pageData = this.threads.pageData.slice();
         const totalCount = Number(this.threads.totalCount)
         this.threads.totalCount = totalCount + 1
 
