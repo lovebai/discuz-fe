@@ -254,8 +254,9 @@ class ThreadPCPage extends React.Component {
 
                   {
                     DZQPluginCenter.injection('plugin_post', 'post_extension_content_hook').map(({render, pluginInfo}) => {
+                      
                       return (
-                        <div key={1}>
+                        <div key={pluginInfo.pluginName}>
                           {render({
                             site: this.props.site,
                             renderData: postData.plugin,
