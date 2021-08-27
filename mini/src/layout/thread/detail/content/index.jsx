@@ -16,6 +16,10 @@ import AttachmentView from '@components/thread/attachment-view';
 import { minus } from '@common/utils/calculate';
 import classnames from 'classnames';
 import UserInfo from '@components/thread/user-info';
+import Packet from '@components/thread/packet'
+import PacketOpen from '@components/red-packet-animation';
+
+
 import { setClipboardData } from '@tarojs/taro';
 import { parseContentData } from '../../utils';
 import styles from './index.module.scss';
@@ -29,6 +33,8 @@ const RenderThreadContent = inject('site','user')(
     const { store: threadStore, site } = props;
     const { text, indexes } = threadStore?.threadData?.content || {};
     const { parentCategoryName, categoryName } = threadStore?.threadData;
+    const { hasRedPacket } = threadStore; // 是否有红包领取的数据
+
     const tipData = {
       postId: threadStore?.threadData?.postId,
       threadId: threadStore?.threadData?.threadId,
@@ -76,6 +82,10 @@ const RenderThreadContent = inject('site','user')(
 
     const parseContent = parseContentData(indexes);
 
+    if (parseContent.RED_PACKET?.condition === 1) { // 如果是集赞红包则查询一下红包领取状态
+      threadStore.getRedPacketInfo(parseContent.RED_PACKET.threadId);
+    }
+
     const onContentClick = async () => {
       typeof props.onPayClick === 'function' && props.onPayClick();
     };
@@ -110,8 +120,8 @@ const RenderThreadContent = inject('site','user')(
 
     const onUserClick = () => {
       const userId = threadStore?.threadData?.user?.userId
-      if(!userId) return
-      Router.push({url: `/subPages/user/index?id=${userId}`});
+      if (!userId) return
+      Router.push({ url: `/subPages/user/index?id=${userId}` });
     }
 
     return (
@@ -190,24 +200,34 @@ const RenderThreadContent = inject('site','user')(
               {/* 悬赏 */}
               {parseContent.REWARD && (
                 <View className={styles.rewardBody}>
-                  <PostRewardProgressBar
+                  {/* <PostRewardProgressBar
                     type={POST_TYPE.BOUNTY}
                     remaining={Number(parseContent.REWARD.remainMoney || 0)}
                     received={minus(
                       Number(parseContent.REWARD.money || 0),
                       Number(parseContent.REWARD.remainMoney || 0),
                     )}
+                  /> */}
+                  <Packet
+                    type={1}
+                    money={parseContent.REWARD.money}
+                    remainMoney={parseContent.REWARD.remainMoney}
                   />
                 </View>
               )}
               {/* 红包 */}
               {parseContent.RED_PACKET && (
                 <View>
-                  <PostRewardProgressBar
+                  {/* <PostRewardProgressBar
                     remaining={Number(parseContent.RED_PACKET.remainNumber || 0)}
                     received={
                       Number(parseContent.RED_PACKET.number || 0) - Number(parseContent.RED_PACKET.remainNumber || 0)
                     }
+                    condition={parseContent.RED_PACKET.condition}
+                  /> */}
+                  <Packet
+                    number={parseContent.RED_PACKET.number}
+                    remainNumber={parseContent.RED_PACKET.remainNumber}
                     condition={parseContent.RED_PACKET.condition}
                   />
                   {!!parseContent.RED_PACKET.condition && (
@@ -344,6 +364,11 @@ const RenderThreadContent = inject('site','user')(
             )}
           </View>
         )}
+
+        {
+          hasRedPacket > 0
+          && <PacketOpen onClose={() => threadStore.setRedPacket(0)} money={hasRedPacket} />
+        }
       </View>
     );
   }),
