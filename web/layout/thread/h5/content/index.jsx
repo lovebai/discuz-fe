@@ -17,9 +17,8 @@ import UserInfo from '@components/thread/user-info';
 import styles from './index.module.scss';
 import { debounce } from '@common/utils/throttle-debounce';
 
-import DZQPluginCenter from '@common/plugin';
-import CustomIframDisplay from '@common/plugin/post/CustomIframDisplay';
-DZQPluginCenter.register(CustomIframDisplay);
+// 插件引入
+/**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
 const RenderThreadContent = inject('site', 'user')(observer((props) => {

@@ -36,9 +36,8 @@ import TagLocalData from '@components/thread-post/tag-localdata';
 import VoteWidget from '@components/thread-post/vote-widget';
 import VoteEditor from '@components/thread-post/vote-editor';
 
-import DZQPluginCenter from '@common/plugin';
-import CustomIframPost from '@common/plugin/post/CustomIframPost';
-DZQPluginCenter.register(CustomIframPost);
+// 插件引入
+/**DZQ->plugin->register<plugin_post@post_extension_content_hook>**/
 
 function judgeDeviceType() {
   const ua = window.navigator.userAgent.toLowerCase();

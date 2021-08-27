@@ -12,10 +12,7 @@ import { THREAD_TYPE } from '@common/constants/thread-post';
 import { tencentVodUpload } from '@common/utils/tencent-vod';
 
 // 插件引入
-import DZQPluginCenter from '@common/plugin';
-import CustomIfram from '@common/plugin/post/CustomIfram';
-
-DZQPluginCenter.register(CustomIfram);
+/**DZQ->plugin->register<plugin_post@post_extension_entry_hook>**/
 
 // TODO: upload 待单独独立出来
 function fileToObject(file) {

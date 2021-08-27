@@ -12,10 +12,8 @@ import { Units } from '@components/common';
 import { THREAD_TYPE } from '@common/constants/thread-post';
 
 // 插件引入
-import DZQPluginCenter from '@common/plugin';
-import CustomIfram from '@common/plugin/post/CustomIfram';
+/**DZQ->plugin->register<plugin_post@post_extension_entry_hook>**/
 
-DZQPluginCenter.register(CustomIfram);
 
 const Index = inject('site', 'user', 'threadPost')(observer((props) => {
   const { threadPost, clickCb, onCategoryClick, onSetplugShow, user, operationType } = props;

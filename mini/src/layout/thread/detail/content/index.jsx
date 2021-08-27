@@ -20,9 +20,8 @@ import { setClipboardData } from '@tarojs/taro';
 import { parseContentData } from '../../utils';
 import styles from './index.module.scss';
 
-import DZQPluginCenter from '@common/plugin';
-import CustomIframDisplay from '@common/plugin/post/CustomIframDisplay';
-DZQPluginCenter.register(CustomIframDisplay);
+// 插件引入
+/**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
 const RenderThreadContent = inject('site','user')(

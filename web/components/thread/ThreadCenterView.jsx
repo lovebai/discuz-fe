@@ -10,9 +10,10 @@ import ImageDisplay from './image-display';
 import VoteDisplay from './vote-display';
 import Packet from './packet';
 import styles from './index.module.scss';
-import DZQPluginCenter from '@common/plugin';
-import CustomIframDisplay from '@common/plugin/post/CustomIframDisplay';
-DZQPluginCenter.register(CustomIframDisplay);
+
+// 插件引入
+/**DZQ->plugin->register<plugin_index@thread_extension_display_hook>**/
+
 /**
  * 帖子内容组件
  * @prop {object} data 帖子数据

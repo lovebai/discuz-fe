@@ -23,9 +23,8 @@ import typeofFn from '@common/utils/typeof';
 
 import Dialog from '@discuzq/design/dist/components/dialog/index';
 
-import DZQPluginCenter from '@common/plugin';
-import CustomIframPost from '@common/plugin/post/CustomIframPost';
-DZQPluginCenter.register(CustomIframPost);
+// 插件引入
+/**DZQ->plugin->register<plugin_post@post_extension_content_hook>**/
 
 @inject('payBox')
 @inject('index')

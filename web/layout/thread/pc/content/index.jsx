@@ -18,9 +18,8 @@ import { minus } from '@common/utils/calculate';
 import { parseContentData } from '../../utils';
 import { debounce } from '@common/utils/throttle-debounce';
 
-import DZQPluginCenter from '@common/plugin';
-import CustomIframDisplay from '@common/plugin/post/CustomIframDisplay';
-DZQPluginCenter.register(CustomIframDisplay);
+// 插件引入
+/**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
 export default inject('site', 'user')(

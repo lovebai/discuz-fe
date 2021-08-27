@@ -14,10 +14,8 @@ import styles from './index.module.scss';
 import { View, Text } from '@tarojs/components';
 import { getElementRect, randomStr, noop } from './utils'
 
-import DZQPluginCenter from '@common/plugin';
-import CustomIframDisplay from '@common/plugin/post/CustomIframDisplay';
-DZQPluginCenter.register(CustomIframDisplay);
-
+// 插件引入
+/**DZQ->plugin->register<plugin_index@thread_extension_display_hook>**/
 
 /**
  * 帖子内容组件
