@@ -13,6 +13,7 @@ import { priceShare } from '@common/utils/priceShare';
 @inject('index')
 @inject('user')
 @inject('baselayout')
+@withShare()
 @observer
 @withShare({
   needLogin: true,
@@ -63,7 +64,7 @@ class Index extends React.Component {
         }
       });
     }
-    return     priceShare({isAnonymous, isPrice, path}) ||
+    return priceShare({isAnonymous, isPrice, path}) ||
     {
       title,
       path
