@@ -17,7 +17,7 @@ import UserInfo from '@components/thread/user-info';
 import styles from './index.module.scss';
 import { debounce } from '@common/utils/throttle-debounce';
 import Packet from '@components/thread/packet';
-import PacketOpen from '@components/red-packet-animation';
+import PacketOpen from '@components/red-packet-animation/h5';
 
 
 // 插件引入
