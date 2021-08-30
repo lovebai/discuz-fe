@@ -171,22 +171,6 @@ const RenderThreadContent = inject('site', 'user')(observer((props) => {
           />
         )}
 
-        {/* 悬赏文案 */}
-        {parseContent.REWARD && (
-          <div className={styles.rewardText}>
-            {/* 悬赏 */}
-            {parseContent.REWARD && (
-              <div>
-                <div className={styles.rewardMoney}>
-                  本帖向所有人悬赏
-                  <span className={styles.rewardNumber}>{parseContent.REWARD.money || 0}</span>元
-                </div>
-                <div className={styles.rewardTime}>{parseContent.REWARD.expiredAt}截止悬赏</div>
-              </div>
-            )}
-          </div>
-        )}
-
         {(parseContent.RED_PACKET || parseContent.REWARD) && (
           <div className={styles.reward}>
             {/* 悬赏 */}
@@ -205,6 +189,13 @@ const RenderThreadContent = inject('site', 'user')(observer((props) => {
                   money={parseContent.REWARD.money}
                   remainMoney={parseContent.REWARD.remainMoney}
                 />
+                <div className={styles.rewardText}>
+                  <div className={styles.rewardMoney}>
+                    本帖向所有人悬赏
+                    <span className={styles.rewardNumber}>{parseContent.REWARD.money || 0}</span>元
+                  </div>
+                  <div className={styles.rewardTime}>{parseContent.REWARD.expiredAt}截止悬赏</div>
+                </div>
               </div>
             )}
             {/* 红包 */}
