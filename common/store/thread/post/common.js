@@ -25,4 +25,6 @@ export const initPostData = {
   autoSaveTime: '', // 自动保存时间
   isResetContentText: false, // 是否重置编辑器中的值
   iframe: {}, // 网络插入视频，都是iframe
+  // 插件配置
+  plugin: {}
 };

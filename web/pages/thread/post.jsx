@@ -19,6 +19,7 @@ import { defaultOperation } from '@common/constants/const';
 import ViewAdapter from '@components/view-adapter';
 import commonUpload from '@common/utils/common-upload';
 import { formatDate } from '@common/utils/format-date';
+import typeofFn from '@common/utils/typeof';
 
 @inject('site')
 @inject('threadPost')
@@ -582,11 +583,12 @@ class PostPage extends React.Component {
   // 是否有内容
   isHaveContent() {
     const { postData } = this.props.threadPost;
-    const { images, video, files, audio, vote, iframe = {} } = postData;
-    if (!(postData.contentText || video.id || vote.voteTitle || audio.id
-      || iframe.content
+    const { images, video, files, audio, vote, iframe = {}, plugin } = postData;
+    // todo, 应该还需要扩展当前插件是否可以无需文字
+    if (!(postData.contentText || video.id || vote.voteTitle || audio.id || !typeofFn.isEmptyObject(plugin)
       || Object.values(images).length
-      || Object.values(files).length)) {
+      || Object.values(files).length)
+      || iframe.content) {
       return false;
     }
     return true;
@@ -811,6 +813,7 @@ class PostPage extends React.Component {
     if (!(isAutoSave || isPay)) this.toastInstance = Toast.loading({ content: isDraft ? '保存草稿中' : '发布中...', hasMask: true });
     if (threadPost.postData.threadId) ret = await threadPost.updateThread(threadPost.postData.threadId);
     else ret = await threadPost.createThread();
+    console.log(ret);
     const { code, data, msg } = ret;
     if (code === 0) {
       this.setState({ data });
