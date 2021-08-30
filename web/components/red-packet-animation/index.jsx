@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import style from './index.module.scss';
 import classNames from 'classnames';
 
 const Index = ({ onClose = () => {}, money = '0.00' }) => {
   const [start, setStart] = useState(false);
+  const background = useRef(null);
   const handleClick = () => {
     const button = document.querySelector('#button');
     button.style = 'transform: rotateY(360deg); visibility: hidden';
@@ -13,14 +14,14 @@ const Index = ({ onClose = () => {}, money = '0.00' }) => {
     moneyText.style = 'opacity: 1';
     setStart(true);
   };
-  const handleClose = () => {
+  const handleClose = (e) => {
     if (typeof onClose === 'function' && start) {
       onClose();
     }
   };
   return (
-    <div className={style.masking} onClick={e => handleClose(e)}>
-        <div className={style.container}>
+    <div className={style.masking} onClick={e => handleClose(e)} ref={background}>
+        <div className={style.container} onClick={e => e.stopPropagation()}>
             <div className={style.moneyText} id='moneyText'>
                 <div className={style.text}>恭喜您，领到了</div>
                 <div className={style.money}>{money}元</div>
