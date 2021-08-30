@@ -14,7 +14,7 @@ const Index = ({ onClose = () => {}, money = '0.00' }) => {
     moneyText.style = 'opacity: 1';
     setStart(true);
   };
-  const handleClose = (e) => {
+  const handleClose = () => {
     if (typeof onClose === 'function' && start) {
       onClose();
     }
