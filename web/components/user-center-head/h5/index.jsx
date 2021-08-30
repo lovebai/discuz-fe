@@ -11,7 +11,7 @@ import { numberFormat } from '@common/utils/number-format';
 import browser from '@common/utils/browser';
 import throttle from '@common/utils/thottle.js';
 import LoginHelper from '@common/utils/login-helper.js';
-import MemberShipCard from '@components/MemberShipCard';
+import MemberShipCard from '@components/member-ship-card';
 
 @inject('user')
 @inject('site')
