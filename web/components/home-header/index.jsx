@@ -120,7 +120,7 @@ class HomeHeader extends React.Component {
   }
   returnPage() {
     // 没有上一页时，直接返回首页
-    if (window.history.state.idx < 1) {
+    if (window?.history?.state?.idx < 1) {
       LoginHelper.gotoIndex();
       return;
     }
