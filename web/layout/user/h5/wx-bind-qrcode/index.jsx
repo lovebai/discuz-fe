@@ -15,7 +15,7 @@ import { genMiniBindScheme } from '@server';
 import SkipMiniPopup from '@components/login/skip-mini-popup';
 import locals from '@common/utils/local-bridge';
 import setAccessToken from '@common/utils/set-access-token';
-import LoginHelper from '@common/utils/login-helper';
+import loginHelper from '@common/utils/login-helper';
 
 @inject('site')
 @inject('user')
@@ -48,7 +48,7 @@ class WeixinBindQrCodePage extends React.Component {
 
   async generateQrCode() {
     try {
-      const { sessionToken = '', nickname = '', jumpType = '', bindPhone = '' } = this.props.router.query;
+      const { sessionToken = '', nickname = '', bindPhone = '', toPage = '' } = this.props.router.query;
       const { platform, wechatEnv } = this.props.site;
       const qrCodeType = platform === 'h5' ? 'mobile_browser_bind' : 'pc_bind';
       const process = platform === 'h5' && wechatEnv === 'openPlatform' ? 'bind' : '';
@@ -59,8 +59,9 @@ class WeixinBindQrCodePage extends React.Component {
         name = user.nickname;
       }
 
-      let redirectUri = `${wechatEnv === 'miniProgram' ? '/subPages/user/wx-auth/index' : `${window.location.origin}/user/wx-auth`}?loginType=${platform}&action=wx-bind&nickname=${name}&jumpType=${jumpType}`;
+      let redirectUri = `${wechatEnv === 'miniProgram' ? '/subPages/user/wx-auth/index' : `${window.location.origin}/user/wx-auth`}?loginType=${platform}&action=wx-bind&nickname=${name}`;
       redirectUri += platform === 'h5' && bindPhone ? '&bindPhone=1' : '';
+      redirectUri += platform === 'h5' && toPage ? `&toPage=${toPage}` : '';
       await this.props.h5QrCode.generate({
         params: {
           sessionToken,
@@ -99,7 +100,7 @@ class WeixinBindQrCodePage extends React.Component {
           router.replace('/user/bind-phone');
           return;
         }
-        LoginHelper.restore();
+        loginHelper.restore();
         clearInterval(this.timer);
       } catch (e) {
         const { h5QrCode } = this.props;
@@ -136,26 +137,26 @@ class WeixinBindQrCodePage extends React.Component {
     const loginToken = this.props.commonLogin.getLoginToken();
     if (loginToken) {
       const dzqUserId = locals.get('dzq_user_id');
-      dzqUserId && this.props.user.updateUserInfo(dzqUserId);
+      dzqUserId && await this.props.user.updateUserInfo(dzqUserId);
       setAccessToken({
         accessToken: loginToken,
       });
-      LoginHelper.gotoIndex();
+      loginHelper.restore();
     }
   };
 
   onOkClick = async () => {
     this.props.commonLogin.needToBindMini = true;
-    const { sessionToken, jumpType, bindPhone = '' } = this.props.router.query;
+    const { sessionToken, bindPhone = '', toPage } = this.props.router.query;
     const { platform } = this.props.site;
     const resp = await genMiniBindScheme({
       params: {
         type: 'bind_mini',
         query: {
           scene: sessionToken,
-          jumpType,
           bindPhone,
-          loginType: platform
+          loginType: platform,
+          toPage
         }
       }
     });
@@ -179,6 +180,24 @@ class WeixinBindQrCodePage extends React.Component {
     });
   }
 
+  getOrCodeTips = () => {
+    const { site: { platform, wechatEnv } } = this.props;
+    let orCodeTips = '';
+    switch (platform) {
+      case 'pc':
+        orCodeTips = '请使用微信，扫码绑定';
+        break;
+      case 'h5':
+        if (wechatEnv === 'miniProgram') {
+          orCodeTips = '请在小程序中完成微信绑定';
+          break;
+        }
+        orCodeTips = '长按保存二维码，并在微信中识别此二维码，即可完成绑定';
+        break;
+    }
+    return orCodeTips;
+  }
+
   render() {
     const { site: { wechatEnv, platform }, router, h5QrCode } = this.props;
     const { nickname, isSkip = false } = router.query;
@@ -200,7 +219,7 @@ class WeixinBindQrCodePage extends React.Component {
             refresh={() => {this.generateQrCode()}}
             isValid={h5QrCode.isQrCodeValid}
             orCodeImg={h5QrCode.qrCode}
-            orCodeTips={platform === 'h5' ? '长按保存二维码，并在微信中识别此二维码，即可完成登录' : '请使用微信，扫码登录'}
+            orCodeTips={this.getOrCodeTips()}
           />
           {/* 二维码 end */}
           { isSkip && <span className={layout.skip} onClick={this.handleSkipWechatButtonClick}>跳过</span> }

@@ -19,6 +19,7 @@ import { defaultOperation } from '@common/constants/const';
 import ViewAdapter from '@components/view-adapter';
 import commonUpload from '@common/utils/common-upload';
 import { formatDate } from '@common/utils/format-date';
+import typeofFn from '@common/utils/typeof';
 
 @inject('site')
 @inject('threadPost')
@@ -555,8 +556,9 @@ class PostPage extends React.Component {
   // 是否有内容
   isHaveContent() {
     const { postData } = this.props.threadPost;
-    const { images, video, files, audio, vote } = postData;
-    if (!(postData.contentText || video.id || vote.voteTitle || audio.id || Object.values(images).length
+    const { images, video, files, audio, vote, plugin } = postData;
+    // todo, 应该还需要扩展当前插件是否可以无需文字
+    if (!(postData.contentText || video.id || vote.voteTitle || audio.id || !typeofFn.isEmptyObject(plugin) || Object.values(images).length
       || Object.values(files).length)) {
       return false;
     }
@@ -635,22 +637,23 @@ class PostPage extends React.Component {
     const data = { amount };
     // 保存草稿操作不执行支付流程
     if (!isDraft && amount > 0) {
-      let type = ORDER_TRADE_TYPE.RED_PACKET;
+      let type = ORDER_TRADE_TYPE.ORDER_TYPE_REDPACKET;
       let title = '支付红包';
       if (redAmount > 0) {
         data.redAmount = redAmount;
       }
       if (rewardAmount > 0) {
-        type = ORDER_TRADE_TYPE.POST_REWARD;
+        type = ORDER_TRADE_TYPE.ORDER_TYPE_QUESTION_REWARD;
         title = '支付悬赏';
         data.rewardAmount = rewardAmount;
       }
       if (rewardAmount > 0 && redAmount > 0) {
-        type = ORDER_TRADE_TYPE.COMBIE_PAYMENT;
+        type = ORDER_TRADE_TYPE.ORDER_TYPE_MERGE;
         title = '支付红包和悬赏';
       }
       PayBox.createPayBox({
         data: { ...data, title, type },
+        currentPage: { type: 2 },
         orderCreated: async (orderInfo) => {
           const { orderSn } = orderInfo;
           this.setPostData({ orderInfo });
@@ -781,6 +784,7 @@ class PostPage extends React.Component {
     if (!(isAutoSave || isPay)) this.toastInstance = Toast.loading({ content: isDraft ? '保存草稿中' : '发布中...', hasMask: true });
     if (threadPost.postData.threadId) ret = await threadPost.updateThread(threadPost.postData.threadId);
     else ret = await threadPost.createThread();
+    console.log(ret);
     const { code, data, msg } = ret;
     if (code === 0) {
       this.setState({ data });
