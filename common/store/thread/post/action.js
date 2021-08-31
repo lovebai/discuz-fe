@@ -376,7 +376,7 @@ class ThreadPostAction extends ThreadPostStore {
         const videoId = video.id || video.threadVideoId;
         video.id = videoId;
       }
-      if (tomId === THREAD_TYPE.redPacket) {
+      else if (tomId === THREAD_TYPE.redPacket) {
         const redBody = contentindexes[index]?.body || {}
         const { money = 0, number = 0, rule = 1 } = redBody;
         const price = rule === 0 ? money / number : money;
