@@ -376,9 +376,11 @@ class ThreadPostAction extends ThreadPostStore {
         const videoId = video.id || video.threadVideoId;
         video.id = videoId;
       }
-      else if (tomId === THREAD_TYPE.redPacket) {
-        const price = contentindexes[index]?.body?.money;
-        redpacket = { ...(contentindexes[index]?.body || {}), price };
+      if (tomId === THREAD_TYPE.redPacket) {
+        const redBody = contentindexes[index]?.body || {}
+        const { money = 0, number = 0, rule = 1 } = redBody;
+        const price = rule === 0 ? money / number : money;
+        redpacket = { ...redBody, price };
       }
       // expiredAt: rewardQa.times, price: rewardQa.value, type: 0
       else if (tomId === THREAD_TYPE.reward) {
@@ -557,7 +559,7 @@ class ThreadPostAction extends ThreadPostStore {
     } = data;
     const { pluginName } = _pluginInfo;
     const { tomId, body } = postData;
-    
+
     this.postData.plugin[pluginName] = {
       tomId,
       body: {
@@ -579,7 +581,7 @@ class ThreadPostAction extends ThreadPostStore {
     if (this.postData.plugin[pluginName]) {
       delete this.postData.plugin[pluginName];
     }
-   
+
     this.postData = { ...this.postData };
   }
 }
