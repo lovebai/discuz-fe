@@ -17,12 +17,15 @@ import UserInfo from '@components/thread/user-info';
 import styles from './index.module.scss';
 import { debounce } from '@common/utils/throttle-debounce';
 import Packet from '@components/thread/packet';
-import PacketOpen from '@components/red-packet-animation';
+import PacketOpen from '@components/red-packet-animation/h5';
 
+
+// 插件引入
+/**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
-const RenderThreadContent = inject('user')(observer((props) => {
-  const { store: threadStore } = props;
+const RenderThreadContent = inject('site', 'user')(observer((props) => {
+  const { store: threadStore, site } = props;
   const { text, indexes } = threadStore?.threadData?.content || {};
   const { parentCategoryName, categoryName } = threadStore?.threadData;
   const { hasRedPacket } = threadStore; // 是否有红包领取的数据
@@ -168,27 +171,11 @@ const RenderThreadContent = inject('user')(observer((props) => {
           />
         )}
 
-        {/* 悬赏文案 */}
-        {parseContent.REWARD && (
-          <div className={styles.rewardText}>
-            {/* 悬赏 */}
-            {parseContent.REWARD && (
-              <div>
-                <div className={styles.rewardMoney}>
-                  本帖向所有人悬赏
-                  <span className={styles.rewardNumber}>{parseContent.REWARD.money || 0}</span>元
-                </div>
-                <div className={styles.rewardTime}>{parseContent.REWARD.expiredAt}截止悬赏</div>
-              </div>
-            )}
-          </div>
-        )}
-
         {(parseContent.RED_PACKET || parseContent.REWARD) && (
           <div className={styles.reward}>
             {/* 悬赏 */}
             {parseContent.REWARD && (
-              <div className={styles.rewardBody}>
+              <div className={styles.rewardBody} style={{ width: '100%' }}>
                 {/* <PostRewardProgressBar
                   type={POST_TYPE.BOUNTY}
                   remaining={Number(parseContent.REWARD.remainMoney || 0)}
@@ -202,11 +189,18 @@ const RenderThreadContent = inject('user')(observer((props) => {
                   money={parseContent.REWARD.money}
                   remainMoney={parseContent.REWARD.remainMoney}
                 />
+                <div className={styles.rewardText}>
+                  <div className={styles.rewardMoney}>
+                    本帖向所有人悬赏
+                    <span className={styles.rewardNumber}>{parseContent.REWARD.money || 0}</span>元
+                  </div>
+                  <div className={styles.rewardTime}>{parseContent.REWARD.expiredAt}截止悬赏</div>
+                </div>
               </div>
             )}
             {/* 红包 */}
             {parseContent.RED_PACKET && (
-              <div>
+              <div style={{ width: '100%' }}>
                 {/* <PostRewardProgressBar
                     remaining={Number(parseContent.RED_PACKET.remainNumber || 0)}
                     received={
@@ -255,26 +249,39 @@ const RenderThreadContent = inject('user')(observer((props) => {
           <AttachmentView attachments={parseContent.VOTE} threadId={threadStore?.threadData?.threadId} />
         )}
 
-          {/* 投票 */}
+        {/* 投票 */}
         {parseContent.VOTE_THREAD
           && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
 
-          {/* 付费附件 */}
-          {needAttachmentPay && (
-            <div style={{ textAlign: 'center' }} onClick={onContentClick}>
-              <Button className={styles.payButton} type="primary">
-                <Icon className={styles.payIcon} name="GoldCoinOutlined" size={16}></Icon>
-                <p>支付{attachmentPrice}元查看附件内容</p>
-              </Button>
-            </div>
-          )}
-
-        {/* 标签 */}
-        {(parentCategoryName || categoryName) && (
-          <div className={styles.tag} onClick={onTagClick}>
-            {parentCategoryName ? `${parentCategoryName}/${categoryName}` : categoryName}
+        {/* 付费附件 */}
+        {needAttachmentPay && (
+          <div style={{ textAlign: 'center' }} onClick={onContentClick}>
+            <Button className={styles.payButton} type="primary">
+              <Icon className={styles.payIcon} name="GoldCoinOutlined" size={16}></Icon>
+              <p>支付{attachmentPrice}元查看附件内容</p>
+            </Button>
           </div>
         )}
+
+          {
+            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
+              return (
+                <div key={pluginInfo.name}>
+                  {render({
+                    site: site,
+                    renderData: parseContent.plugin
+                  })} 
+                </div>
+              )
+            })
+          }
+
+          {/* 标签 */}
+          {(parentCategoryName || categoryName) && (
+            <div className={styles.tag} onClick={onTagClick}>
+              {parentCategoryName ? `${parentCategoryName}/${categoryName}` : categoryName}
+            </div>
+          )}
 
         {/* 帖子付费 */}
         {!canFreeViewPost && isThreadPay && !isSelf && !isPayed && (
