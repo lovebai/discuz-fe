@@ -202,7 +202,7 @@ class CommentPCPage extends React.Component {
       goToLoginPage({ url: '/user/login' });
       return;
     }
-    if (!this.props.canPublish()) return ;
+    if (!this.props.canPublish()) return;
     this.commentData = comment;
     this.replyData = null;
     this.setState({
@@ -217,7 +217,7 @@ class CommentPCPage extends React.Component {
       goToLoginPage({ url: '/user/login' });
       return;
     }
-    if (!this.props.canPublish()) return ;
+    if (!this.props.canPublish()) return;
     this.commentData = null;
     this.replyData = reply;
     this.replyData.commentId = comment.id;
@@ -317,6 +317,12 @@ class CommentPCPage extends React.Component {
     Router.push({ url: `/user/${userId}` });
   }
 
+
+  onGotoThread = () => {
+    const { threadId } = this.props.comment;
+    this.props.router.push(`/thread/${threadId}`);
+  }
+
   render() {
     const { commentDetail: commentData, isReady, isAuthorInfoError } = this.props.comment;
     const isSelf = this.props.user?.userInfo?.id && this.props.user?.userInfo?.id === commentData?.userId;
@@ -385,6 +391,9 @@ class CommentPCPage extends React.Component {
               )}
             </div>
             <NoMore empty={false}></NoMore>
+            {
+              isReady && <div style={{ margin: '0 auto' }} onClick={this.onGotoThread}>返回原帖</div>
+            }
           </div>
 
           {/* 右边信息 */}

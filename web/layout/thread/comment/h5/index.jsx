@@ -249,7 +249,7 @@ class CommentH5Page extends React.Component {
       goToLoginPage({ url: '/user/login' });
       return;
     }
-    if (!this.props.canPublish()) return ;
+    if (!this.props.canPublish()) return;
     this.commentData = comment;
     this.replyData = null;
     this.setState({
@@ -265,7 +265,7 @@ class CommentH5Page extends React.Component {
       goToLoginPage({ url: '/user/login' });
       return;
     }
-    if (!this.props.canPublish()) return ;
+    if (!this.props.canPublish()) return;
     this.commentData = null;
     this.replyData = reply;
     this.replyData.commentId = comment.id;
@@ -402,6 +402,13 @@ class CommentH5Page extends React.Component {
     this.setState({ showPicture: true });
     this.replyClick(this.props.comment.commentDetail);
   }
+
+
+  onGotoThread = () => {
+    const { threadId } = this.props.comment;
+    this.props.router.push(`/thread/${threadId}`);
+  }
+
   render() {
     const { commentDetail: commentData, isReady } = this.props.comment;
     const { isAnonymous } = this.props.thread?.threadData || '';
@@ -468,6 +475,9 @@ class CommentH5Page extends React.Component {
               isAnonymous={isAnonymous}
             ></CommentList>
           )}
+          {
+            isReady && <div style={{ margin: '0 auto' }} onClick={this.onGotoThread}>返回原帖</div>
+          }
         </div>
         {isReady && (
           <div className={styles.inputFooterContainer}>
