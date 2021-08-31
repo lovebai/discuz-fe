@@ -19,7 +19,7 @@
     "@discuzq/plugin": "1.0.44",
     "@discuzq/plugin-center": "1.0.5",
     "@discuzq/sdk": "1.0.37",
-    "@discuzq/theme": "1.0.13",
+    "@discuzq/theme": "1.0.14",
     "@discuzq/vditor": "1.0.26",
     "@popperjs/core": "^2.9.2",
     "@sandstreamdev/react-swipeable-list": "^1.0.1",
