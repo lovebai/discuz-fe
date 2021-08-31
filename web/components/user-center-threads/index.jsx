@@ -40,11 +40,11 @@ const UNTOP_ACTIONS = [
 const COMMON_MENUS = (
   <>
     <Dropdown.Item id="edit">
-      <Icon name="CompileOutlined" />
+      <Icon name="CompileOutlined" size="14px" />
       编辑
     </Dropdown.Item>
     <Dropdown.Item id="delete">
-      <Icon name="DeleteOutlined" />
+      <Icon name="DeleteOutlined" size="14px" />
       删除
     </Dropdown.Item>
   </>
@@ -53,7 +53,7 @@ const COMMON_MENUS = (
 const TOP_MENUS = (
   <Dropdown.Menu>
     <Dropdown.Item id="top">
-      <Icon name="TopOutlined" />
+      <Icon name="TopOutlined" size="14px" />
       置顶
     </Dropdown.Item>
     {COMMON_MENUS}
@@ -62,7 +62,10 @@ const TOP_MENUS = (
 
 const UNTOP_MENUS = (
   <Dropdown.Menu>
-    <Dropdown.Item id="untop">取消置顶</Dropdown.Item>
+    <Dropdown.Item id="untop">
+      <Icon name="TopOutlined" size="14px" />
+      取消置顶
+    </Dropdown.Item>
     {COMMON_MENUS}
   </Dropdown.Menu>
 );
@@ -72,6 +75,7 @@ const UNTOP_MENUS = (
 @inject('thread')
 @inject('site')
 @inject('user')
+@observer
 class UserCenterThreads extends React.Component {
   constructor(props) {
     super(props);
@@ -87,11 +91,19 @@ class UserCenterThreads extends React.Component {
   // 置顶处理函数
   topThreadHandler = () => {
     console.log('on top', this.activeThread);
+
+    Toast.success({
+      content: '置顶成功',
+    });
   };
 
   // 取消置顶处理函数
   unTopThreadHandler = () => {
     console.log('on untop', this.activeThread);
+
+    Toast.success({
+      content: '取消置顶成功',
+    });
   };
 
   // 编辑帖子处理函数
@@ -190,7 +202,7 @@ class UserCenterThreads extends React.Component {
 
     if (this.props.site.platform === 'pc') {
       return (
-        <div onClick={e => e.stopPropagation()}>
+        <div className={styles.dropdownWrapper} onClick={e => e.stopPropagation()}>
           <Dropdown
             arrow={false}
             onVisibleChange={(isShow) => {
