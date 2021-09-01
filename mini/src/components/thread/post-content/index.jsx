@@ -75,6 +75,7 @@ import config from '../../../app.config';
 
   const handleClick = (e, node) => {
     e && e.stopPropagation();
+    if(node.name === 'image') return
     const {url, isExternaLink } = handleLink(node)
     if(isExternaLink) return
 
@@ -103,7 +104,7 @@ import config from '../../../app.config';
     // 内链跳转
     let content = e?.children[0]?.data || "";
     if(content.indexOf("http") === -1) {
-      content = content[0] !== '/' ? '/' + content : content;
+      content = content[0] !== '/' ? `/${  content}` : content;
       if(appPageLinks.indexOf(content) !== -1) {
         Taro.navigateTo({ url: content });
       }
@@ -145,7 +146,7 @@ import config from '../../../app.config';
   const generateAppRelativePageLinks = () => {
     const pageLinks = [];
     for(const pkg of config.subPackages) {
-      const root = pkg.root;
+      const {root} = pkg;
       for(const page of pkg.pages) {
         pageLinks.push(`/${root}/${page}`);
       }
