@@ -57,6 +57,12 @@ module.exports = {
         optimization: {
           splitChunks: {
             cacheGroups: {
+              // styles: {
+              //   name: 'styles',
+              //   test: /\.sass$/,
+              //   chunks: 'all',
+              //   enforce: true
+              // },
               indexPagesCommon: {
                 name: 'indexPages/common',
                 minChunks: 2,

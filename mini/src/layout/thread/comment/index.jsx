@@ -12,7 +12,8 @@ import InputPopup from '../components/input-popup';
 import ReportPopup from '../components/report-popup';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import Taro from "@tarojs/taro";
-import { Icon, Input } from '@discuzq/design';
+import Icon from '@discuzq/design/dist/components/icon/index';
+import Input from '@discuzq/design/dist/components/input/index';
 import footer from './footer.module.scss';
 import classNames from 'classnames';
 
