@@ -327,7 +327,7 @@ class CommentPCPage extends React.Component {
     const { commentDetail: commentData, isReady, isAuthorInfoError } = this.props.comment;
     const isSelf = this.props.user?.userInfo?.id && this.props.user?.userInfo?.id === commentData?.userId;
     const { isAnonymous } = this.props.thread?.threadData || '';
-
+    const { query } = this.props.router;
     return (
       <div className={styles.container}>
         <div className={styles.header}>
@@ -385,16 +385,13 @@ class CommentPCPage extends React.Component {
                   postId={this.props.comment.postId}
                   positionRef={this.positionRef}
                   isAnonymous={isAnonymous}
-                  originThread={<div style={{ margin: '0 auto' }} onClick={this.onGotoThread}>返回原帖</div>}
+                  originThread={query.fromMessage ? <div className={styles.originThread} onClick={this.onGotoThread}>查看原帖</div> : false}
                 ></CommentList>
               ) : (
                 <LoadingTips type="init"></LoadingTips>
               )}
             </div>
             <NoMore empty={false}></NoMore>
-            {
-              isReady && <div style={{ margin: '0 auto' }} onClick={this.onGotoThread}>返回原帖</div>
-            }
           </div>
 
           {/* 右边信息 */}

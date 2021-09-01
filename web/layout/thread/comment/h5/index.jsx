@@ -412,6 +412,7 @@ class CommentH5Page extends React.Component {
   render() {
     const { commentDetail: commentData, isReady } = this.props.comment;
     const { isAnonymous } = this.props.thread?.threadData || '';
+    const { query } = this.props.router;
     // 更多弹窗权限
     const morePermissions = {
       // canEdit: commentData?.canEdit,
@@ -473,11 +474,9 @@ class CommentH5Page extends React.Component {
               postId={this.props.comment.postId}
               positionRef={this.positionRef}
               isAnonymous={isAnonymous}
+              originThread={query.fromMessage ? <div className={styles.originThread} onClick={this.onGotoThread}>查看原帖</div> : false}
             ></CommentList>
           )}
-          {
-            isReady && <div style={{ margin: '0 auto' }} onClick={this.onGotoThread}>返回原帖</div>
-          }
         </div>
         {isReady && (
           <div className={styles.inputFooterContainer}>

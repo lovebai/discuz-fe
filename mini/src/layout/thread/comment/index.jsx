@@ -15,6 +15,8 @@ import Taro from "@tarojs/taro";
 import { Icon, Input } from '@discuzq/design';
 import footer from './footer.module.scss';
 import classNames from 'classnames';
+import { getCurrentInstance } from '@tarojs/taro';
+
 
 @inject('site')
 @inject('user')
@@ -421,6 +423,8 @@ class CommentH5Page extends React.Component {
 
   render() {
     const { commentDetail: commentData, isReady } = this.props.comment;
+    console.log(getCurrentInstance().router, 1)
+    const query = getCurrentInstance().router.params;
     // 更多弹窗权限
     const morePermissions = {
       canEdit: false,
@@ -435,6 +439,7 @@ class CommentH5Page extends React.Component {
       isEssence: false,
       isStick: false,
     };
+
 
     return (
       <View>
@@ -483,13 +488,11 @@ class CommentH5Page extends React.Component {
                   positionRef={this.positionRef}
                   threadId={this.props?.thread?.threadData?.userId}
                   isAnonymous={isAnonymous}
+                  originThread={query.fromMessage ? <View className={styles.originThread} onClick={this.onGotoThread}>查看原帖</View> : false}
                 ></CommentList>
               )}
             </View>
             <View className={styles.box}></View>
-            {
-              isReady && <View style={{ margin: '0 auto' }} onClick={this.onGotoThread}>返回原帖</View>
-            }
           </ScrollView>
           {isReady && (
             <View className={classNames(styles.inputFooterContainer, this.state.showCommentInput && styles.zindex)}>
