@@ -8,8 +8,12 @@ import { handleAttachmentData } from './utils';
 import AttachmentView from './attachment-view';
 import ImageDisplay from './image-display';
 import VoteDisplay from './vote-display';
+import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
 import Packet from './packet';
 import styles from './index.module.scss';
+
+// 插件引入
+/**DZQ->plugin->register<plugin_index@thread_extension_display_hook>**/
 
 /**
  * 帖子内容组件
@@ -19,21 +23,19 @@ import styles from './index.module.scss';
  */
 
 const Index = (props) => {
-    const {
-        title = '',
-        payType,
-        price,
-        paid,
-        attachmentPrice,
-        openedMore,
-    } = props.data || {};
-
-    const needPay = useMemo(() => {
-      return payType !== 0 && !paid
-    }, [paid, payType])
+  const {
+    title = '',
+    payType,
+    price,
+    paid,
+    attachmentPrice,
+    openedMore,
+  } = props.data || {};
+  const needPay = useMemo(() => payType !== 0 && !paid, [paid, payType]);
 
     const {
       onClick,
+      unifyOnClick = null,
       onPay,
       onOpen,
       platform,
@@ -41,16 +43,16 @@ const Index = (props) => {
       onTextItemClick
     } = props
 
-    // 标题显示37个字符
-    const newTitle = useMemo(() => {
-      if (title.length > 100) {
-        return `${title.slice(0, 100)}...`
-      }
-      return title
-    }, [title])
+  // 标题显示37个字符
+  const newTitle = useMemo(() => {
+    if (title.length > 100) {
+      return `${title.slice(0, 100)}...`;
+    }
+    return title;
+  }, [title]);
 
     // 帖子属性内容
-    const renderThreadContent = ({ content: data, attachmentPrice, payType, paid } = {}) => {
+    const renderThreadContent = ({ content: data, attachmentPrice, payType, paid, site } = {}) => {
         const {
           text,
           imageData,
@@ -62,9 +64,11 @@ const Index = (props) => {
           fileData,
           voteData,
           threadId,
+          iframeData,
+          plugin
         } = handleAttachmentData(data);
 
-        return (
+    return (
           <>
               {text && <PostContent
                 onContentHeightChange={props.onContentHeightChange}
@@ -92,6 +96,12 @@ const Index = (props) => {
                 </WrapperView>
 
               )}
+              {/* 外部视频iframe插入和上面的视频组件是互斥的 */}
+              {(iframeData && iframeData.content) && (
+                <IframeVideoDisplay
+                  content={iframeData.content}
+                />
+              )}
               {imageData?.length > 0 && (
                   <ImageDisplay
                       platform={props.platform}
@@ -102,14 +112,18 @@ const Index = (props) => {
                       onImageReady={props.onImageReady}
                       updateViewCount={updateViewCount}
                   />
-                  )
+              )
               }
               {rewardData && <Packet
                 type={1}
-                money={rewardData.money}
+                // money={rewardData.money}
                 onClick={onClick}
               />}
-              {redPacketData && <Packet money={redPacketData.money || 0} onClick={onClick} condition={redPacketData.condition} />}
+              {redPacketData && <Packet
+              // money={redPacketData.money || 0}
+              onClick={onClick}
+              condition={redPacketData.condition}
+              />}
               {goodsData && <ProductItem
                   image={goodsData.imagePath}
                   amount={goodsData.price}
@@ -117,14 +131,27 @@ const Index = (props) => {
                   onClick={onClick}
               />}
               {audioData && <AudioPlay url={audioData.mediaUrl} isPay={needPay} onPay={onPay} updateViewCount={updateViewCount}/>}
-            {fileData?.length > 0 && <AttachmentView threadId={threadId} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount} />}
+            {fileData?.length > 0 && <AttachmentView unifyOnClick={unifyOnClick} threadId={threadId} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount} />}
             {/* 投票帖子展示 */}
             {voteData && <VoteDisplay recomputeRowHeights={props.recomputeRowHeights} voteData={voteData} threadId={threadId} />}
-          </>
-        );
-    }
 
-    return (
+            {
+              DZQPluginCenter.injection('plugin_index', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
+                return (
+                  <div key={pluginInfo.name}>
+                    {render({
+                      site: props.site,
+                      renderData: plugin
+                    })}
+                  </div>
+                )
+              })
+            }
+          </>
+    );
+  };
+
+  return (
         <>
           <div className={`${platform === 'h5' ? styles.wrapper : styles.wrapperPC}`}>
             {title && <div className={styles.title} onClick={onClick}>{newTitle}</div>}
@@ -144,17 +171,15 @@ const Index = (props) => {
               )
           }
         </>
-    )
-}
+  );
+};
 
-export default React.memo(Index)
+export default React.memo(Index);
 
 // 处理
-const WrapperView = ({ children, onClick }) => {
-  return (
+const WrapperView = ({ children, onClick }) => (
     <div className={styles.wrapperView}>
       {children}
       <div className={styles.placeholder} onClick={onClick}></div>
     </div>
-  )
-}
+);

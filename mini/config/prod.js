@@ -1,8 +1,8 @@
 const miniConfig = require('../src/app.config');
 const getDefinePlugin = require('@discuzq/cli/config/taro/getDefinePlugin');
+const getDZQPluginLoader = require('@discuzq/cli/config/taro/getDZQPluginLoader');
 
-let a = 1;
-
+const path = require('path');
 module.exports = {
   env: {
     NODE_ENV: '"production"',
@@ -51,6 +51,8 @@ module.exports = {
             ...defaultDefinePlugin
           }
       ]);
+      getDZQPluginLoader(chain);
+
       chain.merge({
         optimization: {
           splitChunks: {
@@ -63,7 +65,7 @@ module.exports = {
                   const isNoOnlySubpackRequired = chunks.find(chunk => !(/\bindexPages\b/.test(chunk.name) || /\bsubPages\b/.test(chunk.name)))
                   return !isNoOnlySubpackRequired
                 },
-                priority: 200
+                priority: 500
               },
               subPagesCommon: {
                 name: 'subPages/common',
@@ -83,6 +85,20 @@ module.exports = {
                   return /[\\/]node_modules[\\/]/.test(module.resource);
                 },
                 priority: 200,
+              },
+              taro: {
+                name: 'taro',
+                test: module => {
+                  return /@tarojs[\\/][a-z]+/.test(module.context);
+                },
+                priority: 300,
+              },
+              discuzq: {
+                name: 'discuzq',
+                test: module => {
+                  return /@discuzq[\\/][a-z]+/.test(module.context);
+                },
+                priority: 900,
               },
             }
           }

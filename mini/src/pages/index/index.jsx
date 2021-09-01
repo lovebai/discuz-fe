@@ -29,6 +29,7 @@ import LoginHelper from '@common/utils/login-helper';
 const PARTNER_INVITE_URL = '/subPages/forum/partner-invite/index';
 const CLOSE_URL = '/subPage/close/index';
 
+
 @inject('site')
 @inject('user')
 @inject('emotion')
@@ -71,12 +72,12 @@ class Index extends React.Component {
         case JUMP_TO_LOGIN:// 到登录页
           clearLoginStatus();
           this.initSiteData(); // 重新获取数据
-          LoginHelper.gotoLogin();
+          LoginHelper.saveAndLogin();
           break;
         case JUMP_TO_REGISTER:// 到注册页
           clearLoginStatus();
           this.initSiteData(); // 重新获取数据
-          LoginHelper.gotoLogin();
+          LoginHelper.saveAndLogin();
           break;
         case JUMP_TO_AUDIT:// 到审核页
           Router.push({ url: '/subPages/user/status/index?statusCode=2' });
@@ -115,6 +116,7 @@ class Index extends React.Component {
     async initSiteData() {
       // 是否需要清理当前数据重新加载
       const { params } = this.$instance.router;
+
       if (params.reload === 'true') {
         this.props.user.removeUserInfo();
         await this.props.site.getSiteInfo();
