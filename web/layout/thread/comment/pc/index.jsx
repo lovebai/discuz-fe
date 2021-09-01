@@ -385,6 +385,7 @@ class CommentPCPage extends React.Component {
                   postId={this.props.comment.postId}
                   positionRef={this.positionRef}
                   isAnonymous={isAnonymous}
+                  originThread={<div style={{ margin: '0 auto' }} onClick={this.onGotoThread}>返回原帖</div>}
                 ></CommentList>
               ) : (
                 <LoadingTips type="init"></LoadingTips>
