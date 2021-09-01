@@ -34,6 +34,7 @@ const Index = ({
   user = null,
   site = null,
   updateViewCount = noop,
+  unifyOnClick = null,
 }) => {
   let itemUrl = null;
   // 处理文件大小的显示
@@ -252,9 +253,9 @@ const Index = ({
             src={url}
             fileName={fileName}
             fileSize={handleFileSize(parseFloat(item.fileSize || 0))}
-            beforePlay={async () => await beforeAttachPlay(item)}
-            onDownload={throttle(() => onDownLoad(item, index), 1000)}
-            onLink={throttle(() => onLinkShare(item), 1000)}
+            beforePlay={unifyOnClick || (async () => await beforeAttachPlay(item))}
+            onDownload={unifyOnClick || (throttle(() => onDownLoad(item, index), 1000))}
+            onLink={unifyOnClick || (throttle(() => onLinkShare(item), 1000))}
           />
         </div>
       );
@@ -273,13 +274,20 @@ const Index = ({
 
           <div className={styles.right}>
             {
-              isAttachPreviewable(item) ? <span onClick={throttle(() => onAttachPreview(item), 1000)}>预览</span> : <></>
+              isAttachPreviewable(item)
+                ? <span onClick={unifyOnClick || (throttle(() => onAttachPreview(item), 1000))}>预览</span>
+                : <></>
             }
-            <span className={styles.span} onClick={throttle(() => onLinkShare(item), 1000)}>链接</span>
+            <span className={styles.span} onClick={unifyOnClick || (throttle(() => onLinkShare(item), 1000))}>链接</span>
             <div className={styles.label}>
               { downloading[index] ?
                   <Spin className={styles.spinner} type="spinner" /> :
-                  <span className={styles.span} onClick={throttle(() => onDownLoad(item, index), 1000)}>下载</span>
+                  <span
+                    className={styles.span}
+                    onClick={unifyOnClick || (throttle(() => onDownLoad(item, index), 1000))}
+                  >
+                    下载
+                  </span>
               }
             </div>
           </div>
