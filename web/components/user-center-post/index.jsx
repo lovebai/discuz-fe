@@ -30,7 +30,10 @@ class UserCenterPost extends React.Component {
   // 获取发帖相关数据
   handleThreadPostData = async () => {
     const { readPostCategory, setCategorySelected, setPostData } = this.props.threadPost;
-    const { data = [] } = await readPostCategory();
+    const { code, data = [], msg } = await readPostCategory();
+    if (code !== 0) return Toast.error({
+      content: msg || '获取发帖分类失败'
+    })
     const parent = data[0];
     const child = !!parent.children.length ? parent.children[0] : {};
     setCategorySelected({ parent, child });
@@ -49,6 +52,10 @@ class UserCenterPost extends React.Component {
     const { createThread, setPostData, postData } = this.props.threadPost;
     if (this.state.isPostDisabled) return;
     if (!postData.contentText) return Toast.info({ content: '请输入发帖内容' });
+    // 如果开始没有获取到发帖分类的数据--尝试重新获取
+    if (!postData.categoryId) {
+      await this.handleThreadPostData()
+    }
     this.setState({
       isPostDisabled: true,
     });
