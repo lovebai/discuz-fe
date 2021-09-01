@@ -36,7 +36,8 @@ const Index = (props) => {
     useShowMore = true,
     setUseShowMore = noop,
     updateViewCount = noop,
-    onTextItemClick
+    onTextItemClick,
+    unifyOnClick = null,
   } = props;
 
   const wrapperId = useRef(`thread-wrapper-${randomStr()}`)
@@ -140,7 +141,7 @@ const Index = (props) => {
           />
         )}
         {audioData && <AudioPlay url={audioData.mediaUrl} isPay={needPay} onPay={onPay} updateViewCount={updateViewCount}/>}
-        {fileData?.length ? <AttachmentView threadId={threadId} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount} /> : null}
+        {fileData?.length ? <AttachmentView threadId={threadId} unifyOnClick={unifyOnClick} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount} /> : null}
 
         {/* 投票帖子展示 */}
         {voteData && <VoteDisplay voteData={voteData} updateViewCount={props.updateViewCount} threadId={threadId} />}
