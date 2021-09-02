@@ -10,6 +10,7 @@ import Taro from '@tarojs/taro';
 @inject('search')
 @inject('topic')
 @inject('index')
+@inject('threadList')
 @inject('user')
 @observer
 @withShare({})
@@ -19,13 +20,13 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.index.registerList({ namespace: 'like' });
+    this.props.threadList.registerList({ namespace: 'like' });
   }
 
   async componentDidMount() {
     Taro.hideShareMenu();
-    const { index } = this.props;
-    const threadsResp = await index.fetchList({
+    const { threadList } = this.props;
+    const threadsResp = await threadList.fetchList({
       namespace: 'like',
       perPage: 10,
       page: this.page,
@@ -34,7 +35,7 @@ class Index extends React.Component {
       },
     });
 
-    index.setList({
+    threadList.setList({
       namespace: 'like',
       data: threadsResp,
       page: this.page,
@@ -42,14 +43,14 @@ class Index extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.index.setThreads(null);
+    this.props.threadList.setThreads(null);
   }
 
   dispatch = async () => {
-    const { index } = this.props;
+    const { threadList } = this.props;
 
     this.page += 1;
-    const threadsResp = await index.fetchList({
+    const threadsResp = await threadList.fetchList({
       namespace: 'like',
       perPage: this.perPage,
       page: this.page,
@@ -58,7 +59,7 @@ class Index extends React.Component {
       },
     });
 
-    index.setList({
+    threadList.setList({
       namespace: 'like',
       data: threadsResp,
       page: this.page,

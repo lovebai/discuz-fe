@@ -184,7 +184,7 @@ class SearchAction extends SearchStore {
     }
 
     if ( !hasThreads ) {
-      tasks.push(readThreadList({ params: { filter: { search }, perPage: newPerPage, page: 1, scope: '2' } }))
+      tasks.push(this.threadList.fetchList({ namespace: 'search', filter: { search }, perPage: newPerPage, page: 1, sequence: '2' }))
     } else {
       tasks.push(Promise.resolve({}))
     }

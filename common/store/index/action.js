@@ -226,7 +226,7 @@ class IndexAction extends IndexStore {
     this.latestReq += 1;
     const currentReq = this.latestReq;
 
-    const result = await this.fetchList({ namespace: this.namespace, perPage, page, filter, sequence });
+    const result = await this.threadList.fetchList({ namespace: this.namespace, perPage, page, filter, sequence });
     if (currentReq !== this.latestReq) {
       return;
     }
@@ -246,7 +246,7 @@ class IndexAction extends IndexStore {
           this.setDrafts(result.data);
         }
       } else {
-        this.setList({
+        this.threadList.setList({
           namespace: this.namespace,
           data: { data: this.adapterList(result.data) },
           page,
@@ -417,11 +417,11 @@ class IndexAction extends IndexStore {
   @action
   updataThreadIndexesAllData(threadId, tomId, tomValue) {
     const id = typeofFn.isNumber(threadId) ? threadId : +threadId;
-    const [targetThread] = this.findAssignThreadInLists({ threadId: id });
+    const [targetThread] = this.threadList.findAssignThreadInLists({ threadId: id });
     if (!targetThread) return;
     const { data } = targetThread;
     const threadData = this.combineThreadIndexes(data, tomId, tomValue);
-    this.updateAssignThreadInfoInLists({ threadId: id, threadInfo: threadData });
+    this.threadList.updateAssignThreadInfoInLists({ threadId: id, threadInfo: threadData });
   }
 
   /**
@@ -443,7 +443,7 @@ class IndexAction extends IndexStore {
     const { index, data } = targetThread;
     this.threads.pageData[index] = threadInfo;
 
-    this.updateAssignThreadInfoInLists({ threadId: typeofFn.isNumber(threadId) ? threadId : +threadId, threadInfo });
+    this.threadList.updateAssignThreadInfoInLists({ threadId: typeofFn.isNumber(threadId) ? threadId : +threadId, threadInfo });
 
     // 小程序编辑
     this.changeInfo = { type: 'edit', thread: threadInfo }
@@ -492,7 +492,7 @@ class IndexAction extends IndexStore {
   @action
   updateAssignThreadInfo(threadId, obj = {}) {
     const targetThread = this.findAssignThread(threadId);
-    const targetThreadsInLists = this.findAssignThreadInLists({ threadId });
+    const targetThreadsInLists = this.threadList.findAssignThreadInLists({ threadId });
 
     const { updateType, updatedInfo, user, openedMore } = obj;
 
@@ -560,7 +560,7 @@ class IndexAction extends IndexStore {
         threadUpdater({
           data,
           callback: (updatedInfo) => {
-            this.lists[listName].data[page][index] = updatedInfo;
+            this.threadList.lists[listName].data[page][index] = updatedInfo;
           }
         })
       })
@@ -577,13 +577,13 @@ class IndexAction extends IndexStore {
     const { threadId = '' } = threadInfo
     const targetThread = this.findAssignThread(threadId);
 
-    const targetThreadInLists = this.findAssignThreadInTargetList({ threadId, namespace: 'my' })
+    const targetThreadInLists = this.threadList.findAssignThreadInTargetList({ threadId, namespace: 'my' })
 
     const addThreadInLists = ({ threadInfo, threadId }) => {
       if (targetThreadInLists && targetThreadInLists.length !== 0) {
-        this.updateAssignThreadInfoInLists({ threadId, threadInfo });
+        this.threadList.updateAssignThreadInfoInLists({ threadId, threadInfo });
       } else {
-        this.addThreadInTargetList({ namespace: 'my', threadInfo });
+        this.threadList.addThreadInTargetList({ namespace: 'my', threadInfo });
       }
     }
 

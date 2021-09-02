@@ -14,6 +14,7 @@ import browser from '@common/utils/browser';
 @inject('user')
 @inject('baselayout')
 @inject('vlist')
+@inject('threadList')
 @observer
 class Index extends React.Component {
 
@@ -45,8 +46,8 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props);
-    const { serverIndex, index } = this.props;
-    index.registerList({ namespace: index.namespace });
+    const { serverIndex, index, threadList } = this.props;
+    threadList.registerList({ namespace: index.namespace });
     // 初始化数据到store中
     // serverIndex && serverIndex.categories && index.setCategories(serverIndex.categories);
     // serverIndex && serverIndex.sticks && index.setSticks(serverIndex.sticks);

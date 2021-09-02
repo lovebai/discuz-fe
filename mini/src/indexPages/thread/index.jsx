@@ -90,7 +90,7 @@ class Detail extends React.Component {
         }
       );
     }
-    this.props.thread.shareThread(threadId, this.props.index, this.props.search, this.props.topic);
+    this.props.thread.shareThread(threadId);
 
     return (
       priceShare({ isAnonymous, isPrice, path }) || {

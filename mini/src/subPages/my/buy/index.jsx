@@ -9,6 +9,7 @@ import Taro from '@tarojs/taro';
 @inject('site')
 @inject('search')
 @inject('topic')
+@inject('threadList')
 @inject('index')
 @inject('user')
 @observer
@@ -19,13 +20,13 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.index.registerList({ namespace: 'buy' });
+    this.props.threadList.registerList({ namespace: 'buy' });
   }
 
   async componentDidMount() {
     Taro.hideShareMenu();
-    const { index } = this.props;
-    const threadsResp = await index.fetchList({
+    const { threadList } = this.props;
+    const threadsResp = await threadList.fetchList({
       namespace: 'buy',
       perPage: 10,
       page: this.page,
@@ -34,7 +35,7 @@ class Index extends React.Component {
       },
     });
 
-    index.setList({
+    threadList.setList({
       namespace: 'buy',
       data: threadsResp,
       page: this.page,
@@ -44,13 +45,13 @@ class Index extends React.Component {
   }
 
   componentWillUnmount() {
-    const { index } = this.props;
-    index.clearList({ namespace: 'buy' });
+    const { threadList } = this.props;
+    threadList.clearList({ namespace: 'buy' });
   }
 
   dispatch = async () => {
-    const { index } = this.props;
-    const threadsResp = await index.fetchList({
+    const { threadList } = this.props;
+    const threadsResp = await threadList.fetchList({
       namespace: 'buy',
       perPage: 10,
       page: this.page,
@@ -59,7 +60,7 @@ class Index extends React.Component {
       },
     });
 
-    index.setList({
+    threadList.setList({
       namespace: 'buy',
       data: threadsResp,
       page: this.page,

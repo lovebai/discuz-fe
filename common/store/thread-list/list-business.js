@@ -1,10 +1,10 @@
 export const updateMyThreadAvatar = ({
   avatarUrl,
-  indexStore,
+  threadList,
 }) => {
-  indexStore.registerList({ namespace: 'my' });
+  threadList.registerList({ namespace: 'my' });
 
-  const { my } = indexStore.lists;
+  const { my } = threadList.lists;
 
   Object.values(my.data).forEach((pageData) => {
     pageData.forEach((threadItem) => {
@@ -15,5 +15,5 @@ export const updateMyThreadAvatar = ({
     });
   });
 
-  indexStore.forceUpdateList();
+  threadList.forceUpdateList();
 };

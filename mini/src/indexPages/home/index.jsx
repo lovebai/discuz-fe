@@ -11,6 +11,7 @@ import { priceShare } from '@common/utils/priceShare';
 @inject('search')
 @inject('topic')
 @inject('index')
+@inject('threadList')
 @inject('user')
 @inject('baselayout')
 @withShare()
@@ -27,8 +28,8 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props);
-    const { index } = this.props;
-    index.registerList({ namespace: index.namespace });
+    const { index, threadList } = this.props;
+    threadList.registerList({ namespace: index.namespace });
   }
 
   componentDidHide() {

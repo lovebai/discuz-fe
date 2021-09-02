@@ -17,6 +17,11 @@ class TopicAction extends TopicStore {
   @action
   setTopicDetail(data) {
     this.topicDetail = data;
+
+    const threads = data?.pageData[0]?.threads;
+    this.topicThreads = {
+      pageData: threads,
+    };
   }
 
   /**
@@ -45,12 +50,14 @@ class TopicAction extends TopicStore {
       }
       return result.data;
     }
-    
+
+    this.threadList.setListRequestError({ namespace: this.namespace, errorText: result?.msg || '' });
+
     return Promise.reject(result?.msg || '');
   };
 
   /**
- * 话题 - 列表
+ * 话题帖子 - 列表
  * @param {object} search * 搜索值
  * @returns {object} 处理结果
  */
@@ -67,21 +74,6 @@ class TopicAction extends TopicStore {
     }
     return null;
   };
-
-  /**
-   * 删除帖子操作
-   * @param {string} id 帖子id
-   * @returns
-   */
-   @action
-   async deleteThreadsData({ id } = {}) {
-     if (id && this.topicDetail) {
-        const { pageData = [] } = this.topicDetail;
-        this.topicDetail.pageData = pageData.map(data => {
-          return data.threads?.filter(item => item.threadId !== id)
-        })
-     }
-   }
 
     // 获取指定的帖子数据
   findAssignThread(threadId) {

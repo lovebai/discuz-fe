@@ -1,10 +1,10 @@
 import { observable, computed } from 'mobx';
-import ListStore from './list';
-import listProxy from './proxy';
+import listProxy from '../thread-list/proxy';
+import ThreadListStore from  '../thread-list/list';
 
-class IndexStore extends ListStore {
-  constructor(props) {
-    super(props);
+class IndexStore {
+  constructor() {
+    this.threadList = new ThreadListStore();
   }
 
   @observable categories = null;
@@ -22,20 +22,20 @@ class IndexStore extends ListStore {
   @computed get threads() {
     let newData = null;
 
-    const homeData = this.lists?.[this.namespace];
-    const attrs = this.lists?.[this.namespace]?.attribs;
+    const homeData = this.threadList.lists?.[this.namespace];
+    const attrs = this.threadList.lists?.[this.namespace]?.attribs;
     if (homeData?.data) {
-      const pageData = this.listAdapter(homeData);
+      const pageData = this.threadList.listAdapter(homeData);
       newData = {
         pageData,
         ...attrs,
       };
     }
-    const updateAssignThreadInfoInLists = this.updateAssignThreadInfoInLists.bind(this);
-    const deleteAssignThreadInLists = this.deleteAssignThreadInLists.bind(this);
-    const addThreadInTargetList = this.addThreadInTargetList.bind(this);
-    const setAttribute = this.setAttribute.bind(this);
-    const setTargetListDataByList = this.setTargetListDataByList.bind(this);
+    const updateAssignThreadInfoInLists = this.threadList.updateAssignThreadInfoInLists.bind(this.threadList);
+    const deleteAssignThreadInLists = this.threadList.deleteAssignThreadInLists.bind(this.threadList);
+    const addThreadInTargetList = this.threadList.addThreadInTargetList.bind(this.threadList);
+    const setAttribute = this.threadList.setAttribute.bind(this.threadList);
+    const setTargetListDataByList = this.threadList.setTargetListDataByList.bind(this.threadList);
     const namespace = this.namespace;
 
     const listHandlers = {
@@ -51,12 +51,12 @@ class IndexStore extends ListStore {
   }
   set threads(data) {
     if (!data) {
-      this.clearList({ namespace: this.namespace });
+      this.threadList.clearList({ namespace: this.namespace });
     }
   }
 
   @computed get hasThreadsData() {
-    const pageData = this.getList({ namespace: this.namespace });
+    const pageData = this.threadList.getList({ namespace: this.namespace });
 
     return !!pageData?.length;
   }
@@ -115,11 +115,11 @@ class IndexStore extends ListStore {
 
   // 首页帖子报错信息
   @computed get threadError() {
-    const requestError = this.lists?.[this.namespace]?.requestError;
+    const requestError = this.threadList.lists?.[this.namespace]?.requestError;
     return requestError;
   }
   set threadError(data) {
-    this.lists[this.namespace].requestError = data;
+    this.threadList.lists[this.namespace].requestError = data;
   }
 
   // 首页分类报错信息
