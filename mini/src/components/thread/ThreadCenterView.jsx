@@ -40,6 +40,12 @@ const Index = (props) => {
     unifyOnClick = null,
   } = props;
 
+  const {
+    canDownloadAttachment,
+    canViewAttachment,
+    canViewVideo
+  } = props?.data?.ability || {};
+
   const wrapperId = useRef(`thread-wrapper-${randomStr()}`)
 
   // 标题显示37个字符
@@ -93,6 +99,7 @@ const Index = (props) => {
               relativeToViewport={relativeToViewport}
               changeHeight={changeHeight}
               updateViewCount={updateViewCount}
+              canViewVideo={canViewVideo}
             />
           </WrapperView>
         )}
@@ -141,7 +148,18 @@ const Index = (props) => {
           />
         )}
         {audioData && <AudioPlay url={audioData.mediaUrl} isPay={needPay} onPay={onPay} updateViewCount={updateViewCount}/>}
-        {fileData?.length ? <AttachmentView threadId={threadId} unifyOnClick={unifyOnClick} attachments={fileData} onPay={onPay} isPay={needPay} updateViewCount={updateViewCount} /> : null}
+        {fileData?.length ? <AttachmentView 
+            threadId={threadId}
+            unifyOnClick={unifyOnClick}
+            attachments={fileData}
+            onPay={onPay}
+            isPay={needPay}
+            updateViewCount={updateViewCount}
+            canViewAttachment={canViewAttachment}
+            canDownloadAttachment={canDownloadAttachment}
+          /> 
+          : null
+        }
 
         {/* 投票帖子展示 */}
         {voteData && <VoteDisplay voteData={voteData} updateViewCount={props.updateViewCount} threadId={threadId} />}
