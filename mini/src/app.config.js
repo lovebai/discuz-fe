@@ -94,6 +94,10 @@ const config = {
       network: 'all',
       packages: ['indexPages'],
     },
+    'indexPages/home/index': {
+      network: 'all',
+      packages: ['subPages'],
+    },
   }
 };
 

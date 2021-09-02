@@ -58,7 +58,10 @@ const config = {
         },
       },
       url: {
-        enable: false,
+        enable: true,
+        config: {
+          limit: 10240 // 设定转换尺寸上限
+        }
       },
       cssModules: {
         enable: true, // 默认为 false，如需使用 css modules 功能，则设为 true
