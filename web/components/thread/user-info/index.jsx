@@ -59,6 +59,7 @@ export default function UserInfo(props) {
         <div className={styles.info}>
           <div className={classNames(styles.name, props.platform === 'pc' && styles.pc, styles.cursor)} onClick={e => props.onClick(e)}>{props.name}</div>
           {!props.isAnonymous && props.groupName && <div className={`${styles.groupName} ${tagsNumber > 3 ? styles.groupNameText : ''}`}>{props.groupName}</div>}
+          {props.extraInfo && props.extraInfo}
         </div>
 
         <div className={styles.meta}>

@@ -5,6 +5,7 @@ import { Icon, ActionSheet, Toast, Dropdown } from '@discuzq/design';
 import { withRouter } from 'next/router';
 import Thread from '@components/thread';
 import styles from './index.module.scss';
+import { setThreadBeSticked, setThreadBeUnSticked } from '@store/index/list-business';
 
 const COMMON_ACTIONS = [
   {
@@ -89,21 +90,43 @@ class UserCenterThreads extends React.Component {
   activeThread = null;
 
   // 置顶处理函数
-  topThreadHandler = () => {
-    console.log('on top', this.activeThread);
+  topThreadHandler = async () => {
+    const thread = this.activeThread;
 
-    Toast.success({
-      content: '置顶成功',
+    const ret = await setThreadBeSticked({
+      thread,
+      indexStore: this.props.index,
     });
+
+    if (ret.success) {
+      Toast.success({
+        content: '置顶成功',
+      });
+    } else {
+      Toast.error({
+        content: ret.msg || '置顶失败',
+      });
+    }
   };
 
   // 取消置顶处理函数
-  unTopThreadHandler = () => {
-    console.log('on untop', this.activeThread);
+  unTopThreadHandler = async () => {
+    const thread = this.activeThread;
 
-    Toast.success({
-      content: '取消置顶成功',
+    const ret = await setThreadBeUnSticked({
+      thread,
+      indexStore: this.props.index,
     });
+
+    if (ret.success) {
+      Toast.success({
+        content: '取消置顶成功',
+      });
+    } else {
+      Toast.error({
+        content: ret.msg || '取消置顶失败',
+      });
+    }
   };
 
   // 编辑帖子处理函数
@@ -152,6 +175,17 @@ class UserCenterThreads extends React.Component {
 
   onActionClick = (e) => {
     e.stopPropagation();
+
+    if (this.activeThread.userStickStatus) {
+      this.setState({
+        currentAction: UNTOP_ACTIONS,
+      });
+    } else {
+      this.setState({
+        currentAction: TOP_ACTIONS,
+      });
+    }
+
     this.setState({
       actionSheetVisible: true,
     });
@@ -192,8 +226,8 @@ class UserCenterThreads extends React.Component {
       <span
         onClick={(e) => {
           if (this.props.site.platform === 'pc') return;
-          this.onActionClick(e);
           this.activeThread = itemInfo;
+          this.onActionClick(e);
         }}
       >
         <Icon name="MoreBOutlined" />
@@ -202,7 +236,7 @@ class UserCenterThreads extends React.Component {
 
     if (this.props.site.platform === 'pc') {
       return (
-        <div className={styles.dropdownWrapper} onClick={e => e.stopPropagation()}>
+        <div className={styles.dropdownWrapper} onClick={(e) => e.stopPropagation()}>
           <Dropdown
             arrow={false}
             onVisibleChange={(isShow) => {
@@ -213,7 +247,7 @@ class UserCenterThreads extends React.Component {
             onChange={(key) => {
               this.actionSheetSelectHandler(null, { key });
             }}
-            menu={this.state.currentMenu}
+            menu={itemInfo.userStickStatus ? UNTOP_MENUS : TOP_MENUS}
             trigger="hover"
           >
             {spanElement}
@@ -234,10 +268,22 @@ class UserCenterThreads extends React.Component {
       <ActionSheet
         visible={this.state.actionSheetVisible}
         layout="row"
-        actions={TOP_ACTIONS}
+        actions={this.state.currentAction}
         onSelect={this.actionSheetSelectHandler}
         onClose={this.closeActionSheet}
       />
+    );
+  };
+
+  renderExtraInfo = (thread) => {
+    if (!thread.userStickStatus) {
+      return null;
+    }
+
+    return (
+      <div className={styles.threadStickFlag}>
+        <Icon name={'TopOutlined'} size={12} />
+      </div>
     );
   };
 
@@ -245,13 +291,16 @@ class UserCenterThreads extends React.Component {
     return (
       <div className={styles.threadsContainer}>
         {this.props.data.map((itemInfo, index, arr) => (
-          <Thread
-            key={`${itemInfo.threadId}-${itemInfo.updatedAt}-${itemInfo._time}`}
-            data={itemInfo}
-            showBottomStyle={index !== arr.length - 1}
-            extraTag={this.renderExtraTag(itemInfo)}
-            className={this.props.threadClassName || ''}
-          />
+          <div className={styles.threadWrapper} key={`${itemInfo.threadId}-${itemInfo.updatedAt}-${itemInfo._time}`}>
+            {this.renderExtraInfo(itemInfo)}
+            <Thread
+              data={itemInfo}
+              // extraInfo={this.renderExtraInfo(itemInfo)}
+              showBottomStyle={index !== arr.length - 1}
+              extraTag={this.renderExtraTag(itemInfo)}
+              className={this.props.threadClassName || ''}
+            />
+          </div>
         ))}
         {this.renderActionSheet()}
       </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import { setThreadBeUnSticked, setThreadBeSticked } from '@common/store/index/list-business';
 import { View } from '@tarojs/components';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { Icon, ActionSheet, Toast } from '@discuzq/design';
@@ -59,21 +60,43 @@ class UserCenterThreads extends React.Component {
   activeThread = null;
 
   // 置顶处理函数
-  topThreadHandler = () => {
-    console.log('on top', this.activeThread);
+  topThreadHandler = async () => {
+    const thread = this.activeThread;
 
-    Toast.success({
-      content: '置顶成功',
+    const ret = await setThreadBeSticked({
+      thread,
+      indexStore: this.props.index,
     });
+
+    if (ret.success) {
+      Toast.success({
+        content: '置顶成功',
+      });
+    } else {
+      Toast.error({
+        content: ret.msg || '置顶失败',
+      });
+    }
   };
 
   // 取消置顶处理函数
-  unTopThreadHandler = () => {
-    console.log('on untop', this.activeThread);
+  unTopThreadHandler = async () => {
+    const thread = this.activeThread;
 
-    Toast.success({
-      content: '取消置顶成功',
+    const ret = await setThreadBeUnSticked({
+      thread,
+      indexStore: this.props.index,
     });
+
+    if (ret.success) {
+      Toast.success({
+        content: '取消置顶成功',
+      });
+    } else {
+      Toast.error({
+        content: ret.msg || '取消置顶失败',
+      });
+    }
   };
 
   // 编辑帖子处理函数
@@ -123,6 +146,16 @@ class UserCenterThreads extends React.Component {
 
   onActionClick = (e) => {
     e.stopPropagation();
+    if (this.activeThread.userStickStatus) {
+      this.setState({
+        currentAction: UNTOP_ACTIONS,
+      });
+    } else {
+      this.setState({
+        currentAction: TOP_ACTIONS,
+      });
+    }
+
     this.setState({
       actionSheetVisible: true,
     });
@@ -160,8 +193,8 @@ class UserCenterThreads extends React.Component {
     const spanElement = (
       <View
         onClick={(e) => {
-          this.onActionClick(e);
           this.activeThread = itemInfo;
+          this.onActionClick(e);
         }}
       >
         <Icon name="MoreBOutlined" />
