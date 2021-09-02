@@ -87,7 +87,7 @@ class CommentH5Page extends React.Component {
   onOperClick = (type) => {
     if (!this.props.user.isLogin()) {
       Toast.info({ content: '请先登录!' });
-      goToLoginPage({ url: '/subPages/user/wx-auth/index' });
+      goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
 
@@ -173,26 +173,26 @@ class CommentH5Page extends React.Component {
     if (floor === 2) {
       const { userId } = reply;
       if (!userId) return;
-      Router.push({ url: `/subPages/user/index?id=${userId}` });
+      Router.push({ url: `/userPages/user/index?id=${userId}` });
     }
     if (floor === 3) {
       const { commentUserId } = reply;
       if (!commentUserId) return;
-      Router.push({ url: `/subPages/user/index?id=${commentUserId}` });
+      Router.push({ url: `/userPages/user/index?id=${commentUserId}` });
     }
   }
 
   avatarClick(commentData) {
     const { userId } = commentData;
     if (!userId) return;
-    Router.push({ url: `/subPages/user/index?id=${userId}` });
+    Router.push({ url: `/userPages/user/index?id=${userId}` });
   }
 
   // 点击评论的赞
   async likeClick(data) {
     if (!this.props.user.isLogin()) {
       Toast.info({ content: '请先登录!' });
-      goToLoginPage({ url: '/subPages/user/wx-auth/index' });
+      goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
 
@@ -231,7 +231,7 @@ class CommentH5Page extends React.Component {
   async replyLikeClick(reply) {
     if (!this.props.user.isLogin()) {
       Toast.info({ content: '请先登录!' });
-      goToLoginPage({ url: '/subPages/user/wx-auth/index' });
+      goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
 
@@ -278,7 +278,7 @@ class CommentH5Page extends React.Component {
   replyClick(comment) {
     if (!this.props.user.isLogin()) {
       Toast.info({ content: '请先登录!' });
-      goToLoginPage({ url: '/subPages/user/wx-auth/index' });
+      goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
 
@@ -294,7 +294,7 @@ class CommentH5Page extends React.Component {
   replyReplyClick(reply, comment) {
     if (!this.props.user.isLogin()) {
       Toast.info({ content: '请先登录!' });
-      goToLoginPage({ url: '/subPages/user/wx-auth/index' });
+      goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
 

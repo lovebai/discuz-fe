@@ -67,6 +67,7 @@ const miniConfig = require('./src/app.config');
   }
   subPagesAddWxss('./dist/subPages/', 'subPages');
   subPagesAddWxss('./dist/indexPages/', 'indexPages');
+  subPagesAddWxss('./dist/userPages/', 'userPages');
 
 
   // 复制依赖文件
@@ -77,6 +78,9 @@ const miniConfig = require('./src/app.config');
   }
   copy('./dist/indexPages/common.js', './dist/subPages/common.js');
   copy('./dist/indexPages/common.wxss', './dist/subPages/common.wxss');
+
+  copy('./dist/indexPages/common.js', './dist/userPages/common.js');
+  copy('./dist/indexPages/common.wxss', './dist/userPages/common.wxss');
 
 
   // app.js添加对discuzq.js的引用

@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import IndexH5Page from '../../../layout/my/like';
+import IndexH5Page from '../../../layout/my/collect';
 import Page from '@components/page';
 import withShare from '@common/utils/withShare/withShare';
 import { priceShare } from '@common/utils/priceShare';
@@ -19,56 +19,58 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.index.registerList({ namespace: 'like' });
+    this.props.index.registerList({ namespace: 'collect' });
   }
 
   async componentDidMount() {
     Taro.hideShareMenu();
     const { index } = this.props;
     const threadsResp = await index.fetchList({
-      namespace: 'like',
+      namespace: 'collect',
       perPage: 10,
       page: this.page,
       filter: {
-        complex: 2,
+        complex: 3,
       },
     });
 
     index.setList({
-      namespace: 'like',
+      namespace: 'collect',
       data: threadsResp,
       page: this.page,
     });
   }
 
   componentWillUnmount() {
-    this.props.index.setThreads(null);
+    const { index } = this.props;
+    index.clearList({ namespace: 'collect' });
   }
 
   dispatch = async () => {
     const { index } = this.props;
 
     this.page += 1;
+
     const threadsResp = await index.fetchList({
-      namespace: 'like',
-      perPage: this.perPage,
+      namespace: 'collect',
+      perPage: 10,
       page: this.page,
       filter: {
-        complex: 2,
+        complex: 3,
       },
     });
 
     index.setList({
-      namespace: 'like',
+      namespace: 'collect',
       data: threadsResp,
       page: this.page,
     });
   };
-  
+
   getShareData(data) {
     const { site } = this.props;
     const defalutTitle = site.webConfig?.setSite?.siteName || '';
-    const defalutPath = '/subPages/my/like/index';
+    const defalutPath = '/userPages/my/collect/index';
     if (data.from === 'menu') {
       return {
         title: defalutTitle,
@@ -99,12 +101,13 @@ class Index extends React.Component {
       });
     }
     return (
-      priceShare({ path, isPrice, isAnonymous }) || {
+      priceShare({ path, isAnonymous, isPrice }) || {
         title,
         path,
       }
     );
   }
+
   render() {
     return (
       <Page>

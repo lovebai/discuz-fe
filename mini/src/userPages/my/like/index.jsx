@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import IndexH5Page from '../../../layout/my/buy';
+import IndexH5Page from '../../../layout/my/like';
 import Page from '@components/page';
 import withShare from '@common/utils/withShare/withShare';
 import { priceShare } from '@common/utils/priceShare';
@@ -19,60 +19,56 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.index.registerList({ namespace: 'buy' });
+    this.props.index.registerList({ namespace: 'like' });
   }
 
   async componentDidMount() {
     Taro.hideShareMenu();
     const { index } = this.props;
     const threadsResp = await index.fetchList({
-      namespace: 'buy',
+      namespace: 'like',
       perPage: 10,
       page: this.page,
       filter: {
-        complex: 4,
+        complex: 2,
       },
     });
 
     index.setList({
-      namespace: 'buy',
+      namespace: 'like',
       data: threadsResp,
       page: this.page,
     });
-
-    this.page += 1;
   }
 
   componentWillUnmount() {
-    const { index } = this.props;
-    index.clearList({ namespace: 'buy' });
+    this.props.index.setThreads(null);
   }
 
   dispatch = async () => {
     const { index } = this.props;
+
+    this.page += 1;
     const threadsResp = await index.fetchList({
-      namespace: 'buy',
-      perPage: 10,
+      namespace: 'like',
+      perPage: this.perPage,
       page: this.page,
       filter: {
-        complex: 4,
+        complex: 2,
       },
     });
 
     index.setList({
-      namespace: 'buy',
+      namespace: 'like',
       data: threadsResp,
       page: this.page,
     });
-    if (this.page <= threadsResp.totalPage) {
-      this.page += 1;
-    }
   };
 
   getShareData(data) {
     const { site } = this.props;
     const defalutTitle = site.webConfig?.setSite?.siteName || '';
-    const defalutPath = '/subPages/my/buy/index';
+    const defalutPath = '/userPages/my/like/index';
     if (data.from === 'menu') {
       return {
         title: defalutTitle,
@@ -103,7 +99,7 @@ class Index extends React.Component {
       });
     }
     return (
-      priceShare({ isPrice, isAnonymous, path }) || {
+      priceShare({ path, isPrice, isAnonymous }) || {
         title,
         path,
       }

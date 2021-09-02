@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import OtherView from '../../layout/my/other-user/index';
-import Page from '@components/page';
-import { View, Text } from '@tarojs/components';
+import React from 'react';
 import { inject, observer } from 'mobx-react';
+import IndexH5Page from '../../../layout/my/buy';
+import Page from '@components/page';
 import withShare from '@common/utils/withShare/withShare';
 import { priceShare } from '@common/utils/priceShare';
-import Taro, { getCurrentInstance, eventCenter } from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 
 @inject('site')
 @inject('search')
@@ -15,11 +14,65 @@ import Taro, { getCurrentInstance, eventCenter } from '@tarojs/taro';
 @observer
 @withShare({})
 class Index extends React.Component {
+  page = 1;
+  perPage = 10;
+
+  constructor(props) {
+    super(props);
+    this.props.index.registerList({ namespace: 'buy' });
+  }
+
+  async componentDidMount() {
+    Taro.hideShareMenu();
+    const { index } = this.props;
+    const threadsResp = await index.fetchList({
+      namespace: 'buy',
+      perPage: 10,
+      page: this.page,
+      filter: {
+        complex: 4,
+      },
+    });
+
+    index.setList({
+      namespace: 'buy',
+      data: threadsResp,
+      page: this.page,
+    });
+
+    this.page += 1;
+  }
+
+  componentWillUnmount() {
+    const { index } = this.props;
+    index.clearList({ namespace: 'buy' });
+  }
+
+  dispatch = async () => {
+    const { index } = this.props;
+    const threadsResp = await index.fetchList({
+      namespace: 'buy',
+      perPage: 10,
+      page: this.page,
+      filter: {
+        complex: 4,
+      },
+    });
+
+    index.setList({
+      namespace: 'buy',
+      data: threadsResp,
+      page: this.page,
+    });
+    if (this.page <= threadsResp.totalPage) {
+      this.page += 1;
+    }
+  };
+
   getShareData(data) {
     const { site } = this.props;
-    const { id = '' } = getCurrentInstance().router.params;
-    const defalutTitle = `${this.props.user?.targetUser?.nickname || this.props.user?.targetUser?.username}的主页`;
-    const defalutPath = `/subPages/user/index?id=${id}`;
+    const defalutTitle = site.webConfig?.setSite?.siteName || '';
+    const defalutPath = '/userPages/my/buy/index';
     if (data.from === 'menu') {
       return {
         title: defalutTitle,
@@ -50,7 +103,7 @@ class Index extends React.Component {
       });
     }
     return (
-      priceShare({ isAnonymous, isPrice, path }) || {
+      priceShare({ isPrice, isAnonymous, path }) || {
         title,
         path,
       }
@@ -59,10 +112,10 @@ class Index extends React.Component {
   render() {
     return (
       <Page>
-        <OtherView />
+        <IndexH5Page dispatch={this.dispatch} />
       </Page>
     );
   }
 }
-
+// eslint-disable-next-line new-cap
 export default Index;

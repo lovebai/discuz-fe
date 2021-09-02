@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import Router from '@discuzq/sdk/dist/router';
-import { View } from '@tarojs/components';
-import { getCurrentInstance } from '@tarojs/taro';
-import UserCenterFollows from '@components/user-center-follow';
+import UserCenterFans from '@components/user-center-fans';
 import Divider from '@discuzq/design/dist/components/divider/index';
 import Toast from '@discuzq/design/dist/components/toast/index';
+import { View } from '@tarojs/components';
+import Router from '@discuzq/sdk/dist/router';
+import { getCurrentInstance } from '@tarojs/taro';
 import Page from '@components/page';
 import styles from './index.module.scss';
 import Taro from '@tarojs/taro';
@@ -19,13 +19,14 @@ class index extends Component {
       height: '100%',
       renderComponent: null,
     };
-    this.props.user.cleanUserFollows();
-    this.props.user.cleanTargetUserFollows();
+    this.props.user.cleanUserFans();
+    this.props.user.cleanTargetUserFans();
     Taro.hideShareMenu();
   }
 
   componentDidMount() {
     this.setState({
+      // header 是 40px，留出 2px ，用以触发下拉事件
       height: window.outerHeight - 38,
       renderComponent: true,
     });
@@ -41,18 +42,18 @@ class index extends Component {
   followHandler = async ({ id }) => {
     try {
       await this.props.user.postFollow(id);
+      const isOtherFans = JSON.parse(this.getQueryString('isOtherPerson'));
+      const isOtherFansId = this.getQueryString('otherId');
+      if (isOtherFans) {
+        this.props.user.setTargetUserFansBeFollowed(id);
+      } else {
+        this.props.user.setUserFansBeFollowed(id);
+      }
       Toast.success({
         content: '关注成功',
         hasMask: false,
         duration: 1000,
       });
-      const isOtherFollows = JSON.parse(this.getQueryString('isOtherPerson'));
-      if (isOtherFollows) {
-        const isOtherFollowId = this.getQueryString('otherId');
-        this.props.user.setTargetUserFollowerBeFollowed(isOtherFollowId);
-      } else {
-        this.props.user.setUserFollowerBeFollowed(id);
-      }
     } catch (error) {
       console.log(error);
     }
@@ -62,13 +63,15 @@ class index extends Component {
   unFollowHandler = async ({ id }) => {
     try {
       await this.props.user.cancelFollow({ id, type: 1 });
-      const isOtherFollows = JSON.parse(this.getQueryString('isOtherPerson'));
-      const isOtherFollowId = this.getQueryString('otherId');
-      if (isOtherFollows) {
-        this.props.user.setTargetUserFollowerBeUnFollowed(isOtherFollowId);
+      const isOtherFans = JSON.parse(this.getQueryString('isOtherPerson'));
+      if (isOtherFans) {
+        this.props.user.setTargetUserFansBeUnFollowed(id);
       } else {
-        this.props.user.setUserFollowerBeUnFollowed(id);
+        this.props.user.setUserFansBeUnFollowed(id);
       }
+      this.setState({
+        renderComponent: this.getRenderComponent(),
+      });
       Toast.success({
         content: '取消成功',
         hasMask: false,
@@ -80,29 +83,28 @@ class index extends Component {
   };
 
   onContainerClick = ({ id }) => {
-    Router.push({ url: `/subPages/user/index?id=${id}` });
+    Router.push({ url: `/userPages/user/index?id=${id}` });
   };
 
-  // 分割线
   splitElement = () => (
     <View className={styles.splitEmelent}>
       <Divider />
     </View>
   );
 
-  getRenderComponent() {
-    const isOtherFollows = JSON.parse(this.getQueryString('isOtherPerson'));
+  getRenderComponent = () => {
+    const isOtherFans = JSON.parse(this.getQueryString('isOtherPerson'));
     const id = this.getQueryString('otherId');
     return (
       <>
-        {!isOtherFollows ? (
-          <UserCenterFollows onContainerClick={this.onContainerClick} splitElement={this.splitElement()} />
+        {!isOtherFans ? (
+          <UserCenterFans onContainerClick={this.onContainerClick} splitElement={this.splitElement()} />
         ) : (
-          <UserCenterFollows onContainerClick={this.onContainerClick} userId={id} splitElement={this.splitElement()} />
+          <UserCenterFans userId={id} onContainerClick={this.onContainerClick} splitElement={this.splitElement()} />
         )}
       </>
     );
-  }
+  };
 
   render() {
     return (

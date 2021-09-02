@@ -111,7 +111,7 @@ class Index extends Component {
   toUserCenter = (e, canJump, item) => {
     e.stopPropagation();
     if (!canJump || !item.nickname || !item.userId) return;
-    Taro.navigateTo({ url: `/subPages/user/index?id=${item.userId}` })
+    Taro.navigateTo({ url: `/userPages/user/index?id=${item.userId}` })
   }
 
   // 跳转主题详情or私信
@@ -130,7 +130,7 @@ class Index extends Component {
       }
     }
     if (type === 'chat') {
-      url = `/indexPages/message/index?page=chat&dialogId=${item.dialogId}&nickname=${item.nickname || ''}`;
+      url = `/subPages/message/index?page=chat&dialogId=${item.dialogId}&nickname=${item.nickname || ''}`;
     }
 
     url && Taro.navigateTo({ url });
