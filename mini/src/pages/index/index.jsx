@@ -1,5 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react'
+import './discuzq.scss';
 import styles from './index.module.scss';
 import { View } from '@tarojs/components';
 import Icon from '@discuzq/design/dist/components/icon/index';
