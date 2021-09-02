@@ -101,7 +101,7 @@ class Index extends Component {
       _content = tip + _content;
     }
 
-    let t = xss(s9e.parse(this.filterTag(_content)));
+    let t = xss(s9e.parseEmoji(this.filterTag(_content)));
     t = (typeof t === 'string') ? t : '';
 
     return t;
@@ -146,7 +146,7 @@ class Index extends Component {
   }
 
   render() {
-    const { type, item = {}, isLast } = this.props;
+    const { type, item = { }, isLast } = this.props;
     const avatarUrl = this.getAvatar(item.avatar);
 
     return (
@@ -231,7 +231,7 @@ Index.propTypes = {
 
 Index.defaultProps = {
   type: 'account',
-  item: {},
+  item: { },
 }
 
 export default Index;
