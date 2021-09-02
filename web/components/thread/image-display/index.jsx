@@ -173,17 +173,19 @@ const Index = ({ onClickMore: gotoDetail, imgData = [], flat = false, platform =
 
   return (
     <div onClick={gotoDetail} style={{ cursor: 'pointer' }} className={`${platform === 'h5' ? styles.container : styles.containerPC}`}>
-      {ImageView}
-      {visible && (
-        <ImagePreviewer
-          ref={ImagePreviewerRef}
-          onClose={() => {
-            setVisible(false);
-          }}
-          imgUrls={imagePreviewers}
-          currentUrl={defaultImg}
-        />
-      )}
+      <div onClick={e => e.stopPropagation()} style={{ display: 'inline-block' }}>
+        {ImageView}
+        {visible && (
+          <ImagePreviewer
+            ref={ImagePreviewerRef}
+            onClose={() => {
+              setVisible(false);
+            }}
+            imgUrls={imagePreviewers}
+            currentUrl={defaultImg}
+          />
+        )}
+      </div>
     </div>
   );
 };
