@@ -168,17 +168,19 @@ const Index = ({
 
   return (
     <View onClick={gotoDetail} className={`${styles.container}`}>
-      {ImageView}
-      {visible && (
-        <ImagePreviewer
-          ref={ImagePreviewerRef}
-          onComplete={() => {
-            setVisible(false);
-          }}
-          imgUrls={imagePreviewers}
-          currentUrl={defaultImg}
-        />
-      )}
+      <View onClick={e => e.stopPropagation()} style={{ display: 'inline-block' }}>
+        {ImageView}
+        {visible && (
+          <ImagePreviewer
+            ref={ImagePreviewerRef}
+            onComplete={() => {
+              setVisible(false);
+            }}
+            imgUrls={imagePreviewers}
+            currentUrl={defaultImg}
+          />
+        )}
+      </View>
     </View>
   );
 };
