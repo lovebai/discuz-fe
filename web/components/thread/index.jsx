@@ -53,15 +53,11 @@ class Index extends React.Component {
       h5Share({ path: `thread/${threadId}` });
       this.props.index.updateThreadShare({ threadId }).then((result) => {
         if (result.code === 0) {
-          this.props.index.updateAssignThreadInfo(threadId, { updateType: 'share', updatedInfo: result.data, user: user.userInfo });
-          this.props.search.updateAssignThreadInfo(threadId, { updateType: 'share', updatedInfo: result.data, user: user.userInfo });
-          this.props.topic.updateAssignThreadInfo(threadId, { updateType: 'share', updatedInfo: result.data, user: user.userInfo });
-
-          const { recomputeRowHeights = noop } = this.props;
-
-          if (recomputeRowHeights && typeof recomputeRowHeights === 'function') {
-            recomputeRowHeights();
-          }
+          this.props.index.updateAssignThreadInfo(threadId, {
+            updateType: 'share',
+            updatedInfo: result.data,
+            user: user.userInfo,
+          });
         }
       });
     }, 500)

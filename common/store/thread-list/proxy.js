@@ -1,12 +1,11 @@
-export default (data, listHandlers) => {
-  const {
-    updateAssignThreadInfoInLists, // 更新
-    deleteAssignThreadInLists, // 删除
-    addThreadInTargetList, // 新增
-    setTargetListDataByList, // 批量更新
-    setAttribute, // 属性
-    namespace,
-  } = listHandlers;
+export default (data, params) => {
+  const { listStore, namespace } = params;
+
+  const updateAssignThreadInfoInLists = listStore.updateAssignThreadInfoInLists.bind(listStore); // 更新所有列表
+  const deleteAssignThreadInLists = listStore.deleteAssignThreadInLists.bind(listStore); // 删除所有列表
+  const addThreadInTargetList = listStore.addThreadInTargetList.bind(listStore); // 新增指定列表
+  const setAttribute = listStore.setAttribute.bind(listStore); // 更新指定列表属性
+  const setTargetListDataByList = listStore.setTargetListDataByList.bind(listStore); // 更新指定列表的数据
 
   if (data) {
     return new Proxy(data, {
@@ -31,6 +30,7 @@ export default (data, listHandlers) => {
               }
               // 修改
               if (cbType === 'modify') {
+                console.log('modify', vValue.likeReward.shareCount);
                 // 更新帖子信息
                 updateAssignThreadInfoInLists({
                   threadId: vValue.threadId,
@@ -53,7 +53,6 @@ export default (data, listHandlers) => {
         return res;
       },
       set(oTarget, sKey, vValue) {
-        console.log('set', oTarget, sKey, vValue);
         if (sKey === 'pageData') {
           // 批量更新
           setTargetListDataByList({

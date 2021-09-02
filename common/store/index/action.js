@@ -492,7 +492,6 @@ class IndexAction extends IndexStore {
   @action
   updateAssignThreadInfo(threadId, obj = {}) {
     const targetThread = this.findAssignThread(threadId);
-    const targetThreadsInLists = this.threadList.findAssignThreadInLists({ threadId });
 
     const { updateType, updatedInfo, user, openedMore } = obj;
 
@@ -554,18 +553,6 @@ class IndexAction extends IndexStore {
         }
       })
     }
-
-    if (targetThreadsInLists && targetThreadsInLists.length !== 0) {
-      targetThreadsInLists.forEach(({ index, page, listName, data }) => {
-        threadUpdater({
-          data,
-          callback: (updatedInfo) => {
-            this.threadList.lists[listName].data[page][index] = updatedInfo;
-          }
-        })
-      })
-    }
-
   }
 
   /**

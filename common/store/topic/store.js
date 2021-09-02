@@ -22,22 +22,12 @@ class TopicStore {
         ...attrs,
       };
     }
-    const updateAssignThreadInfoInLists = this.threadList.updateAssignThreadInfoInLists.bind(this.threadList);
-    const deleteAssignThreadInLists = this.threadList.deleteAssignThreadInLists.bind(this.threadList);
-    const addThreadInTargetList = this.threadList.addThreadInTargetList.bind(this.threadList);
-    const setAttribute = this.threadList.setAttribute.bind(this.threadList);
-    const setTargetListDataByList = this.threadList.setTargetListDataByList.bind(this.threadList);
-
-    const listHandlers = {
-      updateAssignThreadInfoInLists, // 更新
-      deleteAssignThreadInLists, // 删除
-      addThreadInTargetList, // 新增
-      setTargetListDataByList, // 批量更新
-      setAttribute, // 更新属性
+    const params = {
+      listStore: this.threadList,
       namespace: this.namespace,
     };
 
-    return listProxy(newData, listHandlers);
+    return listProxy(newData, params);
   }
   set topicThreads(data) {
     if (!data) {
