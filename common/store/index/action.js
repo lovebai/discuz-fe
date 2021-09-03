@@ -361,21 +361,11 @@ class IndexAction extends IndexStore {
   }
 
   /**
-   * 支付成功后，更新帖子列表指定帖子状态
-   * @param {number} threadId 帖子id
-   * @param {object}  obj 更新数据
-   * @returns
+   * 更新changeinfo，小程序首页列表使用
    */
   @action
-  updatePayThreadInfo(threadId, obj, isUpdatePay = true) {
-    const targetThread = this.findAssignThread(threadId);
-    if (!targetThread || targetThread.length === 0) return;
-
-    const { index } = targetThread;
-    if (this.threads?.pageData) {
-      this.threads.pageData[index] = obj;
-      if (isUpdatePay) this.changeInfo = { type: 'pay', thread: threadId }
-    }
+  updateChangeInfo({ threadId, type }) {
+    this.changeInfo = { type, thread: threadId }
   }
 
   /**

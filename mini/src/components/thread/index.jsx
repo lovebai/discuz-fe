@@ -13,7 +13,7 @@ import ThreadCenterView from './ThreadCenterView';
 import { debounce, noop , getElementRect, randomStr } from './utils'
 import { View, Text } from '@tarojs/components'
 import { getImmutableTypeHeight } from './getHeight'
-
+import { updateThreadAssignInfoInLists, updatePayThreadInfo } from '@common/store/thread-list/list-business';
 import Skeleton from './skeleton';
 import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
 
@@ -21,8 +21,6 @@ import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
 @inject('index')
 @inject('user')
 @inject('thread')
-@inject('search')
-@inject('topic')
 @observer
 class Index extends React.Component {
 
@@ -101,9 +99,7 @@ class Index extends React.Component {
       this.setState({ isSendingLike: true });
       this.props.index.updateThreadInfo({ pid: postId, id: threadId, data: { attributes: { isLiked: !isLike } } }).then((result) => {
         if (result.code === 0 && result.data) {
-          this.props.index.updateAssignThreadInfo(threadId, { updateType: 'like', updatedInfo: result.data, user: user.userInfo });
-          this.props.search.updateAssignThreadInfo(threadId, { updateType: 'like', updatedInfo: result.data, user: user.userInfo });
-          this.props.topic.updateAssignThreadInfo(threadId, { updateType: 'like', updatedInfo: result.data, user: user.userInfo });
+          updateThreadAssignInfoInLists(threadId, { updateType: 'like', updatedInfo: result.data, user: user.userInfo });
         }
         this.setState({ isSendingLike: false, minHeight: 0 }, () => {
           // 点赞更新完数据后，重新修正帖子高度
@@ -139,10 +135,8 @@ class Index extends React.Component {
       if (success && thread?.threadId) {
         const { code, data } = await this.props.thread.fetchThreadDetail(thread?.threadId);
         if (code === 0 && data) {
-          this.props.index.updatePayThreadInfo(thread?.threadId, data);
-          this.props.search.updatePayThreadInfo(thread?.threadId, data);
-          this.props.topic.updatePayThreadInfo(thread?.threadId, data);
-          this.props.user.updatePayThreadInfo(thread?.threadId, data);
+          this.props.index.updateChangeInfo({ threadId: thread?.threadId, type: 'pay' });
+          updatePayThreadInfo(thread?.threadId, data);
 
           if(typeof this.props.dispatch === "function") {
             this.props.dispatch(thread?.threadId, data);
@@ -212,9 +206,7 @@ class Index extends React.Component {
       const { threadId = '', user } = this.props.data || {};
       this.props.index.updateThreadShare({ threadId }).then(result => {
         if (result.code === 0) {
-          this.props.index.updateAssignThreadInfo(threadId, { updateType: 'share', updatedInfo: result.data, user: user.userInfo });
-          this.props.search.updateAssignThreadInfo(threadId, { updateType: 'share', updatedInfo: result.data, user: user.userInfo });
-          this.props.topic.updateAssignThreadInfo(threadId, { updateType: 'share', updatedInfo: result.data, user: user.userInfo });
+          updateThreadAssignInfoInLists(threadId, { updateType: 'share', updatedInfo: result.data, user: user.userInfo });
         }
       });
     }
@@ -229,9 +221,7 @@ class Index extends React.Component {
       const threadIdNumber = Number(threadId);
       const viewCount = await updateViewCountInStorage(threadIdNumber);
       if(viewCount) {
-        this.props.index.updateAssignThreadInfo(threadIdNumber, { updateType: 'viewCount', updatedInfo: { viewCount } })
-        this.props.search.updateAssignThreadInfo(threadIdNumber, { updateType: 'viewCount', updatedInfo: { viewCount } })
-        this.props.topic.updateAssignThreadInfo(threadIdNumber, { updateType: 'viewCount', updatedInfo: { viewCount } })
+        updateThreadAssignInfoInLists(threadIdNumber, { updateType: 'viewCount', updatedInfo: { viewCount } })
       }
     }
 

@@ -10,6 +10,7 @@ import { priceShare } from '@common/utils/priceShare';
 import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
 import Toast from '@components/toast';
 import ErrorMiniPage from '../../layout/error/index';
+import { updateThreadAssignInfoInLists } from '@common/store/thread-list/list-business';
 
 // const MemoToastProvider = React.memo(ToastProvider);
 @inject('site')
@@ -109,15 +110,7 @@ class Detail extends React.Component {
     const viewCount = await updateViewCountInStorage(threadId, viewCountMode === 0);
     if (viewCount) {
       this.props.thread.updateViewCount(viewCount);
-      this.props.index.updateAssignThreadInfo(threadId, {
-        updateType: 'viewCount',
-        updatedInfo: { viewCount },
-      });
-      this.props.search.updateAssignThreadInfo(threadId, {
-        updateType: 'viewCount',
-        updatedInfo: { viewCount },
-      });
-      this.props.topic.updateAssignThreadInfo(threadId, {
+      updateThreadAssignInfoInLists(threadId, {
         updateType: 'viewCount',
         updatedInfo: { viewCount },
       });

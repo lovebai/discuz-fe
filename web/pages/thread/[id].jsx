@@ -14,6 +14,7 @@ import setWxShare from '@common/utils/set-wx-share';
 import htmlToString from '@common/utils/html-to-string';
 import isWeiXin from '@common/utils/is-weixin';
 import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
+import { updateThreadAssignInfoInLists } from '@common/store/thread-list/list-business';
 
 @inject('site')
 @inject('thread')
@@ -109,15 +110,7 @@ class Detail extends React.Component {
     const viewCount = await updateViewCountInStorage(threadId, viewCountMode === 0);
     if (viewCount) {
       this.props.thread.updateViewCount(viewCount);
-      this.props.index.updateAssignThreadInfo(threadId, {
-        updateType: 'viewCount',
-        updatedInfo: { viewCount },
-      });
-      this.props.search.updateAssignThreadInfo(threadId, {
-        updateType: 'viewCount',
-        updatedInfo: { viewCount },
-      });
-      this.props.topic.updateAssignThreadInfo(threadId, {
+      updateThreadAssignInfoInLists(threadId, {
         updateType: 'viewCount',
         updatedInfo: { viewCount },
       });
