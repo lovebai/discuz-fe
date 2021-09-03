@@ -135,7 +135,6 @@ class Index extends React.Component {
       if (success && thread?.threadId) {
         const { code, data } = await this.props.thread.fetchThreadDetail(thread?.threadId);
         if (code === 0 && data) {
-          this.props.index.updateChangeInfo({ threadId: thread?.threadId, type: 'pay' });
           updatePayThreadInfo(thread?.threadId, data);
 
           if(typeof this.props.dispatch === "function") {
