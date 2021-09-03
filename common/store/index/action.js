@@ -57,7 +57,7 @@ class IndexAction extends IndexStore {
    */
   @action
   async getThreadCommentList(threadId) {
-    const targetThread = this.findAssignThread(threadId);
+    const targetThread = this._findAssignThread(threadId);
 
     if (targetThread && targetThread.data) {
       targetThread.data.isLoading = true;
@@ -304,7 +304,7 @@ class IndexAction extends IndexStore {
   }
 
   // 获取指定的帖子数据
-  findAssignThread(threadId) {
+  _findAssignThread(threadId) {
     if (this.threads) {
       const { pageData = [] } = this.threads;
       for (let i = 0; i < pageData.length; i++) {
@@ -392,7 +392,7 @@ class IndexAction extends IndexStore {
    */
   @action
   updateListThreadIndexes(threadId, tomId, tomValue) {
-    const targetThread = this.findAssignThread(threadId);
+    const targetThread = this._findAssignThread(threadId);
     this.updataThreadIndexesAllData(threadId, tomId, tomValue);
     if (!targetThread) return;
     const { index, data } = targetThread;
@@ -428,7 +428,7 @@ class IndexAction extends IndexStore {
     this.updateAssignSticksInfo(threadId, threadInfo)
 
     // 更新帖子列表
-    const targetThread = this.findAssignThread(typeofFn.isNumber(threadId) ? threadId : +threadId);
+    const targetThread = this._findAssignThread(typeofFn.isNumber(threadId) ? threadId : +threadId);
     if (!targetThread) return false;
     const { index, data } = targetThread;
     this.threads.pageData[index] = threadInfo;
@@ -474,74 +474,21 @@ class IndexAction extends IndexStore {
   }
 
   /**
-   * 更新帖子列表指定帖子状态
+   * 更新帖子的展开更多
    * @param {number} threadId 帖子id
    * @param {object}  obj 更新数据
    * @returns
    */
   @action
-  updateAssignThreadInfo(threadId, obj = {}) {
-    const targetThread = this.findAssignThread(threadId);
+  updateOpenMore(threadId, obj = {}) {
+    const targetThread = this._findAssignThread(threadId);
 
-    const { updateType, updatedInfo, user, openedMore } = obj;
-
-    const threadUpdater = ({
-      data,
-      callback = () => {}
-    }) => {
-      if (!data && !data?.likeReward && !data?.likeReward?.users) return;
-
-      // 更新整个帖子内容
-      if (data && updateType === 'content') {
-        callback(data);
-      }
-
-      // 更新点赞
-      if (updateType === 'like' && !typeofFn.isUndefined(updatedInfo.isLiked) &&
-        !typeofFn.isNull(updatedInfo.isLiked) && user) {
-        const { isLiked, likePayCount = 0 } = updatedInfo;
-        const theUserId = user.userId || user.id;
-        data.isLike = isLiked;
-
-        const userData = threadReducer.createUpdateLikeUsersData(user, 1);
-        // 添加当前用户到按过赞的用户列表
-        const newLikeUsers = threadReducer.setThreadDetailLikedUsers(data.likeReward, !!isLiked, userData);
-
-        data.likeReward.users = newLikeUsers;
-        data.likeReward.likePayCount = likePayCount;
-      }
-
-      // 更新评论
-      if (updateType === 'comment' && data?.likeReward) {
-        data.likeReward.postCount = data.likeReward.postCount + 1;
-      }
-
-      // 更新分享
-      if (updateType === 'share') {
-        data.likeReward.shareCount = data.likeReward.shareCount + 1;
-      }
-
-      // 更新帖子浏览量
-      if (updateType === 'viewCount') {
-        data.viewCount = updatedInfo.viewCount;
-      }
-
-      if (updateType === 'openedMore') {
-        data.openedMore = openedMore;
-      }
-
-      callback(data);
-    }
-
-    if (targetThread && targetThread.length !== 0) {
+    if (targetThread && targetThread.length !== 0) { 
       const { index, data } = targetThread;
+      const { openedMore } = obj;
+      data.openedMore = openedMore;
 
-      threadUpdater({
-        data,
-        callback: (updatedInfo) => {
-          this.threads.pageData[index] = updatedInfo;
-        }
-      })
+      this.threads.pageData[index] = data;
     }
   }
 
@@ -552,12 +499,12 @@ class IndexAction extends IndexStore {
   @action
   addThread(threadInfo) {
     const { threadId = '' } = threadInfo
-    const targetThread = this.findAssignThread(threadId);
+    const targetThread = this._findAssignThread(threadId);
 
     const targetThreadInLists = this.threadList.findAssignThreadInTargetList({ threadId, namespace: 'my' })
 
     const addThreadInLists = ({ threadInfo, threadId }) => {
-      if (targetThreadInLists && targetThreadInLists.length !== 0) {
+      if (targetThreadInLists) {
         this.threadList.updateAssignThreadInfoInLists({ threadId, threadInfo });
       } else {
         this.threadList.addThreadInTargetList({ namespace: 'my', threadInfo });

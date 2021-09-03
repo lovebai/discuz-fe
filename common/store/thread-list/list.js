@@ -290,7 +290,7 @@ export default class ListStore {
     Object.keys(this.lists).forEach((listName) => {
       const listSearchResult = this.findAssignThreadInTargetList({ namespace: listName, threadId });
 
-      resultList = [...resultList, ...listSearchResult];
+      resultList = [...resultList, listSearchResult];
     });
 
     return resultList;
@@ -304,24 +304,24 @@ export default class ListStore {
   findAssignThreadInTargetList = ({ threadId, namespace }) => {
     if (!this.lists[namespace]) return null;
 
-    const resultList = [];
+    let result = null;
 
     const { data } = this.lists[namespace];
 
     Object.keys(data).forEach((page) => {
       data[page].forEach((thread, index) => {
         if (thread.threadId === threadId) {
-          resultList.push({
+          result = {
             listName: namespace,
             page,
             index,
             data: thread,
-          });
+          };
         }
       });
     });
 
-    return resultList;
+    return result;
   };
 
   /**

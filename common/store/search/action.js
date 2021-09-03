@@ -383,36 +383,6 @@ class SearchAction extends SearchStore {
     return null;
   };
 
-   /**
-   * 删除帖子操作
-   * @param {string} id 帖子id
-   * @returns
-   */
-    @action
-    async deleteThreadsData({ id } = {}) {
-      if (!id) {
-        return
-      }
- 
-      if (this.threads) {
-       const { pageData = [] } = this.threads;
-       const newPageData = pageData.filter(item => item.threadId !== id)
- 
-       if (this.threads?.pageData) {
-         this.threads.pageData = newPageData;
-       }
-     }
- 
-     if (this.indexThreads) {
-       const { pageData = [] } = this.indexThreads;
-       const newPageData = pageData.filter(item => item.threadId !== id)
- 
-       if (this.indexThreads?.pageData) {
-         this.indexThreads.pageData = newPageData;
-       }
-     }
-    }
-
   /**
    * 更新用户状态
    * @param {number} userId 用户id
@@ -480,39 +450,6 @@ class SearchAction extends SearchStore {
       })
     }
     return users
-  }
-
-   // 获取指定的帖子数据
-  findAssignThread(threadId) {
-    const threadArr = []
-    if (this.threads) {
-      const { pageData = [] } = this.threads;
-      for (let i = 0; i < pageData.length; i++)  {
-        if (pageData[i].threadId === threadId) {
-          threadArr.push({ index: i, data: pageData[i], store: this.threads });
-        }
-      }
-    }
-
-    if (this.indexThreads) {
-      const { pageData = [] } = this.indexThreads;
-      for (let i = 0; i < pageData.length; i++)  {
-        if (pageData[i].threadId === threadId) {
-          threadArr.push({ index: i, data: pageData[i], store: this.indexThreads });
-        }
-      }
-    }
-
-    if (this.searchThreads) {
-      const { pageData = [] } = this.searchThreads;
-      for (let i = 0; i < pageData.length; i++)  {
-        if (pageData[i].threadId === threadId) {
-          threadArr.push({ index: i, data: pageData[i], store: this.searchThreads });
-        }
-      }
-    }
-
-    return threadArr
   }
 }
 

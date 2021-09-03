@@ -1,3 +1,8 @@
+
+/**
+ * 帖子列表代理
+ * 在不改变原有的业务逻辑的基础上，统一帖子列表数据操作至threadList
+ */
 export default (data, params) => {
   const { listStore, namespace } = params;
 

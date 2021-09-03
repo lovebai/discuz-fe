@@ -205,7 +205,7 @@ class Index extends React.Component {
     onOpen = () => {
       const { threadId = '' } = this.props.data || {};
 
-      this.props.index.updateAssignThreadInfo(threadId, { updateType: 'openedMore', openedMore: true });
+      this.props.index.updateOpenMore(threadId, { openedMore: true });
 
       const { recomputeRowHeights = noop } = this.props;
       recomputeRowHeights();

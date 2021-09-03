@@ -75,22 +75,6 @@ class TopicAction extends TopicStore {
     return null;
   };
 
-    // 获取指定的帖子数据
-  findAssignThread(threadId) {
-    if (this.topicDetail) {
-      let obj = null
-      const { pageData = [] } = this.topicDetail;
-      for (let i = 0; i < pageData.length; i++)  {
-        pageData[i].threads?.forEach((item, j) => {
-          if (item.threadId === threadId) {
-            obj = { index: i, subIndex: j, data: item };
-          }
-        })
-      }
-      return obj;
-    }
-  }
-
     /**
      * 话题页面 - 清空缓存数据
      */

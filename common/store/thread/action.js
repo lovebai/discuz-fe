@@ -64,7 +64,6 @@ class ThreadAction extends ThreadStore {
     const id = this.threadData?.threadId;
 
     if (id) {
-      console.log(this.threadList);
       this.threadList.updateAssignThreadInfoInLists({
         threadId: id,
         threadInfo: this.threadData,

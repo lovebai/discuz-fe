@@ -21,8 +21,7 @@ import { updateThreadAssignInfoInLists } from '@common/store/thread-list/list-bu
 @inject('commentPosition')
 @inject('user')
 @inject('index')
-@inject('topic')
-@inject('search')
+@inject('threadList')
 @observer
 class Detail extends React.Component {
   static async getInitialProps(ctx) {
@@ -277,20 +276,14 @@ class Detail extends React.Component {
   async getThreadDataFromList(id) {
     if (id) {
       let threadData;
-      // 首页iebook
-      const indexRes = this.props.index.findAssignThread(Number(id));
-      threadData = indexRes?.data;
 
-      // 发现列表
-      if (!threadData) {
-        const searchRes = this.props.search.findAssignThread(Number(id));
-        threadData = searchRes[0]?.data;
-      }
-
-      // 话题列表
-      if (!threadData) {
-        const topicRes = this.props.topic.findAssignThread(Number(id));
-        threadData = topicRes?.data;
+      const targetThreadList = this.props.threadList.findAssignThreadInLists({ threadId: Number(id) });
+      if (targetThreadList?.length) {
+        targetThreadList.forEach((targetThread) => {
+          if (!threadData && targetThread.data) {
+            targetThread = targetThread.data;
+          }
+        });
       }
 
       if (threadData?.threadId) {
