@@ -16,7 +16,7 @@ import Icon from '@discuzq/design/dist/components/icon/index';
 import Input from '@discuzq/design/dist/components/input/index';
 import footer from './footer.module.scss';
 import classNames from 'classnames';
-import { getCurrentInstance } from '@tarojs/taro';
+import { Current } from '@tarojs/taro';
 
 
 @inject('site')
@@ -419,13 +419,12 @@ class CommentH5Page extends React.Component {
 
   onGotoThread = () => {
     const { threadId } = this.props.comment;
-    Router.push({ url: `/indexPages/thread/index?id=${threadId}` });
+    Router.push({ url: `/indexPages/thread/index?id=${threadId}&fromMessage=true` });
   }
 
   render() {
     const { commentDetail: commentData, isReady } = this.props.comment;
-    console.log(getCurrentInstance().router, 1)
-    const query = getCurrentInstance().router.params;
+    const query = Current.router.params;
     // 更多弹窗权限
     const morePermissions = {
       canEdit: false,
