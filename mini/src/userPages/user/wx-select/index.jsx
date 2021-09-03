@@ -78,7 +78,7 @@ class WXSelect extends Component {
       if (res.Code === NEED_BIND_PHONE_FLAG) {
         this.props.commonLogin.needToBindPhone = true;
         navigateTo({
-          url: `/subPages/user/bind-phone/index?sessionToken=${res.sessionToken}`
+          url: `/userPages/user/bind-phone/index?sessionToken=${res.sessionToken}`
         });
         return;
       }
@@ -92,7 +92,7 @@ class WXSelect extends Component {
       if (error.Code === MOBILE_LOGIN_STORE_ERRORS.NEED_COMPLETE_REQUIRED_INFO.Code) {
         if (isExtFieldsOpen(this.props.site)) {
           this.props.commonLogin.needToCompleteExtraInfo = true;
-          redirectTo({ url: '/subPages/user/supplementary/index' });
+          redirectTo({ url: '/userPages/user/supplementary/index' });
           return;
         }
         LoginHelper.restore();
@@ -105,7 +105,7 @@ class WXSelect extends Component {
         uid && this.props.user.updateUserInfo(uid);
         this.props.commonLogin.setStatusMessage(error.Code, error.Message);
         navigateTo({
-          url: `/subPages/user/status/index?statusCode=${error.Code}&statusMsg=${error.Message}`
+          url: `/userPages/user/status/index?statusCode=${error.Code}&statusMsg=${error.Message}`
         });
         return;
       }
@@ -146,7 +146,7 @@ class WXSelect extends Component {
               type="primary"
               onClick={() => {
                 navigateTo({
-                  url: `/subPages/user/wx-bind-username/index?sessionToken=${sessionToken}&nickname=${nickname}`
+                  url: `/userPages/user/wx-bind-username/index?sessionToken=${sessionToken}&nickname=${nickname}`
                 })
               }}
             >
@@ -159,7 +159,7 @@ class WXSelect extends Component {
                 type="primary"
                 onClick={() => {
                   navigateTo({
-                    url: `/subPages/user/wx-bind-phone/index?sessionToken=${sessionToken}&nickname=${nickname}`
+                    url: `/userPages/user/wx-bind-phone/index?sessionToken=${sessionToken}&nickname=${nickname}`
                   })
                 }}
               >

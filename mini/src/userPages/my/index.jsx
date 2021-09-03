@@ -1,10 +1,11 @@
-import React from 'react';
-import { inject, observer } from 'mobx-react';
-import IndexH5Page from '../../../layout/my/collect';
+import React, { useEffect } from 'react';
+import MyContent from '../../layout/my/index';
 import Page from '@components/page';
+import { View, Text } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { inject, observer } from 'mobx-react';
 import withShare from '@common/utils/withShare/withShare';
 import { priceShare } from '@common/utils/priceShare';
-import Taro from '@tarojs/taro';
 
 @inject('site')
 @inject('search')
@@ -14,63 +15,15 @@ import Taro from '@tarojs/taro';
 @observer
 @withShare({})
 class Index extends React.Component {
-  page = 1;
-  perPage = 10;
-
-  constructor(props) {
-    super(props);
-    this.props.index.registerList({ namespace: 'collect' });
+  componentDidMount() {
+    Taro.hideHomeButton();
   }
-
-  async componentDidMount() {
-    Taro.hideShareMenu();
-    const { index } = this.props;
-    const threadsResp = await index.fetchList({
-      namespace: 'collect',
-      perPage: 10,
-      page: this.page,
-      filter: {
-        complex: 3,
-      },
-    });
-
-    index.setList({
-      namespace: 'collect',
-      data: threadsResp,
-      page: this.page,
-    });
-  }
-
-  componentWillUnmount() {
-    const { index } = this.props;
-    index.clearList({ namespace: 'collect' });
-  }
-
-  dispatch = async () => {
-    const { index } = this.props;
-
-    this.page += 1;
-
-    const threadsResp = await index.fetchList({
-      namespace: 'collect',
-      perPage: 10,
-      page: this.page,
-      filter: {
-        complex: 3,
-      },
-    });
-
-    index.setList({
-      namespace: 'collect',
-      data: threadsResp,
-      page: this.page,
-    });
-  };
 
   getShareData(data) {
     const { site } = this.props;
-    const defalutTitle = site.webConfig?.setSite?.siteName || '';
-    const defalutPath = '/subPages/my/collect/index';
+    const id = this.props.user?.id;
+    const defalutTitle = `${this.props.user.nickname || this.props.user.username}的主页`;
+    const defalutPath = `/userPages/user/index?id=${id}`;
     if (data.from === 'menu') {
       return {
         title: defalutTitle,
@@ -101,20 +54,19 @@ class Index extends React.Component {
       });
     }
     return (
-      priceShare({ path, isAnonymous, isPrice }) || {
+      priceShare({ isAnonymous, isPrice, path }) || {
         title,
         path,
       }
     );
   }
-  
   render() {
     return (
-      <Page>
-        <IndexH5Page dispatch={this.dispatch} />
+      <Page withLogin>
+        <MyContent />
       </Page>
     );
   }
 }
-// eslint-disable-next-line new-cap
+
 export default Index;

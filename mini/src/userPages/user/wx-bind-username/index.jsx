@@ -51,7 +51,7 @@ class Index extends Component {
       if (e.Code === MOBILE_LOGIN_STORE_ERRORS.NEED_COMPLETE_REQUIRED_INFO.Code) {
         if (isExtFieldsOpen(this.props.site)) {
           this.props.commonLogin.needToCompleteExtraInfo = true;
-          redirectTo({ url: '/subPages/user/supplementary/index' });
+          redirectTo({ url: '/userPages/user/supplementary/index' });
           return;
         }
         LoginHelper.restore();
@@ -63,7 +63,7 @@ class Index extends Component {
         uid && this.props.user.updateUserInfo(uid);
         this.props.commonLogin.setStatusMessage(e.Code, e.Message);
         navigateTo({
-          url: `/subPages/user/status/index?statusCode=${e.Code}&statusMsg=${e.Message}`
+          url: `/userPages/user/status/index?statusCode=${e.Code}&statusMsg=${e.Message}`
         });
         return;
       }

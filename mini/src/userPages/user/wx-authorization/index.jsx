@@ -57,7 +57,7 @@ class WXAuthorization extends Component {
       if (res.code === NEED_BIND_OR_REGISTER_USER) {
         const { sessionToken, nickname } = res.data;
         redirectTo({
-          url: `/subPages/user/wx-select/index?sessionToken=${sessionToken}&nickname=${nickname}`
+          url: `/userPages/user/wx-select/index?sessionToken=${sessionToken}&nickname=${nickname}`
         });
         return;
       }
