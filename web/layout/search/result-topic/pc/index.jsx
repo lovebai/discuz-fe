@@ -45,10 +45,10 @@ class SearchResultTopicPCPage extends React.Component {
     dispatch('refresh', keyword);
   };
 
-  onSearch = (value) => {
+  onSearch = (keyword) => {
     this.props.search.currentKeyword = keyword;
-    this.setState({ keyword: value }, () => {
-      this.searchData(value);
+    this.setState({ keyword: keyword }, () => {
+      this.searchData(keyword);
     });
   }
 

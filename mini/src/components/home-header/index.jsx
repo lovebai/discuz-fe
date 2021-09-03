@@ -7,8 +7,8 @@ import Router from '@discuzq/sdk/dist/router';
 import SharePopup from '../thread/share-popup';
 import isWeiXin from '@common/utils/is-weixin';
 import { get } from '@common/utils/get';
-import logoImg from '../../../../web/public/dzq-img/admin-logo-x2.png';
-import joinLogoImg from '../../../../web/public/dzq-img/join-banner-bg.png';
+// import logoImg from '../../../../web/public/dzq-img/admin-logo-x2.png';
+// import joinLogoImg from '../../../../web/public/dzq-img/join-banner-bg.png';
 import { numberFormat } from '@common/utils/number-format';
 import SiteShare from '../site-share';
 import Toast from '@discuzq/design/dist/components/toast';
@@ -42,8 +42,13 @@ class HomeHeader extends React.Component {
     }
     return bgColor ? { background: bgColor } : { background: '#2469f6' };
   }
-  
+
   getLogo() {
+    const joinLogoImg = 'https://imgcache.qq.com/operation/dianshi/other/join-banner-bg.be07bc0bef2342ec905cefd82b2c4a0048adfa50.png';
+    const logoImg = 'https://imgcache.qq.com/operation/dianshi/other/admin-logo-x2.8fa268b8494228cc8187ebd3dfded18ff7463e1a.png';
+
+
+
     // 站点加入页面logo图片定制
     const { mode, site } = this.props;
     const siteHeaderLogo = get(site, 'webConfig.setSite.siteHeaderLogo', '');
@@ -62,7 +67,7 @@ class HomeHeader extends React.Component {
     // 对没有登录的先登录
     if (!user.isLogin()) {
       Toast.info({ content: '请先登录!' });
-      goToLoginPage({ url: '/subPages/user/wx-auth/index' });
+      goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
     this.setState({ show: true })
@@ -210,11 +215,11 @@ class HomeHeader extends React.Component {
             <View className={styles.siteInfo}>
               <View className={styles.item}>
                 <Text className={styles.text}>成员</Text>
-                <Text className={styles.content}>{countUsers}</Text>
+                <Text className={styles.content}>{numberFormat(countUsers)}</Text>
               </View>
               <View className={styles.item}>
                 <Text className={styles.text}>内容</Text>
-                <Text className={styles.content}>{countThreads}</Text>
+                <Text className={styles.content}>{numberFormat(countThreads)}</Text>
               </View>
               <View className={styles.item} onClick={this.handleShareClick} >
                 <Icon className={styles.shareIcon} name="ShareAltOutlined" />

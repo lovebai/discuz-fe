@@ -159,9 +159,9 @@ class index extends Component {
   goToFansList = () => {
     const { id } = getCurrentInstance().router.params;
     if (id) {
-      Router.push({ url: `/subPages/my/fans/index?isOtherPerson=${this.props.isOtherPerson}&otherId=${id}` });
+      Router.push({ url: `/userPages/my/fans/index?isOtherPerson=${this.props.isOtherPerson}&otherId=${id}` });
     } else {
-      Router.push({ url: `/subPages/my/fans/index?isOtherPerson=${this.props.isOtherPerson}` });
+      Router.push({ url: `/userPages/my/fans/index?isOtherPerson=${this.props.isOtherPerson}` });
     }
   };
 
@@ -169,9 +169,9 @@ class index extends Component {
   goToFollowsList = () => {
     const { id } = getCurrentInstance().router.params;
     if (id) {
-      Router.push({ url: `/subPages/my/follows/index?isOtherPerson=${this.props.isOtherPerson}&otherId=${id}` });
+      Router.push({ url: `/userPages/my/follows/index?isOtherPerson=${this.props.isOtherPerson}&otherId=${id}` });
     } else {
-      Router.push({ url: `/subPages/my/follows/index?isOtherPerson=${this.props.isOtherPerson}` });
+      Router.push({ url: `/userPages/my/follows/index?isOtherPerson=${this.props.isOtherPerson}` });
     }
   };
 
@@ -192,7 +192,7 @@ class index extends Component {
     if (id) {
       return;
     }
-    Router.push({ url: '/subPages/my/like/index' });
+    Router.push({ url: '/userPages/my/like/index' });
   };
 
   // 渲染关注状态
@@ -234,7 +234,7 @@ class index extends Component {
   // 点击去到续费页面
   onRenewalFeeClick = () => {
     Router.push({
-      url: '/subPages/my/renew/index',
+      url: '/userPages/my/renew/index',
     });
   };
 
