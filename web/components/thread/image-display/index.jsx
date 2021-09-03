@@ -193,7 +193,7 @@ export default React.memo(Index);
 const One = ({ type, bigImages, onClick, style, showLongPicture, postLoad }) => {
   const item = bigImages[0];
   return (
-    <div className={`${styles[style]} ${styles[type]}`}>
+    <div className={`${styles[style]} ${styles[type]}`} onClick={e => e.stopPropagation()}>
       <SmartImg
         postLoad={postLoad}
         level={1}
@@ -207,26 +207,28 @@ const One = ({ type, bigImages, onClick, style, showLongPicture, postLoad }) => 
 };
 
 const Two = ({ type, bigImages, onClick, style, showLongPicture, postLoad }) => (
-  <Row gutter={4} className={`${styles[style]} ${styles[type]} ${styles.row}`}>
-    {bigImages.map((item, index) => (
-      <Col span={6} className={styles.col} key={index}>
-        <SmartImg
-          postLoad={postLoad}
-          level={1}
-          type={item.fileType}
-          src={item.thumbUrl}
-          size={item.fileSize}
-          onClick={() => onClick(item.id)}
-          showLongPicture={showLongPicture} />
-      </Col>
-    ))}
-  </Row>
+  <div onClick={e => e.stopPropagation()}>
+    <Row gutter={4} className={`${styles[style]} ${styles[type]} ${styles.row}`}>
+      {bigImages.map((item, index) => (
+        <Col span={6} className={styles.col} key={index}>
+          <SmartImg
+            postLoad={postLoad}
+            level={1}
+            type={item.fileType}
+            src={item.thumbUrl}
+            size={item.fileSize}
+            onClick={() => onClick(item.id)}
+            showLongPicture={showLongPicture} />
+        </Col>
+      ))}
+    </Row>
+  </div>
 );
 
 const Three = ({ type, bigImages, smallImages, onClick, style, showLongPicture, postLoad }) => {
   if (type === 'long' || type === 'longitudinal') {
     return (
-      <div className={`${styles[style]} ${styles[type]}`}>
+      <div className={`${styles[style]} ${styles[type]}`} onClick={e => e.stopPropagation()}>
         <Row gutter={4}>
           <Col span={8} className={styles.col}>
             <SmartImg
@@ -260,7 +262,7 @@ const Three = ({ type, bigImages, smallImages, onClick, style, showLongPicture, 
     );
   }
   return (
-    <div className={`${styles[style]} ${styles[type]}`}>
+    <div className={`${styles[style]} ${styles[type]}`} onClick={e => e.stopPropagation()}>
       <div className={styles.bigImages}>
         <SmartImg
           postLoad={postLoad}
@@ -290,39 +292,41 @@ const Three = ({ type, bigImages, smallImages, onClick, style, showLongPicture, 
 };
 
 const Four = ({ type, bigImages, smallImages, onClick, style, showLongPicture, postLoad }) => (
-  <Row gutter={4} className={styles[style]}>
-    <Col span={8} className={styles.col}>
-      <SmartImg
-        postLoad={postLoad}
-        level={1}
-        type={bigImages[0].fileType}
-        src={bigImages[0].thumbUrl}
-        size={bigImages[0].fileSize}
-        onClick={() => onClick(bigImages[0].id)}
-        showLongPicture={showLongPicture} />
-    </Col>
-    <Col span={4} className={styles.col}>
-      <Row gutter={4} className={styles.smallRow}>
-        {smallImages.map((item, index) => (
-          <Col span={12} key={index} className={styles.smallCol}>
-            <SmartImg
-              postLoad={postLoad}
-              level={3}
-              type={item.fileType}
-              src={item.thumbUrl}
-              size={item.fileSize}
-              onClick={() => onClick(item.id)}
-              showLongPicture={showLongPicture} />
-          </Col>
-        ))}
-      </Row>
-    </Col>
-  </Row>
+  <div onClick={e => e.stopPropagation()}>
+    <Row gutter={4} className={styles[style]}>
+      <Col span={8} className={styles.col}>
+        <SmartImg
+          postLoad={postLoad}
+          level={1}
+          type={bigImages[0].fileType}
+          src={bigImages[0].thumbUrl}
+          size={bigImages[0].fileSize}
+          onClick={() => onClick(bigImages[0].id)}
+          showLongPicture={showLongPicture} />
+      </Col>
+      <Col span={4} className={styles.col}>
+        <Row gutter={4} className={styles.smallRow}>
+          {smallImages.map((item, index) => (
+            <Col span={12} key={index} className={styles.smallCol}>
+              <SmartImg
+                postLoad={postLoad}
+                level={3}
+                type={item.fileType}
+                src={item.thumbUrl}
+                size={item.fileSize}
+                onClick={() => onClick(item.id)}
+                showLongPicture={showLongPicture} />
+            </Col>
+          ))}
+        </Row>
+      </Col>
+    </Row>
+  </div>
 );
 
 
 const Five = ({ type, bigImages, smallImages, onClick, style, imgData = [], onClickMore, showLongPicture, postLoad }) => (
-  <div className={styles[style]}>
+  <div className={styles[style]} onClick={e => e.stopPropagation()}>
     <Row gutter={4} className={styles.bigImages}>
       {bigImages.map((item, index) => (
         <Col span={6} className={styles.col} key={index}>
