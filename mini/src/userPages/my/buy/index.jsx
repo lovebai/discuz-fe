@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import IndexH5Page from '../../../layout/my/like';
+import IndexH5Page from '../../../layout/my/buy';
 import Page from '@components/page';
 import withShare from '@common/utils/withShare/withShare';
 import { priceShare } from '@common/utils/priceShare';
@@ -10,8 +10,8 @@ import { updateThreadAssignInfoInLists } from '@common/store/thread-list/list-bu
 @inject('site')
 @inject('search')
 @inject('topic')
-@inject('index')
 @inject('threadList')
+@inject('index')
 @inject('user')
 @observer
 @withShare({})
@@ -21,56 +21,60 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.threadList.registerList({ namespace: 'like' });
+    this.props.threadList.registerList({ namespace: 'buy' });
   }
 
   async componentDidMount() {
     Taro.hideShareMenu();
     const { threadList } = this.props;
     const threadsResp = await threadList.fetchList({
-      namespace: 'like',
+      namespace: 'buy',
       perPage: 10,
       page: this.page,
       filter: {
-        complex: 2,
+        complex: 4,
       },
     });
 
     threadList.setList({
-      namespace: 'like',
+      namespace: 'buy',
       data: threadsResp,
       page: this.page,
     });
+
+    this.page += 1;
   }
 
   componentWillUnmount() {
-    this.props.threadList.setThreads(null);
+    const { threadList } = this.props;
+    threadList.clearList({ namespace: 'buy' });
   }
 
   dispatch = async () => {
     const { threadList } = this.props;
-
-    this.page += 1;
     const threadsResp = await threadList.fetchList({
-      namespace: 'like',
-      perPage: this.perPage,
+      namespace: 'buy',
+      perPage: 10,
       page: this.page,
       filter: {
-        complex: 2,
+        complex: 4,
       },
     });
 
     threadList.setList({
-      namespace: 'like',
+      namespace: 'buy',
       data: threadsResp,
       page: this.page,
     });
+    if (this.page <= threadsResp.totalPage) {
+      this.page += 1;
+    }
   };
-  
+
   getShareData(data) {
     const { site } = this.props;
     const defalutTitle = site.webConfig?.setSite?.siteName || '';
-    const defalutPath = '/subPages/my/like/index';
+    const defalutPath = '/userPages/my/buy/index';
     if (data.from === 'menu') {
       return {
         title: defalutTitle,
@@ -91,7 +95,7 @@ class Index extends React.Component {
       });
     }
     return (
-      priceShare({ path, isPrice, isAnonymous }) || {
+      priceShare({ isPrice, isAnonymous, path }) || {
         title,
         path,
       }

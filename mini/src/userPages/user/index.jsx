@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import MyContent from '../../layout/my/index';
+import OtherView from '../../layout/my/other-user/index';
 import Page from '@components/page';
 import { View, Text } from '@tarojs/components';
-import Taro from '@tarojs/taro';
 import { inject, observer } from 'mobx-react';
 import withShare from '@common/utils/withShare/withShare';
 import { priceShare } from '@common/utils/priceShare';
+import Taro, { getCurrentInstance, eventCenter } from '@tarojs/taro';
 import { updateThreadAssignInfoInLists } from '@common/store/thread-list/list-business';
 
 @inject('site')
@@ -16,15 +16,11 @@ import { updateThreadAssignInfoInLists } from '@common/store/thread-list/list-bu
 @observer
 @withShare({})
 class Index extends React.Component {
-  componentDidMount() {
-    Taro.hideHomeButton();
-  }
-  
   getShareData(data) {
     const { site } = this.props;
-    const id = this.props.user?.id;
-    const defalutTitle = `${this.props.user.nickname || this.props.user.username}的主页`;
-    const defalutPath = `/subPages/user/index?id=${id}`;
+    const { id = '' } = getCurrentInstance().router.params;
+    const defalutTitle = `${this.props.user?.targetUser?.nickname || this.props.user?.targetUser?.username}的主页`;
+    const defalutPath = `/userPages/user/index?id=${id}`;
     if (data.from === 'menu') {
       return {
         title: defalutTitle,
@@ -53,8 +49,8 @@ class Index extends React.Component {
   }
   render() {
     return (
-      <Page withLogin>
-        <MyContent />
+      <Page>
+        <OtherView />
       </Page>
     );
   }

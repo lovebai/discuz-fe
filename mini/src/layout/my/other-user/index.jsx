@@ -69,7 +69,7 @@ class H5OthersPage extends React.Component {
     if (this.targetUserId !== id) return;
     const myId = this.props.user?.id;
     if (String(myId) === this.targetUserId) {
-      Router.replace({ url: '/subPages/my/index' });
+      Router.replace({ url: '/userPages/my/index' });
       return;
     }
 
@@ -109,7 +109,7 @@ class H5OthersPage extends React.Component {
     const { id = '' } = getCurrentInstance().router.params;
     const myId = this.props.user?.id;
     if (String(myId) === id) {
-      Router.replace({ url: '/subPages/my/index' });
+      Router.replace({ url: '/userPages/my/index' });
       return;
     }
   };
@@ -196,12 +196,12 @@ class H5OthersPage extends React.Component {
 
   getBackgroundUrl = () => {
     const { id = '' } = getCurrentInstance().router.params;
-    
+
     let backgroundUrl = null;
     if (id && this.props.user?.targetUsers[id]) {
       backgroundUrl = this.props.user.targetUsers[id].originalBackGroundUrl;
     }
-    
+
     if (!backgroundUrl) return false;
     return backgroundUrl;
   };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import IndexH5Page from '../../../layout/my/collect';
+import IndexH5Page from '../../../layout/my/like';
 import Page from '@components/page';
 import withShare from '@common/utils/withShare/withShare';
 import { priceShare } from '@common/utils/priceShare';
@@ -21,49 +21,47 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.threadList.registerList({ namespace: 'collect' });
+    this.props.threadList.registerList({ namespace: 'like' });
   }
 
   async componentDidMount() {
     Taro.hideShareMenu();
     const { threadList } = this.props;
     const threadsResp = await threadList.fetchList({
-      namespace: 'collect',
+      namespace: 'like',
       perPage: 10,
       page: this.page,
       filter: {
-        complex: 3,
+        complex: 2,
       },
     });
 
     threadList.setList({
-      namespace: 'collect',
+      namespace: 'like',
       data: threadsResp,
       page: this.page,
     });
   }
 
   componentWillUnmount() {
-    const { threadList } = this.props;
-    threadList.clearList({ namespace: 'collect' });
+    this.props.threadList.setThreads(null);
   }
 
   dispatch = async () => {
     const { threadList } = this.props;
 
     this.page += 1;
-
     const threadsResp = await threadList.fetchList({
-      namespace: 'collect',
-      perPage: 10,
+      namespace: 'like',
+      perPage: this.perPage,
       page: this.page,
       filter: {
-        complex: 3,
+        complex: 2,
       },
     });
 
     threadList.setList({
-      namespace: 'collect',
+      namespace: 'like',
       data: threadsResp,
       page: this.page,
     });
@@ -72,7 +70,7 @@ class Index extends React.Component {
   getShareData(data) {
     const { site } = this.props;
     const defalutTitle = site.webConfig?.setSite?.siteName || '';
-    const defalutPath = '/subPages/my/collect/index';
+    const defalutPath = '/userPages/my/like/index';
     if (data.from === 'menu') {
       return {
         title: defalutTitle,
@@ -93,13 +91,12 @@ class Index extends React.Component {
       });
     }
     return (
-      priceShare({ path, isAnonymous, isPrice }) || {
+      priceShare({ path, isPrice, isAnonymous }) || {
         title,
         path,
       }
     );
   }
-  
   render() {
     return (
       <Page>

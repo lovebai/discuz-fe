@@ -63,7 +63,7 @@ class WXBind extends Component {
         const userData = await this.props.user.updateUserInfo(uid);
         const mobile = get(userData, 'mobile', '');
         if (bindPhone && !mobile) { // 需要绑定手机，但是用户未绑定手机时，跳转到绑定手机页面
-          redirectTo({ url: `/subPages/user/bind-phone/index` });
+          redirectTo({ url: `/userPages/user/bind-phone/index` });
           return;
         }
         this.props.h5QrCode.bindTitle = '已成功绑定，正在跳转到首页';
@@ -84,7 +84,7 @@ class WXBind extends Component {
       if (error.Code === MOBILE_LOGIN_STORE_ERRORS.NEED_COMPLETE_REQUIRED_INFO.Code) {
         if (isExtFieldsOpen(this.props.site)) {
           this.props.commonLogin.needToCompleteExtraInfo = true;
-          redirectTo({ url: '/subPages/user/supplementary/index' });
+          redirectTo({ url: '/userPages/user/supplementary/index' });
           return;
         }
         loginHelper.restore();
@@ -97,7 +97,7 @@ class WXBind extends Component {
         uid && this.props.user.updateUserInfo(uid);
         this.props.commonLogin.setStatusMessage(error.Code, error.Message);
         navigateTo({
-          url: `/subPages/user/status/index?statusCode=${error.Code}&statusMsg=${error.Message}`
+          url: `/userPages/user/status/index?statusCode=${error.Code}&statusMsg=${error.Message}`
         });
         return;
       }

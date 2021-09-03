@@ -51,7 +51,7 @@ class BindNicknameH5Page extends React.Component {
             if (isExtFieldsOpen(site)) {
               commonLogin.needToCompleteExtraInfo = true;
               Router.redirect({
-                url: '/subPages/user/supplementary/index'
+                url: '/userPages/user/supplementary/index'
               });
               return;
             }
@@ -59,17 +59,17 @@ class BindNicknameH5Page extends React.Component {
 
           if (needToBindPhone) {
             return Router.redirect({
-              url: `/subPages/user/bind-phone/index?sessionToken=${sessionToken}`
+              url: `/userPages/user/bind-phone/index?sessionToken=${sessionToken}`
             });
           }
           if (needToBindWechat === true) {
             return Router.redirect({
-              url: `/subPages/user/wx-bind/index`
+              url: `/userPages/user/wx-bind/index`
             });
           }
           if (statusMsg && statusCode) {
             return Router.redirect({
-              url: `/subPages/user/status/index?statusCode=${statusCode}&statusMsg=${statusMsg}`
+              url: `/userPages/user/status/index?statusCode=${statusCode}&statusMsg=${statusMsg}`
             });
           }
 
@@ -85,7 +85,7 @@ class BindNicknameH5Page extends React.Component {
         this.props.commonLogin.setStatusMessage(e.Code, e.Message);
 
         Router.redirect({
-          url: `/subPages/user/status/index?statusCode=${e.Code}&statusMsg=${e.Message}`
+          url: `/userPages/user/status/index?statusCode=${e.Code}&statusMsg=${e.Message}`
         })
         return;
       }

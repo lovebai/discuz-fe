@@ -36,7 +36,7 @@ class MiniAuth extends React.Component {
     // 其他地方跳入的小程序绑定流程
     if(action === 'mini-bind'){
       Router.redirect({
-        url: `/subPages/user/wx-bind/index?sessionToken=${sessionToken}`
+        url: `/userPages/user/wx-bind/index?sessionToken=${sessionToken}`
       })
     }
   }
@@ -85,7 +85,7 @@ class MiniAuth extends React.Component {
       if (resp.code === NEED_BIND_OR_REGISTER_USER) {
         const { sessionToken } = resp.data;
         Router.redirect({
-          url: `/subPages/user/wx-select/index?sessionToken=${sessionToken}&nickname=${nickName}`
+          url: `/userPages/user/wx-select/index?sessionToken=${sessionToken}&nickname=${nickName}`
         });
         return;
       }
@@ -106,7 +106,7 @@ class MiniAuth extends React.Component {
           this.props.commonLogin.needToCompleteExtraInfo = true;
         }
 
-        Router.redirect({ url: '/subPages/user/bind-nickname/index' });
+        Router.redirect({ url: '/userPages/user/bind-nickname/index' });
         return;
       }
 
@@ -116,7 +116,7 @@ class MiniAuth extends React.Component {
         uid && this.props.user.updateUserInfo(uid);
         if (isExtFieldsOpen(this.props.site)) {
           this.props.commonLogin.needToCompleteExtraInfo = true;
-          Router.redirect({ url: '/subPages/user/supplementary/index' });
+          Router.redirect({ url: '/userPages/user/supplementary/index' });
           return;
         }
         LoginHelper.restore();
@@ -129,7 +129,7 @@ class MiniAuth extends React.Component {
         uid && this.props.user.updateUserInfo(uid);
         this.props.commonLogin.setStatusMessage(error.Code, error.Message);
         Router.redirect({
-          url: `/subPages/user/status/index?statusCode=${error.Code}&statusMsg=${error.Message}`
+          url: `/userPages/user/status/index?statusCode=${error.Code}&statusMsg=${error.Message}`
         });
         return;
       }
