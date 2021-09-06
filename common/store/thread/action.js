@@ -29,6 +29,11 @@ class ThreadAction extends ThreadStore {
   }
 
   @action
+  setIsUserPageDataList(data) {
+    this.pageDataListType = data;
+  }
+
+  @action
   updateViewCount(viewCount) {
     this.threadData && (this.threadData.viewCount = viewCount);
   }
@@ -155,6 +160,7 @@ class ThreadAction extends ThreadStore {
     this.isAuthorInfoError = false;
     this.scrollDistance = 0;
     // this.PreFetch = null; // 预加载相关
+    this.pageDataListType = null; // 是否使用了列表缓存数据
   }
 
   // 定位到评论位置
@@ -457,16 +463,22 @@ class ThreadAction extends ThreadStore {
     if (res.code === 0) {
       this.threadData.likeReward.shareCount = this.threadData?.likeReward?.shareCount - 0 + 1;
 
-      // 更新列表相关数据
+      // 更新列表相关数据,如果是使用的列表数据，该列表不需要再次更新，会重复+1
+    if (this.pageDataListType !== 'index') {
       IndexStore?.updateAssignThreadInfo(threadId, {
         updateType: 'share',
       });
+    }
+    if (this.pageDataListType !== 'search') {
       SearchStore?.updateAssignThreadInfo(threadId, {
         updateType: 'share',
       });
+    }
+    if (this.pageDataListType !== 'topic') {
       TopicStore?.updateAssignThreadInfo(threadId, {
         updateType: 'share',
       });
+    }
 
       return {
         msg: '操作成功',
