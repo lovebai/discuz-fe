@@ -29,7 +29,7 @@ class ThreadAction extends ThreadStore {
   }
 
   @action
-  setIsUserPageDataList(data) {
+  setPageDataListType(data) {
     this.pageDataListType = data;
   }
 
