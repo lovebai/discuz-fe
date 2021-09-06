@@ -9,6 +9,7 @@ import withShare from '@common/utils/withShare/withShare';
 import { priceShare } from '@common/utils/priceShare';
 import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
 import Toast from '@components/toast';
+import ShareError from '@components/share-error/index';
 import ErrorMiniPage from '../../layout/error/index';
 
 // const MemoToastProvider = React.memo(ToastProvider);
@@ -260,6 +261,11 @@ class Detail extends React.Component {
   }
 
   render() {
+    const options = Taro.getLaunchOptionsSync();
+    // 分享朋友圈时，如果页面错误则返回提示
+    if (options && options.scene === 1154 && this.state.isServerError) {
+      return <ShareError type={this?.props?.site?.siteMode === 'pay' ? 'pay' : 'error'}/>;
+    }
     return this.state.isServerError ? (
       <ErrorMiniPage text={this.state.serverErrorMsg} />
     ) : (
