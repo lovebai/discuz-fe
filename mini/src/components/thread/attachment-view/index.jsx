@@ -15,6 +15,7 @@ import { ATTACHMENT_FOLD_COUNT } from '@common/constants';
 import Router from '@discuzq/sdk/dist/router';
 import { readDownloadAttachmentStatus } from '@server';
 import { downloadAttachmentMini } from '@common/utils/download-attachment-mini';
+import goToLoginPage from '@common/utils/go-to-login-page';
 
 /**
  * 附件
@@ -33,6 +34,9 @@ const Index = ({
   thread = null,
   baselayout,
   updateViewCount = noop,
+  unifyOnClick = null,
+  canViewAttachment = false,
+  canDownloadAttachment = false,
 }) => {
   let downloadUrl = null; // 存放下载链接
   let isDownload = false; // 状态是否允许下载
@@ -85,7 +89,12 @@ const Index = ({
     // 下载需要登录态，判断是否登录
     if (!user.isLogin()) {
       Toast.info({ content: '请先登录!' });
-      goToLoginPage({ url: '/subPages/user/wx-auth/index' });
+      goToLoginPage({ url: '/userPages/user/wx-auth/index' });
+      return;
+    }
+
+    if (!canDownloadAttachment) {
+      Toast.warning({ content: '暂⽆权限下载附件' });
       return;
     }
 
@@ -98,7 +107,7 @@ const Index = ({
         const params = downloadAttachmentParams(url);
         isDownload = await downloadAttachmentStatus(params);
       });
-      
+
       if (!isDownload) return;
 
 
@@ -195,6 +204,10 @@ const Index = ({
 
   const onLinkShare = (item, index) => {
     updateViewCount();
+    if (!canViewAttachment) {
+      Toast.warning({ content: '暂⽆权限查看附件' });
+      return;
+    }
     if (!isPay) {
       if(!item || !threadId) return;
 
@@ -221,7 +234,7 @@ const Index = ({
 
   const splicingLink = (url, fileName) => {
     const domainName = url.split('/apiv3/')[0];
-    return `${domainName}/download?url=${url}&fileName=${fileName}`;
+    return `${domainName}/download?url=${url}&fileName=${fileName}&threadId=${threadId}`;
   }
 
     // 音频播放
@@ -232,7 +245,7 @@ const Index = ({
   const beforeAttachPlay = async (file) => {
     // 该文件已经通过校验，能直接播放
     if (file.readyToPlay) {
-      return true;  
+      return true;
     }
 
     if (!isPay) {
@@ -252,7 +265,7 @@ const Index = ({
     const audioContext = audioRef?.current?.getState()?.audioCtx;
     updateViewCount();
     if( audioContext && baselayout && audioWrapperRef) {
-      
+
       // 暂停之前正在播放的视频
       if(baselayout.playingVideoDom) {
         Taro.createVideoContext(baselayout.playingVideoDom)?.pause();
@@ -285,9 +298,9 @@ const Index = ({
             fileName={fileName}
             onPlay={() => onPlay(audioRef, audioWrapperRef)}
             fileSize={handleFileSize(parseFloat(item.fileSize || 0))}
-            beforePlay={async () => await beforeAttachPlay(item)}
-            onDownload={throttle(() => onDownLoad(item, index), 1000)}
-            onLink={throttle(() => onLinkShare(item), 1000)}
+            beforePlay={unifyOnClick || (async () => await beforeAttachPlay(item))}
+            onDownload={unifyOnClick || (throttle(() => onDownLoad(item, index), 1000))}
+            onLink={unifyOnClick || (throttle(() => onLinkShare(item), 1000))}
           />
         </View>
       );
@@ -305,11 +318,11 @@ const Index = ({
           </View>
 
           <View className={styles.right}>
-            <Text onClick={throttle(() => onLinkShare(item), 1000)}>链接</Text>
+            <Text onClick={unifyOnClick || (throttle(() => onLinkShare(item), 1000))}>链接</Text>
             <View className={styles.label}>
               { downloading[index] ?
                 <Spin className={styles.spinner} type="spinner" /> :
-                <Text onClick={throttle(() => onDownLoad(item, index), 1000)}>下载</Text>
+                <Text onClick={unifyOnClick || (throttle(() => onDownLoad(item, index), 1000))}>下载</Text>
               }
             </View>
           </View>
