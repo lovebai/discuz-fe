@@ -211,8 +211,9 @@ export default class ListStore {
       this.lists[namespace].data[1] = [];
     }
 
-    this.lists[namespace].data[1].unshift(threadInfo);
-
+    if (this.lists[namespace].data[1]) {
+      this.lists[namespace].data[1].unshift(threadInfo);
+    }
 
     const currentTotalCount = this.getAttribute({ namespace, key: 'totalCount' });
 

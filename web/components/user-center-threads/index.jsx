@@ -224,6 +224,7 @@ class UserCenterThreads extends React.Component {
 
     const spanElement = (
       <span
+        className={styles.moreIconSpan}
         onClick={(e) => {
           if (this.props.site.platform === 'pc') return;
           this.activeThread = itemInfo;
@@ -236,7 +237,7 @@ class UserCenterThreads extends React.Component {
 
     if (this.props.site.platform === 'pc') {
       return (
-        <div className={styles.dropdownWrapper} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.dropdownWrapper} onClick={e => e.stopPropagation()}>
           <Dropdown
             arrow={false}
             onVisibleChange={(isShow) => {

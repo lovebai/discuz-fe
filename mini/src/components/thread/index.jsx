@@ -93,23 +93,15 @@ class Index extends React.Component {
     // 对没有登录的先登录
     if (!this.props.user.isLogin()) {
       Toast.info({ content: '请先登录!' });
-      goToLoginPage({ url: '/subPages/user/wx-auth/index' });
+      goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
-
-    handlePraise = debounce(() => {
-
-      if(this.state.isSendingLike) return;
-      // 对没有登录的先登录
-      if (!this.props.user.isLogin()) {
-        Toast.info({ content: '请先登录!' });
-        goToLoginPage({ url: '/userPages/user/wx-auth/index' });
-        return;
-      }
-      const { data = {}, user } = this.props;
-      const { threadId = '', isLike, postId } = data;
-      this.setState({ isSendingLike: true });
-      this.props.index.updateThreadInfo({ pid: postId, id: threadId, data: { attributes: { isLiked: !isLike } } }).then((result) => {
+    const { data = {}, user } = this.props;
+    const { threadId = '', isLike, postId } = data;
+    this.setState({ isSendingLike: true });
+    this.props.index
+      .updateThreadInfo({ pid: postId, id: threadId, data: { attributes: { isLiked: !isLike } } })
+      .then((result) => {
         if (result.code === 0 && result.data) {
           this.props.index.updateAssignThreadInfo(threadId, {
             updateType: 'like',
@@ -140,6 +132,7 @@ class Index extends React.Component {
     this.updateViewCount();
     this.handlePay();
   };
+
   handlePay = debounce(async (e) => {
     // e && e.stopPropagation();
 
@@ -154,12 +147,12 @@ class Index extends React.Component {
       return;
     }
 
-      // 对没有登录的先做
-      if (!this.props.user.isLogin()) {
-        Toast.info({ content: '请先登录!' });
-        goToLoginPage({ url: '/userPages/user/wx-auth/index' });
-        return;
-      }
+    // 对没有登录的先做
+    if (!this.props.user.isLogin()) {
+      Toast.info({ content: '请先登录!' });
+      goToLoginPage({ url: '/userPages/user/wx-auth/index' });
+      return;
+    }
 
     // 支付成功重新请求帖子数据
     if (success && thread?.threadId) {
@@ -200,11 +193,12 @@ class Index extends React.Component {
 
   onUser = (e) => {
     e && e.stopPropagation();
+
     const { user = {}, isAnonymous } = this.props.data || {};
     if (!!isAnonymous) {
-      this.onClick()
+      this.onClick();
     } else {
-      Router.push({url: `/userPages/user/index?id=${user?.userId}`});
+      Router.push({ url: `/userPages/user/index?id=${user?.userId}` });
     }
   };
 
@@ -311,7 +305,7 @@ class Index extends React.Component {
     const { getShareData, getShareContent } = this.props.user;
     const { shareNickname, shareAvatar, shareThreadid, shareContent } = this.props.user;
     const { minHeight, useShowMore, videoH } = this.state;
-    
+
     return (
       <View
         className={`${styles.container} ${className} ${showBottomStyle && styles.containerBottom} ${

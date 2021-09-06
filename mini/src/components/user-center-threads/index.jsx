@@ -220,11 +220,24 @@ class UserCenterThreads extends React.Component {
     );
   };
 
+  renderExtraInfo = (thread) => {
+    if (!thread.userStickStatus) {
+      return null;
+    }
+
+    return (
+      <View className={styles.threadStickFlag}>
+        <Icon name="TopOutlined" size={12} />
+      </View>
+    );
+  };
+
   render() {
     return (
       <View>
         {this.props.data.map((itemInfo, index) => (
           <View key={index} className={index === 0 ? styles.threadFirstItem : styles.threadItem}>
+            {this.renderExtraInfo(itemInfo)}
             <Thread
               key={`${itemInfo.threadId}-${itemInfo.updatedAt}-${itemInfo.user.avatar}`}
               showBottomStyle={this.props.showBottomStyle}

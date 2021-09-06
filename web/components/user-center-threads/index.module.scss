@@ -58,7 +58,17 @@
   }
 }
 
+.moreIconSpan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .dropdownWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   :global {
     .dzq-dropdown-menu__item {
       font-size: 14px;
@@ -71,4 +81,5 @@
       }
     }
   }
+
 }
