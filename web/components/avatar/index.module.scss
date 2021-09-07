@@ -53,7 +53,7 @@
           font-size: rem($font-size-middle);
           line-height: rem($font-line-height-primary);
           text-align: left;
-          color: var(--color-text-primary);
+          color: $text-color-primary;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -64,7 +64,7 @@
           font-size: rem($font-size-primary);
           line-height: rem($font-line-height-small);
           text-align: left;
-          color: var(--color-text-primary);
+          color: $text-color-primary;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -96,7 +96,7 @@
           font-size: rem($font-size-large);
           line-height: rem($font-line-height-large);
           text-align: center;
-          color: var(--color-text-primary);
+          color: $text-color-primary;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

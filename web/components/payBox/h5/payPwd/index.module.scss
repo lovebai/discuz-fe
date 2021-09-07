@@ -19,10 +19,10 @@
       box-sizing: border-box;
       flex: 1;
       font-size: rem($font-size-large);
-      color: var(--color-text-primary);
+      color: $text-color-primary;
       height: rem(50);
       text-align: center;
-      border: 1px solid var(--border-line-color);
+      border: 1px solid $border-color;
       border-bottom: none;
       border-right: none;
       line-height: rem(50);
@@ -31,10 +31,10 @@
       box-sizing: border-box;
       flex: 1;
       font-size: rem($font-size-middle);
-      color: var(--color-text-primary);
+      color: $text-color-primary;
       height: rem(50);
       text-align: center;
-      border: 1px solid var(--border-line-color);
+      border: 1px solid $border-color;
       border-bottom: none;
       border-right: none;
       line-height: rem(50);
@@ -97,7 +97,7 @@
     }
   }
   .walletIcon {
-    color: var(--color-primary2);
+    color: $primary-color2;
     margin-right: rem($margin-2n);
   }
   .paypwdDivider {

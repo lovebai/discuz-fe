@@ -18,7 +18,7 @@
         font-size: 18px;
         height: rem(25);
         line-height: rem(25);
-        color: var(--color-text-primary);
+        color: $text-color-primary;
     }
 
     .userCenterPostInfo {
@@ -59,7 +59,7 @@
                 padding-left: rem($padding-4n);
             }
             .input-placeholder {
-                color: var(--color-text-placeholder);
+                color: $text-color-placeholder;
                 font-size: rem($font-size-primary);
             }
         }

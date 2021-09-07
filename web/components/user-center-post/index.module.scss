@@ -40,7 +40,7 @@
             }
             :global {
                 .input-placeholder {
-                    color: var(--color-text-placeholder);
+                    color: $text-color-placeholder;
                 }
             }
         }
