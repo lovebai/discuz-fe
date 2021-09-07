@@ -13,7 +13,7 @@ import ImageDisplay from './image-display';
 import Packet from './packet';
 import styles from './index.module.scss';
 import { View, Text } from '@tarojs/components';
-import { getElementRect, randomStr, noop } from './utils'
+import { getElementRect, randomStr, noop, handleLink } from './utils'
 
 // 插件引入
 /**DZQ->plugin->register<plugin_index@thread_extension_display_hook>**/
@@ -111,7 +111,9 @@ const Index = (props) => {
             iframeWhiteList={['bilibili', 'youku', 'iqiyi', 'music.163.com', 'qq.com', 'em.iq.com', 'xigua']}
             onClick={() => { }}
             onImgClick={() => { }}
-            onLinkClick={() => { }}
+            onLinkClick={(node) => {
+              handleLink(node);
+            }}
             transformer={parseDom => parseDom}
           />
         )}
@@ -148,7 +150,7 @@ const Index = (props) => {
           />
         )}
         {audioData && <AudioPlay url={audioData.mediaUrl} isPay={needPay} onPay={onPay} updateViewCount={updateViewCount}/>}
-        {fileData?.length ? <AttachmentView 
+        {fileData?.length ? <AttachmentView
             threadId={threadId}
             unifyOnClick={unifyOnClick}
             attachments={fileData}
@@ -157,7 +159,7 @@ const Index = (props) => {
             updateViewCount={updateViewCount}
             canViewAttachment={canViewAttachment}
             canDownloadAttachment={canDownloadAttachment}
-          /> 
+          />
           : null
         }
 
