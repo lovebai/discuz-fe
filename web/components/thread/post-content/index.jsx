@@ -9,7 +9,7 @@ import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';
 import { urlToLink } from '@common/utils/replace-url-to-a';
 import replaceStringInRegex from '@common/utils/replace-string-in-regex';
-
+import isServer from '@common/utils/is-server';
 import styles from './index.module.scss';
 
 /**
@@ -156,7 +156,7 @@ const PostContent = ({
       setImageUrlList(imageUrlList);
     }
   }, [filterContent]);
-
+  
   return (
     <div className={classnames(styles.container, usePointer ? styles.usePointer : '')} {...props}>
       <div
@@ -183,7 +183,7 @@ const PostContent = ({
             onImgClick={handleImgClick}
             onLinkClick={handleLinkClick}
             transformer={transformer}
-            iframeWhiteList={['bilibili', 'youku', 'iqiyi', 'music.163.com', 'ixigua', 'qq.com', 'myqcloud.com', window.location.hostname]}
+            iframeWhiteList={['bilibili', 'youku', 'iqiyi', 'music.163.com', 'ixigua', 'qq.com', 'myqcloud.com', isServer() ? global.ctx.req.headers.host : window.location.hostname]}
           />
           {imageVisible && (
             <ImagePreviewer

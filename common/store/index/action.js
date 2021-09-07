@@ -223,7 +223,7 @@ class IndexAction extends IndexStore {
    * @returns
    */
   @action
-  async getReadThreadList({ filter = {}, sequence = 0, perPage = 10, page = 1, isDraft = false } = {}) {
+  async getReadThreadList({ filter = {}, sequence = 0, perPage = 10, page = 1, isDraft = false } = {}, ctx = null) {
     // 过滤空字符串
     const newFilter = filter;
     if (filter.categoryids && (filter.categoryids instanceof Array)) {
@@ -234,7 +234,7 @@ class IndexAction extends IndexStore {
     }
     this.latestReq += 1;
     const currentReq = this.latestReq;
-    const result = await readThreadList({ params: { perPage, page, filter: newFilter, sequence } });
+    const result = await readThreadList({ params: { perPage, page, filter: newFilter, sequence } }, ctx);
     if (currentReq !== this.latestReq) {
       return;
     }
@@ -290,8 +290,9 @@ class IndexAction extends IndexStore {
    * @returns
    */
   @action.bound
-  async getReadCategories() {
-    const result = await readCategories();
+  async getReadCategories(opt = {}, ctx = null) {
+    console.log(opt);
+    const result = await readCategories(opt, ctx);
     if (result.code === 0) {
       if (result.data) {
         const data = [...result.data];
@@ -315,8 +316,8 @@ class IndexAction extends IndexStore {
    * @returns
    */
   @action
-  async getRreadStickList(categoryIds = []) {
-    const result = await readStickList({ params: { categoryIds } });
+  async getRreadStickList(categoryIds = [], ctx = null) {
+    const result = await readStickList({ params: { categoryIds } }, ctx);
     if (result.code === 0) {
       this.sticks = null;
       this.setSticks(result.data || []);
