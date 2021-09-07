@@ -16,6 +16,7 @@ import { getImmutableTypeHeight } from './getHeight'
 
 import Skeleton from './skeleton';
 import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
+import Comment from './comment';
 
 @inject('site')
 @inject('index')
@@ -33,7 +34,8 @@ class Index extends React.Component {
         isSendingLike: false,
         minHeight: 0,
         useShowMore: true,
-        videoH: 0
+        videoH: 0,
+        showCommentList: false
       }
 
       this.threadStyleId = `thread-style-id-${randomStr()}`
@@ -64,16 +66,24 @@ class Index extends React.Component {
     }
 
     // 评论
-    onComment = (e) => {
+    onComment = async (e) => {
       e && e.stopPropagation();
 
       if (!this.allowEnter()) {
         return
       }
 
-      const { threadId = '' } = this.props.data || {};
+      const { threadId = '', likeReward } = this.props.data || {};
 
       if (threadId !== '') {
+        // 请求评论数据
+        if (likeReward.postCount === 0) {
+          this.setState({
+            showCommentList: !this.state.showCommentList,
+          });
+          return;
+        }
+
         this.props.thread.positionToComment()
         Router.push({url: `/indexPages/thread/index?id=${threadId}`})
       } else {
@@ -255,7 +265,8 @@ class Index extends React.Component {
         payType,
         content,
         isAnonymous,
-        diffTime
+        diffTime,
+        commentList = [],
       } = data || {};
       const {text} = content
       const { isEssence, isPrice, isRedPack, isReward } = displayTag;
@@ -327,10 +338,33 @@ class Index extends React.Component {
               data={data}
               user={this.props.user}
               updateViewCount={this.updateViewCount}
+              isCommented={this.state.showCommentList}
             />
             </>
           ) : <Skeleton style={{ minHeight: `${minHeight}px` }} />
         }
+
+        {/* 评论列表 */}
+        {this.state.showCommentList && (
+              <Comment
+                thread={{
+                  threadData: {
+                    id: data.threadId,
+                    ...data,
+                  },
+                }}
+                userInfo={this.props.user.userInfo}
+                canPublish={this.props.canPublish}
+                commentList={commentList}
+                deleteComment={this.deleteComment}
+                createComment={this.createComment}
+                isLoading={data.isLoading}
+                requestError={data.requestError}
+                postCount={data?.likeReward?.postCount}
+                onViewMoreClick={this.onViewMoreClick}
+                platform={platform}
+              ></Comment>
+          )}
         </View>
       );
     }
