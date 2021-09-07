@@ -5,7 +5,7 @@ import Button from '@discuzq/design/dist/components/button';
 import Icon from '@discuzq/design/dist/components/icon';
 import { readEmoji } from '@common/server';
 import Avatar from '@components/avatar';
-// import Emoji from '@components/editor/emoji';
+import Emoji from '@components/emoji';
 import classnames from 'classnames';
 import { inject } from 'mobx-react';
 import styles from './index.module.scss';
@@ -34,25 +34,6 @@ const CommentInput = inject('site')(inject('user')((props) => {
   useEffect(() => {
     setValue(initValue);
   }, [initValue]);
-
-  // 点击其他地方emoji输入框收起
-  useEffect(() => {
-    showEmojis ? window.addEventListener('click', onEventClick) : window.removeEventListener('click', onEventClick);
-
-    return () => {
-      window.removeEventListener('click', onEventClick);
-    };
-  }, [showEmojis]);
-
-  const onEventClick = useCallback((e) => {
-    e && e.stopPropagation();
-    if (e.target.id === 'emojiBtn') {
-      // setShowEmojis(!showEmojis);
-      return;
-    }
-    setCursorPos(0);
-    setShowEmojis(false);
-  }, []);
 
   const onSubmitClick = async () => {
     if (typeof onSubmit === 'function') {
@@ -137,7 +118,7 @@ const CommentInput = inject('site')(inject('user')((props) => {
 
 
       <View className={styles.footer}>
-        {/* {showEmojis && <Emoji pc show={showEmojis} emojis={emojis} onClick={onEmojiClick} atTop={false} />} */}
+        {showEmojis && <View className={styles.emojis}><Emoji show={showEmojis} emojis={emojis} onClick={onEmojiClick}/></View>}
 
         <View className={styles.linkBtn}>
           <Icon

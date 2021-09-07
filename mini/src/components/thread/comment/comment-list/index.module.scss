@@ -8,12 +8,7 @@
 
   .commentItems {
     border-bottom: $border-solid-1;
-
-    :global {
-      .dzq-comment {
-        padding: rem($padding-2n) 0 rem($padding-4n);
-      }
-    }
+    margin: 0 -16px;
 
     &.isLastOne {
       border-bottom: none;

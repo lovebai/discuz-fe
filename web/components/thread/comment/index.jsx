@@ -111,14 +111,15 @@ class Comment extends React.Component {
 
 
   render() {
-    const { thread, userInfo, canPublish, commentList, deleteComment, isLoading, requestError, postCount } = this.props;
+    const { thread, userInfo, canPublish, commentList, deleteComment, isLoading, requestError, postCount, platform } = this.props;
 
     return <>
       <CommentList
         thread={thread}
         canPublish={canPublish}
         commentList={commentList}
-        deleteComment={deleteComment}>
+        deleteComment={deleteComment}
+        platform={platform}>
       </CommentList>
 
       {isLoading ? (

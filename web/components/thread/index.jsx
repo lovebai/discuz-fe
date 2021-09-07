@@ -77,13 +77,23 @@ class Index extends React.Component {
       if (threadId !== '') {
         // 请求评论数据
         if (this.props.enableCommentList) {
-          this.setState({
-            showCommentList: !this.state.showCommentList,
-          });
-          if (!this.state.showCommentList) {
-            await this.props.index.getThreadCommentList(threadId);
+          if (this.props?.site?.platform === 'pc') {
+            this.setState({
+              showCommentList: !this.state.showCommentList,
+            });
+            if (!this.state.showCommentList && likeReward.postCount > 0) {
+              await this.props.index.getThreadCommentList(threadId);
+            }
+            return;
           }
-          return;
+          if (this.props?.site?.platform === 'h5') {
+            if (likeReward.postCount === 0 || this.state.showCommentList) {
+              this.setState({
+                showCommentList: !this.state.showCommentList,
+              });
+              return;
+            }
+          }
         }
         this.props.thread.positionToComment();
         this.props.router.push(`/thread/${threadId}`);

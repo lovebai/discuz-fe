@@ -105,6 +105,11 @@ const CommentInput = inject('site')(inject('user')((props) => {
     typeof props.onFocus === 'function' && props.onFocus(e);
   };
 
+  const style = {
+    maxWidth: '100%',
+    boxSizing: 'border-box',
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.main}>
@@ -134,7 +139,7 @@ const CommentInput = inject('site')(inject('user')((props) => {
 
 
       <div className={styles.footer}>
-        {showEmojis && <Emoji pc show={showEmojis} emojis={emojis} onClick={onEmojiClick} atTop={false} />}
+        {showEmojis && <Emoji style={style} pc show={showEmojis} emojis={emojis} onClick={onEmojiClick} atTop={false} />}
 
         <div className={styles.linkBtn}>
           <Icon

@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import comment from './index.module.scss';
 import AboptPopup from '@layout/thread/pc/components/abopt-popup';
-import CommentList from '@layout/thread/h5/components/comment-list/index';
+import CommentList from '@layout/thread/pc/components/comment-list/index';
 import DeletePopup from '@components/thread-detail-pc/delete-popup';
 import ReportPopup from '@layout/thread/pc/components/report-popup';
 import { Toast } from '@discuzq/design';

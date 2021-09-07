@@ -77,7 +77,7 @@ class Index extends React.Component {
 
       if (threadId !== '') {
         // 请求评论数据
-        if (likeReward.postCount === 0) {
+        if (this.props.enableCommentList && (likeReward.postCount === 0 || this.state.showCommentList)) {
           this.setState({
             showCommentList: !this.state.showCommentList,
           });
@@ -244,6 +244,26 @@ class Index extends React.Component {
         this.props.topic.updateAssignThreadInfo(threadIdNumber, { updateType: 'viewCount', updatedInfo: { viewCount } })
       }
     }
+      // 删除评论
+    deleteComment = () => {
+      const postCount = this.props.data?.likeReward?.postCount;
+
+      if (postCount > 0) {
+        this.props.data.likeReward.postCount = postCount - 1;
+
+        if (this.props.data.likeReward.postCount === 0) {
+          this.setState({
+            showCommentList: false,
+          });
+        }
+      }
+    };
+
+    // 新增评论
+    createComment = () => {
+      const postCount = this.props.data?.likeReward?.postCount;
+      this.props.data.likeReward.postCount = postCount + 1;
+    };
 
     render() {
       const { data, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null } = this.props;
@@ -361,7 +381,6 @@ class Index extends React.Component {
                 isLoading={data.isLoading}
                 requestError={data.requestError}
                 postCount={data?.likeReward?.postCount}
-                onViewMoreClick={this.onViewMoreClick}
                 platform={platform}
               ></Comment>
           )}

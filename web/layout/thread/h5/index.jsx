@@ -127,7 +127,7 @@ class ThreadH5Page extends React.Component {
       if (this.props?.thread?.isPositionToComment) {
         // TODO:需要监听帖子内容加载完成事件
         setTimeout(() => {
-          this.threadBodyRef.current.scrollTo(0, this.position);
+          this.threadBodyRef?.current?.scrollTo(0, this.position);
         }, 1000);
         return;
       }

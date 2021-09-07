@@ -59,6 +59,27 @@
     box-sizing: border-box;
     font-size: rem($font-size-primary);
   }
+
+  .emojis {
+    position: absolute;
+    left: 0;
+    top: 50px;
+    height: 218px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: $zindex-dialog;
+    overflow-y: scroll;
+    background: $white;
+    border-top: $border-solid-1;
+  
+    :global {
+      .dzq-toolbar-emoji {
+        border-radius: 0;
+      }
+    }
+  }  
 }
 
 .actived {
