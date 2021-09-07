@@ -13,7 +13,7 @@ import ThreadCenterView from './ThreadCenterView';
 import { debounce, noop , getElementRect, randomStr } from './utils'
 import { View, Text } from '@tarojs/components'
 import { getImmutableTypeHeight } from './getHeight'
-
+import canPublish from '@common/utils/can-publish';
 import Skeleton from './skeleton';
 import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
 import Comment from './comment';
@@ -265,6 +265,10 @@ class Index extends React.Component {
       this.props.data.likeReward.postCount = postCount + 1;
     };
 
+    canPublish = () => {
+      return canPublish(this.props.user, this.props.site);
+    }
+
     render() {
       const { data, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null } = this.props;
       const { platform = 'pc' } = site;
@@ -374,7 +378,7 @@ class Index extends React.Component {
                   },
                 }}
                 userInfo={this.props.user.userInfo}
-                canPublish={this.props.canPublish}
+                canPublish={this.canPublish}
                 commentList={commentList}
                 deleteComment={this.deleteComment}
                 createComment={this.createComment}
