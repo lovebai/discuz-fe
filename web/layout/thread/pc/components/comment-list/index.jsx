@@ -136,7 +136,6 @@ class CommentList extends React.Component {
   render() {
     const { canDelete, canEdit, canLike, canHide } = this.generatePermissions(this.props.data);
     const { groups } = this.props.data?.user || {};
-    console.log(this.props.isAnonymous);
     // 评论内容是否通过审核
     const isApproved = this.props?.data?.isApproved === 1;
     const isSelf = this.props.threadId === this.props?.data?.userId;
