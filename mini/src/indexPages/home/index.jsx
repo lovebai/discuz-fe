@@ -17,7 +17,7 @@ import { priceShare } from '@common/utils/priceShare';
 @observer
 @withShare({
   needLogin: true,
-  showShareTimeline: true
+  showShareTimeline: false
 })
 class Index extends React.Component {
   state = {
