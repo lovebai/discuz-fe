@@ -224,9 +224,9 @@ class SearchAction extends SearchStore {
     } else {
       tasks.push(Promise.resolve({}))
     }
-
+    this.indexThreadsLoading = true;
     const result = await Promise.all(tasks)
-
+    this.indexThreadsLoading = false;
     if ( !hasTopics ) {
       const res = result[0]
        
