@@ -23,10 +23,8 @@ class CommentList extends React.Component {
     this.needReply = this.props.data.lastThreeComments; // 评论的回复
   }
 
-  toCommentDetail = () => {
-    if (this.state.isShowOne) {
-      typeof this.props.onCommentClick === 'function' && this.props.onCommentClick();
-    }
+  toCommentDetail = (data) => {
+    typeof this.props.onCommentClick === 'function' && this.props.onCommentClick(data);
   };
 
   filterContent() {
@@ -158,7 +156,7 @@ class CommentList extends React.Component {
                       <span className={styles.masterText}>作者</span>
                     </div>
                   )}
-                  {!!groups?.isDisplay  && (
+                  {!!groups?.isDisplay && (
                     <div className={styles.groups}>{groups?.name || groups?.groupName}</div>
                   )}
                 </div>
@@ -223,6 +221,8 @@ class CommentList extends React.Component {
                 ) : (
                   ''
                 )}
+                {/* 添加查看原帖入口组件，从外部传入 */}
+                {this.props.originThread || ''}
                 {this.needReply?.length > 0 && (
                   <div className={styles.replyList}>
                     {this.state.isShowOne ? (
@@ -249,7 +249,7 @@ class CommentList extends React.Component {
                             likeClick={() => this.replyLikeClick(val)}
                             replyClick={() => this.replyReplyClick(val)}
                             deleteClick={() => this.replyDeleteClick(val)}
-                            toCommentDetail={() => this.toCommentDetail()}
+                            toCommentDetail={() => this.toCommentDetail(val)}
                             active={this.props.postId === val.id}
                             threadId={this.props.threadId}
                           ></ReplyList>
