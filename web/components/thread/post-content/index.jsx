@@ -174,6 +174,8 @@ const PostContent = ({
     }
   }, [filterContent]);
 
+
+  console.log(needShowMore , showMore,2);
   return (
     <div className={classnames(styles.container, usePointer ? styles.usePointer : '')} {...props}>
       <div

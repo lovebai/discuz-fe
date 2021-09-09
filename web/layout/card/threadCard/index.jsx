@@ -57,6 +57,8 @@ const ThreadCard = inject('user', 'card')(observer((props) => {
     text = '';
     parseContent = '';
   }
+
+  console.log(threadStore?.threadData,text, 1);
   return (
     <div>
       {isReady && (

@@ -34,22 +34,22 @@ class CommentAction {
   }
 
   findOne(commentId, replyId) {
-    let comment = this.list.find((item) => item.id === commentId);
+    let comment = this.list.find(item => item.id === commentId);
 
     if (replyId && comment?.lastThreeComments?.length) {
-      comment = comment.lastThreeComments.find((item) => item.id === replyId);
+      comment = comment.lastThreeComments.find(item => item.id === replyId);
     }
 
     return comment;
   }
 
   async deleteOne(commentId, replyId) {
-    const commentIndex = this.list.findIndex((item) => item.id === commentId);
+    const commentIndex = this.list.findIndex(item => item.id === commentId);
     const comment = this.findOne(commentId);
 
     if (replyId) {
       if (comment.lastThreeComments) {
-        const replyIndex = comment.lastThreeComments.findIndex((item) => item.id === replyId);
+        const replyIndex = comment.lastThreeComments.findIndex(item => item.id === replyId);
         const newestReply = await this.getCommentSingleRelpy(commentId);
         comment.lastThreeComments.splice(replyIndex, 1);
         comment.replyCount = comment.replyCount - 1;
@@ -112,7 +112,8 @@ class CommentAction {
       this.list.push(newData);
 
       return {
-        isApproved: isApproved,
+        redPacketAmount: res.data.redPacketAmount,
+        isApproved,
         msg: isApproved ? '评论成功' : '您发布的内容正在审核中',
         success: true,
       };
@@ -168,7 +169,7 @@ class CommentAction {
       const isApproved = res.data.isApproved === 1;
 
       return {
-        isApproved: isApproved,
+        isApproved,
         msg: isApproved ? '修改成功' : '您修改的内容正在审核中',
         success: true,
       };
@@ -227,7 +228,7 @@ class CommentAction {
       const isApproved = res.data.isApproved === 1;
 
       return {
-        isApproved: isApproved,
+        isApproved,
         msg: isApproved ? '回复成功' : '您回复的内容正在审核中',
         success: true,
       };

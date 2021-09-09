@@ -116,6 +116,7 @@ const PostContent = ({
     if (content.indexOf("http") === -1) {
       content = content[0] !== '/' ? '/' + content : content;
       if (appPageLinks.indexOf(content) !== -1) {
+        console.log(content,1)
         Taro.navigateTo({ url: content });
       }
     }
@@ -194,7 +195,6 @@ const PostContent = ({
   }, [filterContent]);
 
 
-  console.log(useShowMore);
   return (
     <View className={styles.container} {...props}>
       <View
