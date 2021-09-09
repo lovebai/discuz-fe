@@ -145,24 +145,29 @@ class Detail extends React.Component {
   async getThreadDataFromList(id) {
     if (id) {
       let threadData;
+      let listType = '';
       // 首页iebook
       const indexRes = this.props.index.findAssignThread(Number(id));
       threadData = indexRes?.data;
+      listType = 'index';
 
       // 发现列表
       if (!threadData) {
         const searchRes = this.props.search.findAssignThread(Number(id));
         threadData = searchRes[0]?.data;
+        listType = 'search';
       }
 
       // 话题列表
       if (!threadData) {
         const topicRes = this.props.topic.findAssignThread(Number(id));
         threadData = topicRes?.data;
+        listType = 'topic';
       }
 
       if (threadData?.threadId && !threadData?.displayTag?.isRedPack && !threadData?.displayTag?.isReward) {
         this.props.thread.setThreadData(threadData);
+        this.props.thread.setPageDataListType(listType); // 记录使用的是哪个列表数据
       }
     }
   }
