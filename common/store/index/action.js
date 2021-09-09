@@ -467,25 +467,6 @@ class IndexAction extends IndexStore {
   }
 
   /**
-   * 更新帖子的展开更多
-   * @param {number} threadId 帖子id
-   * @param {object}  obj 更新数据
-   * @returns
-   */
-  @action
-  updateOpenMore(threadId, obj = {}) {
-    const targetThread = this._findAssignThread(threadId);
-
-    if (targetThread && targetThread.length !== 0) { 
-      const { index, data } = targetThread;
-      const { openedMore } = obj;
-      data.openedMore = openedMore;
-
-      this.threads.pageData[index] = data;
-    }
-  }
-
-  /**
    * 添加帖子
    * @param {obj} threadInfo
    */
