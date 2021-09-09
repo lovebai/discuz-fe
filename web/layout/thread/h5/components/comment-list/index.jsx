@@ -156,7 +156,7 @@ class CommentList extends React.Component {
                       <span className={styles.masterText}>作者</span>
                     </div>
                   )}
-                  {!!groups?.isDisplay  && (
+                  {!!groups?.isDisplay && (
                     <div className={styles.groups}>{groups?.name || groups?.groupName}</div>
                   )}
                 </div>
@@ -220,6 +220,8 @@ class CommentList extends React.Component {
                 ) : (
                   ''
                 )}
+                {/* 添加查看原帖入口组件，从外部传入 */}
+                {this.props.originThread || ''}
                 {this.needReply?.length > 0 && (
                   <div className={styles.replyList}>
                     {this.state.isShowOne ? (

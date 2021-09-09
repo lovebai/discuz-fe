@@ -17,6 +17,8 @@ import Icon from '@discuzq/design/dist/components/icon/index';
 import Input from '@discuzq/design/dist/components/input/index';
 import footer from './footer.module.scss';
 import classNames from 'classnames';
+import { Current } from '@tarojs/taro';
+
 
 @inject('site')
 @inject('user')
@@ -409,7 +411,7 @@ class CommentH5Page extends React.Component {
   }
   onEmojiIconClick = () => {
     this.setState({ showCommentInput: true });
-    this.setState({ showEmojis: true})
+    this.setState({ showEmojis: true })
     this.replyClick(this.props.comment.commentDetail);
   }
   onPcitureIconClick = () => {
@@ -418,6 +420,10 @@ class CommentH5Page extends React.Component {
     this.replyClick(this.props.comment.commentDetail);
   }
 
+  onGotoThread = () => {
+    const { threadId } = this.props.comment;
+    Router.push({ url: `/indexPages/thread/index?id=${threadId}&fromMessage=true` });
+  }
   
   // 点击内容
   onCommentClick = (data) => {
@@ -473,6 +479,7 @@ class CommentH5Page extends React.Component {
 
   render() {
     const { commentDetail: commentData, isReady } = this.props.comment;
+    const query = Current.router.params;
     // 更多弹窗权限
     const morePermissions = {
       canEdit: false,
@@ -487,6 +494,7 @@ class CommentH5Page extends React.Component {
       isEssence: false,
       isStick: false,
     };
+
 
     return (
       <View>
@@ -515,65 +523,66 @@ class CommentH5Page extends React.Component {
             </View>
           </View> */}
 
-        {/* 内容 */}
-        <ScrollView className={styles.body} scrollY scrollIntoView={this.state.toView}>
-          <View className={styles.content}>
-            {isReady && (
-              <CommentList
-                data={commentData}
-                likeClick={() => this.likeClick(commentData)}
-                replyClick={() => this.replyClick(commentData)}
-                deleteClick={() => this.deleteClick(commentData)}
-                avatarClick={() => this.avatarClick(commentData)}
-                replyLikeClick={(reploy) => this.replyLikeClick(reploy, commentData)}
-                replyReplyClick={(reploy) => this.replyReplyClick(reploy, commentData)}
-                replyDeleteClick={(reply) => this.replyDeleteClick(reply, commentData)}
-                replyAvatarClick={(reply,floor) =>this.replyAvatarClick(reply,commentData,floor)}
-                onCommentClick={reply => this.onCommentClick(reply)}
-                onMoreClick={() => this.onMoreClick()}
-                isHideEdit
-                postId={this.props.comment.postId}
-                positionRef={this.positionRef}
-                threadId={this.props?.thread?.threadData?.userId}
-                isAnonymous={isAnonymous}
-              ></CommentList>
-            )}
-          </View>
-          <View className={styles.box}></View>
-        </ScrollView>
-        {isReady && (
-        <View className={classNames(styles.inputFooterContainer, this.state.showCommentInput && styles.zindex)}>
-          <View className={classNames(styles.inputFooter, this.state.showCommentInput && styles.zindex)}>
-              {/* 评论区触发 */}
-              <View className={footer.inputClick} onClick={() => this.onInputClick()}>
-                <Input
-                  className={footer.input}
-                  placeholder="写评论"
-                  disabled
-                  prefixIcon="EditOutlined"
-                  placeholderClass={footer.inputPlaceholder}
-                ></Input>
-              </View>
+          {/* 内容 */}
+          <ScrollView className={styles.body} scrollY scrollIntoView={this.state.toView}>
+            <View className={styles.content}>
+              {isReady && (
+                <CommentList
+                  data={commentData}
+                  likeClick={() => this.likeClick(commentData)}
+                  replyClick={() => this.replyClick(commentData)}
+                  deleteClick={() => this.deleteClick(commentData)}
+                  avatarClick={() => this.avatarClick(commentData)}
+                  replyLikeClick={(reploy) => this.replyLikeClick(reploy, commentData)}
+                  replyReplyClick={(reploy) => this.replyReplyClick(reploy, commentData)}
+                  replyDeleteClick={(reply) => this.replyDeleteClick(reply, commentData)}
+                  replyAvatarClick={(reply, floor) => this.replyAvatarClick(reply, commentData, floor)}
+                  onCommentClick={reply => this.onCommentClick(reply)}
+                  onMoreClick={() => this.onMoreClick()}
+                  isHideEdit
+                  postId={this.props.comment.postId}
+                  positionRef={this.positionRef}
+                  threadId={this.props?.thread?.threadData?.userId}
+                  isAnonymous={isAnonymous}
+                  originThread={query.fromMessage ? <View className={styles.originThread} onClick={this.onGotoThread}>查看原帖</View> : false}
+                ></CommentList>
+              )}
+            </View>
+            <View className={styles.box}></View>
+          </ScrollView>
+          {isReady && (
+            <View className={classNames(styles.inputFooterContainer, this.state.showCommentInput && styles.zindex)}>
+              <View className={classNames(styles.inputFooter, this.state.showCommentInput && styles.zindex)}>
+                {/* 评论区触发 */}
+                <View className={footer.inputClick} onClick={() => this.onInputClick()}>
+                  <Input
+                    className={footer.input}
+                    placeholder="写评论"
+                    disabled
+                    prefixIcon="EditOutlined"
+                    placeholderClass={footer.inputPlaceholder}
+                  ></Input>
+                </View>
 
-              {/* 操作区 */}
-              <View className={footer.operate}>
-                <Icon
-                  className={footer.icon}
-                  onClick={this.onEmojiIconClick}
-                  size="20"
-                  name="SmilingFaceOutlined"
-                ></Icon>
-                <Icon
-                  className={footer.icon}
-                  onClick={this.onPcitureIconClick}
-                  size="20"
-                  name="PictureOutlinedBig"
-                ></Icon>
+                {/* 操作区 */}
+                <View className={footer.operate}>
+                  <Icon
+                    className={footer.icon}
+                    onClick={this.onEmojiIconClick}
+                    size="20"
+                    name="SmilingFaceOutlined"
+                  ></Icon>
+                  <Icon
+                    className={footer.icon}
+                    onClick={this.onPcitureIconClick}
+                    size="20"
+                    name="PictureOutlinedBig"
+                  ></Icon>
+                </View>
               </View>
             </View>
-          </View>
-        )}
-        <View className={styles.footer}>
+          )}
+      <View className={styles.footer}>
           {/* 评论弹层 */}
           <InputPopup
             showEmojis={this.state.showEmojis}

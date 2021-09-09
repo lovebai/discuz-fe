@@ -252,7 +252,7 @@ class CommentH5Page extends React.Component {
       goToLoginPage({ url: '/user/login' });
       return;
     }
-    if (!this.props.canPublish()) return ;
+    if (!this.props.canPublish()) return;
     this.commentData = comment;
     this.replyData = null;
     this.setState({
@@ -268,7 +268,7 @@ class CommentH5Page extends React.Component {
       goToLoginPage({ url: '/user/login' });
       return;
     }
-    if (!this.props.canPublish()) return ;
+    if (!this.props.canPublish()) return;
     this.commentData = null;
     this.replyData = reply;
     this.replyData.commentId = comment.id;
@@ -406,6 +406,12 @@ class CommentH5Page extends React.Component {
     this.replyClick(this.props.comment.commentDetail);
   }
 
+
+  onGotoThread = () => {
+    const { threadId } = this.props.comment;
+    this.props.router.push(`/thread/${threadId}`);
+  }
+
   // 点击内容
   onCommentClick = (data) => {
     this.operationData = data || null;
@@ -458,6 +464,7 @@ class CommentH5Page extends React.Component {
   render() {
     const { commentDetail: commentData, isReady } = this.props.comment;
     const { isAnonymous } = this.props.thread?.threadData || '';
+    const { query } = this.props.router;
     // 更多弹窗权限
     const morePermissions = {
       // canEdit: commentData?.canEdit,
@@ -520,6 +527,7 @@ class CommentH5Page extends React.Component {
               postId={this.props.comment.postId}
               positionRef={this.positionRef}
               isAnonymous={isAnonymous}
+              originThread={query.fromMessage ? <div className={styles.originThread} onClick={this.onGotoThread}>查看原帖</div> : false}
             ></CommentList>
           )}
         </div>
