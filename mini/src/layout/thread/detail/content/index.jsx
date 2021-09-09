@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import Button from '@discuzq/design/dist/components/button/index';
+import RichText from '@discuzq/design/dist/components/rich-text/index';
 import Router from '@discuzq/sdk/dist/router';
 import ImageDisplay from '@components/thread/image-display';
 import AudioPlay from '@components/thread/audio-play';
@@ -28,7 +29,7 @@ import styles from './index.module.scss';
 /**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
-const RenderThreadContent = inject('site','user')(
+const RenderThreadContent = inject('site', 'user')(
   observer((props) => {
     const { store: threadStore, site } = props;
     const { text, indexes } = threadStore?.threadData?.content || {};
@@ -160,7 +161,7 @@ const RenderThreadContent = inject('site','user')(
           {threadStore?.threadData?.title && <View className={styles.title}>{threadStore?.threadData?.title}</View>}
 
           {/* 文字 */}
-          {text && <PostContent useShowMore={false} content={text || ''} />}
+          {text && <PostContent needShowMore={false} content={text || ''} />}
 
           {/* 视频 */}
           {parseContent.VIDEO && (
@@ -171,6 +172,18 @@ const RenderThreadContent = inject('site','user')(
               v_width={parseContent.VIDEO.width || null}
               status={parseContent.VIDEO.status}
               canViewVideo={canViewVideo}
+            />
+          )}
+
+          {/* 外部视频iframe插入和上面的视频组件是互斥的 */}
+          {(parseContent.IFRAME && parseContent.IFRAME.content) && (
+            <RichText
+              content={parseContent.IFRAME.content}
+              iframeWhiteList={['bilibili', 'youku', 'iqiyi', 'music.163.com', 'qq.com', 'em.iq.com', 'xigua']}
+              onClick={() => { }}
+              onImgClick={() => { }}
+              onLinkClick={() => { }}
+              transformer={parseDom => parseDom}
             />
           )}
 
@@ -282,7 +295,7 @@ const RenderThreadContent = inject('site','user')(
           )}
 
           {
-            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
+            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({ render, pluginInfo }) => {
               return (
                 <View key={pluginInfo.name}>
                   {render({
