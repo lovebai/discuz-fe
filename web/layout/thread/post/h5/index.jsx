@@ -1,3 +1,4 @@
+/* eslint-disable spaced-comment */
 /**
  * 创建帖子页面
  */
@@ -39,7 +40,7 @@ import IframeVideo from '@components/thread-post/iframe-video';
 import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
 
 // 插件引入
-/** DZQ->plugin->register<plugin_post@post_extension_content_hook>**/
+/**DZQ->plugin->register<plugin_post@post_extension_content_hook>**/
 
 function judgeDeviceType() {
   const ua = window.navigator.userAgent.toLowerCase();
@@ -276,7 +277,6 @@ class ThreadCreate extends React.Component {
             onInput={vditor => this.props.handleVditorChange(vditor, 'input')}
             onChange={this.props.handleVditorChange}
             onFocus={(action, event) => {
-              console.log(action);
               this.setBottomFixed(action, event);
               const operation = action === 'edior-focus'
                 && this.props.currentDefaultOperation === defaultOperation.emoji ? defaultOperation.emoji : '';

@@ -293,9 +293,6 @@ function DVditor(props) {
         onInit(editor);
         editor.setValue('');
         setEditorInitValue();
-        if (!pc && getSelection().rangeCount > 0) {
-          getSelection().removeAllRanges();
-        }
         editor.focus();
       },
       focus: (val, e) => {
