@@ -264,12 +264,10 @@ class Index extends React.Component {
     const postCount = this.props.data?.likeReward?.postCount;
     this.props.data.likeReward.postCount = postCount + 1;
   };
-  canPublish = () => {
-    return canPublish(this.props.user, this.props.site);
-  }
+  canPublish = () => canPublish(this.props.user, this.props.site)
 
   render() {
-    const { data, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null } = this.props;
+    const { data, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null, extraTag } = this.props;
     const { platform = 'pc' } = site;
     if (!data) {
       return <NoData />;
@@ -289,8 +287,6 @@ class Index extends React.Component {
       content,
       isAnonymous,
       diffTime,
-      extraTag,
-      extraInfo,
       commentList = [],
     } = data || {};
     const { text } = content
@@ -298,6 +294,7 @@ class Index extends React.Component {
     const { getShareData, getShareContent } = this.props.user
     const { shareNickname, shareAvatar, shareThreadid, shareContent } = this.props.user
     const { minHeight, useShowMore, videoH } = this.state
+    
     return (
       <View className={`${styles.container} ${className} ${showBottomStyle && styles.containerBottom} ${platform === 'pc' && styles.containerPC}`} style={{ minHeight: `${minHeight}px` }} id={this.threadStyleId}>
         {
@@ -320,7 +317,6 @@ class Index extends React.Component {
                   platform={platform}
                   onClick={unifyOnClick || this.onUser}
                   extraTag={extraTag}
-                  extraInfo={extraInfo}
                 />
                 {isShowIcon && <View className={styles.headerIcon} onClick={unifyOnClick || this.onClickHeaderIcon}><Icon name='CollectOutlinedBig' className={styles.collectIcon}></Icon></View>}
               </View>
