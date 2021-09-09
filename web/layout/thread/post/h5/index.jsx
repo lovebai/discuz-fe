@@ -369,7 +369,11 @@ class ThreadCreate extends React.Component {
 
           {/* 投票组件 */}
           {(postData?.vote?.voteTitle) && (
-            <VoteWidget onDelete={() => this.props.setPostData({ vote: {} })} />
+            <VoteWidget onDelete={() => this.props.setPostData({ vote: {} })} onClick={() => {
+              this.props.handleAttachClick({
+                type: THREAD_TYPE.vote,
+              });
+            }} />
           )}
 
           {/* 商品组件 */}
