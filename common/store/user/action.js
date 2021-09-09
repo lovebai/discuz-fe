@@ -1030,34 +1030,36 @@ class UserAction extends SiteStore {
 
   // 获取指定的帖子数据
   findAssignThread(threadId) {
-    if (this.threads) {
-      const { pageData = [] } = this.threads;
-      for (let i = 0; i < pageData.length; i++) {
-        if (pageData[i].threadId === threadId) {
-          return { index: i, data: pageData[i] };
-        }
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].threadId === threadId) {
+        return { page: Math.ceil((i + 1) / 10), idx: ((i + 1) % 10) - 1 };
       }
-      return null;
     }
+    return null;
   }
 
   /**
-   * 支付成功后，更新帖子列表指定帖子状态
+   * 支付成功后，更新帖子列表指定帖子状态 (个人中心页的主题更新需要操作 indexStore)
    * @param {number} threadId 帖子id
    * @param {object}  obj 更新数据
    * @returns
    */
   @action
-  updatePayThreadInfo(threadId, obj) {
-    const targetThreads = this.findAssignThread(threadId);
-    if (!targetThreads || targetThreads.length === 0) return;
+  updatePayThreadInfo(threadId, obj, index) {
+    const { getList, updateList, lists } = index;
+    const namespace = `user/${obj.userId}`;
+    const threads = getList({ namespace });
 
-    targetThreads.forEach((targetThread) => {
-      const { index, key, data, store } = targetThread;
-      if (store[key] && store[key][index]) {
-        store[key][index] = obj;
-      }
-    });
+    if (!threads) return;
+    const targetThread = this.findAssignThread(threadId, threads);
+
+    if (!targetThread) return;
+    const { page, idx } = targetThread;
+    const newLists = { ...lists };
+    newLists[namespace].data[page][idx] = obj;
+
+    // 更新indexStore的lists
+    updateList(newLists);
   }
 
   // 生成微信换绑二维码，仅在 PC 使用
