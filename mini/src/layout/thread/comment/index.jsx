@@ -10,12 +10,15 @@ import Header from '@components/header';
 import Toast from '@discuzq/design/dist/components/toast/index';
 import InputPopup from '../components/input-popup';
 import ReportPopup from '../components/report-popup';
+import OperationPopup from './components/operation-popup';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import Taro from "@tarojs/taro";
 import Icon from '@discuzq/design/dist/components/icon/index';
 import Input from '@discuzq/design/dist/components/input/index';
 import footer from './footer.module.scss';
 import classNames from 'classnames';
+import { Current } from '@tarojs/taro';
+
 
 @inject('site')
 @inject('user')
@@ -32,6 +35,7 @@ class CommentH5Page extends React.Component {
       showCommentInput: false, // 是否弹出评论框
       showDeletePopup: false, // 是否弹出删除弹框
       showReplyDeletePopup: false, // 是否弹出回复删除弹框
+      showOperationPopup: false, // 是否弹出操作内容弹框
       inputText: '请输入内容', // 默认回复框placeholder内容
       showEmojis: false,
       showPicture: false,
@@ -40,6 +44,7 @@ class CommentH5Page extends React.Component {
 
     this.commentData = null;
     this.replyData = null;
+    this.operationData = null;
     this.recordCommentLike = {
       // 记录当前评论点赞状态
       id: null,
@@ -406,7 +411,7 @@ class CommentH5Page extends React.Component {
   }
   onEmojiIconClick = () => {
     this.setState({ showCommentInput: true });
-    this.setState({ showEmojis: true})
+    this.setState({ showEmojis: true })
     this.replyClick(this.props.comment.commentDetail);
   }
   onPcitureIconClick = () => {
@@ -414,8 +419,67 @@ class CommentH5Page extends React.Component {
     this.setState({ showPicture: true });
     this.replyClick(this.props.comment.commentDetail);
   }
+
+  onGotoThread = () => {
+    const { threadId } = this.props.comment;
+    Router.push({ url: `/indexPages/thread/index?id=${threadId}&fromMessage=true` });
+  }
+  
+  // 点击内容
+  onCommentClick = (data) => {
+    this.operationData = data || null;
+    this.setState({showOperationPopup: true});
+  }
+
+  // 点击内容操作框中的选项
+  onOperationClick = (val) => {
+    const commentDetail = this.props.comment.commentDetail;
+    if (!this.props.user.isLogin()) {
+      Toast.info({ content: '请先登录!' });
+      goToLoginPage({ url: '/subPages/user/wx-auth/index' });
+      return;
+    }
+    // 回复
+    if (val === 'reply') {
+      if (this.operationData) {
+        this.replyReplyClick(this.operationData, commentDetail);
+      } else {
+        this.replyClick(commentDetail);
+      }
+    };
+    // 复制
+    if (val === 'copy') {
+      if (this.operationData) {
+        this.onCopyClick(this.operationData);
+      } else {
+        this.onCopyClick(commentDetail);
+      }
+    };
+    // 举报
+    if (val === 'report') {
+      this.setState({ showReportPopup: true });
+    }
+    this.setState({showOperationPopup: false});
+  }
+
+  // 点击复制
+  onCopyClick = (data) => {
+    const { content } = data || {};
+
+    Taro.setClipboardData({
+      data: content,
+      success: function (res) {
+        Taro.getClipboardData({
+          success: function (res) {
+          }
+        })
+      }
+    })
+  }
+
   render() {
     const { commentDetail: commentData, isReady } = this.props.comment;
+    const query = Current.router.params;
     // 更多弹窗权限
     const morePermissions = {
       canEdit: false,
@@ -430,6 +494,7 @@ class CommentH5Page extends React.Component {
       isEssence: false,
       isStick: false,
     };
+
 
     return (
       <View>
@@ -458,64 +523,66 @@ class CommentH5Page extends React.Component {
             </View>
           </View> */}
 
-        {/* 内容 */}
-        <ScrollView className={styles.body} scrollY scrollIntoView={this.state.toView}>
-          <View className={styles.content}>
-            {isReady && (
-              <CommentList
-                data={commentData}
-                likeClick={() => this.likeClick(commentData)}
-                replyClick={() => this.replyClick(commentData)}
-                deleteClick={() => this.deleteClick(commentData)}
-                avatarClick={() => this.avatarClick(commentData)}
-                replyLikeClick={(reploy) => this.replyLikeClick(reploy, commentData)}
-                replyReplyClick={(reploy) => this.replyReplyClick(reploy, commentData)}
-                replyDeleteClick={(reply) => this.replyDeleteClick(reply, commentData)}
-                replyAvatarClick={(reply,floor) =>this.replyAvatarClick(reply,commentData,floor)}
-                onMoreClick={() => this.onMoreClick()}
-                isHideEdit
-                postId={this.props.comment.postId}
-                positionRef={this.positionRef}
-                threadId={this.props?.thread?.threadData?.userId}
-                isAnonymous={isAnonymous}
-              ></CommentList>
-            )}
-          </View>
-          <View className={styles.box}></View>
-        </ScrollView>
-        {isReady && (
-        <View className={classNames(styles.inputFooterContainer, this.state.showCommentInput && styles.zindex)}>
-          <View className={classNames(styles.inputFooter, this.state.showCommentInput && styles.zindex)}>
-              {/* 评论区触发 */}
-              <View className={footer.inputClick} onClick={() => this.onInputClick()}>
-                <Input
-                  className={footer.input}
-                  placeholder="写评论"
-                  disabled
-                  prefixIcon="EditOutlined"
-                  placeholderClass={footer.inputPlaceholder}
-                ></Input>
-              </View>
+          {/* 内容 */}
+          <ScrollView className={styles.body} scrollY scrollIntoView={this.state.toView}>
+            <View className={styles.content}>
+              {isReady && (
+                <CommentList
+                  data={commentData}
+                  likeClick={() => this.likeClick(commentData)}
+                  replyClick={() => this.replyClick(commentData)}
+                  deleteClick={() => this.deleteClick(commentData)}
+                  avatarClick={() => this.avatarClick(commentData)}
+                  replyLikeClick={(reploy) => this.replyLikeClick(reploy, commentData)}
+                  replyReplyClick={(reploy) => this.replyReplyClick(reploy, commentData)}
+                  replyDeleteClick={(reply) => this.replyDeleteClick(reply, commentData)}
+                  replyAvatarClick={(reply, floor) => this.replyAvatarClick(reply, commentData, floor)}
+                  onCommentClick={reply => this.onCommentClick(reply)}
+                  onMoreClick={() => this.onMoreClick()}
+                  isHideEdit
+                  postId={this.props.comment.postId}
+                  positionRef={this.positionRef}
+                  threadId={this.props?.thread?.threadData?.userId}
+                  isAnonymous={isAnonymous}
+                  originThread={query.fromMessage ? <View className={styles.originThread} onClick={this.onGotoThread}>查看原帖</View> : false}
+                ></CommentList>
+              )}
+            </View>
+            <View className={styles.box}></View>
+          </ScrollView>
+          {isReady && (
+            <View className={classNames(styles.inputFooterContainer, this.state.showCommentInput && styles.zindex)}>
+              <View className={classNames(styles.inputFooter, this.state.showCommentInput && styles.zindex)}>
+                {/* 评论区触发 */}
+                <View className={footer.inputClick} onClick={() => this.onInputClick()}>
+                  <Input
+                    className={footer.input}
+                    placeholder="写评论"
+                    disabled
+                    prefixIcon="EditOutlined"
+                    placeholderClass={footer.inputPlaceholder}
+                  ></Input>
+                </View>
 
-              {/* 操作区 */}
-              <View className={footer.operate}>
-                <Icon
-                  className={footer.icon}
-                  onClick={this.onEmojiIconClick}
-                  size="20"
-                  name="SmilingFaceOutlined"
-                ></Icon>
-                <Icon
-                  className={footer.icon}
-                  onClick={this.onPcitureIconClick}
-                  size="20"
-                  name="PictureOutlinedBig"
-                ></Icon>
+                {/* 操作区 */}
+                <View className={footer.operate}>
+                  <Icon
+                    className={footer.icon}
+                    onClick={this.onEmojiIconClick}
+                    size="20"
+                    name="SmilingFaceOutlined"
+                  ></Icon>
+                  <Icon
+                    className={footer.icon}
+                    onClick={this.onPcitureIconClick}
+                    size="20"
+                    name="PictureOutlinedBig"
+                  ></Icon>
+                </View>
               </View>
             </View>
-          </View>
-        )}
-        <View className={styles.footer}>
+          )}
+      <View className={styles.footer}>
           {/* 评论弹层 */}
           <InputPopup
             showEmojis={this.state.showEmojis}
@@ -563,6 +630,13 @@ class CommentH5Page extends React.Component {
             onCancel={() => this.setState({ showReportPopup: false })}
             onOkClick={(data) => this.onReportOk(data)}
           ></ReportPopup>
+
+          {/* 操作内容弹层 */}
+          <OperationPopup
+            visible={this.state.showOperationPopup}
+            onCancel={() => this.setState({ showOperationPopup: false })}
+            onOperationClick={val => this.onOperationClick(val)}
+          ></OperationPopup>
         </View>
         </View>
       </View>

@@ -169,6 +169,10 @@ class IndexAction extends IndexStore {
    */
   @action
   async deleteThreadsData({ id } = {}, SiteStore) {
+    if (id) {
+      this.deleteAssignThreadInLists({ threadId: id });
+    }
+
     if (id && this.threads) {
       //  删除列表
       const { pageData = [] } = this.threads;
@@ -520,7 +524,7 @@ class IndexAction extends IndexStore {
 
     const threadUpdater = ({
       data,
-      callback = () => {}
+      callback = () => { }
     }) => {
       if (!data && !data?.likeReward && !data?.likeReward?.users) return;
 
