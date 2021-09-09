@@ -26,5 +26,6 @@ package-lock.json
 dzq-default-web
 dzq-default-web-static
 
+.sls
 dist/
 mini/dist
