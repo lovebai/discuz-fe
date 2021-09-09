@@ -25,7 +25,6 @@ import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
 @inject('topic')
 @observer
 class Index extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -258,7 +257,9 @@ class Index extends React.Component {
       payType,
       content,
       isAnonymous,
-      diffTime
+      diffTime,
+      extraTag,
+      extraInfo
     } = data || {};
     const { text } = content
     const { isEssence, isPrice, isRedPack, isReward } = displayTag;
@@ -286,6 +287,8 @@ class Index extends React.Component {
                   userId={user?.userId}
                   platform={platform}
                   onClick={unifyOnClick || this.onUser}
+                  extraTag={extraTag}
+                  extraInfo={extraInfo}
                 />
                 {isShowIcon && <View className={styles.headerIcon} onClick={unifyOnClick || this.onClickHeaderIcon}><Icon name='CollectOutlinedBig' className={styles.collectIcon}></Icon></View>}
               </View>
