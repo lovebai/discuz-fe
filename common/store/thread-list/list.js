@@ -28,7 +28,7 @@ export default class ListStore {
    */
   @action
   registerList = ({ namespace }) => {
-    window.lists = this.lists;
+    // window.lists = this.lists;
     if (this.lists[namespace]) return;
     extendObservable(this.lists, {
       [namespace]: {
@@ -101,7 +101,7 @@ export default class ListStore {
    * @param {*} param0
    */
   @action
-  fetchList = async ({ namespace, filter = {}, sequence = 0, perPage = 10, page }) => {
+  fetchList = async ({ namespace, filter = {}, sequence = 0, perPage = 10, page }, ctx) => {
     let requestPage = page;
     if (!page) {
       requestPage = this.getAttribute({ namespace, key: 'currentPage' }) + 1 || 1;
@@ -115,7 +115,7 @@ export default class ListStore {
     }
     const result = await readThreadList({
       params: { perPage, page: requestPage, filter: newFilter, sequence },
-    });
+    }, ctx);
     if (result.code === 0 && result.data) {
       return result;
     }

@@ -54,6 +54,8 @@ export default inject('site', 'user')(observer((props) => {
   const canEssence = threadStore?.threadData?.ability?.canEssence;
   const canStick = threadStore?.threadData?.ability?.canStick;
 
+  // 是否可以免费查看付费帖子
+  const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
   // 是否附件付费
   const isAttachmentPay = threadStore?.threadData?.payType === 2 && threadStore?.threadData?.paid === false;
   const attachmentPrice = threadStore?.threadData?.attachmentPrice || 0;
@@ -79,8 +81,6 @@ export default inject('site', 'user')(observer((props) => {
   // 是否已打赏
   const isRewarded = threadStore?.threadData?.isReward;
 
-  // 是否可以免费查看付费帖子
-  const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
 
   const parseContent = parseContentData(indexes);
 
