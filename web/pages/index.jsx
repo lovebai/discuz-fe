@@ -27,12 +27,11 @@ class Index extends React.Component {
   page = 1;
   prePage = 10;
   static async getInitialProps(ctx, { user, site }) {
-
     const result = getRouterCategory(ctx, site);
-    const { categoryids, sequence, essence, attention, sort } = result;
-    let newTypes = handleString2Arr(result, 'types');
+    const { essence = 0, sequence = 0, attention = 0, sort = 1 } = result;
+    const newTypes = handleString2Arr(result, 'types');
 
-    let categoryIds = handleString2Arr(result, 'categoryids');
+    const categoryIds = handleString2Arr(result, 'categoryids');
 
     const categories = await readCategories({}, ctx);
     const sticks = await readStickList({ params: { categoryIds } }, ctx);
@@ -40,10 +39,11 @@ class Index extends React.Component {
       params: {
         perPage: 10,
         page: 1,
-        sequence, 
-        filter: {...result, types: newTypes}
-      }
+        sequence,
+        filter: { categoryids: categoryIds, types: newTypes, essence, attention, sort },
+      },
     }, ctx);
+
     return {
       serverIndex: {
         categories: categories && categories.code === 0 ? categories.data : null,
@@ -59,7 +59,7 @@ class Index extends React.Component {
     threadList.registerList({ namespace: index.namespace });
 
     this.handleRouterCategory()
-
+    // console.log(serverIndex.threads);
     // const { serverIndex, index } = this.props;
     // 初始化数据到store中
     serverIndex && serverIndex.categories && index.setCategories(serverIndex.categories);
