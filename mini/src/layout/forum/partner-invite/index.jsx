@@ -77,7 +77,7 @@ class PartnerInviteH5Page extends React.Component {
       invite.setInviteCode(inviteCode);
       const inviteResp = await readUser({
         params: {
-          pid: inviteCode.length === 32 ? 1 : inviteCode,
+          userId: inviteCode.length === 32 ? 1 : inviteCode,
         },
       });
 
