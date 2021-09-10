@@ -1,5 +1,6 @@
 @import '@common/styles/index.scss';
 .avatarBox {
+  max-width: rem(38);
   .cursor {
     @include cursor-on-pc;
   }
