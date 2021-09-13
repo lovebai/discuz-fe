@@ -1,6 +1,9 @@
 @import '@common/styles/index.scss';
 @import '@common/styles/mixin/index.scss';
-
+.numkeyboard {
+  position: relative;
+  z-index: $zindex-dialog + 1;
+}
 .keyboard {
   width: 100%;
   position: fixed;
