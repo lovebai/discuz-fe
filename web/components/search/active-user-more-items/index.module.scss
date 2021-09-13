@@ -42,7 +42,7 @@
     .num {
       display: flex;
       align-items: center;
-      color: $text-color-regular
+      color: $text-color-regular;
       .numItem {
         font-size: rem($font-size-primary);
         line-height: rem($font-line-height-small);
@@ -70,7 +70,7 @@
         }
       }
       .numTitle {
-        color: $text-color-regular
+        color: $text-color-regular;
         margin-right: rem($margin-5);
       }
     }
