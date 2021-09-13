@@ -49,7 +49,7 @@ class RenderCommentList extends React.Component {
 
   componentDidMount() {
     // 从首页评论点击更多进来，定位到第10条评论位置
-    if (this.props?.thread?.isPositionToComment) {
+    if (this.props?.thread?.isPositionToComment && this.comment10Ref.current) {
       this.comment10Ref.current.scrollIntoView();
     }
   }
