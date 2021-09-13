@@ -133,7 +133,9 @@ class UserCenterAction extends React.Component {
             </View>
           </View>
 
-          <View onClick={this.handleMyBuy} className={styles.userCenterActionItemContainer} style={{ visibility: !threadOptimize && 'hidden' }}>
+          <View onClick={this.handleMyBuy} className={styles.userCenterActionItemContainer}
+            style={threadOptimize ? {} : { visibility: 'hidden', order: 4 }}
+          >
             <View className={styles.userCenterActionItem}>
               <View className={styles.userCenterActionItemIcon}>
                 <Badge>
