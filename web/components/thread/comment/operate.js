@@ -70,7 +70,7 @@ class CommentAction {
    * 获取评论的最新一条回复
    */
   async getCommentSingleRelpy(commentId) {
-    const res = await updateSingleReply({ params: { pid: Number(commentId) } });
+    const res = await updateSingleReply({ params: { postId: Number(commentId) } });
     if (res.code === 0) {
       return res.data;
     }
@@ -134,8 +134,8 @@ class CommentAction {
    * @returns {object} 处理结果
    */
   async updateComment(params, ThreadStore) {
-    const { id, pid, content, attachments } = params;
-    if (!id || !content || !pid) {
+    const { id, postId, content, attachments } = params;
+    if (!id || !content || !postId) {
       return {
         msg: '参数不完整',
         success: false,
@@ -144,7 +144,7 @@ class CommentAction {
 
     const requestParams = {
       id,
-      pid,
+      postId,
       data: {
         attributes: {
           content: xss(content),
@@ -160,7 +160,7 @@ class CommentAction {
 
       // 更新列表中的评论
       (commentList || []).forEach((comment) => {
-        if (comment.id === pid) {
+        if (comment.id === postId) {
           comment.content = res.data.content;
         }
       });
@@ -257,7 +257,7 @@ class CommentAction {
     }
 
     const requestParams = {
-      pid: replyId || commentId,
+      postId: replyId || commentId,
       data: {
         attributes: {
           isLiked,
@@ -300,7 +300,7 @@ class CommentAction {
       };
     }
     const requestParams = {
-      pid: replyId || commentId,
+      postId: replyId || commentId,
       data: {
         attributes: {
           isDeleted: 1,

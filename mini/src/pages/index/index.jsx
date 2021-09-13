@@ -150,7 +150,7 @@ class Index extends React.Component {
 
       if( webConfig && webConfig.user ) {
 
-        const userInfo = await readUser({ params: { pid: webConfig.user.userId } });
+        const userInfo = await readUser({ params: { userId: webConfig.user.userId } });
         const userPermissions = await readPermissions({});
 
         // 添加用户发帖权限
