@@ -9,19 +9,20 @@ import { formatDate } from '@common/utils/format-date';
 import styles from '../index.module.scss';
 
 const TimeType = {
-  actStart: 'actStart',
-  actEnd: 'actEnd',
-  applyStart: 'applyStart',
-  applyEnd: 'applyEnd',
+  actStart: 'actStartTime',
+  actEnd: 'actEndTime',
+  applyStart: 'actApplyStartTime',
+  applyEnd: 'actApplyEndTime',
 };
 export default class CustomApplyEntry extends React.Component {
   constructor(props) {
     super(props);
-    const oneHour = 3600 * 1000;
+    const oneHour = 3600 * 1000 * 24;
 
     this.state = {
-      visible: true,
-      showMore: true,
+      visible: false,
+      showMore: false,
+      showMobileDatePicker: false,
       body: {
         actStartTime: new Date(), // 活动开始时间
         actEndTime: new Date().getTime() + oneHour, // 活动结束时间
@@ -33,6 +34,7 @@ export default class CustomApplyEntry extends React.Component {
         actPeopleLimitType: 0, // 0 不限制；1 限制
         actPeopleLimitNum: '',
       },
+      curClickTime: TimeType.actStart,
     };
   }
 
@@ -48,14 +50,14 @@ export default class CustomApplyEntry extends React.Component {
         break;
       case TimeType.applyStart:
         if (!this.checkApplyStartTime(time)) {
-          Toast.info({ content: '请选择正确的活动申请开始时间' });
+          Toast.info({ content: '请选择正确的活动报名开始时间' });
         } else {
           this.setState({ body: { ...body, actApplyStartTime: time } });
         }
         break;
       case TimeType.applyEnd:
         if (!this.checkApplyEndTime(time)) {
-          Toast.info({ content: '请选择正确的活动申请结束时间' });
+          Toast.info({ content: '请选择正确的活动报名结束时间' });
         } else {
           this.setState({ body: { ...body, actApplyEndTime: time } });
         }
@@ -138,11 +140,31 @@ export default class CustomApplyEntry extends React.Component {
     this.setState({ body: { ...body, actPeopleLimitNum: e.target.value } });
   };
 
+  handleTimeClick = (curClickTime) => {
+    const { siteData } = this.props;
+    const isPc = siteData.platform !== 'h5';
+    if (isPc) return;
+    this.setState({ showMobileDatePicker: true, curClickTime });
+  };
+
+  handleMobileTimeChange = (time) => {
+    const { curClickTime } = this.state;
+    this.handleTimeChange(new Date(time), curClickTime);
+    this.setState({ showMobileDatePicker: false });
+  };
+
+  getMobileCurClickTime = () => {
+    const { curClickTime, body } = this.state;
+    const time = body[curClickTime];
+    if (body[curClickTime]) return new Date(time);
+    return new Date();
+  };
+
   render() {
     const { siteData } = this.props;
     const platform = siteData.platform === 'h5' ? styles.h5 : styles.pc;
     const isPc = siteData.platform !== 'h5';
-    const { visible, showMore, body } = this.state;
+    const { visible, showMore, body, showMobileDatePicker } = this.state;
     const moreClass = !showMore
       ? classNames(styles['dzqp-act--more'], styles.fold) : classNames(styles['dzqp-act--more'], styles.expand);
 
@@ -150,7 +172,7 @@ export default class CustomApplyEntry extends React.Component {
       <>
         <Icon
           onClick={this.handleDialogOpen}
-          name="SettingOutlined"
+          name="ApplyOutlined"
           size="20"
         />
         <Dialog
@@ -165,7 +187,7 @@ export default class CustomApplyEntry extends React.Component {
         >
           <div className={styles['dzqp-act--item']}>
             <div className={styles['dzqp-act--item_title']}>开始时间</div>
-            <div className={styles['dzqp-act--item_right']}>
+            <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.actStart)}>
               {isPc
                 ? <DatePicker
                     selected={body.actStartTime}
@@ -174,14 +196,14 @@ export default class CustomApplyEntry extends React.Component {
                     showTimeSelect
                     dateFormat="yyyy/MM/dd HH:mm:ss"
                   />
-                : <div>{ formatDate(body.actStartTime, 'yyyy/MM/dd hh:mm:ss') }</div>
+                : <span>{ formatDate(body.actStartTime, 'yyyy/MM/dd hh:mm:ss') }</span>
               }
               <Icon name="RightOutlined" size="8" />
             </div>
           </div>
           <div className={styles['dzqp-act--item']}>
             <div className={styles['dzqp-act--item_title']}>结束时间</div>
-            <div className={styles['dzqp-act--item_right']}>
+            <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.actEnd)}>
               {isPc
                 ? <DatePicker
                     selected={body.actEndTime}
@@ -190,7 +212,7 @@ export default class CustomApplyEntry extends React.Component {
                     showTimeSelect
                     dateFormat="yyyy/MM/dd HH:mm:ss"
                   />
-                : <div>{ formatDate(body.actEndTime, 'yyyy/MM/dd hh:mm:ss') }</div>
+                : <span>{ formatDate(body.actEndTime, 'yyyy/MM/dd hh:mm:ss') }</span>
               }
               <Icon name="RightOutlined" size="8" />
             </div>
@@ -228,7 +250,7 @@ export default class CustomApplyEntry extends React.Component {
               </div>
               <div className={styles['dzqp-act--item']}>
                 <div className={styles['dzqp-act--item_title']}>报名开始</div>
-                <div className={styles['dzqp-act--item_right']}>
+                <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.applyStart)}>
                   {isPc
                     ? <DatePicker
                         selected={body.actApplyStartTime}
@@ -240,14 +262,14 @@ export default class CustomApplyEntry extends React.Component {
                         showTimeSelect
                         dateFormat="yyyy/MM/dd HH:mm:ss"
                       />
-                    : <div>{ body.actApplyStartTime && formatDate(body.actApplyStartTime, 'yyyy/MM/dd hh:mm:ss') }</div>
+                    : <span>{ body.actApplyStartTime && formatDate(body.actApplyStartTime, 'yyyy/MM/dd hh:mm:ss') }</span>
                   }
                   <Icon name="RightOutlined" size="8" />
                 </div>
               </div>
               <div className={styles['dzqp-act--item']}>
                 <div className={styles['dzqp-act--item_title']}>报名结束</div>
-                <div className={styles['dzqp-act--item_right']}>
+                <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.applyEnd)}>
                   {isPc
                     ? <DatePicker
                         selected={body.actApplyEndTime}
@@ -259,7 +281,7 @@ export default class CustomApplyEntry extends React.Component {
                         showTimeSelect
                         dateFormat="yyyy/MM/dd HH:mm:ss"
                       />
-                    : <div>{ body.actApplyEndTime && formatDate(body.actApplyEndTime, 'yyyy/MM/dd hh:mm:ss') }</div>
+                    : <span>{ body.actApplyEndTime && formatDate(body.actApplyEndTime, 'yyyy/MM/dd hh:mm:ss') }</span>
                   }
                   <Icon name="RightOutlined" size="8" />
                 </div>
@@ -297,8 +319,10 @@ export default class CustomApplyEntry extends React.Component {
                 </div>
               </div>
               <DatePickers
-                onSelects={() => {}}
-                isOpen={false}
+                onSelects={this.handleMobileTimeChange}
+                time={this.getMobileCurClickTime()}
+                isOpen={showMobileDatePicker}
+                onCancels={() => this.setState({ showMobileDatePicker: false })}
               />
             </>
           )}

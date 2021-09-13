@@ -37,7 +37,8 @@
       font-size: $font-size-base;
       color: $text-color-regular;
 
-      span {
+      span,
+      text {
         font-size: $font-size-label;
         color: $text-color-secondary;
       }
@@ -68,7 +69,8 @@
         }
       }
 
-      span {
+      span,
+      text {
         margin-right: $margin-10;
         display: inline-block;
         font-size: $font-size-base;
@@ -94,6 +96,10 @@
           font-size: $font-size-base;
           color: $text-color-placeholder;
         }
+      }
+      .textarea-placeholder {
+        font-size: $font-size-base;
+        color: $text-color-placeholder;
       }
 
       .dzq-checkbox__label {
@@ -125,7 +131,8 @@
     justify-content: center;
     cursor: pointer;
 
-    span {
+    span,
+    text {
       margin-right: $margin-10;
       display: inline-block;
       font-size: $font-size-base;
@@ -182,6 +189,24 @@
         height: 42px;
         line-height: 42px;
       }
+    }
+  }
+}
+.dzqp-act.mini {
+  :global {
+    .dzq-modal__header {
+      padding: 0;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dzq-header__closeicon {
+      display: none;
+    }
+    .dzq-modal__body {
+      height: calc(100vh - 140px);
     }
   }
 }

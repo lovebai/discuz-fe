@@ -18,7 +18,7 @@ import { View, Text } from '@tarojs/components'
  * @prop {string}  onHidden 关闭视图的回调
  */
 
- const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, index }) => {
+ const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, index, isCustom = false }) => {
 
   const allPageNum = useRef(1);
   const likePageNum = useRef(1);
@@ -43,7 +43,18 @@ import { View, Text } from '@tarojs/components'
     }
   }, [visible]);
 
-  const loadData = async ({ type }) => {
+   const loadData = async ({ type }) => {
+    if (isCustom) {
+      setAll({
+        pageData: {
+          list: [],
+          allCount: 1,
+        },
+        currentPage: 0,
+        totalPage: 0,
+      });
+      return {};
+    }
     const { postId = '', threadId = '' } = tipData;
 
     const res = await readLikedUsers({ params: { threadId, postId, type, page: 1 } });
@@ -56,7 +67,18 @@ import { View, Text } from '@tarojs/components'
     return res;
   };
 
-  const singleLoadData = async ({ page = 1, type = 1 } = {}) => {
+   const singleLoadData = async ({ page = 1, type = 1 } = {}) => {
+    if (isCustom) {
+      setAll({
+        pageData: {
+          list: [],
+          allCount: 1,
+        },
+        currentPage: 0,
+        totalPage: 0,
+      });
+      return {};
+    }
     const { postId = '', threadId = '' } = tipData;
     type = (type === TYPE_PAID) ? TYPE_REWARD : type;
     const res = await readLikedUsers({ params: { threadId, postId, page, type } });
@@ -131,7 +153,7 @@ import { View, Text } from '@tarojs/components'
     </View>
   );
 
-  const tabItems = [
+  let tabItems = [
     {
       icon: '',
       title: '全部',
@@ -157,6 +179,8 @@ import { View, Text } from '@tarojs/components'
       number: all?.pageData?.rewardCount || 0,
     },
   ];
+
+  if (isCustom) tabItems = [tabItems[0]];
 
   const renderTabPanel = platform => (
     tabItems.map((dataSource, index) => {

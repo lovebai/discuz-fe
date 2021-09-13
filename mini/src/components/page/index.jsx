@@ -10,6 +10,7 @@ import { getCurrentInstance } from '@tarojs/taro';
 import PayBoxProvider from '@components/payBox/payBoxProvider';
 import { MINI_SITE_JOIN_WHITE_LIST, REVIEWING_USER_WHITE_LIST } from '@common/constants/site';
 import { ToastProvider } from '@discuzq/design/dist/components/toast/ToastProvider';
+import { DialogProvider } from '@discuzq/design/dist/components/dialog/dialogProvider';
 import Taro from '@tarojs/taro';
 import { REVIEWING } from '@common/store/login/util';
 import LoginHelper from '@common/utils/login-helper';
@@ -213,6 +214,7 @@ export default class Page extends React.Component {
       <View className={`${styles['dzq-page']} dzq-theme--${site.theme} ${className}`}>
         <PayBoxProvider>{this.createContent()}</PayBoxProvider>
         {!disabledToast && <ToastProvider></ToastProvider>}
+        <DialogProvider />
       </View>
     );
   }

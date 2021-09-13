@@ -11,7 +11,7 @@ export default class CustomApplyPost extends React.Component {
     return (
       <div className={styles['dzqp-post-widget']}>
         <div className={styles['dzqp-post-widget__right']}>
-          <Icon className={styles['dzqp-post-widget__icon']} name='VoteOutlined' />
+          <Icon className={styles['dzqp-post-widget__icon']} name='ApplyOutlined' />
           <span className={styles['dzqp-post-widget__text']}>活动报名</span>
         </div>
         <Icon className={styles['dzqp-post-widget__left']} name='DeleteOutlined' />
