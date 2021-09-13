@@ -644,7 +644,7 @@ class ThreadH5Page extends React.Component {
     const id = this.props.thread?.threadData?.id;
     const params = {
       id,
-      pid: this.comment.id,
+      postId: this.comment.id,
       content: val,
       attachments: [],
     };

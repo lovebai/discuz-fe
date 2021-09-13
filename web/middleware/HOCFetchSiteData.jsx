@@ -70,7 +70,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
           // 当站点信息获取成功，进行当前用户信息查询
           if (siteConfig && siteConfig.code === 0 && siteConfig?.data?.user?.userId) {
             userInfo = await readUser({
-              params: { pid: siteConfig.data.user.userId },
+              params: { userId: siteConfig.data.user.userId },
             }, ctx);
             userPermissions = await readPermissions({}, ctx);
 
@@ -162,7 +162,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
       // 判断是否有token
       if (siteConfig && siteConfig.user) {
         if ((!user || !user.userInfo) && (!serverUser || !serverUser.userInfo)) {
-          const userInfo = await readUser({ params: { pid: siteConfig.user.userId } });
+          const userInfo = await readUser({ params: { userId: siteConfig.user.userId } });
           const userPermissions = await readPermissions({});
 
           // 添加用户发帖权限
