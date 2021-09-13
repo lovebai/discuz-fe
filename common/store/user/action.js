@@ -1029,7 +1029,7 @@ class UserAction extends SiteStore {
   };
 
   // 获取指定的帖子数据
-  findAssignThread(threadId) {
+  findAssignThread(threadId, data) {
     for (let i = 0; i < data.length; i++) {
       if (data[i].threadId === threadId) {
         return { page: Math.ceil((i + 1) / 10), idx: ((i + 1) % 10) - 1 };
