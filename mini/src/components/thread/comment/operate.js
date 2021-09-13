@@ -4,7 +4,11 @@ import { plus } from '@common/utils/calculate';
 
 class CommentAction {
   constructor(props) {
-    this.list = props.list || [];
+    this.list = props.list;
+  }
+
+  updateList(list) {
+    this.list = list;
   }
 
   setCommentDetailField(key, data) {
@@ -53,7 +57,6 @@ class CommentAction {
           comment.lastThreeComments.pop();
           comment.lastThreeComments.unshift(newestReply);
         }
-        console.log(comment.lastThreeComments);
       }
       return comment;
     }
@@ -67,7 +70,7 @@ class CommentAction {
    * 获取评论的最新一条回复
    */
   async getCommentSingleRelpy(commentId) {
-    const res = await updateSingleReply({ params: { pid: Number(commentId) } });
+    const res = await updateSingleReply({ params: { postId: Number(commentId) } });
     if (res.code === 0) {
       return res.data;
     }
@@ -84,7 +87,7 @@ class CommentAction {
    * @returns {object} 处理结果
    */
   async createComment(params) {
-    const { id, content, attachments, postId, sort, isNoMore } = params;
+    const { id, content, attachments, postId } = params;
     if (!id || (!content && attachments.length === 0)) {
       return {
         msg: '参数不完整',
@@ -102,25 +105,11 @@ class CommentAction {
     const res = await createPosts({ data: requestParams });
 
     if (res.code === 0 && res?.data?.id) {
-      const { commentList, totalCount } = ThreadStore;
-
-      const newTotalCount = totalCount + 1;
-      ThreadStore && ThreadStore.setTotalCount(newTotalCount);
       const newData = res.data;
       const isApproved = res.data.isApproved === 1;
       newData.lastThreeComments = [];
 
-      // 头部添加评论
-      if (sort === false) {
-        commentList.unshift(newData);
-        ThreadStore && ThreadStore.setCommentList(commentList);
-      }
-
-      // 尾部添加评论
-      if (sort === true && isNoMore === true) {
-        commentList.push(newData);
-        ThreadStore && ThreadStore.setCommentList(commentList);
-      }
+      this.list.push(newData);
 
       return {
         isApproved: isApproved,
@@ -145,8 +134,8 @@ class CommentAction {
    * @returns {object} 处理结果
    */
   async updateComment(params, ThreadStore) {
-    const { id, pid, content, attachments } = params;
-    if (!id || !content || !pid) {
+    const { id, postId, content, attachments } = params;
+    if (!id || !content || !postId) {
       return {
         msg: '参数不完整',
         success: false,
@@ -155,7 +144,7 @@ class CommentAction {
 
     const requestParams = {
       id,
-      pid,
+      postId,
       data: {
         attributes: {
           content: xss(content),
@@ -171,7 +160,7 @@ class CommentAction {
 
       // 更新列表中的评论
       (commentList || []).forEach((comment) => {
-        if (comment.id === pid) {
+        if (comment.id === postId) {
           comment.content = res.data.content;
         }
       });

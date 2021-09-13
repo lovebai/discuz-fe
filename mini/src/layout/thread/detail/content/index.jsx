@@ -29,12 +29,13 @@ import styles from './index.module.scss';
 /**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
-const RenderThreadContent = inject('site','user')(
+const RenderThreadContent = inject('site', 'user')(
   observer((props) => {
     const { store: threadStore, site } = props;
     const { text, indexes } = threadStore?.threadData?.content || {};
     const { parentCategoryName, categoryName } = threadStore?.threadData;
     const { hasRedPacket } = threadStore; // 是否有红包领取的数据
+    const { webConfig: { other: { threadOptimize } } } = site;
 
     const tipData = {
       postId: threadStore?.threadData?.postId,
@@ -75,9 +76,9 @@ const RenderThreadContent = inject('site','user')(
     const isReward = threadStore?.threadData?.displayTag?.isReward;
 
     // 是否打赏帖
-    const isBeReward = isFree && threadStore?.threadData?.ability.canBeReward && !isRedPack && !isReward;
+    const isBeReward = isFree && threadOptimize && !isRedPack && !isReward;
     // 是否显示打赏按钮： 免费帖 && 不是自己 && 不是红包 && 不是悬赏 && 允许被打赏
-    const canBeReward = isFree && threadStore?.threadData?.ability.canBeReward && !isRedPack && !isReward;
+    const canBeReward = isFree && threadOptimize && !isRedPack && !isReward;
     // 是否已打赏
     const isRewarded = threadStore?.threadData?.isReward;
 
@@ -151,7 +152,7 @@ const RenderThreadContent = inject('site','user')(
           </View>
           {props?.user?.isLogin() && isApproved && (
             <View className={styles.more} onClick={onMoreClick}>
-              <Icon size={20} color="#8590A6" name="MoreVOutlined"></Icon>
+              <Icon size={20} className={styles.icon} name="MoreVOutlined"></Icon>
             </View>
           )}
         </View>
@@ -161,7 +162,7 @@ const RenderThreadContent = inject('site','user')(
           {threadStore?.threadData?.title && <View className={styles.title}>{threadStore?.threadData?.title}</View>}
 
           {/* 文字 */}
-          {text && <PostContent useShowMore={false} content={text || ''} />}
+          {text && <PostContent needShowMore={false} content={text || ''} />}
 
           {/* 视频 */}
           {parseContent.VIDEO && (
@@ -295,7 +296,7 @@ const RenderThreadContent = inject('site','user')(
           )}
 
           {
-            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
+            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({ render, pluginInfo }) => {
               return (
                 <View key={pluginInfo.name}>
                   {render({
