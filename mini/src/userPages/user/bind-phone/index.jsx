@@ -168,8 +168,26 @@ class BindPhoneH5Page extends React.Component {
     mobileBind.code = code;
   };
 
+  getTips = () => {
+    const { limitPublishType } = getCurrentInstance()?.router?.params || {};
+    let tips = '';
+    switch (limitPublishType) {
+      case 'comment':
+        tips = '绑定手机才能继续发帖'
+        break;
+      case 'reply':
+        tips = '绑定手机才能继续评论'
+        break;
+      default:
+        tips = '请绑定您的手机号'
+        break;
+    }
+    return tips;
+  }
+
   render() {
     const { mobileBind, commonLogin: { loginLoading } } = this.props;
+    const { limitPublishType } = getCurrentInstance()?.router?.params || {};
     return (
       <Page>
         <View className={layout.container}>
@@ -177,7 +195,7 @@ class BindPhoneH5Page extends React.Component {
           <View className={layout.content}>
             <View className={layout.title}>绑定手机号</View>
             <View className={layout.tips}>
-              请绑定您的手机号
+              { this.getTips() }
             </View>
             {/* 输入框 start */}
             <PhoneInput
@@ -193,7 +211,7 @@ class BindPhoneH5Page extends React.Component {
               {(this.state.from === 'userCenter' || this.state.from === 'paybox') ? '绑定' : '下一步'}
             </Button>
             {
-              (this.state.from !== 'userCenter' && this.state.from !== 'paybox')
+              (this.state.from !== 'userCenter' && this.state.from !== 'paybox' && !limitPublishType)
               && (
                 <View className={layout.functionalRegion}>
                   <Text className={layout.clickBtn} onClick={() => {

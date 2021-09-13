@@ -106,6 +106,24 @@ class BindPhoneH5Page extends React.Component {
     }
   }
 
+  getTips = () => {
+    const { limitPublishType } = this.props.router.query;
+    let tips = '';
+    switch (limitPublishType) {
+      case 'comment':
+        tips = '绑定手机才能继续发帖'
+        break;
+      case 'reply':
+        tips = '绑定手机才能继续评论'
+        break;
+      default:
+        tips = '请绑定您的手机号'
+        break;
+    }
+    return tips;
+  }
+
+
   render() {
     const { mobileBind, site, commonLogin: { loginLoading } } = this.props;
     const { platform, wechatEnv } = site;
@@ -120,7 +138,7 @@ class BindPhoneH5Page extends React.Component {
         <div className={platform === 'h5' ? layout.content : layout.pc_content}>
           <div className={platform === 'h5' ? layout.title : layout.pc_title}>绑定手机号</div>
           <div className={platform === 'h5' ? layout.tips : layout.pc_tips}>
-            请绑定您的手机号
+            { this.getTips() }
           </div>
           <PhoneInput
             phoneNum={mobileBind.mobile}  // 手机号

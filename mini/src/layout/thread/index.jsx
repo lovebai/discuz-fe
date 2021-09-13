@@ -33,6 +33,7 @@ import classNames from 'classnames';
 import { debounce } from '@common/utils/throttle-debounce';
 import styles from './post/index.module.scss';
 import Router from '@discuzq/sdk/dist/router';
+import canPublish from '@common/utils/can-publish';
 import { parseContentData } from './utils';
 
 @inject('site')
@@ -304,11 +305,13 @@ class ThreadH5Page extends React.Component {
 
   // 点击评论
   onInputClick() {
-    if (!this.props.user.isLogin()) {
+    const {user, site, thread } = this.props;
+    if (!user.isLogin()) {
       Toast.info({ content: '请先登录!' });
       goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
+    if(!canPublish(user, site, 'reply', thread?.threadData?.threadId)) return;
     this.commentType = 'comment';
 
     this.setState({
@@ -690,11 +693,13 @@ class ThreadH5Page extends React.Component {
 
   // 点击评论的回复
   replyClick(comment) {
-    if (!this.props.user.isLogin()) {
+    const {user, site, thread } = this.props;
+    if (!user.isLogin()) {
       Toast.info({ content: '请先登录!' });
       goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
+    if(!canPublish(user, site, 'reply', thread?.threadData?.threadId)) return;
     this.commentType = 'reply';
 
     this.commentData = comment;

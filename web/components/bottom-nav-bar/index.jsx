@@ -50,7 +50,7 @@ const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 
         Toast.info({ content: '您暂无发帖权限' });
         return;
       }
-      if (!canPublish()) return;
+      if (!canPublish('comment')) return;
     }
 
     onClick(i, idx)

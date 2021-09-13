@@ -171,7 +171,7 @@ class IndexPCPage extends React.Component {
 
   // 发帖
   onPostThread = () => {
-    if (this.props.canPublish()) {
+    if (this.props.canPublish('comment')) {
       this.props.router.push('/thread/post');
     }
   };
