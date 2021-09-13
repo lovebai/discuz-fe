@@ -641,7 +641,7 @@ class IndexAction extends IndexStore {
    */
   @action
   async updateThreadInfo({ pid, id, data = {} } = {}) {
-    return await updatePosts({ data: { pid, id, data } });
+    return await updatePosts({ data: { postId:pid, id, data } });
   };
 
   /**
