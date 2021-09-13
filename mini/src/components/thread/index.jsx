@@ -267,7 +267,7 @@ class Index extends React.Component {
   canPublish = () => canPublish(this.props.user, this.props.site)
 
   render() {
-    const { data, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null, extraTag } = this.props;
+    const { data, thread:threadStore, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null,extraTag} = this.props;
     const { platform = 'pc' } = site;
     if (!data) {
       return <NoData />;
@@ -376,6 +376,7 @@ class Index extends React.Component {
                 ...data,
               },
             }}
+            threadStore={threadStore}
             userInfo={this.props.user.userInfo}
             canPublish={this.canPublish}
             commentList={commentList}
