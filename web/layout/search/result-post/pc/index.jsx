@@ -72,7 +72,7 @@ class SearchResultPostH5Page extends React.Component {
           title="热门内容"
           type='large'
           isShowMore={false}
-          isLoading={!pageData}
+          isLoading={!currentPage}
           noData={!pageData?.length}
           icon={{ type: 3, name: 'HotOutlined' }}
           mold='plane'
