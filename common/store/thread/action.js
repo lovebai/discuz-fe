@@ -45,7 +45,7 @@ class ThreadAction extends ThreadStore {
 
   @action
   async fetchAuthorInfo(userId) {
-    const userRes = await readUser({ params: { pid: userId } });
+    const userRes = await readUser({ params: { userId } });
     if (userRes.code === 0) {
       this.authorInfo = userRes.data;
       this.isAuthorInfoError = false;
@@ -727,7 +727,7 @@ class ThreadAction extends ThreadStore {
 
     const requestParams = {
       id,
-      pid,
+      postId:pid,
       data: {
         attributes: {
           isLiked: !!isLiked,

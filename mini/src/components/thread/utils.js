@@ -177,7 +177,8 @@ export const handleLink = (node) => {
     }
 
     const urls = href.split('/');
-    let url = '/subPages';
+    // let url = '/subPages';
+    let url = urls[1]==='user'?'/userPages':'/subPages';
     urls
       ?.filter((item) => item)
       .forEach((item, index, arr) => {

@@ -26,7 +26,7 @@ class CommentDetail extends React.Component {
       };
     }
     // 获取评论数据
-    const res = await readCommentDetail({ params: { pid: id } });
+    const res = await readCommentDetail({ params: { postId: id } });
     return {
       props: {
         serverData: res.data,

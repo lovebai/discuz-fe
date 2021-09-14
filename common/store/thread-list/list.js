@@ -96,6 +96,12 @@ export default class ListStore {
     };
   }
 
+  // 更新list
+  @action
+  updateList = (lists) => {
+    this.lists = { ...lists };
+  }
+
   /**
    * 请求获取指定列表的list
    * @param {*} param0

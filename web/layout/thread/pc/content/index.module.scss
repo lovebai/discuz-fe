@@ -189,7 +189,7 @@
   display: inline-block;
   // TODO:token  $text-color-regular不生效
   // color: $text-color-regular;
-  color: #4f5a70;
+  color: $text-color-regular;
   background: #f0f1f3; // TODO:token
   font-size: rem($font-size-label);
   padding: rem($padding-1n) rem($padding-1n);
