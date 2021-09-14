@@ -57,7 +57,7 @@ const PostContent = ({
   };
 
   const [openedMore, setOpenedMore] = useState(useShowMore);
-  
+
   // 过滤内容
   const filterContent = useMemo(() => {
     let newContent = content ? s9e.parse(content) : '';
@@ -88,7 +88,7 @@ const PostContent = ({
 
 
   const handleClick = (e, node) => {
-    if(node&&node.name === 'image') return
+    if(node && node.name === 'image') return
     e && e.stopPropagation();
     const { url, isExternaLink } = handleLink(node)
     if (isExternaLink) return
