@@ -257,7 +257,7 @@ class CommentAction {
     }
 
     const requestParams = {
-      pid: replyId || commentId,
+      postId: replyId || commentId,
       data: {
         attributes: {
           isLiked,
@@ -300,7 +300,7 @@ class CommentAction {
       };
     }
     const requestParams = {
-      pid: replyId || commentId,
+      postId: replyId || commentId,
       data: {
         attributes: {
           isDeleted: 1,
