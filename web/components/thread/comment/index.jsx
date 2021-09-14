@@ -66,6 +66,7 @@ class Comment extends React.Component {
     }
     this.operate.updateList(this.props.commentList);
     const { success, msg, isApproved, redPacketAmount } = await this.operate.createComment(params);
+
     this.props.createComment && this.props.createComment();
     if (success) {
       if (isApproved) {
@@ -79,7 +80,7 @@ class Comment extends React.Component {
       }
 
       if (redPacketAmount && redPacketAmount > 0) {
-        // this.props.thread.setRedPacket(redPacketAmount);
+        this.props.threadStore.setRedPacket(redPacketAmount);
       }
 
       // 更新帖子中的评论数据

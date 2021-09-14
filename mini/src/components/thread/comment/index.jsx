@@ -78,7 +78,7 @@ class Comment extends React.Component {
       }
 
       if (redPacketAmount && redPacketAmount > 0) {
-        // this.props.thread.setRedPacket(redPacketAmount);
+        this.props.threadStore.setRedPacket(redPacketAmount);
       }
 
       // 更新帖子中的评论数据

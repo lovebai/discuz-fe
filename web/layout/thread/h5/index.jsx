@@ -9,7 +9,7 @@ import footer from './footer.module.scss';
 import NoMore from './components/no-more';
 import LoadingTips from '@components/thread-detail-pc/loading-tips';
 
-import styleVar from '@common/styles/theme/default.scss.json';
+// import styleVar from '@common/styles/theme/default.scss.json';
 import { Icon, Input, Toast } from '@discuzq/design';
 import Header from '@components/header';
 import goToLoginPage from '@common/utils/go-to-login-page';
@@ -504,7 +504,7 @@ class ThreadH5Page extends React.Component {
     const id = this.props.thread?.threadData?.id;
     const params = {
       id,
-      pid: this.comment.id,
+      postId: this.comment.id,
       content: val,
       attachments: [],
     };
@@ -919,15 +919,17 @@ class ThreadH5Page extends React.Component {
                   <Icon size="20" name="MessageOutlined"></Icon>
                 </div>
                 <Icon
-                  color={this.props.thread?.threadData?.isLike ? styleVar['--color-primary'] : ''}
-                  className={footer.icon}
+                  className={classNames(footer.icon, {
+                    [footer.isliked]: this.props.thread?.threadData?.isLike,
+                  })}
                   onClick={debounce(() => this.onLikeClick(), 500)}
                   size="20"
                   name="LikeOutlined"
                 ></Icon>
                 <Icon
-                  color={this.props.thread?.isFavorite ? styleVar['--color-primary'] : ''}
-                  className={footer.icon}
+                  className={classNames(footer.icon, {
+                    [footer.isliked]: this.props.thread?.isFavorite,
+                  })}
                   onClick={debounce(() => this.onCollectionClick(), 500)}
                   size="20"
                   name="CollectOutlinedBig"
