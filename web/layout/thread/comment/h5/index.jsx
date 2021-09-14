@@ -452,13 +452,25 @@ class CommentH5Page extends React.Component {
   // 点击复制
   onCopyClick = (data) => {
     const { content } = data || {};
-    navigator.clipboard.writeText(content)
-      .then(() => {
-        Toast.success({ content: '复制成功' });
-      })
-      .catch(() => {
-        Toast.error({ content: '无法复制' });
-      });
+    this.copy(content);
+    Toast.success({ content: '复制成功' });
+  }
+
+  // 复制方法
+  copy = (content) => {
+    let oInput = document.createElement('input');
+    oInput.value = content;
+    document.body.appendChild(oInput);
+    oInput.select();
+  
+    oInput.readOnly = true;
+    oInput.id = 'copyInp';
+  
+    document.execCommand('Copy');
+    oInput.setAttribute('onfocus', undefined);
+    oInput.blur();
+    oInput.className = 'oInput';
+    oInput.style.display = 'none';
   }
 
   render() {

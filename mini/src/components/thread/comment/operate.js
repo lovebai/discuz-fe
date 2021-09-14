@@ -70,7 +70,7 @@ class CommentAction {
    * 获取评论的最新一条回复
    */
   async getCommentSingleRelpy(commentId) {
-    const res = await updateSingleReply({ params: { pid: Number(commentId) } });
+    const res = await updateSingleReply({ params: { postId: Number(commentId) } });
     if (res.code === 0) {
       return res.data;
     }
@@ -112,6 +112,7 @@ class CommentAction {
       this.list.push(newData);
 
       return {
+        redPacketAmount: res.data.redPacketAmount,
         isApproved: isApproved,
         msg: isApproved ? '评论成功' : '您发布的内容正在审核中',
         success: true,
@@ -134,8 +135,8 @@ class CommentAction {
    * @returns {object} 处理结果
    */
   async updateComment(params, ThreadStore) {
-    const { id, pid, content, attachments } = params;
-    if (!id || !content || !pid) {
+    const { id, postId, content, attachments } = params;
+    if (!id || !content || !postId) {
       return {
         msg: '参数不完整',
         success: false,
@@ -144,7 +145,7 @@ class CommentAction {
 
     const requestParams = {
       id,
-      pid,
+      postId,
       data: {
         attributes: {
           content: xss(content),
@@ -160,7 +161,7 @@ class CommentAction {
 
       // 更新列表中的评论
       (commentList || []).forEach((comment) => {
-        if (comment.id === pid) {
+        if (comment.id === postId) {
           comment.content = res.data.content;
         }
       });
