@@ -33,9 +33,14 @@ class TopicH5Page extends React.Component {
     h5Share({ title: content, path: `/topic/topic-detail/${topicId}` });
   }
 
+  fetchMoreData = () => {
+    const { dispatch } = this.props;
+    return dispatch();
+  };
+
   renderItem = ({ content = '', threadCount = 0, viewCount = 0, threads = [] }, index) => (
       <div key={index}>
-        <DetailsHeader title={content} viewNum={viewCount} contentNum={threadCount} onShare={this.onShare} />
+        {index === 0 ? <DetailsHeader title={content} viewNum={viewCount} contentNum={threadCount} onShare={this.onShare} /> : ''}
         <div className={styles.themeContent}>
           {
             threads?.length
@@ -44,25 +49,24 @@ class TopicH5Page extends React.Component {
                   <ThreadContent data={item} key={index} className={styles.item} />
                 ))
               )
-              : <NoData />
+              : ''
           }
         </div>
       </div>
   )
 
   render() {
-    const { pageData } = this.props.topic?.topicDetail || {};
-    const { isError, errorText, fetchTopicInfoLoading = true } = this.props;
+    const { pageData = [], currentPage, totalPage  } = this.props.topic?.topicDetail || {};
     return (
-      <BaseLayout allowRefresh={false} pageName="topicDetail">
+      <BaseLayout
+        allowRefresh={false}
+        pageName="topicDetail"
+        noMore={currentPage >= totalPage}
+        onRefresh={this.fetchMoreData}
+      >
         {
-          fetchTopicInfoLoading ? (
-            <BottomView loadingText='加载中...' className={styles.bottomViewBox} isError={isError} errorText={errorText} />
-          )
-            : (
-              pageData?.map((item, index) => (
-                this.renderItem(item, index)))
-            )
+          pageData?.map((item, index) => (
+            this.renderItem(item, index)))
         }
       </BaseLayout>
     );
