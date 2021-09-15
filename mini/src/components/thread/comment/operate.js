@@ -112,6 +112,7 @@ class CommentAction {
       this.list.push(newData);
 
       return {
+        redPacketAmount: res.data.redPacketAmount,
         isApproved: isApproved,
         msg: isApproved ? '评论成功' : '您发布的内容正在审核中',
         success: true,
@@ -257,7 +258,7 @@ class CommentAction {
     }
 
     const requestParams = {
-      pid: replyId || commentId,
+      postId: replyId || commentId,
       data: {
         attributes: {
           isLiked,
@@ -300,7 +301,7 @@ class CommentAction {
       };
     }
     const requestParams = {
-      pid: replyId || commentId,
+      postId: replyId || commentId,
       data: {
         attributes: {
           isDeleted: 1,

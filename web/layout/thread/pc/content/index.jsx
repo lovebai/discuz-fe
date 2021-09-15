@@ -75,7 +75,7 @@ export default inject('site', 'user')(observer((props) => {
   // 是否打赏帖
   const isBeReward = isFree && threadStore?.threadData?.ability.canBeReward && !isRedPack && !isReward;
   // 是否显示打赏按钮： 免费帖 && 不是自己 && 不是红包 && 不是悬赏 && 允许被打赏
-  const canBeReward = isFree && threadStore?.threadData?.ability.canBeReward && !isRedPack && !isReward;
+  // const canBeReward = isFree && !isRedPack && !isReward;
   // 是否已打赏
   const isRewarded = threadStore?.threadData?.isReward;
 
@@ -364,15 +364,13 @@ export default inject('site', 'user')(observer((props) => {
           </div>
         )}
 
-        {/* 打赏 */}
-        {canBeReward && isApproved && !isSelf && (
-          <Button onClick={onRewardClick} className={topic.rewardButton} type="primary" size="large">
-            <div className={topic.buttonIconText}>
-              <Icon className={topic.buttonIcon} name="HeartOutlined" size={19}></Icon>
-              <span className={topic.buttonText}>打赏</span>
-            </div>
-          </Button>
-        )}
+        {/* 打赏 产品说web端全部放开，直接显示 */}
+        <Button onClick={onRewardClick} className={topic.rewardButton} type="primary" size="large">
+          <div className={topic.buttonIconText}>
+            <Icon className={topic.buttonIcon} name="HeartOutlined" size={19}></Icon>
+            <span className={topic.buttonText}>打赏</span>
+          </div>
+        </Button>
       </div>
 
       {/* 点赞分享 */}

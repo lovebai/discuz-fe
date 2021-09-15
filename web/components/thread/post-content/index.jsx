@@ -177,6 +177,7 @@ const PostContent = ({
     }
   }, [filterContent]);
 
+
   return (
     <div className={classnames(styles.container, usePointer ? styles.usePointer : '')} {...props}>
       <div

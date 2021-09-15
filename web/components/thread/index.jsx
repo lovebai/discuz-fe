@@ -161,7 +161,7 @@ class Index extends React.Component {
         this.props.index.updatePayThreadInfo(thread?.threadId, data);
         this.props.search.updatePayThreadInfo(thread?.threadId, data);
         this.props.topic.updatePayThreadInfo(thread?.threadId, data);
-        this.props.user.updatePayThreadInfo(thread?.threadId, data);
+        this.props.user.updatePayThreadInfo(thread?.threadId, data, this.props.index);
 
         const { recomputeRowHeights = noop } = this.props;
         recomputeRowHeights(data);
@@ -300,9 +300,9 @@ class Index extends React.Component {
   render() {
     const { data, card, className = '', site = {}, showBottomStyle = true, collect = '', unifyOnClick = null, isShowIcon = false, user: users, onTextItemClick = null, extraTag, extraInfo } = this.props;
     const { platform = 'pc' } = site;
+    const threadStore = this.props.thread;
 
     const { onContentHeightChange = noop, onImageReady = noop, onVideoReady = noop } = this.props;
-
     if (!data) {
       return <NoData />;
     }
@@ -392,6 +392,7 @@ class Index extends React.Component {
           updateViewCount={this.updateViewCount}
         />
 
+
         {/* 评论列表 */}
         {this.props.enableCommentList && this.state.showCommentList && (
           <Comment
@@ -401,6 +402,7 @@ class Index extends React.Component {
                 ...data,
               },
             }}
+            threadStore={threadStore}
             userInfo={this.props.user.userInfo}
             canPublish={this.props.canPublish}
             commentList={commentList}

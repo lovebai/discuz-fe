@@ -77,7 +77,6 @@ function parse(text) {
     }
   }
 
-  console.log(text);
   return text;
 }
 

@@ -1,5 +1,10 @@
 @import '@common/styles/index.scss';
 
+.numkeyboard {
+  position: relative;
+  z-index: $zindex-dialog + 1;
+}
+
 .dialogPaymentWrapper {
   width: 100%;
   min-height: 500px;
