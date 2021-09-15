@@ -231,7 +231,7 @@ class ThreadH5Page extends React.Component {
       goToLoginPage({ url: '/user/login' });
       return;
     }
-    if (!this.props.canPublish()) return;
+    if (!this.props.canPublish('reply')) return;
     this.setState({
       showCommentInput: true,
     });
