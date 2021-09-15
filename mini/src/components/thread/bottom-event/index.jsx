@@ -38,6 +38,7 @@ const Index = ({
   onComment = () => {},
   onPraise = () => {},
   updateViewCount = noop,
+  shareIconClick = () => {},
   isCommented = false
 }) => {
   const postList = useMemo(() => {
@@ -70,6 +71,7 @@ const Index = ({
   }, [wholeNum, comment, sharing, isLiked, isCommented]);
   const [show, setShow] = useState(false);
   const handleClickShare = () => {
+    console.log('--------')
     updateViewCount();
     // 对没有登录的先登录
     if (!user.isLogin()) {
@@ -83,6 +85,7 @@ const Index = ({
       return ;
     }
     setShow(true)
+    shareIconClick();
   }
   useEffect(() => {
     index.setHiddenTabBar(show);
