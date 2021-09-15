@@ -28,7 +28,7 @@ export default class ListStore {
    */
   @action
   registerList = ({ namespace }) => {
-    window.lists = this.lists;
+    // window.lists = this.lists;
     if (this.lists[namespace]) return;
     extendObservable(this.lists, {
       [namespace]: {

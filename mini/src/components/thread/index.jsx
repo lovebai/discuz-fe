@@ -210,8 +210,9 @@ class Index extends React.Component {
       } else {
         Toast.info({ content: '暂无权限查看详情，请联系管理员' });
       }
-      return true
+      return false
     }
+    return true
   }
 
   onShare = () => {
