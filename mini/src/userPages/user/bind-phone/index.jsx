@@ -97,7 +97,7 @@ class BindPhoneH5Page extends React.Component {
 
   handleBindButtonClick = async () => {
     try {
-      const { commonLogin} = this.props;
+      const { commonLogin, user} = this.props;
       if (!commonLogin.loginLoading) {
         return;
       }
@@ -109,9 +109,9 @@ class BindPhoneH5Page extends React.Component {
       const IS_FROM_BIND_SOURCE = from === 'paybox' || from === 'userCenter'
 
       if (IS_FROM_BIND_SOURCE) {
-        this.props.user.updateUserInfo(this.props.user.id)
+        user.updateUserInfo(user.id)
       } else {
-        this.props.user.updateUserInfo(uid);
+        user.updateUserInfo(uid || user.id);
       }
       commonLogin.setLoginLoading(true);
 
@@ -119,14 +119,14 @@ class BindPhoneH5Page extends React.Component {
         content: '绑定成功',
         hasMask: false,
         duration: 2000,
-        onClose: () => {
-          if (IS_FROM_BIND_SOURCE) {
-            navigateBack();
-            return;
-          }
-          LoginHelper.restore();
-        }
       });
+      setTimeout(() => {
+        if (IS_FROM_BIND_SOURCE) {
+          navigateBack();
+          return;
+        }
+        LoginHelper.restore();
+      }, 2000);
     } catch (e) {
       this.props.commonLogin.setLoginLoading(true);
       // 注册信息补充
