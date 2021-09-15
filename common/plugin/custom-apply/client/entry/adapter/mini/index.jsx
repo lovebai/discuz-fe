@@ -36,14 +36,14 @@ export default class CustomApplyEntry extends React.Component {
 
   handleDialogConfirm = () => {
     const { body } = this.state;
-    if (!body.actStartTime || !body.actEndTime) {
+    if (!body.activityStartTime || !body.activityEndTime) {
       Toast.info({ content: '活动开始时间和结束时间必填' });
       return false;
     }
-    const actApplyStartTime = body.actApplyStartTime ? body.actApplyStartTime : body.actStartTime;
-    const actApllyEndTime = body.actApllyEndTime ? body.actApplyEndTime : body.actEndTime;
+    const registerStartTime = body.registerStartTime ? body.registerStartTime : body.activityStartTime;
+    const registerEndTime = body.registerEndTime ? body.registerEndTime : body.activityEndTime;
 
-    console.log({ ...body, actApplyStartTime, actApllyEndTime });
+    console.log({ ...body, registerStartTime, registerEndTime });
   };
 
   render() {

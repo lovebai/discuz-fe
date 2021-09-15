@@ -9,10 +9,10 @@ import { formatDate } from '@common/utils/format-date';
 import styles from '../index.module.scss';
 
 const TimeType = {
-  actStart: 'actStartTime',
-  actEnd: 'actEndTime',
-  applyStart: 'actApplyStartTime',
-  applyEnd: 'actApplyEndTime',
+  actStart: 'activityStartTime',
+  actEnd: 'activityEndTime',
+  applyStart: 'registerStartTime',
+  applyEnd: 'registerEndTime',
 };
 export default class CustomApplyEntry extends React.Component {
   constructor(props) {
@@ -24,15 +24,15 @@ export default class CustomApplyEntry extends React.Component {
       showMore: false,
       showMobileDatePicker: false,
       body: {
-        actStartTime: new Date(), // 活动开始时间
-        actEndTime: new Date().getTime() + oneHour, // 活动结束时间
-        actName: '', // 活动名称
-        actDetail: '', // 活动详情
-        actApplyStartTime: '', // 报名开始时间
-        actApplyEndTime: '', // 报名结束时间
+        activityStartTime: new Date(), // 活动开始时间
+        activityEndTime: new Date().getTime() + oneHour, // 活动结束时间
+        title: '', // 活动名称
+        content: '', // 活动详情
+        registerStartTime: '', // 报名开始时间
+        registerEndTime: '', // 报名结束时间
         actPlace: '', // 活动地点
         actPeopleLimitType: 0, // 0 不限制；1 限制
-        actPeopleLimitNum: '',
+        totalNumber: '',
       },
       curClickTime: TimeType.actStart,
     };
@@ -43,23 +43,23 @@ export default class CustomApplyEntry extends React.Component {
     const time = date;
     switch (type) {
       case TimeType.actStart:
-        this.setState({ body: { ...body, actStartTime: time } });
+        this.setState({ body: { ...body, activityStartTime: time } });
         break;
       case TimeType.actEnd:
-        this.setState({ body: { ...body, actEndTime: time } });
+        this.setState({ body: { ...body, activityEndTime: time } });
         break;
       case TimeType.applyStart:
         if (!this.checkApplyStartTime(time)) {
           Toast.info({ content: '请选择正确的活动报名开始时间' });
         } else {
-          this.setState({ body: { ...body, actApplyStartTime: time } });
+          this.setState({ body: { ...body, registerStartTime: time } });
         }
         break;
       case TimeType.applyEnd:
         if (!this.checkApplyEndTime(time)) {
           Toast.info({ content: '请选择正确的活动报名结束时间' });
         } else {
-          this.setState({ body: { ...body, actApplyEndTime: time } });
+          this.setState({ body: { ...body, registerEndTime: time } });
         }
         break;
       default:
@@ -71,10 +71,10 @@ export default class CustomApplyEntry extends React.Component {
 
   checkApplyStartTime = (time) => {
     const { body } = this.state;
-    const { actStartTime, actEndTime, actApplyEndTime } = body || {};
-    if (this.getTimestamp(time) < this.getTimestamp(actStartTime)
-      || this.getTimestamp(time) > this.getTimestamp(actEndTime)
-      || (actApplyEndTime && this.getTimestamp(time) > this.getTimestamp(actApplyEndTime))) {
+    const { activityStartTime, activityEndTime, registerEndTime } = body || {};
+    if (this.getTimestamp(time) < this.getTimestamp(activityStartTime)
+      || this.getTimestamp(time) > this.getTimestamp(activityEndTime)
+      || (registerEndTime && this.getTimestamp(time) > this.getTimestamp(registerEndTime))) {
       return false;
     }
     return true;
@@ -82,23 +82,23 @@ export default class CustomApplyEntry extends React.Component {
 
   checkApplyEndTime = (time) => {
     const { body } = this.state;
-    const { actStartTime, actApplyStartTime, actEndTime } = body || {};
-    if (this.getTimestamp(time) < this.getTimestamp(actStartTime)
-      || this.getTimestamp(time) > this.getTimestamp(actEndTime)
-      || (actApplyStartTime && this.getTimestamp(time) < this.getTimestamp(actApplyStartTime))) {
+    const { activityStartTime, registerStartTime, activityEndTime } = body || {};
+    if (this.getTimestamp(time) < this.getTimestamp(activityStartTime)
+      || this.getTimestamp(time) > this.getTimestamp(activityEndTime)
+      || (registerStartTime && this.getTimestamp(time) < this.getTimestamp(registerStartTime))) {
       return false;
     }
     return true;
   };
 
-  handleActNameChange = (e) => {
+  handletitleChange = (e) => {
     const { body } = this.state;
-    this.setState({ body: { ...body, actName: e.target.value } });
+    this.setState({ body: { ...body, title: e.target.value } });
   };
 
-  handleActDetailChange = (e) => {
+  handlecontentChange = (e) => {
     const { body } = this.state;
-    this.setState({ body: { ...body, actDetail: e.target.value } });
+    this.setState({ body: { ...body, content: e.target.value } });
   }
 
   handlePlaceChange = (e) => {
@@ -120,14 +120,14 @@ export default class CustomApplyEntry extends React.Component {
 
   handleDialogConfirm = () => {
     const { body } = this.state;
-    if (!body.actStartTime || !body.actEndTime) {
+    if (!body.activityStartTime || !body.activityEndTime) {
       Toast.info({ content: '活动开始时间和结束时间必填' });
       return false;
     }
-    const actApplyStartTime = body.actApplyStartTime ? body.actApplyStartTime : body.actStartTime;
-    const actApllyEndTime = body.actApllyEndTime ? body.actApplyEndTime : body.actEndTime;
+    const registerStartTime = body.registerStartTime ? body.registerStartTime : body.activityStartTime;
+    const registerEndTime = body.registerEndTime ? body.registerEndTime : body.activityEndTime;
 
-    console.log({ ...body, actApplyStartTime, actApllyEndTime });
+    console.log({ ...body, registerStartTime, registerEndTime });
   };
 
   handleLimitChange = (val) => {
@@ -137,7 +137,7 @@ export default class CustomApplyEntry extends React.Component {
 
   handleLimitPeopleChange = (e) => {
     const { body } = this.state;
-    this.setState({ body: { ...body, actPeopleLimitNum: e.target.value } });
+    this.setState({ body: { ...body, totalNumber: e.target.value } });
   };
 
   handleTimeClick = (curClickTime) => {
@@ -190,13 +190,13 @@ export default class CustomApplyEntry extends React.Component {
             <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.actStart)}>
               {isPc
                 ? <DatePicker
-                    selected={body.actStartTime}
+                    selected={body.activityStartTime}
                     minDate={new Date()}
                     onChange={date => this.handleTimeChange(date, TimeType.actStart)}
                     showTimeSelect
                     dateFormat="yyyy/MM/dd HH:mm:ss"
                   />
-                : <span>{ formatDate(body.actStartTime, 'yyyy/MM/dd hh:mm:ss') }</span>
+                : <span>{ formatDate(body.activityStartTime, 'yyyy/MM/dd hh:mm:ss') }</span>
               }
               <Icon name="RightOutlined" size="8" />
             </div>
@@ -206,13 +206,13 @@ export default class CustomApplyEntry extends React.Component {
             <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.actEnd)}>
               {isPc
                 ? <DatePicker
-                    selected={body.actEndTime}
-                    minDate={body.actStartTime}
+                    selected={body.activityEndTime}
+                    minDate={body.activityStartTime}
                     onChange={date => this.handleTimeChange(date, TimeType.actEnd)}
                     showTimeSelect
                     dateFormat="yyyy/MM/dd HH:mm:ss"
                   />
-                : <span>{ formatDate(body.actEndTime, 'yyyy/MM/dd hh:mm:ss') }</span>
+                : <span>{ formatDate(body.activityEndTime, 'yyyy/MM/dd hh:mm:ss') }</span>
               }
               <Icon name="RightOutlined" size="8" />
             </div>
@@ -231,8 +231,8 @@ export default class CustomApplyEntry extends React.Component {
                   mode="text"
                   placeholder="最多支持50个字符"
                   maxLength={50}
-                  value={body.actName}
-                  onChange={this.handleActNameChange}
+                  value={body.title}
+                  onChange={this.handletitleChange}
                 />
               </div>
               <div className={classNames(styles['dzqp-act--item'], styles['act-detail'])}>
@@ -244,8 +244,8 @@ export default class CustomApplyEntry extends React.Component {
                   placeholder="请输入活动介绍"
                   rows={4}
                   maxLength={200}
-                  value={body.actDetail}
-                  onChange={this.handleActDetailChange}
+                  value={body.content}
+                  onChange={this.handlecontentChange}
                 />
               </div>
               <div className={styles['dzqp-act--item']}>
@@ -253,16 +253,16 @@ export default class CustomApplyEntry extends React.Component {
                 <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.applyStart)}>
                   {isPc
                     ? <DatePicker
-                        selected={body.actApplyStartTime}
-                        minDate={body.actStartTime}
-                        maxDate={body.actEndTime}
-                        minTime={body.actStartTime}
-                        maxTime={body.actEndTime}
+                        selected={body.registerStartTime}
+                        minDate={body.activityStartTime}
+                        maxDate={body.activityEndTime}
+                        minTime={body.activityStartTime}
+                        maxTime={body.activityEndTime}
                         onChange={date => this.handleTimeChange(date, TimeType.applyStart)}
                         showTimeSelect
                         dateFormat="yyyy/MM/dd HH:mm:ss"
                       />
-                    : <span>{ body.actApplyStartTime && formatDate(body.actApplyStartTime, 'yyyy/MM/dd hh:mm:ss') }</span>
+                    : <span>{ body.registerStartTime && formatDate(body.registerStartTime, 'yyyy/MM/dd hh:mm:ss') }</span>
                   }
                   <Icon name="RightOutlined" size="8" />
                 </div>
@@ -272,16 +272,16 @@ export default class CustomApplyEntry extends React.Component {
                 <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.applyEnd)}>
                   {isPc
                     ? <DatePicker
-                        selected={body.actApplyEndTime}
-                        minDate={body.actStartTime}
-                        maxDate={body.actEndTime}
-                        minTime={body.actStartTime}
-                        maxTime={body.actEndTime}
+                        selected={body.registerEndTime}
+                        minDate={body.activityStartTime}
+                        maxDate={body.activityEndTime}
+                        minTime={body.activityStartTime}
+                        maxTime={body.activityEndTime}
                         onChange={date => this.handleTimeChange(date, TimeType.applyEnd)}
                         showTimeSelect
                         dateFormat="yyyy/MM/dd HH:mm:ss"
                       />
-                    : <span>{ body.actApplyEndTime && formatDate(body.actApplyEndTime, 'yyyy/MM/dd hh:mm:ss') }</span>
+                    : <span>{ body.registerEndTime && formatDate(body.registerEndTime, 'yyyy/MM/dd hh:mm:ss') }</span>
                   }
                   <Icon name="RightOutlined" size="8" />
                 </div>
@@ -311,7 +311,7 @@ export default class CustomApplyEntry extends React.Component {
                     <Radio name={1}>
                       限<Input htmlType="number" mode="number"
                         disabled={body.actPeopleLimitType === 0}
-                        value={body.actPeopleLimitNum}
+                        value={body.totalNumber}
                         onChange={this.handleLimitPeopleChange}
                       />人报名
                     </Radio>

@@ -7,10 +7,10 @@ import { formatDate } from '@common/utils/format-date';
 import styles from '../index.module.scss';
 
 const TimeType = {
-  actStart: 'actStartTime',
-  actEnd: 'actEndTime',
-  applyStart: 'actApplyStartTime',
-  applyEnd: 'actApplyEndTime',
+  actStart: 'activityStartTime',
+  actEnd: 'activityEndTime',
+  applyStart: 'registerStartTime',
+  applyEnd: 'registerEndTime',
 };
 export default class CustomApplyEntryContent extends React.Component {
   constructor(props) {
@@ -21,15 +21,15 @@ export default class CustomApplyEntryContent extends React.Component {
       showMore: false,
       showMobileDatePicker: false,
       body: {
-        actStartTime: new Date(), // 活动开始时间
-        actEndTime: new Date().getTime() + oneHour, // 活动结束时间
-        actName: '', // 活动名称
-        actDetail: '', // 活动详情
-        actApplyStartTime: '', // 报名开始时间
-        actApplyEndTime: '', // 报名结束时间
+        activityStartTime: new Date(), // 活动开始时间
+        activityEndTime: new Date().getTime() + oneHour, // 活动结束时间
+        title: '', // 活动名称
+        content: '', // 活动详情
+        registerStartTime: '', // 报名开始时间
+        registerEndTime: '', // 报名结束时间
         actPlace: '', // 活动地点
         actPeopleLimitType: 0, // 0 不限制；1 限制
-        actPeopleLimitNum: '',
+        totalNumber: '',
       },
       curClickTime: TimeType.actStart,
     };
@@ -42,12 +42,12 @@ export default class CustomApplyEntryContent extends React.Component {
     const time = date;
     switch (type) {
       case TimeType.actStart:
-        this.setState({ body: { ...body, actStartTime: time } }, () => {
+        this.setState({ body: { ...body, activityStartTime: time } }, () => {
           this.props.onChange(this.state.body);
         });
         break;
       case TimeType.actEnd:
-        this.setState({ body: { ...body, actEndTime: time } }, () => {
+        this.setState({ body: { ...body, activityEndTime: time } }, () => {
           this.props.onChange(this.state.body);
         });
         break;
@@ -55,7 +55,7 @@ export default class CustomApplyEntryContent extends React.Component {
         if (!this.checkApplyStartTime(time)) {
           Toast.info({ content: '请选择正确的活动报名开始时间' });
         } else {
-          this.setState({ body: { ...body, actApplyStartTime: time } }, () => {
+          this.setState({ body: { ...body, registerStartTime: time } }, () => {
             this.props.onChange(this.state.body);
           });
         }
@@ -64,7 +64,7 @@ export default class CustomApplyEntryContent extends React.Component {
         if (!this.checkApplyEndTime(time)) {
           Toast.info({ content: '请选择正确的活动报名结束时间' });
         } else {
-          this.setState({ body: { ...body, actApplyEndTime: time } }, () => {
+          this.setState({ body: { ...body, registerEndTime: time } }, () => {
             this.props.onChange(this.state.body);
           });
         }
@@ -78,10 +78,10 @@ export default class CustomApplyEntryContent extends React.Component {
 
   checkApplyStartTime = (time) => {
     const { body } = this.state;
-    const { actStartTime, actEndTime, actApplyEndTime } = body || {};
-    if (this.getTimestamp(time) < this.getTimestamp(actStartTime)
-      || this.getTimestamp(time) > this.getTimestamp(actEndTime)
-      || (actApplyEndTime && this.getTimestamp(time) > this.getTimestamp(actApplyEndTime))) {
+    const { activityStartTime, activityEndTime, registerEndTime } = body || {};
+    if (this.getTimestamp(time) < this.getTimestamp(activityStartTime)
+      || this.getTimestamp(time) > this.getTimestamp(activityEndTime)
+      || (registerEndTime && this.getTimestamp(time) > this.getTimestamp(registerEndTime))) {
       return false;
     }
     return true;
@@ -89,25 +89,25 @@ export default class CustomApplyEntryContent extends React.Component {
 
   checkApplyEndTime = (time) => {
     const { body } = this.state;
-    const { actStartTime, actApplyStartTime, actEndTime } = body || {};
-    if (this.getTimestamp(time) < this.getTimestamp(actStartTime)
-      || this.getTimestamp(time) > this.getTimestamp(actEndTime)
-      || (actApplyStartTime && this.getTimestamp(time) < this.getTimestamp(actApplyStartTime))) {
+    const { activityStartTime, registerStartTime, activityEndTime } = body || {};
+    if (this.getTimestamp(time) < this.getTimestamp(activityStartTime)
+      || this.getTimestamp(time) > this.getTimestamp(activityEndTime)
+      || (registerStartTime && this.getTimestamp(time) < this.getTimestamp(registerStartTime))) {
       return false;
     }
     return true;
   };
 
-  handleActNameChange = (e) => {
+  handletitleChange = (e) => {
     const { body } = this.state;
-    this.setState({ body: { ...body, actName: e.target.value } }, () => {
+    this.setState({ body: { ...body, title: e.target.value } }, () => {
       this.props.onChange(this.state.body);
     });
   };
 
-  handleActDetailChange = (e) => {
+  handlecontentChange = (e) => {
     const { body } = this.state;
-    this.setState({ body: { ...body, actDetail: e.target.value } }, () => {
+    this.setState({ body: { ...body, content: e.target.value } }, () => {
       this.props.onChange(this.state.body);
     });
   }
@@ -132,7 +132,7 @@ export default class CustomApplyEntryContent extends React.Component {
 
   handleLimitPeopleChange = (e) => {
     const { body } = this.state;
-    this.setState({ body: { ...body, actPeopleLimitNum: e.target.value } }, () => {
+    this.setState({ body: { ...body, totalNumber: e.target.value } }, () => {
       this.props.onChange(this.state.body);
     });
   };
@@ -165,14 +165,14 @@ export default class CustomApplyEntryContent extends React.Component {
         <View className={styles['dzqp-act--item']}>
           <View className={styles['dzqp-act--item_title']}>开始时间</View>
           <View className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.actStart)}>
-            <Text>{formatDate(body.actStartTime, 'yyyy/MM/dd hh:mm:ss')}</Text>
+            <Text>{formatDate(body.activityStartTime, 'yyyy/MM/dd hh:mm:ss')}</Text>
             <Icon name="RightOutlined" size="8" />
           </View>
         </View>
         <View className={styles['dzqp-act--item']}>
           <View className={styles['dzqp-act--item_title']}>结束时间</View>
           <View className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.actEnd)}>
-            <Text>{formatDate(body.actEndTime, 'yyyy/MM/dd hh:mm:ss')}</Text>
+            <Text>{formatDate(body.activityEndTime, 'yyyy/MM/dd hh:mm:ss')}</Text>
             <Icon name="RightOutlined" size="8" />
           </View>
         </View>
@@ -190,8 +190,8 @@ export default class CustomApplyEntryContent extends React.Component {
                 mode="text"
                 placeholder="最多支持50个字符"
                 maxLength={50}
-                value={body.actName}
-                onChange={this.handleActNameChange}
+                value={body.title}
+                onChange={this.handletitleChange}
               />
             </View>
             <View className={classNames(styles['dzqp-act--item'], styles['act-detail'])}>
@@ -203,21 +203,21 @@ export default class CustomApplyEntryContent extends React.Component {
                 placeholder="请输入活动介绍"
                 rows={4}
                 maxLength={200}
-                value={body.actDetail}
-                onChange={this.handleActDetailChange}
+                value={body.content}
+                onChange={this.handlecontentChange}
               />
             </View>
             <View className={styles['dzqp-act--item']}>
               <View className={styles['dzqp-act--item_title']}>报名开始</View>
               <View className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.applyStart)}>
-                <Text>{body.actApplyStartTime && formatDate(body.actApplyStartTime, 'yyyy/MM/dd hh:mm:ss')}</Text>
+                <Text>{body.registerStartTime && formatDate(body.registerStartTime, 'yyyy/MM/dd hh:mm:ss')}</Text>
                 <Icon name="RightOutlined" size="8" />
               </View>
             </View>
             <View className={styles['dzqp-act--item']}>
               <View className={styles['dzqp-act--item_title']}>报名结束</View>
               <View className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.applyEnd)}>
-                <Text>{body.actApplyEndTime && formatDate(body.actApplyEndTime, 'yyyy/MM/dd hh:mm:ss')}</Text>
+                <Text>{body.registerEndTime && formatDate(body.registerEndTime, 'yyyy/MM/dd hh:mm:ss')}</Text>
                 <Icon name="RightOutlined" size="8" />
               </View>
             </View>
@@ -246,7 +246,7 @@ export default class CustomApplyEntryContent extends React.Component {
                   <Radio name={1}>
                     限<Input htmlType="number" mode="number"
                       disabled={body.actPeopleLimitType === 0}
-                      value={body.actPeopleLimitNum}
+                      value={body.totalNumber}
                       onChange={this.handleLimitPeopleChange}
                     />人报名
                   </Radio>
