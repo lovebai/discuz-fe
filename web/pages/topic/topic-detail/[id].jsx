@@ -60,7 +60,7 @@ class Index extends React.Component {
     const { topic, router } = this.props;
     const { id = '' } = router.query;
     this.page += 1;
-    topic.getTopicsDetail({perPage: this.perPage, page: this.page, topicId: id});
+    await topic.getTopicsDetail({perPage: this.perPage, page: this.page, topicId: id});
     return;
   }
 
