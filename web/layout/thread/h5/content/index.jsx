@@ -67,7 +67,7 @@ const RenderThreadContent = inject('site', 'user')(observer((props) => {
   // 是否打赏帖
   const isBeReward = isFree && threadStore?.threadData?.ability.canBeReward && !isRedPack && !isReward;
   // 是否显示打赏按钮： 免费帖 && 不是自己 && 不是红包 && 不是悬赏 && 允许被打赏
-  const canBeReward = isFree && !isRedPack && !isReward;
+  // const canBeReward = isFree && !isRedPack && !isReward;
   // 是否已打赏
   const isRewarded = threadStore?.threadData?.isReward;
 
@@ -309,15 +309,13 @@ const RenderThreadContent = inject('site', 'user')(observer((props) => {
           </div>
         )}
 
-        {/* 打赏 */}
-        {canBeReward && isApproved && !isSelf && (
-          <div className={styles.rewardContianer}>
-            <Button onClick={onRewardClick} className={styles.rewardButton} type="primary">
-              <Icon className={styles.payIcon} name="HeartOutlined" size={20}></Icon>
-              <span className={styles.rewardext}>打赏</span>
-            </Button>
-          </div>
-        )}
+        {/* 打赏 产品说web端全部放开，直接显示  */}
+        <div className={styles.rewardContianer}>
+          <Button onClick={onRewardClick} className={styles.rewardButton} type="primary">
+            <Icon className={styles.payIcon} name="HeartOutlined" size={20}></Icon>
+            <span className={styles.rewardext}>打赏</span>
+          </Button>
+        </div>
       </div>
 
       {isApproved && (
