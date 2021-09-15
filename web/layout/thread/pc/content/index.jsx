@@ -75,7 +75,7 @@ export default inject('site', 'user')(observer((props) => {
   // 是否打赏帖
   const isBeReward = isFree && threadStore?.threadData?.ability.canBeReward && !isRedPack && !isReward;
   // 是否显示打赏按钮： 免费帖 && 不是自己 && 不是红包 && 不是悬赏 && 允许被打赏
-  const canBeReward = isFree && threadStore?.threadData?.ability.canBeReward && !isRedPack && !isReward;
+  const canBeReward = isFree && !isRedPack && !isReward;
   // 是否已打赏
   const isRewarded = threadStore?.threadData?.isReward;
 
