@@ -127,6 +127,7 @@ class BindPhoneH5Page extends React.Component {
   render() {
     const { mobileBind, site, commonLogin: { loginLoading } } = this.props;
     const { platform, wechatEnv } = site;
+    const { limitPublishType } = this.props.router.query;
     return (
       <PcBodyWrap>
       <div className={platform === 'h5' ? layout.container : layout.pc_container}>
@@ -159,7 +160,7 @@ class BindPhoneH5Page extends React.Component {
             下一步
           </Button>
           {
-            wechatEnv === 'miniProgram'
+            wechatEnv === 'miniProgram' && !limitPublishType
               ? <div className={platform === 'h5' ? layout.functionalRegion : layout.pc_functionalRegion}>
                   <span className={layout.clickBtn} onClick={() => {
                     loginHelper.restore();
