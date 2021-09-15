@@ -180,7 +180,7 @@ class UserCenterThreads extends React.Component {
   };
 
   isOtherThreads = () => {
-    const { id } = getCurrentInstance().router.params;
+    const { id = '' } = getCurrentInstance()?.router?.params || {};
 
     return id;
   };

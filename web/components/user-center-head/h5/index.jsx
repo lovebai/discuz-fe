@@ -335,6 +335,7 @@ class index extends Component {
             onClose={this.handlePreviewAvatar}
             imgUrls={[user.originalAvatarUrl]}
             currentUrl={user.originalAvatarUrl}
+            onError={() => user.avatarUrl}
           />
         )}
       </div>
