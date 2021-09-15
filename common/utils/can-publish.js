@@ -25,7 +25,7 @@ export default function canPublish(userStore, siteStore, type, threadId = '') {
   if (!siteStore.publishNeedBindPhone && !siteStore.publishNeedBindWechat) { // 如果没有开启发帖需要绑定手机或者微信，则不做逻辑处理
     return true;
   }
-  if (!isWeb() && siteStore.publishNeedBindPhone) { // 小程序未绑定手机号，不继续处理，直接跳去绑定手机
+  if (!isWeb() && siteStore.publishNeedBindPhone && !userStore.mobile) { // 小程序未绑定手机号，不继续处理，直接跳去绑定手机
     loginHelper.saveAndPush(setUrlParam(MINI_BIND_PHONE_PAGE, { limitPublishType: type }));
     type === 'comment' && loginHelper.setUrl(MINI_THREAD_PAGE);
     return false;
