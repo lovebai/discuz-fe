@@ -104,6 +104,9 @@ class index extends Component {
           duration: 2000,
         });
         this.props.handleSetBgLoadingStatus(false);
+      })
+      .finally(() => {
+        this.backgroundUploaderRef.current.value = '';
       });
   };
 

@@ -50,9 +50,16 @@ export default class ListStore {
     return listArray;
   }
 
+  // 强制刷新
   @action
   forceUpdateList = () => {
     this.lists = { ...this.lists };
+  }
+
+  // 更新list
+  @action
+  updateList = (lists) => {
+    this.lists = { ...lists };
   }
 
   /**

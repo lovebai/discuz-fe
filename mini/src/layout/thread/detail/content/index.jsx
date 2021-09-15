@@ -152,7 +152,7 @@ const RenderThreadContent = inject('site', 'user')(
           </View>
           {props?.user?.isLogin() && isApproved && (
             <View className={styles.more} onClick={onMoreClick}>
-              <Icon size={20} color="#8590A6" name="MoreVOutlined"></Icon>
+              <Icon size={20} className={styles.icon} name="MoreVOutlined"></Icon>
             </View>
           )}
         </View>

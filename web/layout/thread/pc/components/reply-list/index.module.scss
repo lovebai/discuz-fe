@@ -47,11 +47,11 @@
               line-height: rem(14);
               padding: rem(1) rem(4);
               text-align: left;
-              color: #fff;
+              color: $white;
             }
           }
           .groups {
-            color: var(--color-text-secondary);
+            color: $text-color-secondary;
             font-size: $font-size-label;
             max-width: rem(100);
             white-space: nowrap;
@@ -118,10 +118,11 @@
             margin-right: rem($margin-1n);
 
             .avatar {
-              width: rem(18);
-              height: rem(18);
+              width: rem(24);
+              height: rem(24);
               font-size: rem($font-size-small);
-              line-height: rem(18);
+              line-height: rem(24);
+              transform: scale(0.75);
             }
           }
 
@@ -151,7 +152,7 @@
               line-height: rem(14);
               padding: rem(1) rem(4);
               text-align: left;
-              color: #fff;
+              color: $white;
             }
           }
         }
