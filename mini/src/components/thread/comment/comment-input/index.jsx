@@ -46,6 +46,8 @@ const CommentInput = inject('site')(inject('user')((props) => {
       } catch (error) {
         console.log(error);
       } finally {
+        // 发布成功隐藏表情
+        setShowEmojis(false);
         setLoading(false);
       }
     }
