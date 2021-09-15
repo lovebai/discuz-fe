@@ -38,22 +38,25 @@ class TopicH5Page extends React.Component {
     return dispatch();
   };
 
-  renderItem = ({ content = '', threadCount = 0, viewCount = 0, threads = [] }, index) => (
-      <div key={index}>
-        {index === 0 ? <DetailsHeader title={content} viewNum={viewCount} contentNum={threadCount} onShare={this.onShare} /> : ''}
-        <div className={styles.themeContent}>
-          {
-            threads?.length
-              ? (
-                threads?.map((item, index) => (
-                  <ThreadContent data={item} key={index} className={styles.item} />
-                ))
-              )
-              : ''
-          }
+  renderItem = ({ content = '', threadCount = 0, viewCount = 0 }) => {
+    const threads = this.props.topic?.topicThreads?.pageData || [];
+    return (
+        <div>
+          <DetailsHeader title={content} viewNum={viewCount} contentNum={threadCount} onShare={this.onShare} />
+          <div className={styles.themeContent}>
+            {
+              threads?.length
+                ? (
+                  threads?.map((item, index) => (
+                    <ThreadContent data={item} key={index} className={styles.item} />
+                  ))
+                )
+                : ''
+            }
+          </div>
         </div>
-      </div>
-  )
+    );
+  }
 
   render() {
     const { pageData = [], currentPage, totalPage  } = this.props.topic?.topicDetail || {};
@@ -64,10 +67,7 @@ class TopicH5Page extends React.Component {
         noMore={currentPage >= totalPage}
         onRefresh={this.fetchMoreData}
       >
-        {
-          pageData?.map((item, index) => (
-            this.renderItem(item, index)))
-        }
+        { this.renderItem(pageData[0] || {}) }
       </BaseLayout>
     );
   }

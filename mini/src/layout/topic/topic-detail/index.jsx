@@ -16,20 +16,24 @@ import BottomView from '@components/list/BottomView'
 @inject('topic')
 @observer
 class TopicH5Page extends React.Component {
-  renderItem = ({ content = '', threadCount = 0, viewCount = 0, threads = [] }, index) => <View key={index}>
-      {index === 0 ? <DetailsHeader title={content} viewNum={viewCount} contentNum={threadCount} onShare={this.onShare} /> : ''}
-      <View className={styles.themeContent}>
-        {
-          threads?.length ?
-            (
-              threads?.map((item, itemIndex) => (
-                <ThreadContent data={item} key={itemIndex} />
-              ))
-            )
-            : ''
-        }
+  renderItem = ({ content = '', threadCount = 0, viewCount = 0 }) => {
+    const threads = this.props.topic?.topicThreads?.pageData || [];
+    return <View>
+        <DetailsHeader title={content} viewNum={viewCount} contentNum={threadCount} onShare={this.onShare} />
+        <View className={styles.themeContent}>
+          {
+            threads?.length ?
+              (
+                threads?.map((item, itemIndex) => (
+                  <ThreadContent data={item} key={itemIndex} />
+                ))
+              )
+              : ''
+          }
+          </View>
         </View>
-      </View>
+  }
+
 
   fetchMoreData = () => {
     const { dispatch } = this.props;
@@ -37,7 +41,7 @@ class TopicH5Page extends React.Component {
   };
       
   render() {
-    const { pageData, currentPage, totalPage } = this.props.topic?.topicDetail || {};
+    const { pageData = [], currentPage, totalPage } = this.props.topic?.topicDetail || {};
     return (
       <BaseLayout
         showHeader={false}
@@ -45,11 +49,7 @@ class TopicH5Page extends React.Component {
         noMore={currentPage >= totalPage}
         onRefresh={this.fetchMoreData}
       >
-        {
-          pageData?.map((item, index) => (
-            this.renderItem(item, index))
-          )
-        }
+        { this.renderItem(pageData[0] || {}) }
       </BaseLayout>
     );
   }
