@@ -71,7 +71,6 @@ const Index = ({
   }, [wholeNum, comment, sharing, isLiked, isCommented]);
   const [show, setShow] = useState(false);
   const handleClickShare = () => {
-    console.log('--------')
     updateViewCount();
     // 对没有登录的先登录
     if (!user.isLogin()) {
