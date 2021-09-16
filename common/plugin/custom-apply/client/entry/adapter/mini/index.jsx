@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from '@tarojs/components';
 import { Icon, Dialog, Toast } from '@discuzq/design';
 import CustomApplyEntryContent from './content';
+import { getPostData } from '@common/plugin/custom-apply/client/common';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
 
@@ -40,10 +41,9 @@ export default class CustomApplyEntry extends React.Component {
       Toast.info({ content: '活动开始时间和结束时间必填' });
       return false;
     }
-    const registerStartTime = body.registerStartTime ? body.registerStartTime : body.activityStartTime;
-    const registerEndTime = body.registerEndTime ? body.registerEndTime : body.activityEndTime;
-
-    console.log({ ...body, registerStartTime, registerEndTime });
+    const postData = getPostData(body);
+    this.props.onConfirm({ postData });
+    Dialog.hide();
   };
 
   render() {

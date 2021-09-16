@@ -6,6 +6,7 @@ import DatePickers from '@components/thread/date-picker';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';
+import { getPostData } from '@common/plugin/custom-apply/client/common';
 import styles from '../index.module.scss';
 
 const TimeType = {
@@ -124,10 +125,9 @@ export default class CustomApplyEntry extends React.Component {
       Toast.info({ content: '活动开始时间和结束时间必填' });
       return false;
     }
-    const registerStartTime = body.registerStartTime ? body.registerStartTime : body.activityStartTime;
-    const registerEndTime = body.registerEndTime ? body.registerEndTime : body.activityEndTime;
-
-    console.log({ ...body, registerStartTime, registerEndTime });
+    const postData = getPostData(body);
+    this.props.onConfirm({ postData });
+    this.handleDialogClose();
   };
 
   handleLimitChange = (val) => {

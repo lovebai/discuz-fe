@@ -1,5 +1,5 @@
 {
-  "pluginName": "CustomApplyDisplay",
+  "pluginName": "CustomActApply",
   "version": "1.0.0",
   "target": ["plugin_index", "plugin_detail"],
   "hookName": "thread_extension_display_hook",

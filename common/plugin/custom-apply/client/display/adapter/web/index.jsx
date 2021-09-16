@@ -37,6 +37,7 @@ export default class CustomApplyDisplay extends React.Component {
   };
 
   render() {
+    console.log(this.props);
     const { siteData } = this.props;
     const { popupShow } = this.state;
     const platform = siteData.platform === 'h5' ? styles.h5 : styles.pc;

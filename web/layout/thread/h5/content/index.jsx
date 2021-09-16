@@ -284,7 +284,7 @@ const RenderThreadContent = inject('site', 'user')(observer((props) => {
               return (
                 <div key={pluginInfo.name}>
                   {render({
-                    site: site,
+                    site: { ...site, threadPost: threadStore?.threadData },
                     renderData: parseContent.plugin
                   })}
                 </div>

@@ -1,5 +1,5 @@
 {
-  "pluginName": "CustomApplyPost",
+  "pluginName": "CustomActApply",
   "version": "1.0.0",
   "target": "plugin_post",
   "hookName": "post_extension_content_hook",
