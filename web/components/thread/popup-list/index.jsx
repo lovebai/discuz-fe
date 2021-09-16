@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Tabs, Popup, Icon, Spin } from '@discuzq/design';
+import { readRegisterList } from '@discuzq/sdk/dist/api/plugin/read-register';
 import UserItem from '../user-item';
 import styles from './index.module.scss';
 import ReactDOM from 'react-dom';
@@ -16,7 +17,7 @@ import { withRouter } from 'next/router';
  * @param {boolean} isCustom 自定义，主要是报名插件需要使用
  */
 
-const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, isCustom = false }) => {
+const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, isCustom = false, activityId }) => {
 
   const allPageNum = useRef(1);
   const likePageNum = useRef(1);
@@ -41,17 +42,29 @@ const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, isC
     }
   }, [visible]);
 
-  const loadData = async ({ type }) => {
-    if (isCustom) {
+  const fetchActApplyPeople = async (page = 1) => {
+    const result = await readRegisterList({ params: { activityId, page } });
+    const { code, data, msg } = result || {};
+    if (code === 0) {
+      const { pageData = [], totalPage, currentPage, totalCount } = data || {};
       setAll({
         pageData: {
-          list: [],
-          allCount: 1,
+          list: [...(all?.pageData?.list || []), ...pageData],
+          allCount: totalCount,
         },
-        currentPage: 0,
-        totalPage: 0,
+        currentPage,
+        totalPage,
       });
-      return {};
+    } else {
+      setRequestError(true);
+      setErrorText(msg);
+    }
+    return result;
+  };
+
+  const loadData = async ({ type }) => {
+    if (isCustom) {
+      return fetchActApplyPeople();
     }
 
     const { postId = '', threadId = '' } = tipData;
@@ -68,15 +81,7 @@ const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, isC
 
   const singleLoadData = async ({ page = 1, type = 1 } = {}) => {
     if (isCustom) {
-      setAll({
-        pageData: {
-          list: [],
-          allCount: 1,
-        },
-        currentPage: 0,
-        totalPage: 0,
-      });
-      return {};
+      return fetchActApplyPeople(page);
     }
 
     const { postId = '', threadId = '' } = tipData;

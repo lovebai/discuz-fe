@@ -31,7 +31,7 @@ class CustomApplyDisplay extends React.Component {
   };
 
   handleActOperate = async () => {
-    const { renderData, thread, index } = this.props;
+    const { renderData, thread, index, siteData } = this.props;
     const { tomId, body } = renderData || {};
     const { isRegistered, activityId, registerUsers } = body;
     const action = isRegistered ? deleteRegister : createRegister;
@@ -39,11 +39,18 @@ class CustomApplyDisplay extends React.Component {
     const res = await action({ data: { activityId } });
     this.setState({ loading: false });
     if (res.code === 0) {
-      const { authorInfo } = thread;
-      const users = registerUsers.filter(item => item.userId !== authorInfo.id);
+      let authorInfo = {};
+      if (siteData.isDetailPage) {
+        authorInfo = thread.authorInfo;
+      } else {
+        const { data = {} } = index._findAssignThread(siteData.threadId);
+        authorInfo = data?.user;
+      }
+      const uid = authorInfo.id || authorInfo.userId;
+      const users = registerUsers.filter(item => item.userId !== uid);
       if (!isRegistered) users.push({
-        userId: authorInfo.id,
-        avatar: authorInfo.avatarUrl,
+        userId: uid,
+        avatar: authorInfo.avatarUrl || authorInfo.avatar,
         nickname: authorInfo.nickname,
       });
       const tomValue = {
@@ -55,7 +62,8 @@ class CustomApplyDisplay extends React.Component {
         tomId,
       };
       thread.updateThread(tomId, tomValue);
-      index.updateListThreadIndexes(thread?.threadData?.id, tomId, tomValue);
+      const threadData = index.updateListThreadIndexes(thread?.threadData?.id, tomId, tomValue);
+      if (threadData && siteData.recomputeRowHeights) siteData.recomputeRowHeights(threadData);
       Toast.info({ content: isRegistered ? '取消报名成功' : '报名成功' });
     } else Toast.error({ content: res.msg || '报名失败' });
     return res;
@@ -145,6 +153,7 @@ class CustomApplyDisplay extends React.Component {
         </div>
         {popupShow && <PopupList
           isCustom
+          activityId={body?.activityId}
           visible={popupShow}
           onHidden={() => this.setState({ popupShow: false })}
           tipData={{ platform: siteData.platform }}

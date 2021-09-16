@@ -402,6 +402,7 @@ class IndexAction extends IndexStore {
       // this.threads.pageData = [...this.threads.pageData];
     }
     this.updateAssignThreadAllData(threadId, threadData);
+    return threadData;
   }
 
   @action
