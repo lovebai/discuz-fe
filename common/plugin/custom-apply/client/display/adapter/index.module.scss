@@ -30,10 +30,11 @@
       font-size: $font-size-base;
       line-height: $font-line-height-middle;
       color: $text-color-primary;
-      @include lamp-clamp(2);
+      &.text-clamp {
+        @include lamp-clamp(2);
+      }
     }
     .more {
-      margin-bottom: $margin-4n;
       font-size: $font-size-base;
       line-height: $font-line-height-middle;
       text-align: right;
@@ -51,6 +52,9 @@
       }
       .wrapper-tip_title {
         margin-right: $margin-1n;
+      }
+      &.mt4n {
+        margin-top: $margin-4n;
       }
     }
     &__limit {
@@ -127,4 +131,9 @@
   background-color: $text-color-placeholder !important;
   border-radius: $border-radius-small !important;
   border: 0;
+}
+.isregisterd {
+  background-color: $text-bg-color2 !important;
+  color: $text-color-primary !important;
+  border: none !important;
 }

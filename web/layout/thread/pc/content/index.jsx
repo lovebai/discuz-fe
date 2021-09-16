@@ -337,7 +337,7 @@ export default inject('site', 'user')(observer((props) => {
             return (
               <div key={pluginInfo.name}>
                 {render({
-                  site: { ...site, threadPost: threadStore?.threadData },
+                  site: { ...site, isDetailPage: true },
                   renderData: parseContent.plugin
                 })}
               </div>
