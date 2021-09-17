@@ -47,9 +47,10 @@ const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, isC
     const { code, data, msg } = result || {};
     if (code === 0) {
       const { pageData = [], totalPage, currentPage, totalCount } = data || {};
+      const list = page > 1 ? [...(all?.pageData?.list || []), ...pageData] : pageData;
       setAll({
         pageData: {
-          list: [...(all?.pageData?.list || []), ...pageData],
+          list,
           allCount: totalCount,
         },
         currentPage,

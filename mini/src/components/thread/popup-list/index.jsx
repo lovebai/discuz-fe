@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { inject, observer } from 'mobx-react';
+import { readRegisterList } from '@discuzq/sdk/dist/api/plugin/read-register';
 import Tabs from '@discuzq/design/dist/components/tabs/index';
 import Popup from '@discuzq/design/dist/components/popup/index';
 import Icon from '@discuzq/design/dist/components/icon/index';
@@ -18,7 +19,7 @@ import { View, Text } from '@tarojs/components'
  * @prop {string}  onHidden 关闭视图的回调
  */
 
- const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, index, isCustom = false }) => {
+ const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, index, isCustom = false, activityId }) => {
 
   const allPageNum = useRef(1);
   const likePageNum = useRef(1);
@@ -43,17 +44,29 @@ import { View, Text } from '@tarojs/components'
     }
   }, [visible]);
 
-   const loadData = async ({ type }) => {
-    if (isCustom) {
+  const fetchActApplyPeople = async (page = 1) => {
+    const result = await readRegisterList({ params: { activityId, page } });
+    const { code, data, msg } = result || {};
+    if (code === 0) {
+      const { pageData = [], totalPage, currentPage, totalCount } = data || {};
+      const list = page > 1 ? [...(all?.pageData?.list || []), ...pageData] : pageData;
       setAll({
         pageData: {
-          list: [],
-          allCount: 1,
+          list,
+          allCount: totalCount,
         },
-        currentPage: 0,
-        totalPage: 0,
+        currentPage,
+        totalPage,
       });
-      return {};
+    } else {
+      setRequestError(true);
+      setErrorText(msg);
+    }
+    return result;
+  };
+   const loadData = async ({ type }) => {
+    if (isCustom) {
+      return fetchActApplyPeople();
     }
     const { postId = '', threadId = '' } = tipData;
 
@@ -69,15 +82,7 @@ import { View, Text } from '@tarojs/components'
 
    const singleLoadData = async ({ page = 1, type = 1 } = {}) => {
     if (isCustom) {
-      setAll({
-        pageData: {
-          list: [],
-          allCount: 1,
-        },
-        currentPage: 0,
-        totalPage: 0,
-      });
-      return {};
+      return fetchActApplyPeople(page);
     }
     const { postId = '', threadId = '' } = tipData;
     type = (type === TYPE_PAID) ? TYPE_REWARD : type;
