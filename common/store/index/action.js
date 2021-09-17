@@ -316,7 +316,7 @@ class IndexAction extends IndexStore {
     if (this.threads) {
       const { pageData = [] } = this.threads;
       for (let i = 0; i < pageData.length; i++) {
-        if (pageData[i].threadId === threadId) {
+        if (+pageData[i].threadId === +threadId) {
           return { index: i, data: pageData[i] };
         }
       }

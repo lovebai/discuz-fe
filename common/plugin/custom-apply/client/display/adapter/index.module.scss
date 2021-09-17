@@ -18,7 +18,7 @@
       @include text-ellipsis();
     }
     &__right {
-      width: 130px;
+      width: 150px;
       font-size: $font-size-label;
       text-align: right;
       color: $text-color-secondary;
@@ -38,6 +38,7 @@
       font-size: $font-size-base;
       line-height: $font-line-height-middle;
       text-align: right;
+      cursor: pointer;
     }
     &__tip {
       margin-bottom: $margin-2n;
