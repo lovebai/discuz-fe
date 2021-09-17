@@ -170,13 +170,13 @@ class CustomApplyDisplay extends React.Component {
                 </span>
               </div>
             </div>
-            <div className={styles['wrapper-content__tip']}>
+            {body?.position?.location && (<div className={styles['wrapper-content__tip']}>
               <Icon name="PositionOutlined" />
               <div className={styles['wrapper-tip__content']}>
                 <span className={styles['wrapper-tip_title']}>活动地址</span>
-                <span className={styles['wrapper-tip_detail']}>深圳市南山区人才公园</span>
+                <span className={styles['wrapper-tip_detail']}>{ body?.position?.location }</span>
               </div>
-            </div>
+            </div>)}
             {body?.totalNumber && (
               <div className={styles['wrapper-content__limit']}>
                 限<span className={styles['text-primary']}>{body?.totalNumber}</span>人参与
