@@ -6,7 +6,7 @@ import DatePickers from '@components/thread/date-picker';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';
-import { getPostData } from '@common/plugin/custom-apply/client/common';
+import { getPostData, formatPostData } from '@common/plugin/custom-apply/client/common';
 import styles from '../index.module.scss';
 
 const TimeType = {
@@ -37,6 +37,13 @@ export default class CustomApplyEntry extends React.Component {
       },
       curClickTime: TimeType.actStart,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if ((this.props?.renderData?.body?.activityStartTime !== prevProps?.renderData?.body?.activityStartTime)
+      && this.props?.renderData?.body.activityStartTime) {
+      this.setState({ body: formatPostData(this.props?.renderData?.body) });
+    }
   }
 
   handleTimeChange = (date, type) => {
@@ -313,6 +320,7 @@ export default class CustomApplyEntry extends React.Component {
                         disabled={body.actPeopleLimitType === 0}
                         value={body.totalNumber}
                         onChange={this.handleLimitPeopleChange}
+                        className={styles['text-center']}
                       />人报名
                     </Radio>
                   </Radio.Group>

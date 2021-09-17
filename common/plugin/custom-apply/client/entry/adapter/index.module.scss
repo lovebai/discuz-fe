@@ -210,3 +210,10 @@
     }
   }
 }
+.text-center {
+  :global {
+    .dzq-input__inner {
+      text-align: center;
+    }
+  }
+}
