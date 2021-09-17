@@ -15,6 +15,7 @@ import getRouterCategory from '@common/utils/getRouterCategory';
 @inject('user')
 @inject('baselayout')
 @inject('vlist')
+@inject('threadList')
 @observer
 class Index extends React.Component {
 
@@ -26,12 +27,11 @@ class Index extends React.Component {
   page = 1;
   prePage = 10;
   static async getInitialProps(ctx, { user, site }) {
-
     const result = getRouterCategory(ctx, site);
-    const { categoryids, sequence, essence, attention, sort } = result;
-    let newTypes = handleString2Arr(result, 'types');
+    const { essence = 0, sequence = 0, attention = 0, sort = 1 } = result;
+    const newTypes = handleString2Arr(result, 'types');
 
-    let categoryIds = handleString2Arr(result, 'categoryids');
+    const categoryIds = handleString2Arr(result, 'categoryids');
 
     const categories = await readCategories({}, ctx);
     const sticks = await readStickList({ params: { categoryIds } }, ctx);
@@ -39,9 +39,9 @@ class Index extends React.Component {
       params: {
         perPage: 10,
         page: 1,
-        sequence, 
-        filter: {...result, types: newTypes}
-      }
+        sequence,
+        filter: { categoryids: categoryIds, types: newTypes, essence, attention, sort },
+      },
     }, ctx);
 
     return {
@@ -55,10 +55,12 @@ class Index extends React.Component {
 
   constructor(props) {
     super(props);
+    const { serverIndex, index, threadList } = this.props;
+    threadList.registerList({ namespace: index.namespace });
 
     this.handleRouterCategory()
-
-    const { serverIndex, index } = this.props;
+    // console.log(serverIndex.threads);
+    // const { serverIndex, index } = this.props;
     // 初始化数据到store中
     serverIndex && serverIndex.categories && index.setCategories(serverIndex.categories);
     serverIndex && serverIndex.sticks && index.setSticks(serverIndex.sticks);
@@ -77,7 +79,6 @@ class Index extends React.Component {
     // 当服务器无法获取数据时，触发浏览器渲染
     const hasCategoriesData = !!index.categories;
     const hasSticksData = !!index.sticks;
-    const hasThreadsData = !!index.threads;
 
     if (!hasCategoriesData) {
       this.props.index.getReadCategories();
@@ -86,8 +87,8 @@ class Index extends React.Component {
     if (!hasSticksData) {
       this.props.index.getRreadStickList(categoryIds);
     }
-   
-    if (!hasThreadsData) {
+
+    if (!index.hasThreadsData) {
       this.props.index.getReadThreadList({
         sequence, 
         filter: { categoryids: categoryIds, types: newTypes, essence, attention, sort } 
