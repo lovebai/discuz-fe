@@ -79,19 +79,19 @@ class CustomApplyDisplay extends React.Component {
       let authorInfo = {};
       // 是否是详情页
       if (siteData.isDetailPage) {
-        authorInfo = thread.authorInfo;
+        authorInfo = thread?.threadData?.user;
       } else {
         const { data } = index._findAssignThread(siteData?.threadId) || {};
         authorInfo = data?.user || {};
       }
-      const uid = authorInfo.id || authorInfo.userId;
+      const uid = authorInfo.userId;
       const users = registerUsers.filter(item => item.userId !== uid);
       let currentNumber = body?.currentNumber - 1;
       // 没有报名
       if (!isRegistered) {
         users.unshift({
           userId: uid,
-          avatar: authorInfo.avatarUrl || authorInfo.avatar,
+          avatar: authorInfo.avatar,
           nickname: authorInfo.nickname,
         });
         currentNumber = body?.currentNumber + 1;
