@@ -1,99 +1,230 @@
 import React from 'react';
+import { inject } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
-import { Button, Icon, Avatar } from '@discuzq/design';
+import { Button, Icon, Avatar, Toast } from '@discuzq/design';
+import { createRegister } from '@discuzq/sdk/dist/api/plugin/create-register';
+import { deleteRegister } from '@discuzq/sdk/dist/api/plugin/delete-register';
+import Router from '@discuzq/sdk/dist/router';
 import PopupList from '@components/thread/popup-list';
+import CountDown from '@common/utils/count-down';
+import LoginHelper from '@common/utils/login-helper';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
 
-export default class CustomApplyDisplay extends React.Component {
+let countDownIns = null;
+@inject('thread')
+@inject('index')
+@inject('user')
+class CustomApplyDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      imgs: [
-        {
-          url: '',
-          name: 'A',
-        },
-        {
-          url: '',
-          name: 'b',
-        },
-        {
-          url: '',
-          name: 'dd',
-        },
-        {
-          url: '',
-          name: 'dd',
-        },
-      ],
       popupShow: false,
+      loading: false,
+      minutes: 0,
+      seconds: 0,
+      isApplyEnd: false, // 报名时间是否已结束
     };
   }
 
-  getUserCls = () => {
-    if (this.state.imgs.length >= 3) return styles.three;
-    if (this.state.imgs.length === 2) return styles.two;
-    if (this.state.imgs.length === 1) return styles.one;
+  componentDidMount() {
+    if (!countDownIns) countDownIns = new CountDown();
+    const { renderData } = this.props;
+    const { body } = renderData || {};
+    if (body?.registerEndTime) {
+      const time = body?.registerEndTime?.replace(/-/g, '/');
+      countDownIns.start(time, (res) => {
+        const { days, hours, minutes, seconds } = res;
+        const ms = (days * 24 * 60) + (hours * 60) + minutes;
+        this.setState({ minutes: ms, seconds });
+        if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+          this.setState({ isApplyEnd: true });
+          countDownIns?.stop();
+        }
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (!countDownIns) countDownIns?.stop();
+  }
+
+  getUserCls = (users = []) => {
+    if (users.length >= 3) return styles.three;
+    if (users.length === 2) return styles.two;
+    if (users.length === 1) return styles.one;
+  };
+
+  getActStatusText = () => {
+    const { body } = this.props.renderData || {};
+    const { isApplyEnd } = this.state;
+    if (body?.isExpired) return '活动已过期';
+    if (body?.isMemberFull) return '人数已满';
+    if (isApplyEnd) return '报名已结束';
+  };
+
+  handleActOperate = async () => {
+    const { renderData, thread, index, siteData, user } = this.props;
+    if (!user.isLogin()) {
+      LoginHelper.saveAndLogin();
+      return;
+    }
+    const { tomId, body } = renderData || {};
+    const { isRegistered, activityId, registerUsers, totalNumber } = body;
+    const action = isRegistered ? deleteRegister : createRegister;
+    this.setState({ loading: true });
+    const res = await action({ data: { activityId } });
+    this.setState({ loading: false });
+    if (res.code === 0) {
+      let authorInfo = {};
+      // 是否是详情页
+      if (siteData.isDetailPage) {
+        authorInfo = thread?.threadData?.user;
+      } else {
+        const { data } = index._findAssignThread(siteData?.threadId) || {};
+        authorInfo = data?.user || {};
+      }
+      const uid = authorInfo.userId;
+      const users = registerUsers.filter(item => item.userId !== uid);
+      let currentNumber = body?.currentNumber - 1;
+      // 没有报名
+      if (!isRegistered) {
+        users.unshift({
+          userId: uid,
+          avatar: authorInfo.avatar,
+          nickname: authorInfo.nickname,
+        });
+        currentNumber = body?.currentNumber + 1;
+      }
+      const tid = siteData.isDetailPage ? thread?.threadData?.id : siteData?.threadId;
+      const tomValue = {
+        body: {
+          ...body,
+          isRegistered: !isRegistered,
+          registerUsers: users,
+          currentNumber,
+          isMemberFull: currentNumber === totalNumber,
+        },
+        tomId,
+        threadId: tid,
+      };
+      thread.updateThread(tomId, tomValue);
+      const threadData = index.updateListThreadIndexes(tid, tomId, tomValue);
+      if (threadData && siteData.recomputeRowHeights) siteData.recomputeRowHeights(threadData);
+      Toast.info({ content: isRegistered ? '取消报名成功' : '报名成功' });
+    } else Toast.error({ content: res.msg || '报名失败' });
+    return res;
+  };
+
+  handleMoreClick = () => {
+    const { siteData } = this.props;
+    if (siteData?.threadId) {
+      Router.push({ url: `/indexPages/thread/index?id=${siteData?.threadId}` });
+    }
   };
 
   render() {
-    const { siteData } = this.props;
+    const { siteData, renderData } = this.props;
+    const { isApplyEnd, minutes, seconds } = this.state;
+    if (!renderData) return null;
+    const { body } = renderData || {};
+    const { isRegistered } = body;
+    const isCanNotApply = body?.isExpired || body?.isMemberFull || isApplyEnd;
+
     const { popupShow } = this.state;
-    const platform = siteData.platform === 'h5' ? styles.h5 : styles.pc;
     return (
       <>
-        <View className={classNames(styles.wrapper, platform)}>
+        <View className={classNames(styles.wrapper, styles.h5)}>
           <View className={styles['wrapper-header']}>
             <View className={styles['wrapper-header__left']}>
-              我是报名帖标题哈哈哈哈哈哈哈哈哈哈哈哈啊哈哈哈哈
+              {body?.title && body?.title}
             </View>
             <View className={styles['wrapper-header__right']}>
-              还有<Text className={styles['text-primary']}>14</Text>分<Text className={styles['text-primary']}>13</Text>秒结束报名
+              {minutes && seconds && (
+                <>
+                  还有<Text className={styles['text-primary']}>{minutes}</Text>分<Text className={styles['text-primary']}>{seconds}</Text>秒结束报名
+                </>
+              )}
+              {(minutes === 0 && seconds === 0) && (
+                <>
+                  活动已结束
+                </>
+              )}
             </View>
           </View>
           <View className={styles['wrapper-content']}>
-            <View className={styles['wrapper-content__detail']}>
-              活动详情活动内容活动内容活动内容活动内容活动内容活动详情活动内容活动内容活动内容活动内容活动内容活动详情活动内容活动内容活动内容活动内容活动内容活动详情活动内容活动内容
-            </View>
-            <View className={classNames(styles['text-primary'], styles.more)}>查看详情 ></View>
-            <View className={styles['wrapper-content__tip']}>
+            {body?.content && (
+              <>
+                <View className={
+                  classNames(styles['wrapper-content__detail'], {
+                    [styles['text-clamp']]: !siteData?.isDetailPage,
+                  })
+                }>
+                  {body?.content}
+                </View>
+                {!siteData?.isDetailPage && (
+                  <View
+                    className={classNames(styles['text-primary'], styles.more)}
+                    onClick={this.handleMoreClick}
+                  >查看详情 ></View>
+                )}
+              </>
+            )}
+            <View className={classNames(styles['wrapper-content__tip'], styles.mt4n)}>
               <Icon name="TimeOutlined" />
               <View className={styles['wrapper-tip__content']}>
                 <Text className={styles['wrapper-tip_title']}>活动时间</Text>
-                <Text className={styles['wrapper-tip_detail']}>2021/08/18 19：00 ~ 2021/08/19 19：00</Text>
+                <Text className={styles['wrapper-tip_detail']}>
+                  {body?.activityStartTime}~{body?.activityEndTime}
+                </Text>
               </View>
             </View>
-            <View className={styles['wrapper-content__tip']}>
-              <Icon name="PositionOutlined" />
-              <View className={styles['wrapper-tip__content']}>
-                <Text className={styles['wrapper-tip_title']}>活动地址</Text>
-                <Text className={styles['wrapper-tip_detail']}>深圳市南山区人才公园</Text>
+            {body?.position?.location && (
+              <View className={styles['wrapper-content__tip']}>
+                <Icon name="PositionOutlined" />
+                <View className={styles['wrapper-tip__content']}>
+                  <Text className={styles['wrapper-tip_title']}>活动地址</Text>
+                  <Text className={styles['wrapper-tip_detail']}>{body?.position?.location}</Text>
+                </View>
               </View>
-            </View>
-            <View className={styles['wrapper-content__limit']}>
-              限<Text className={styles['text-primary']}>14</Text>人参与
-            </View>
+            )}
+            {body?.totalNumber && (
+              <View className={styles['wrapper-content__limit']}>
+                限<Text className={styles['text-primary']}>{body?.totalNumber}</Text>人参与
+              </View>
+            )}
           </View>
           <View className={styles['wrapper-footer']}>
             <View className={styles['wrapper-footer__top']}>
               <View
-                className={classNames(styles.users, this.getUserCls())}
+                className={classNames(styles.users, this.getUserCls(body?.registerUsers || []))}
                 onClick={() => this.setState({ popupShow: true })}
               >
-                {this.state.imgs.map((item, index) => {
-                  if (index <= 2) return <Avatar circle={true} size="small" text={item.name} image={item.url} key="index" />;
+                {(body?.registerUsers || []).map((item, index) => {
+                  if (index <= 2) return <Avatar circle={true} size="small" text={item.nickname} image={item.avatar} key={item.nickname} />;
                   return null;
                 })}
-                <Text className={styles.m10}>{this.state.imgs.length}人已报名</Text>
+                <Text className={styles.m10}>{body?.currentNumber}人已报名</Text>
               </View>
-              <Button type="primary">立即报名</Button>
+              {!isCanNotApply && (
+                <Button
+                  type="primary"
+                  loading={this.state.loading}
+                  className={classNames({
+                    [styles.isregisterd]: isRegistered,
+                  })}
+                  onClick={this.handleActOperate}
+                >
+                  {isRegistered ? '取消报名' : '立即报名'}
+                </Button>
+              )}
             </View>
-            <Button full disabled className={styles.donebtn}>人数已满</Button>
+            {isCanNotApply && <Button full disabled className={styles.donebtn}>{this.getActStatusText()}</Button>}
           </View>
         </View>
         {popupShow && <PopupList
           isCustom
+          activityId={body?.activityId}
           visible={popupShow}
           onHidden={() => this.setState({ popupShow: false })}
           tipData={{ platform: siteData.platform }}
@@ -102,3 +233,5 @@ export default class CustomApplyDisplay extends React.Component {
     );
   }
 };
+
+export default CustomApplyDisplay;

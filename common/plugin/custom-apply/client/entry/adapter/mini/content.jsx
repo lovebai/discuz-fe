@@ -4,6 +4,7 @@ import { Icon, Dialog, Button, Input, Textarea, Radio, Toast } from '@discuzq/de
 import DatePickers from '@components/thread-post/date-time-picker';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';
+import { formatPostData } from '@common/plugin/custom-apply/client/common';
 import styles from '../index.module.scss';
 
 const TimeType = {
@@ -35,6 +36,13 @@ export default class CustomApplyEntryContent extends React.Component {
     };
 
     this.timeRef = React.createRef();
+  }
+
+  componentDidUpdate(prevProps) {
+    if ((this.props?.renderData?.body?.activityStartTime !== prevProps?.renderData?.body?.activityStartTime)
+      && this.props?.renderData?.body.activityStartTime) {
+      this.setState({ body: formatPostData(this.props?.renderData?.body) });
+    }
   }
 
   handleTimeChange = (date, type) => {

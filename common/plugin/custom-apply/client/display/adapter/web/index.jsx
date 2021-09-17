@@ -6,7 +6,6 @@ import { createRegister } from '@discuzq/sdk/dist/api/plugin/create-register';
 import { deleteRegister } from '@discuzq/sdk/dist/api/plugin/delete-register';
 import PopupList from '@components/thread/popup-list';
 import CountDown from '@common/utils/count-down';
-import { debounce } from '@common/utils/throttle-debounce';
 import LoginHelper from '@common/utils/login-helper';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
@@ -140,7 +139,16 @@ class CustomApplyDisplay extends React.Component {
               {body?.title && body?.title}
             </div>
             <div className={styles['wrapper-header__right']}>
-              还有<span className={styles['text-primary']}>{minutes}</span>分<span className={styles['text-primary']}>{seconds}</span>秒结束报名
+              {minutes && seconds && (
+                <>
+                  还有<span className={styles['text-primary']}>{minutes}</span>分<span className={styles['text-primary']}>{seconds}</span>秒结束报名
+                </>
+              )}
+              {(minutes === 0 && seconds === 0) && (
+                <>
+                  活动已结束
+                </>
+              )}
             </div>
           </div>
           <div className={styles['wrapper-content']}>
@@ -165,7 +173,7 @@ class CustomApplyDisplay extends React.Component {
               <Icon name="TimeOutlined" />
               <div className={styles['wrapper-tip__content']}>
                 <span className={styles['wrapper-tip_title']}>活动时间</span>
-                <span className={styles['wrapper-tip_detail']}>2
+                <span className={styles['wrapper-tip_detail']}>
                   {body?.activityStartTime}~{body?.activityEndTime}
                 </span>
               </div>
@@ -184,18 +192,18 @@ class CustomApplyDisplay extends React.Component {
             )}
           </div>
           <div className={styles['wrapper-footer']}>
-            {!isCanNotApply && (
-              <div className={styles['wrapper-footer__top']}>
-                <div
-                  className={classNames(styles.users, this.getUserCls(body?.registerUsers || []))}
-                  onClick={() => this.setState({ popupShow: true })}
-                >
-                  {(body?.registerUsers || []).map((item, index) => {
-                    if (index <= 2) return <Avatar circle={true} size="small" text={item.nickname} image={item.avatar} key={item.nickname} />;
-                    return null;
-                  })}
-                  <span className={styles.m10}>{body?.currentNumber}人已报名</span>
-                </div>
+            <div className={styles['wrapper-footer__top']}>
+              <div
+                className={classNames(styles.users, this.getUserCls(body?.registerUsers || []))}
+                onClick={() => this.setState({ popupShow: true })}
+              >
+                {(body?.registerUsers || []).map((item, index) => {
+                  if (index <= 2) return <Avatar circle={true} size="small" text={item.nickname} image={item.avatar} key={item.nickname} />;
+                  return null;
+                })}
+                <span className={styles.m10}>{body?.currentNumber}人已报名</span>
+              </div>
+              {!isCanNotApply && (
                 <Button
                   type="primary"
                   loading={this.state.loading}
@@ -206,8 +214,8 @@ class CustomApplyDisplay extends React.Component {
                 >
                   {isRegistered ? '取消报名' : '立即报名'}
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
             {isCanNotApply && <Button full disabled className={styles.donebtn}>{this.getActStatusText()}</Button>}
           </div>
         </div>
