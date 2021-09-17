@@ -152,7 +152,7 @@ const RenderThreadContent = inject('site', 'user')(
           </View>
           {props?.user?.isLogin() && isApproved && (
             <View className={styles.more} onClick={onMoreClick}>
-              <Icon size={20} color="#8590A6" name="MoreVOutlined"></Icon>
+              <Icon size={20} className={styles.icon} name="MoreVOutlined"></Icon>
             </View>
           )}
         </View>
@@ -162,7 +162,7 @@ const RenderThreadContent = inject('site', 'user')(
           {threadStore?.threadData?.title && <View className={styles.title}>{threadStore?.threadData?.title}</View>}
 
           {/* 文字 */}
-          {text && <PostContent needShowMore={false} content={text || ''} />}
+          {text && <PostContent useShowMore={false} content={text || ''} />}
 
           {/* 视频 */}
           {parseContent.VIDEO && (

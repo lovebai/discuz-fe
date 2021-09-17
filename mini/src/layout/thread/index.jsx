@@ -9,7 +9,7 @@ import footer from './footer.module.scss';
 
 import NoMore from './components/no-more';
 import LoadingTips from './components/loading-tips';
-import styleVar from '@common/styles/theme/default.scss.json';
+// import styleVar from '@common/styles/theme/default.scss.json';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import Input from '@discuzq/design/dist/components/input/index';
 import Toast from '@components/toast';
@@ -33,6 +33,7 @@ import classNames from 'classnames';
 import { debounce } from '@common/utils/throttle-debounce';
 import styles from './post/index.module.scss';
 import Router from '@discuzq/sdk/dist/router';
+import canPublish from '@common/utils/can-publish';
 import { parseContentData } from './utils';
 
 @inject('site')
@@ -302,11 +303,13 @@ class ThreadH5Page extends React.Component {
 
   // 点击评论
   onInputClick() {
-    if (!this.props.user.isLogin()) {
+    const {user, site, thread } = this.props;
+    if (!user.isLogin()) {
       Toast.info({ content: '请先登录!' });
       goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
+    if(!canPublish(user, site, 'reply', thread?.threadData?.threadId)) return;
     this.commentType = 'comment';
 
     this.setState({
@@ -635,7 +638,7 @@ class ThreadH5Page extends React.Component {
     const id = this.props.thread?.threadData?.id;
     const params = {
       id,
-      pid: this.comment.id,
+      postId: this.comment.id,
       content: val,
       attachments: [],
     };
@@ -681,11 +684,13 @@ class ThreadH5Page extends React.Component {
 
   // 点击评论的回复
   replyClick(comment) {
-    if (!this.props.user.isLogin()) {
+    const {user, site, thread } = this.props;
+    if (!user.isLogin()) {
       Toast.info({ content: '请先登录!' });
       goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
+    if(!canPublish(user, site, 'reply', thread?.threadData?.threadId)) return;
     this.commentType = 'reply';
 
     this.commentData = comment;
@@ -1120,15 +1125,17 @@ class ThreadH5Page extends React.Component {
                   <Icon size="20" name="MessageOutlined"></Icon>
                 </View>
                 <Icon
-                  color={this.props.thread?.threadData?.isLike ? styleVar['--color-primary'] : ''}
-                  className={footer.icon}
+                  className={classNames(footer.icon, {
+                    [footer.isliked]: this.props.thread?.threadData?.isLike,
+                  })}
                   onClick={debounce(() => this.onLikeClick(), 500)}
                   size="20"
                   name="LikeOutlined"
                 ></Icon>
                 <Icon
-                  color={this.props.thread?.isFavorite ? styleVar['--color-primary'] : ''}
-                  className={footer.icon}
+                  className={classNames(footer.icon, {
+                    [footer.isliked]: this.props.thread?.isFavorite,
+                  })}
                   onClick={debounce(() => this.onCollectionClick(), 500)}
                   size="20"
                   name="CollectOutlinedBig"

@@ -429,7 +429,7 @@ class UserAction extends SiteStore {
   // 登录后获取新的用户信息
   @action
   async updateUserInfo(id) {
-    const userInfo = await readUser({ params: { pid: id } });
+    const userInfo = await readUser({ params: { userId: id } });
     if (!userInfo || userInfo?.code !== 0) {
       return;
     }
@@ -549,7 +549,7 @@ class UserAction extends SiteStore {
   @action
   async getAssignUserInfo(userId) {
     try {
-      const userInfo = await readUser({ params: { pid: userId } });
+      const userInfo = await readUser({ params: { userId: userId } });
       if (userInfo.code === 0 && userInfo.data) {
         return userInfo.data;
       }

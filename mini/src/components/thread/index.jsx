@@ -33,7 +33,8 @@ class Index extends React.Component {
       minHeight: 0,
       useShowMore: true,
       videoH: 0,
-      showCommentList: false
+      showCommentList: false,
+      shareClickRandom: '', // 主要是用于关闭表情
     }
 
     this.threadStyleId = `thread-style-id-${randomStr()}`
@@ -210,8 +211,9 @@ class Index extends React.Component {
       } else {
         Toast.info({ content: '暂无权限查看详情，请联系管理员' });
       }
-      return true
+      return false
     }
+    return true
   }
 
   onShare = () => {
@@ -258,7 +260,7 @@ class Index extends React.Component {
   canPublish = () => canPublish(this.props.user, this.props.site)
 
   render() {
-    const { data, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null, extraTag } = this.props;
+    const { data, thread:threadStore, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null,extraTag} = this.props;
     const { platform = 'pc' } = site;
     if (!data) {
       return <NoData />;
@@ -284,8 +286,8 @@ class Index extends React.Component {
     const { isEssence, isPrice, isRedPack, isReward } = displayTag;
     const { getShareData, getShareContent } = this.props.user
     const { shareNickname, shareAvatar, shareThreadid, shareContent } = this.props.user
-    const { minHeight, useShowMore, videoH } = this.state
-    
+    const { minHeight, useShowMore, videoH, shareClickRandom } = this.state
+
     return (
       <View className={`${styles.container} ${className} ${showBottomStyle && styles.containerBottom} ${platform === 'pc' && styles.containerPC}`} style={{ minHeight: `${minHeight}px` }} id={this.threadStyleId}>
         {
@@ -353,6 +355,7 @@ class Index extends React.Component {
                 data={data}
                 user={this.props.user}
                 updateViewCount={this.updateViewCount}
+                shareIconClick={() => this.setState({ shareClickRandom: Math.random() })}
               />
             </>
           ) : <Skeleton style={{ minHeight: `${minHeight}px` }} />
@@ -367,6 +370,7 @@ class Index extends React.Component {
                 ...data,
               },
             }}
+            threadStore={threadStore}
             userInfo={this.props.user.userInfo}
             canPublish={this.canPublish}
             commentList={commentList}
@@ -376,6 +380,7 @@ class Index extends React.Component {
             requestError={data.requestError}
             postCount={data?.likeReward?.postCount}
             platform={platform}
+            shareClickRandom={shareClickRandom}
           ></Comment>
         )}
       </View>

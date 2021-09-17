@@ -17,7 +17,7 @@ import { updateThreadAssignInfoInLists } from '@common/store/thread-list/list-bu
 @observer
 @withShare({
   needLogin: true,
-  showShareTimeline: false
+  showShareTimeline: true
 })
 class Index extends React.Component {
   state = {

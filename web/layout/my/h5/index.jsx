@@ -199,6 +199,7 @@ class H5MyPage extends React.Component {
             onClose={this.handlePreviewBgImage}
             imgUrls={[this.getBackgroundUrl()]}
             currentUrl={this.getBackgroundUrl()}
+            onError={() => this.props.user?.backGroundUrl || ''}
           />
         )}
       </BaseLayout>
