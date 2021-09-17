@@ -9,7 +9,7 @@ CLOUD:
   cos:  
     bucket: discuz-ssr
     region: ap-guangzhou
-    object: serverless/ssr.zip
+    object: /serverless/ssr.zip
   serverless: 
     component: http # (必选) 组件名称
     name: discuz-ssr # 必选) 组件实例名称.
