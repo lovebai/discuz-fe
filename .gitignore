@@ -29,3 +29,5 @@ dzq-default-web-static
 .sls
 dist/
 mini/dist
+
+sls.config.yaml
