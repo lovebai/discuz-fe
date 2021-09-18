@@ -1,5 +1,5 @@
 import React from 'react';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
 import { Button, Icon, Avatar, Toast } from '@discuzq/design';
 import { createRegister } from '@discuzq/sdk/dist/api/plugin/create-register';
@@ -15,6 +15,7 @@ let countDownIns = null;
 @inject('thread')
 @inject('index')
 @inject('user')
+@observer
 class CustomApplyDisplay extends React.Component {
   constructor(props) {
     super(props);

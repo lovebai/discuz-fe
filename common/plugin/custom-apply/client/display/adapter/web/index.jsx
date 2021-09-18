@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'next/router';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { Button, Icon, Avatar, Toast } from '@discuzq/design';
 import { createRegister } from '@discuzq/sdk/dist/api/plugin/create-register';
 import { deleteRegister } from '@discuzq/sdk/dist/api/plugin/delete-register';
@@ -14,6 +14,7 @@ let countDownIns = null;
 @inject('thread')
 @inject('index')
 @inject('user')
+@observer
 class CustomApplyDisplay extends React.Component {
   constructor(props) {
     super(props);
