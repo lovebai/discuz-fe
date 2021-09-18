@@ -29,14 +29,16 @@ class UserCenterPost extends React.Component {
 
   // 获取发帖相关数据
   handleThreadPostData = async () => {
-    const { readPostCategory, setCategorySelected, setPostData } = this.props.threadPost;
-    const { code, data = [], msg } = await readPostCategory();
+    const { readPostCategory,getCategoriesCanCreate, setCategorySelected, setPostData } = this.props.threadPost;
+    const { code, msg } = await readPostCategory();
     if (code !== 0) {
       Toast.error({
         content: msg || '获取发帖分类失败',
       });
       return { success: false, msg };
     }
+    // 获取可新建发帖的分类
+    const data = getCategoriesCanCreate();
     const parent = data[0];
     const child = !!parent.children.length ? parent.children[0] : {};
     setCategorySelected({ parent, child });
@@ -85,9 +87,9 @@ class UserCenterPost extends React.Component {
     return (
       <div
         className={styles.userCenterPost}
-        // onClick={(event) => {
-        //   Router.push({ url: '/thread/post' });
-        // }}
+      // onClick={(event) => {
+      //   Router.push({ url: '/thread/post' });
+      // }}
       >
         <div className={styles.userCenterPostTitle}>发帖</div>
         <div className={styles.userCenterPostContent}>
