@@ -7,6 +7,7 @@ import { defaultOperation } from '@common/constants/const';
 import { THREAD_TYPE } from '@common/constants/thread-post';
 import Avatar from '@components/avatar';
 import throttle from '@common/utils/thottle.js';
+import xss from '@common/utils/xss';
 
 // 用户中心发帖模块
 @inject('user')
@@ -66,6 +67,8 @@ class UserCenterPost extends React.Component {
     this.setState({
       isPostDisabled: true,
     });
+    // 对用户中心的postData.contentText做xss处理
+    setPostData({ contentText: xss(postData.contentText) });
     const result = await createThread();
     if (result.code === 0) {
       Toast.success({

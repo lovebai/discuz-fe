@@ -7,6 +7,7 @@ import Toast from '@discuzq/design/dist/components/toast/index';
 import Avatar from '@components/avatar';
 import throttle from '@common/utils/thottle.js';
 import debounce from '@common/utils/debounce.js';
+import xss from '@common/utils/xss';
 import styles from './index.module.scss';
 
 // 用户中心发帖模块
@@ -60,7 +61,6 @@ class UserCenterPost extends React.Component {
       content: '发布中...',
     });
     const { createThread, setPostData, postData } = this.props.threadPost;
-    setPostData({ contentText: this.state.value });
 
     // 如果开始没有获取到发帖分类的数据--尝试重新获取
     if (!postData.categoryId) {
@@ -70,6 +70,7 @@ class UserCenterPost extends React.Component {
     this.setState({
       isPostDisabled: true,
     });
+    setPostData({ contentText: xss(this.state.value) });
     const result = await createThread();
     if (result.code === 0) {
       Toast.success({
