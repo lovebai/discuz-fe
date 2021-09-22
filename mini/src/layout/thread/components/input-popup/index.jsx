@@ -287,7 +287,7 @@ const InputPop = (props) => {
                 maxLength={5000}
                 rows={4}
                 showLimit={false}
-                value={value}
+                value={debounce(() => value, 0)}
                 onBlur={(e) => {
                   onChange(e);
                 }}
