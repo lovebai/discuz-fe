@@ -102,7 +102,8 @@ class PostPage extends React.Component {
   handleRouteChange = (url) => {
     // 如果不是修改支付密码的页面则重置发帖信息
     if ((url || '').indexOf('/my/edit/paypwd') === -1
-    && (url || '').indexOf('/pay/middle') === -1) {
+    && (url || '').indexOf('/pay/middle') === -1
+    && (url || '').indexOf('/my/edit/find-paypwd') === -1) {
       if (this.vditor) this.vditor.setValue('');
       this.props.threadPost.resetPostData();
     }
@@ -731,6 +732,7 @@ class PostPage extends React.Component {
     if (vditorEl) {
       const errorImg = vditorEl.querySelectorAll('.editor-upload-error');
       if (errorImg.length) {
+        this.jumpToErrorImgElement(errorImg[0]);
         Toast.error({
           content: errorTips,
           hasMask: true,
@@ -786,6 +788,11 @@ class PostPage extends React.Component {
       const uploadErrorImages = document.querySelectorAll('img[alt=uploadError]');
       for (let i = 0; i < uploadErrorImages.length; i++) {
         const element = uploadErrorImages[i];
+        // 如果是第一个，则滚动至此
+        if (i === 0) {
+          this.jumpToErrorImgElement(element);
+        }
+
         element.setAttribute('class', 'editor-upload-error');
       }
 
@@ -813,7 +820,6 @@ class PostPage extends React.Component {
     if (!(isAutoSave || isPay)) this.toastInstance = Toast.loading({ content: isDraft ? '保存草稿中' : '发布中...', hasMask: true });
     if (threadPost.postData.threadId) ret = await threadPost.updateThread(threadPost.postData.threadId);
     else ret = await threadPost.createThread();
-    console.log(ret);
     const { code, data, msg } = ret;
     if (code === 0) {
       this.setState({ data });
@@ -848,6 +854,23 @@ class PostPage extends React.Component {
     }
     this.saveDataLocal();
     Toast.error({ content: msg });
+  }
+
+  /**
+   * 跳转到第一个上传错误图片
+   * @param {*} element
+   */
+  jumpToErrorImgElement = (element) => {
+    const { top }  = element.getBoundingClientRect();
+
+    const editorbox = document.querySelector('#post-inner');
+
+    const currentScrollTop = editorbox.scrollTop;
+
+    editorbox.scrollTo({
+      top: currentScrollTop + top,
+      behavior: 'smooth',
+    });
   }
 
   setIndexPageData = () => {
