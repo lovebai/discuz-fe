@@ -2,24 +2,3 @@ TITLE: Discuz! Q
 HOST: https://www.techo.chat/
 APPID: wx7f778478f6f501fa
 VERSION: v3.0.210907
-CLOUD: 
-  secretId: AKIDLVP3QaT5QUHnLdfQu74k9H8j36sOdbIj # 请勿泄漏！！！
-  secretKey: B6j5B0Ypqa3E9nBI8i26tQgfMnxqSnra # 请勿泄漏！！！
-  appid: 1303099652 # 请勿泄漏！！！
-  cos:  
-    bucket: discuz-ssr
-    region: ap-guangzhou
-    object: /serverless/ssr.zip
-  serverless: 
-    component: http # (必选) 组件名称
-    name: discuz-ssr # 必选) 组件实例名称.
-    stage: releases
-    inputs:
-      region: ap-guangzhou # 云函数所在区域
-      faas: # 函数配置相关
-        framework: nextjs #选择框架，此处以 express 为例
-        runtime: Nodejs12.16
-        name: discuz-ssr-test # 云函数名称
-        timeout: 10 # 超时时间，单位秒
-        memorySize: 1024 # 内存大小，默认 512 MB
-
