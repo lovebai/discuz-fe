@@ -45,6 +45,9 @@ export default function HOCFetchSiteData(Component, _isPass) {
     // 应用初始化
     static async getInitialProps(ctx) {
       try {
+
+        global.ctx = ctx;
+
         let platform = 'static';
         let siteConfig = {};
         let userInfo;
@@ -124,9 +127,10 @@ export default function HOCFetchSiteData(Component, _isPass) {
       } else {
         isNoSiteData = !serverSite;
       }
+
       this.state = {
         isNoSiteData,
-        isPass: false,
+        isPass: isServer() ? true : false, // SSR渲染，默认通过，由浏览器进行验证
       };
     }
 
@@ -179,7 +183,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
       }
 
       user.updateLoginStatus(loginStatus);
-      let defaultPass = this.isPass();
+      let defaultPass = this.isPass(isNoSiteData);
       // 自定义pass逻辑
       if ( _isPass && defaultPass) {
         defaultPass = _isPass(defaultPass);
@@ -342,9 +346,8 @@ export default function HOCFetchSiteData(Component, _isPass) {
     }
 
     // 检查是否满足渲染条件
-    isPass() {
+    isPass(isNoSiteData) {
       const { site, router, user, commonLogin } = this.props;
-      const { isNoSiteData } = this.state;
       if (site && site.webConfig) {
         isNoSiteData && this.setState({
           isNoSiteData: false,
@@ -431,10 +434,12 @@ export default function HOCFetchSiteData(Component, _isPass) {
     }
 
     render() {
+
       const { isNoSiteData, isPass } = this.state;
       const { site } = this.props;
       // CSR不渲染任何内容
       if (site.platform === 'static') return null;
+      
       if (isNoSiteData || !isPass) {
         return (
           <div className={styles.loadingBox}>
