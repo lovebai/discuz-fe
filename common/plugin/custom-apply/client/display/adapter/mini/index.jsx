@@ -60,7 +60,7 @@ class CustomApplyDisplay extends React.Component {
     const { body } = this.props.renderData || {};
     const { isApplyEnd } = this.state;
     if (body?.isExpired) return '活动已过期';
-    if (body?.isMemberFull) return '人数已满';
+    if (body?.isMemberFull || body.totalNumber === body.currentNumber) return '人数已满';
     if (isApplyEnd) return '报名已结束';
   };
 
@@ -129,8 +129,9 @@ class CustomApplyDisplay extends React.Component {
     const { isApplyEnd, minutes, seconds } = this.state;
     if (!renderData) return null;
     const { body } = renderData || {};
-    const { isRegistered } = body;
-    const isCanNotApply = body?.isExpired || body?.isMemberFull || isApplyEnd;
+    const { isRegistered, currentNumber, totalNumber } = body;
+    const isCanNotApply = body?.isExpired
+      || (body?.isMemberFull || totalNumber === currentNumber) || isApplyEnd;
 
     const { popupShow } = this.state;
     return (
@@ -207,7 +208,7 @@ class CustomApplyDisplay extends React.Component {
                 })}
                 <Text className={styles.m10}>{body?.currentNumber}人已报名</Text>
               </View>
-              {!isCanNotApply && (
+              {(!isCanNotApply || isRegistered) && (
                 <Button
                   type="primary"
                   loading={this.state.loading}

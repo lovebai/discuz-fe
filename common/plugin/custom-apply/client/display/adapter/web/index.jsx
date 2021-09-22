@@ -204,7 +204,7 @@ class CustomApplyDisplay extends React.Component {
                 })}
                 <span className={styles.m10}>{body?.currentNumber}人已报名</span>
               </div>
-              {!isCanNotApply && (
+              {(!isCanNotApply || isRegistered) && (
                 <Button
                   type="primary"
                   loading={this.state.loading}

@@ -52,7 +52,7 @@ export default class CustomApplyEntry extends React.Component {
     const { pluginConfig } = siteData;
     if (!pluginConfig) return false;
     const [act] = (pluginConfig || []).filter(item => item.app_id === PLUGIN_TOMID_CONFIG.apply);
-    if (act?.status === 1) return true;
+    if (act?.authority?.canUsePlugin) return true;
     return false;
   };
 
