@@ -6,6 +6,7 @@ import DatePickers from '@components/thread/date-picker';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';
+import { PLUGIN_TOMID_CONFIG } from '@common/plugin/plugin-tomid-config';
 import { getPostData, formatPostData } from '@common/plugin/custom-apply/client/common';
 import styles from '../index.module.scss';
 
@@ -167,6 +168,18 @@ export default class CustomApplyEntry extends React.Component {
     return new Date();
   };
 
+  /**
+   * 插件入口是否显示判断
+   */
+  isShowApplyIcon = () => {
+    const { siteData } = this.props;
+    const { pluginConfig } = siteData;
+    if (!pluginConfig) return false;
+    const [act] = (pluginConfig || []).filter(item => item.app_id === PLUGIN_TOMID_CONFIG.apply);
+    if (act?.status === 1) return true;
+    return false;
+  };
+
   render() {
     const { siteData } = this.props;
     const platform = siteData.platform === 'h5' ? styles.h5 : styles.pc;
@@ -174,6 +187,8 @@ export default class CustomApplyEntry extends React.Component {
     const { visible, showMore, body, showMobileDatePicker } = this.state;
     const moreClass = !showMore
       ? classNames(styles['dzqp-act--more'], styles.fold) : classNames(styles['dzqp-act--more'], styles.expand);
+
+    if (!this.isShowApplyIcon()) return null;
 
     return (
       <>

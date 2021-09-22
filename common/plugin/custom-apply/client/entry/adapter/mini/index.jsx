@@ -3,6 +3,7 @@ import { View, Text } from '@tarojs/components';
 import { Icon, Dialog, Toast } from '@discuzq/design';
 import CustomApplyEntryContent from './content';
 import { getPostData } from '@common/plugin/custom-apply/client/common';
+import { PLUGIN_TOMID_CONFIG } from '@common/plugin/plugin-tomid-config';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
 
@@ -46,7 +47,17 @@ export default class CustomApplyEntry extends React.Component {
     Dialog.hide();
   };
 
+  isShowApplyIcon = () => {
+    const { siteData } = this.props;
+    const { pluginConfig } = siteData;
+    if (!pluginConfig) return false;
+    const [act] = (pluginConfig || []).filter(item => item.app_id === PLUGIN_TOMID_CONFIG.apply);
+    if (act?.status === 1) return true;
+    return false;
+  };
+
   render() {
+    if (!this.isShowApplyIcon()) return null;
     return (
       <>
         <Icon
