@@ -230,11 +230,11 @@ class IndexAction extends IndexStore {
    * @returns
    */
   @action
-  async getReadThreadList({ filter = {}, sequence = 0, perPage = 10, page = 1, isDraft = false } = {}) {
+  async getReadThreadList({ filter = {}, sequence = 0, perPage = 10, page = 1, isDraft = false } = {}, ctx = null) {
     this.latestReq += 1;
     const currentReq = this.latestReq;
 
-    const result = await this.threadList.fetchList({ namespace: this.namespace, perPage, page, filter, sequence });
+    const result = await this.threadList.fetchList({ namespace: this.namespace, perPage, page, filter, sequence }, ctx);
     if (currentReq !== this.latestReq) {
       return;
     }
@@ -276,8 +276,9 @@ class IndexAction extends IndexStore {
    * @returns
    */
   @action.bound
-  async getReadCategories() {
-    const result = await readCategories();
+  async getReadCategories(opt = {}, ctx = null) {
+    console.log(opt);
+    const result = await readCategories(opt, ctx);
     if (result.code === 0) {
       if (result.data) {
         const data = [...result.data];
@@ -301,8 +302,8 @@ class IndexAction extends IndexStore {
    * @returns
    */
   @action
-  async getRreadStickList(categoryIds = []) {
-    const result = await readStickList({ params: { categoryIds } });
+  async getRreadStickList(categoryIds = [], ctx = null) {
+    const result = await readStickList({ params: { categoryIds } }, ctx);
     if (result.code === 0) {
       this.sticks = null;
       this.setSticks(result.data || []);
