@@ -121,7 +121,7 @@ export { default as createWalletCash } from './wallet/createWalletCash';
 export { default as getCosTmpKey } from './common/getCosTmpKey';
 export { default as updateAttachment } from './common/updateAttachment';
 // 查看附件链接状态
-export { default as readDownloadAttachmentStatus } from './common/readDownloadAttachmentStatus';
+export { default as readDownloadAttachment } from './common/readDownloadAttachment';
 
 // 投票
 export { default as createVote } from './thread/create-vote';
