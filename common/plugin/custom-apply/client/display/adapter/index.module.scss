@@ -84,6 +84,7 @@
         cursor: pointer;
         :global {
           .dzq-avatar {
+            border: 1px solid $white;
             &:nth-child(1) {
               position: absolute;
               left: 0;

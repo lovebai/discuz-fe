@@ -77,25 +77,20 @@ class CustomApplyDisplay extends React.Component {
     const res = await action({ data: { activityId } });
     this.setState({ loading: false });
     if (res.code === 0) {
-      let authorInfo = {};
-      // 是否是详情页
-      if (siteData.isDetailPage) {
-        authorInfo = thread?.threadData?.user;
-      } else {
-        const { data } = index._findAssignThread(siteData?.threadId) || {};
-        authorInfo = data?.user || {};
-      }
-      const uid = authorInfo.userId;
+      const authorInfo = user.userInfo;
+      const uid = authorInfo.id;
       const users = registerUsers.filter(item => item.userId !== uid);
-      let currentNumber = body?.currentNumber - 1;
+      let currentNumber = body?.currentNumber;
       // 没有报名
       if (!isRegistered) {
         users.unshift({
           userId: uid,
-          avatar: authorInfo.avatar,
+          avatar: authorInfo.avatarUrl,
           nickname: authorInfo.nickname,
         });
         currentNumber = body?.currentNumber + 1;
+      } else {
+        currentNumber = body?.currentNumber - 1;
       }
       const tid = siteData.isDetailPage ? thread?.threadData?.id : siteData?.threadId;
       const tomValue = {
@@ -104,7 +99,7 @@ class CustomApplyDisplay extends React.Component {
           isRegistered: !isRegistered,
           registerUsers: users,
           currentNumber,
-          isMemberFull: currentNumber === totalNumber,
+          isMemberFull: currentNumber === totalNumber && totalNumber > 0,
         },
         tomId,
         threadId: tid,
