@@ -13,7 +13,9 @@ import {
   reward,
   deleteThread,
   createVote,
+  readLikedUsers,
 } from '@server';
+
 import { plus } from '@common/utils/calculate';
 import threadReducer from './reducer';
 import rewardPay from '@common/pay-bussiness/reward-pay';
@@ -306,6 +308,8 @@ class ThreadAction extends ThreadStore {
         const newLikeUsers = threadReducer.setThreadDetailLikedUsers(this.threadData?.likeReward, true, userData);
         this.updateLikeReward(newLikeUsers);
       }
+      // 全量查询打赏人员列表
+      this.queryTipList({threadId: params.threadId, type: 2, page: 1});
 
       // 更新列表store
       this.updateListStore();
@@ -786,6 +790,14 @@ class ThreadAction extends ThreadStore {
     newIndexes[tomId] = tomValue;
     this.threadData = { ...this.threadData, content: { ...content, indexes: newIndexes } };
   }
+
+  // 查询打赏列表
+  @action 
+  async queryTipList(params){
+    const res = await readLikedUsers({ params });
+    this.threadData={...this.threadData,tipList:res.data?.pageData?.list || []}
+  }
+
 }
 
 export default ThreadAction;
