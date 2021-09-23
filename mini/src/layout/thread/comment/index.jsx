@@ -2,6 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { View, ScrollView } from '@tarojs/components';
 import Router from '@discuzq/sdk/dist/router';
+import canPublish from '@common/utils/can-publish';
 import styles from './index.module.scss';
 import CommentList from '../components/comment-list/index';
 import MorePopup from '../components/more-popup';
@@ -281,11 +282,13 @@ class CommentH5Page extends React.Component {
 
   // 点击评论的回复
   replyClick(comment) {
+    const {user, site, thread } = this.props;
     if (!this.props.user.isLogin()) {
       Toast.info({ content: '请先登录!' });
       goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
+    if(!canPublish(user, site, 'reply', thread?.threadData?.threadId)) return;
 
     this.commentData = comment;
     this.replyData = null;
@@ -317,7 +320,7 @@ class CommentH5Page extends React.Component {
   async createReply(val, imageList) {
     const valuestr = val.replace(/\s/g, '');
     // 如果内部为空，且只包含空格或空行
-    if (!valuestr) {
+    if (!(valuestr || imageList.length)) {
       Toast.info({ content: '请输入内容' });
       return;
     }
