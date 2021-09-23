@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { View, Text } from '@tarojs/components';
+import { View, Text ,Image} from '@tarojs/components';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import Button from '@discuzq/design/dist/components/button/index';
 import RichText from '@discuzq/design/dist/components/rich-text/index';
@@ -19,7 +19,7 @@ import classnames from 'classnames';
 import UserInfo from '@components/thread/user-info';
 import Packet from '@components/thread/packet'
 import PacketOpen from '@components/red-packet-animation';
-
+import Avatar from '@components/avatar';
 
 import { setClipboardData } from '@tarojs/taro';
 import { parseContentData } from '../../utils';
@@ -130,6 +130,9 @@ const RenderThreadContent = inject('site', 'user')(
       canViewAttachment,
       canViewVideo
     } = threadStore?.threadData?.ability || {};
+
+    const { tipList } = threadStore?.threadData || {};
+
 
     return (
       <View className={`${styles.container}`}>
@@ -334,6 +337,27 @@ const RenderThreadContent = inject('site', 'user')(
               </Button>
             </View>
           )}
+
+          {/* 打赏人员列表 */}
+          {
+            tipList && tipList.length > 0 && (
+              <View className={styles.moneyList}>
+                <View className={styles.top}>{tipList.length}人打赏</View>
+                <View className={styles.itemList}>
+                    {tipList.map(i=>(
+                      <View key={i.userId} onClick={()=>Router.push({ url: `/userPages/user/index?id=${i.userId}` })} className={styles.itemAvatar}>
+                        <Avatar
+                          image={i.avatar}
+                          name={i.nickname}
+                          size='small'
+                        />
+                      </View>
+                    ))}
+                </View>
+              </View>
+            )
+          }
+          
         </View>
 
         {isApproved && (
