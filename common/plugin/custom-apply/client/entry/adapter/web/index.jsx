@@ -91,7 +91,7 @@ export default class CustomApplyEntry extends React.Component {
   checkApplyEndTime = (time) => {
     const { body } = this.state;
     const { activityStartTime, registerStartTime, activityEndTime } = body || {};
-    if (this.getTimestamp(time) < this.getTimestamp(activityStartTime)
+    if ((!registerStartTime && this.getTimestamp(time) < this.getTimestamp(activityStartTime))
       || this.getTimestamp(time) > this.getTimestamp(activityEndTime)
       || (registerStartTime && this.getTimestamp(time) < this.getTimestamp(registerStartTime))) {
       return false;
@@ -291,7 +291,7 @@ export default class CustomApplyEntry extends React.Component {
                   {isPc
                     ? <DatePicker
                         selected={body.registerEndTime}
-                        minDate={body.activityStartTime}
+                        minDate={body.registerStartTime || body.activityStartTime}
                         maxDate={body.activityEndTime}
                         onChange={date => this.handleTimeChange(date, TimeType.applyEnd)}
                         showTimeSelect
