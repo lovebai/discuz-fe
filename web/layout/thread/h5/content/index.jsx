@@ -280,7 +280,7 @@ const RenderThreadContent = inject('site', 'user')(observer((props) => {
         )}
 
           {
-            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
+            DZQPluginCenter && DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
               return (
                 <div key={pluginInfo.name}>
                   {render({
