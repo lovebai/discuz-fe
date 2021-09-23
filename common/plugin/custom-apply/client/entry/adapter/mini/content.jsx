@@ -90,9 +90,8 @@ export default class CustomApplyEntryContent extends React.Component {
 
   checkApplyStartTime = (time) => {
     const { body } = this.state;
-    const { activityStartTime, activityEndTime, registerEndTime } = body || {};
-    if (this.getTimestamp(time) < this.getTimestamp(activityStartTime)
-      || this.getTimestamp(time) > this.getTimestamp(activityEndTime)
+    const { activityEndTime, registerEndTime } = body || {};
+    if (this.getTimestamp(time) > this.getTimestamp(activityEndTime)
       || (registerEndTime && this.getTimestamp(time) > this.getTimestamp(registerEndTime))) {
       return false;
     }
