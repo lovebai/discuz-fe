@@ -172,7 +172,7 @@ const Index = (props) => {
             return (
               <View key={pluginInfo.name}>
                 {render({
-                  site: props.site,
+                  site: { ...props.site, threadId },
                   renderData: plugin
                 })}
               </View>
