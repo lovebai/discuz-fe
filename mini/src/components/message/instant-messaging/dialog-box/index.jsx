@@ -96,7 +96,7 @@ const DialogBox = (props) => {
         }
       })
 
-    }, 1000);
+    }, 500);
   }
 
   const copyOver = () => {
