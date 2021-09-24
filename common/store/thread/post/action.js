@@ -406,10 +406,10 @@ class ThreadPostAction extends ThreadPostStore {
         iframe = contentindexes[index].body || { };
       }
       else {
-        const { body } = contentindexes[index];
-        const { _plugin } = body;
+        const { body, _plugin } = contentindexes[index];
+        // const { _plugin } = body;
         if (!_plugin) return;
-        const { name } = _plugin;
+        const { name } = _plugin || {};
         plugin[name] = {
           tomId,
           body
