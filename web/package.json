@@ -11,7 +11,7 @@
     "start": "cross-env DEBUG=dzq_error NODE_ENV=production dzq start -H 127.0.0.1 -port 9527",
     "start:static": "cross-env DEBUG=dzq_error NODE_ENV=production dzq start -H 127.0.0.1 -port 9527 --no-ssr",
     "update": "dzq update",
-    "sls": "npm run build && dzq sls",
+    "sls": "npm run build && dzq sls -z -c",
     "sls:no-create": "dzq sls --no-create"
   },
   "dependencies": {
