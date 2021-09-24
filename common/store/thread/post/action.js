@@ -497,7 +497,7 @@ class ThreadPostAction extends ThreadPostStore {
     return { parent, child };
   }
 
-  @action
+  @action.bound
   getCategoriesCanCreate() {
     const len = this.categories.length;
     if (!len) return;

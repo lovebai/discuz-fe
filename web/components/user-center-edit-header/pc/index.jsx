@@ -117,7 +117,7 @@ export default class index extends Component {
   };
 
   handleBlurSignature = (e) => {
-    this.props.user.editSignature = e.target.value;
+    this.props.user.editSignature = e.target.value.trim();
     this.setState({
       isClickSignature: false,
     });
