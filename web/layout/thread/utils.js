@@ -26,7 +26,8 @@ export function parseContentData(indexes) {
           if ( _plugin ) {
             parseContent.plugin[_plugin?.name] = {
               tomId,
-              body
+              body,
+              _plugin,
             };
           }
         }
