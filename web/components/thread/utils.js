@@ -72,7 +72,8 @@ export const handleAttachmentData = (data) => {
       if ( _plugin ) {
         newData.plugin[_plugin?.name] = {
           tomId,
-          body
+          body,
+          _plugin,
         };
       }
     }

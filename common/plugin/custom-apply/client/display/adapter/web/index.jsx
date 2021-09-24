@@ -90,7 +90,7 @@ class CustomApplyDisplay extends React.Component {
       LoginHelper.saveAndLogin();
       return;
     }
-    const { tomId, body } = renderData || {};
+    const { tomId, body, _plugin } = renderData || {};
     const { isRegistered, activityId, registerUsers, totalNumber } = body;
     const action = isRegistered ? deleteRegister : createRegister;
     this.setState({ loading: true });
@@ -123,6 +123,7 @@ class CustomApplyDisplay extends React.Component {
         },
         tomId,
         threadId: tid,
+        _plugin,
       };
       thread.updateThread(tomId, tomValue);
       const threadData = index.updateListThreadIndexes(tid, tomId, tomValue);
