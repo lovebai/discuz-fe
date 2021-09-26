@@ -57,8 +57,8 @@ class Index extends React.Component {
 
   async componentDidMount() {
     this.props.router.events.on('routeChangeStart', this.beforeRouterChange);
-    const { index, threadList } = this.props;
-    const hasThreadsData = !!index.threads;
+    const { threadList } = this.props;
+    const hasThreadsData = !!threadList.getList({ namespace: 'buy' })?.length;
     if (!hasThreadsData) {
       const threadsResp = await threadList.fetchList({
         namespace: 'buy',
