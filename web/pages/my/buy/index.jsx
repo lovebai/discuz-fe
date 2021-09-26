@@ -95,7 +95,7 @@ class Index extends React.Component {
       page: this.state.page,
     });
 
-    if (this.state.page <= threadsResp.totalPage) {
+    if (this.state.page <= threadsResp?.data.totalPage) {
       this.setState({
         page: this.state.page + 1,
       });
