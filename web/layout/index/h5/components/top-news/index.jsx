@@ -1,20 +1,40 @@
 import React from 'react';
+import { inject, observer } from 'mobx-react';
+import { Toast } from '@discuzq/design';
 import { withRouter } from 'next/router';
 import styles from './index.module.scss';
 import FilterRichText from '@components/filter-rich-text'
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';
+import goToLoginPage from '@common/utils/go-to-login-page';
 /**
  * 置顶消息
  * @prop {{prefix:string, title:string}[]} data
  */
-const TopNews = ({ data = [], router, platform = 'h5'}) => {
-  const onClick = ({ threadId } = {}, e) => {
+const TopNews = ({ data = [], router, platform = 'h5', user = null}) => {
+  const onClick = (item, e) => {
+    const { threadId } = item || {};
     if (e?.target?.localName === 'a') {
       return
     }
+    if (!allowEnter(item)) return;
     router.push(`/thread/${threadId}`);
   };
+
+  // 判断能否进入详情逻辑
+  const allowEnter = (item) => {
+    if (!item?.canViewPosts) {
+      const isLogin = user.isLogin();
+      if (!isLogin) {
+        Toast.info({ content: '请先登录!' });
+        goToLoginPage({ url: '/user/login' });
+      } else {
+        Toast.info({ content: '暂无权限查看详情，请联系管理员' });
+      }
+      return false;
+    }
+    return true;
+  }
 
   const handlerTitle = (title = '') => {
     if (platform = 'h5' && title.length > 20) {
@@ -44,4 +64,4 @@ const TopNews = ({ data = [], router, platform = 'h5'}) => {
   );
 };
 
-export default withRouter(TopNews);
+export default inject('user')(observer(withRouter(TopNews)));

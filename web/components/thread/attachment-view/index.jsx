@@ -10,8 +10,7 @@ import FilePreview from './../file-preview';
 import getAttachmentIconLink from '@common/utils/get-attachment-icon-link';
 import { ATTACHMENT_FOLD_COUNT } from '@common/constants';
 import { get } from '@common/utils/get';
-import { readDownloadAttachmentStatus } from '@server';
-import { downloadAttachment } from '@common/utils/download-attachment-web';
+import { readDownloadAttachment } from '@server';
 import goToLoginPage from '@common/utils/go-to-login-page';
 
 import styles from './index.module.scss';
@@ -83,13 +82,6 @@ const Index = ({
   const onDownLoad = (item, index) => {
     updateViewCount();
 
-    // 下载需要登录态，判断是否登录
-    if (!user.isLogin()) {
-      Toast.info({ content: '请先登录!' });
-      goToLoginPage({ url: '/user/login' });
-      return;
-    }
-
     if (!canDownloadAttachment) {
       Toast.warning({ content: '暂⽆权限下载附件' });
       return;
@@ -99,56 +91,33 @@ const Index = ({
 
     if (!isPay) {
       if(!item || !threadId) return;
-
-      // downloading[index] = true;
-      // setDownloading([...downloading]);
-
-
-      // if(isWeiXin()) {
-      //   window.location.href = item.url;
-        
-      //   Toast.info({ content: '下载成功' });
-      // } else {
-        const attachmentId = item.id;
-        fetchDownloadUrl(threadId, attachmentId, (url, fileName) => {
-          // window.location.href = url;
-          download(url, fileName);
-        });
-      // }
-
-      // downloading[index] = false;
-      // setDownloading([...downloading]);
-
+      download(item);
     } else {
       onPay();
     }
   };
 
-  const download = async (url, fileName) => {
-    const params = downloadAttachmentParams(url);
+  const download = async (item) => {
+    const params = downloadAttachmentParams(item);
     if (params) {
-      const isDownload = await downloadAttachmentStatus(params);
+      const isDownload = await downloadAttachment(params);
       if (isDownload) {
+        Toast.info({ content: '正在下载' });
         window.location.href = itemUrl;
-        downloadAttachment(url, null, false); // 携带登录态请求一下数据，后端记录下载次数
-        Toast.info({ content: '下载成功' });
       }
     }
   }
 
-  const downloadAttachmentParams = (url) => {
-    if (!url) return;
-    const paramArr = url.split('?')[1].split('&');
+  const downloadAttachmentParams = (item) => {
     const params = {
-      sign: paramArr[0].split('=')[1],
-      attachmentsId: Number(paramArr[1].split('=')[1]),
-      isCode: 1,
+      attachmentsId: item.id,
+      threadId: threadId,
     }
     return params;
   }
 
-  const downloadAttachmentStatus = async (params) => {
-    const res = await readDownloadAttachmentStatus(params);
+  const downloadAttachment = async (params) => {
+    const res = await readDownloadAttachment(params);
 
     if (res?.code === 0) {
       // 弹出下载弹框
@@ -164,6 +133,10 @@ const Index = ({
     }
 
     if (res?.code === -4004) {  // 资源不存在
+      Toast.info({ content: res?.msg });
+    }
+    
+    if (res?.code === -5001) { // 操作太快，请稍后再试
       Toast.info({ content: res?.msg });
     }
     return false;
@@ -201,7 +174,7 @@ const Index = ({
   const splicingLink = (url, fileName) => {
     const host = window.location.host; // 域名
     const protocol = window.location.protocol; // 协议
-    return `${protocol}//${host}/download?url=${url}&fileName=${fileName}&threadId=${threadId}`;
+    return `${protocol}//${host}/download?url=${url}&threadId=${threadId}`;
   }
 
   // 文件是否可预览

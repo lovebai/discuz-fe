@@ -102,8 +102,11 @@
           justify-content: flex-start;
           height: 28px;
           position: relative;
-          top: 3px;
-
+          // top: rem(5);
+          .iconAt{
+            color: $primary-color;
+            display: inline-block;
+          }
           .replyedUserName {
             max-width: 100px;
             font-weight: bold;
@@ -111,7 +114,7 @@
             margin-right: $margin-2n;
             line-height: 18px;
             text-align: left;
-            // color: $primary-color;
+            color: $primary-color;
             @include text-ellipsis();
           }
           .masterBox {

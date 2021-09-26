@@ -43,7 +43,9 @@ class Login extends React.Component {
   }
 
   componentWillUnmount() {
-    this?.target?.hide();
+    setTimeout(() => {
+      this?.target?.hide();
+    }, 50);
   }
 
   render() {
