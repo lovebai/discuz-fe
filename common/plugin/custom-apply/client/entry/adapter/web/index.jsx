@@ -132,7 +132,9 @@ export default class CustomApplyEntry extends React.Component {
       Toast.info({ content: '活动开始时间和结束时间必填' });
       return false;
     }
-    const postData = getPostData(body);
+    const { renderData } = this.props;
+    const postData = getPostData(body) || {};
+    if (renderData?.body?.activityId) postData.body.activityId = renderData?.body?.activityId;
     this.props.onConfirm({ postData });
     this.handleDialogClose();
   };
