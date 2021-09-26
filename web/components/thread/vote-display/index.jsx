@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
+import { withRouter } from 'next/router';
 import styles from './index.module.scss';
 import { Checkbox, Button, Icon, Radio, Progress, Toast } from '@discuzq/design';
 import CountDown from '@common/utils/count-down';
@@ -88,10 +89,16 @@ const VoteDisplay = (props = {}) => {
     }
   }, 1000);
 
+  const goToDetail = () => {
+    if (threadId && !isDetail) {
+      props.router.push(`/thread/${threadId}`);
+    }
+  };
+
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.header}>
+        <div className={styles.header} onClick={goToDetail}>
           <div className={styles['header-right']}>
             {voteTitle}
             { isVotedEnd && <span className={styles['header-right__text']}>（{typeText}）</span>}
@@ -130,7 +137,7 @@ const VoteDisplay = (props = {}) => {
             </CheckboxRadio.Group>
           )}
         {isVotedEnd && (
-          <div className={styles.content}>
+          <div className={styles.content} onClick={goToDetail}>
             {subitems.map((item, index) => {
               if ((!isFold && index < 5) || isFold) {
                 const voteCount = parseInt(item.voteRate, 10) > 100 ? 100 : parseInt(item.voteRate, 10);
@@ -170,7 +177,7 @@ const VoteDisplay = (props = {}) => {
       </div>
       {!isVotedEnd && (
         <div className={styles.footer}>
-          <div className={styles.left}>
+          <div className={styles.left} onClick={goToDetail}>
             <div className={styles['left-type']}>{typeText}</div>
             <div className={styles['left-time']}>
               距结束 ：<span className={styles['time-primary']}>{ day }</span>天<span className={styles['time-primary']}>{hour}</span>小时<span className={styles['time-primary']}>{minute}</span>分
@@ -183,4 +190,4 @@ const VoteDisplay = (props = {}) => {
   );
 };
 
-export default inject('thread', 'index', 'user')(observer(VoteDisplay));
+export default inject('thread', 'index', 'user')(observer(withRouter(VoteDisplay)));

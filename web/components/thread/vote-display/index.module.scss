@@ -10,6 +10,7 @@
     justify-content: space-between;
     line-height: $font-line-height-middle;
     word-break: break-all;
+    cursor: pointer;
     &-right {
       font-size: $font-size-middle;
       color: $text-color-primary;
@@ -57,6 +58,7 @@
     }
   }
   .content {
+    cursor: pointer;
     .foldbtn {
       border-radius: $border-radius-small;
       margin-bottom: $margin-4n;
@@ -125,6 +127,7 @@
   align-items: center;
 
   .left {
+    cursor: pointer;
 
     &-type,
     &-time {
