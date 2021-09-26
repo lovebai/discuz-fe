@@ -3,7 +3,7 @@ import { PLUGIN_TOMID_CONFIG } from '@common/plugin/plugin-tomid-config';
 
 const getTime = time => formatDate(time, 'yyyy-MM-dd hh:mm:ss');
 const getDateTime = (time) => {
-  if (time) return new Date(time?.replace('-', '/'));
+  if (time) return new Date(time?.replace(/-/g, '/'));
   return time;
 };
 

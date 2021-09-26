@@ -170,7 +170,7 @@ class CustomApplyDisplay extends React.Component {
               )}
               {isApplyEnd && (
                 <>
-                  活动已结束
+                  报名已结束
                 </>
               )}
             </div>
