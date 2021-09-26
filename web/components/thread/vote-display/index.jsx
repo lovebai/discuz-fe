@@ -109,8 +109,8 @@ const VoteDisplay = (props = {}) => {
             </div>
           )}
         </div>
-        {!isVotedEnd
-          && (
+        {!isVotedEnd && (
+          <>
             <CheckboxRadio.Group
               className={`${styles.content} ${styles.foldexpend}`}
               onChange={(val) => {
@@ -135,7 +135,17 @@ const VoteDisplay = (props = {}) => {
                   </Button>
               }
             </CheckboxRadio.Group>
-          )}
+            <div className={styles.footer}>
+              <div className={styles.left} onClick={goToDetail}>
+                <div className={styles['left-type']}>{typeText}</div>
+                <div className={styles['left-time']}>
+                  距结束 ：<span className={styles['time-primary']}>{ day }</span>天<span className={styles['time-primary']}>{hour}</span>小时<span className={styles['time-primary']}>{minute}</span>分
+                </div>
+              </div>
+              <Button type="primary" className={styles.vote} onClick={handleVote}>投票</Button>
+            </div>
+          </>
+        )}
         {isVotedEnd && (
           <div className={styles.content} onClick={goToDetail}>
             {subitems.map((item, index) => {
@@ -175,17 +185,6 @@ const VoteDisplay = (props = {}) => {
           </div>
         )}
       </div>
-      {!isVotedEnd && (
-        <div className={styles.footer}>
-          <div className={styles.left} onClick={goToDetail}>
-            <div className={styles['left-type']}>{typeText}</div>
-            <div className={styles['left-time']}>
-              距结束 ：<span className={styles['time-primary']}>{ day }</span>天<span className={styles['time-primary']}>{hour}</span>小时<span className={styles['time-primary']}>{minute}</span>分
-            </div>
-          </div>
-          <Button type="primary" className={styles.vote} onClick={handleVote}>投票</Button>
-        </div>
-      )}
     </>
   );
 };
