@@ -36,7 +36,7 @@ class RenewalFee extends Component {
   render() {
     return (
       <div className={styles.renewalFeeWrapper}>
-        <Dialog visible={this.props.visible} position="center" maskClosable={true}>
+        <Dialog visible={this.props.visible} position="center" maskClosable={true} onClose={this.onClose} >
           <div className={styles.renewalFeeContent}>
             {/* 关闭按钮 */}
             <div className={styles.renewalFeeClose} onClick={this.onClose}>
