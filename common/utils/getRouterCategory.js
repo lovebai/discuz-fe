@@ -9,7 +9,17 @@ export default function getRouterCategory(router, site) {
   };
   try {
     const { categoryId = '' } = router.query;
-    let { sequence = '0' } = router.query || {};
+    const { webConfig } = site || {};
+    const { other } = webConfig || {};
+    const { threadTab } = other || {}; // 所有:0,1 推荐:2 精华:3 已关注:4
+    // sequence 对应请求里面的 scope 字段：列表所属模块域 0:普通 1：推荐 2：付费首页 3：搜索页
+    let sequence = '0';
+    if (threadTab === 1 || threadTab === 0) sequence = '0';
+    if (threadTab === 2) sequence = '1';
+    if (threadTab === 3) defaultData.essence = 1;
+    if (threadTab === 4) defaultData.attention = 1;
+    // 分享链接设置的sequece值大于threadTab管理后台设置的tab选中状态
+    if (router?.query?.sequence === '1') sequence = router?.query?.sequence;
     // 路由中带值
     if (categoryId || sequence !== '0') {
       let ids = categoryId.split('_').map((item) => {
@@ -20,14 +30,15 @@ export default function getRouterCategory(router, site) {
       })
         .filter(item => item);
 
+      // 这里没有必要这样处理
       // H5处理方案
-      if (sequence === '1' && !ids?.length && site.platform === 'h5') {
+      if (sequence === '1' && (!ids?.length || ids.indexOf('all') !== -1) && site.platform === 'h5') {
         ids = ['default'];
       }
 
-      if (ids.indexOf('default') !== -1 && sequence === '0' && site.platform === 'h5') {
-        sequence = '1';
-      }
+      // if (ids.indexOf('default') !== -1 && sequence === '0' && site.platform === 'h5') {
+      //   sequence = '1';
+      // }
 
       // PC处理方案
       if (!ids?.length && site.platform === 'pc') {
