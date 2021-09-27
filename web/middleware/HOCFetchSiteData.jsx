@@ -46,8 +46,10 @@ export default function HOCFetchSiteData(Component, _isPass) {
     static async getInitialProps(ctx) {
       try {
 
+        // 根据运行时配置获取参数
+        global.ssr_host = global.dzq_host || ctx.req.headers.host;
+      
         // 将ctx保存到global
-        // ctx.req.headers.host = global.dzq_host
         global.ctx = ctx;
         // console.log(global.dzq_host);
         let platform = 'static';
