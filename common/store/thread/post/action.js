@@ -273,7 +273,13 @@ class ThreadPostAction extends ThreadPostStore {
     if (plugin) {
       for (let key in plugin) {
         contentIndexes[plugin[key].tomId] = {
-          ...plugin[key]
+          ...plugin[key],
+        };
+        const { body = {} } = contentIndexes[plugin[key].tomId];
+        let {  _plugin } = contentIndexes[plugin[key].tomId];
+        if (!_plugin) _plugin = { name: key };
+        if (body) {
+          contentIndexes[plugin[key].tomId].body._plugin = _plugin;
         }
       }
     }
@@ -406,13 +412,14 @@ class ThreadPostAction extends ThreadPostStore {
         iframe = contentindexes[index].body || { };
       }
       else {
-        const { body } = contentindexes[index];
-        const { _plugin } = body;
+        const { body = {}, _plugin } = contentindexes[index];
+        // const { _plugin } = body;
         if (!_plugin) return;
-        const { name } = _plugin;
+        const { name } = _plugin || {};
         plugin[name] = {
           tomId,
-          body
+          body,
+          _plugin,
         }
       }
     });
@@ -497,7 +504,7 @@ class ThreadPostAction extends ThreadPostStore {
     return { parent, child };
   }
 
-  @action
+  @action.bound
   getCategoriesCanCreate() {
     const len = this.categories.length;
     if (!len) return;

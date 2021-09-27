@@ -91,7 +91,7 @@ class CustomApplyDisplay extends React.Component {
       LoginHelper.saveAndLogin();
       return;
     }
-    const { tomId, body } = renderData || {};
+    const { tomId, body, _plugin } = renderData || {};
     const { isRegistered, activityId, registerUsers, totalNumber } = body;
     const action = isRegistered ? deleteRegister : createRegister;
     this.setState({ loading: true });
@@ -124,6 +124,7 @@ class CustomApplyDisplay extends React.Component {
         },
         tomId,
         threadId: tid,
+        _plugin,
       };
       thread.updateThread(tomId, tomValue);
       const threadData = index.updateListThreadIndexes(tid, tomId, tomValue);
@@ -170,7 +171,7 @@ class CustomApplyDisplay extends React.Component {
               )}
               {isApplyEnd && (
                 <>
-                  活动已结束
+                  报名已结束
                 </>
               )}
             </View>

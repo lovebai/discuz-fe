@@ -47,8 +47,9 @@ export default function HOCFetchSiteData(Component, _isPass) {
       try {
 
         // 将ctx保存到global
+        // ctx.req.headers.host = global.dzq_host
         global.ctx = ctx;
-
+        // console.log(global.dzq_host);
         let platform = 'static';
         let siteConfig = {};
         let userInfo;

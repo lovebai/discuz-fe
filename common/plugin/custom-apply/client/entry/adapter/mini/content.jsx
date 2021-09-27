@@ -255,7 +255,7 @@ export default class CustomApplyEntryContent extends React.Component {
                 >
                   <Radio name={0}>不限制</Radio>
                   <Radio name={1}>
-                    限<Input htmlType="number" mode="number"
+                    限<Input miniType="number" mode="number"
                       disabled={body.actPeopleLimitType === 0}
                       value={body.totalNumber}
                       onChange={this.handleLimitPeopleChange}
