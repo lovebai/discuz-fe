@@ -25,7 +25,7 @@ class CustomHead extends React.Component {
     const base = get(site, 'webConfig.setSite.siteTitle', '欢迎您');
     let renderTitle = base;
     if (title && title !== '') {
-      renderTitle = `${title}${showSiteName ? ` - ${renderTitle}` : ''}`;
+      renderTitle = `${title}${showSiteName ? ` - ${siteName}` : ''}`;
     }
     return renderTitle;
   }
