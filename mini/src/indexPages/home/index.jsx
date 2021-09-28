@@ -101,7 +101,6 @@ class Index extends React.Component {
 
   componentDidShow() {
     const { threads } = this.props.index || {}
-    console.log(threads)
     if (!threads?.pageData?.length) {
       this.loadData()
     }

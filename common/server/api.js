@@ -68,8 +68,7 @@ http.interceptors.request.use(
       // ssr的情况下，如果没有baseURL，或者请求的url并非一个完整的url，那么需要获取上下文中的host做拼接
       if ( config.baseURL === '' || !reg.test(url) ) {
           const host = global.ssr_host;
-          console.log('interceptors', host)
-          config.url = `${host}${url}`;
+          config.url = `${host}${url[0] !== '/' ? `/${url}` : url}`;
       }
     }
     // 设置userAgent
@@ -283,9 +282,11 @@ http.interceptors.response.use((res) => {
     msg: statusText,
   });
 }, (err) => {
-  const { isShowToast = true } = err?.config;
   console.error('response', err.stack);
   console.error('response', err.message);
+
+  const { isShowToast = true } = err?.config;
+ 
   if (window) {
     
     if ( globalToast ) {
