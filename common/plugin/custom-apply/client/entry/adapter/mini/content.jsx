@@ -60,9 +60,13 @@ export default class CustomApplyEntryContent extends React.Component {
         });
         break;
       case TimeType.actEnd:
-        this.setState({ body: { ...body, activityEndTime: time } }, () => {
-          this.props.onChange(this.state.body);
-        });
+        if (!this.checkActEndTime(time)) {
+          Toast.info({ content: '请选择正确的活动结束时间' });
+        } else {
+          this.setState({ body: { ...body, activityEndTime: time } }, () => {
+            this.props.onChange(this.state.body);
+          });
+        }
         break;
       case TimeType.applyStart:
         if (!this.checkApplyStartTime(time)) {
@@ -88,6 +92,15 @@ export default class CustomApplyEntryContent extends React.Component {
   };
 
   getTimestamp = time => new Date(time).getTime();
+
+  checkActEndTime = (time) => {
+    const { activityStartTime } = this.state.body || {};
+    if (this.getTimestamp(activityStartTime) > this.getTimestamp(time)
+      || this.getTimestamp(time) < this.getTimestamp(new Date().getTime())) {
+      return false;
+    }
+    return true;
+  };
 
   checkApplyStartTime = (time) => {
     const { body } = this.state;
