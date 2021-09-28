@@ -5,6 +5,7 @@ import DatePickers from '@components/thread-post/date-time-picker';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';
 import { formatPostData } from '@common/plugin/custom-apply/client/common';
+import { debounce } from '@common/utils/throttle-debounce';
 import styles from '../index.module.scss';
 
 const TimeType = {
@@ -109,26 +110,26 @@ export default class CustomApplyEntryContent extends React.Component {
     return true;
   };
 
-  handletitleChange = (e) => {
+  handletitleChange = debounce((e) => {
     const { body } = this.state;
     this.setState({ body: { ...body, title: e.target.value } }, () => {
       this.props.onChange(this.state.body);
     });
-  };
+  }, 200);
 
-  handlecontentChange = (e) => {
+  handlecontentChange = debounce((e) => {
     const { body } = this.state;
     this.setState({ body: { ...body, content: e.target.value } }, () => {
       this.props.onChange(this.state.body);
     });
-  }
+  }, 200);
 
-  handlePlaceChange = (e) => {
+  handlePlaceChange = debounce((e) => {
     const { body } = this.state;
     this.setState({ body: { ...body, actPlace: e.target.value } }, () => {
       this.props.onChange(this.state.body);
     });
-  }
+  }, 200)
 
   handleMoreClick = () => {
     this.setState({ showMore: !this.state.showMore });
