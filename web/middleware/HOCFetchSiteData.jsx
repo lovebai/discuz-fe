@@ -51,6 +51,9 @@ export default function HOCFetchSiteData(Component, _isPass) {
       
         // 将ctx保存到global
         global.ctx = ctx;
+
+        console.log('FetchSiteData', global.ssr_host)
+
         // console.log(global.dzq_host);
         let platform = 'static';
         let siteConfig = {};

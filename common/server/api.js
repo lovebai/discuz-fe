@@ -34,7 +34,7 @@ import { setStatisticParams } from '@common/utils/api-statistic-params';
 let globalToast = null;
 const api = apiIns({
   baseURL: ENV_CONFIG.COMMON_BASE_URL && ENV_CONFIG.COMMON_BASE_URL !== '' ? ENV_CONFIG.COMMON_BASE_URL : isServer() ? '' : window.location.origin,
-  timeout: isServer() ? 2000 : 0,
+  timeout: isServer() ? 5000 : 0,
   // 200 到 504 状态码全都进入成功的回调中
   validateStatus(status) {
     return status >= 200 && status <= 504;
@@ -68,6 +68,7 @@ http.interceptors.request.use(
       // ssr的情况下，如果没有baseURL，或者请求的url并非一个完整的url，那么需要获取上下文中的host做拼接
       if ( config.baseURL === '' || !reg.test(url) ) {
           const host = global.ssr_host;
+          console.log('interceptors', host)
           config.url = `${host}${url}`;
       }
     }
@@ -107,6 +108,15 @@ http.interceptors.response.use((res) => {
   //   LoginHelper.saveAndLogin();
   // }
   let url = null;
+  // 如果当前是SSR状态，Code非0的情况，全部不处理重定向
+  if (isServer()) {
+    return Promise.resolve({
+      code: data.Code,
+      data: reasetData(data.Data),
+      msg: data.Message
+    });
+  }
+
   switch (data.Code) {
     case INVALID_TOKEN: {
       // @TODO 未登陆且无权限时，直接跳转加入页面。可能影响其它逻辑
@@ -274,9 +284,10 @@ http.interceptors.response.use((res) => {
   });
 }, (err) => {
   const { isShowToast = true } = err?.config;
+  console.error('response', err.stack);
+  console.error('response', err.message);
   if (window) {
-    console.error('response', err.stack);
-    console.error('response', err.message);
+    
     if ( globalToast ) {
       globalToast.hide();
       globalToast = null;
