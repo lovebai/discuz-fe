@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import styles from './index.module.scss';
-import { Button } from '@discuzq/design';
+import { Button, Dialog, Tabs } from '@discuzq/design';
 import { inject, observer } from 'mobx-react';
 import time from '@discuzq/sdk/dist/time';
 import { payGroupLevelStyle as levelStyle } from '@common/constants/const';
@@ -10,7 +10,20 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt } = user;
   const { group: { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup } } = userInfo;
   const theme = levelStyle[level];
-  const is
+  const isPaySite = siteMode === 'pay';
+  const tabList = [
+    ['1', 'Tab1'],
+    ['2', 'Tab2'],
+    ['3', 'Tab3'],
+  ];
+
+
+  const [dialogVisible, setDialogVisible] = useState(false);
+
+
+  const handlePayGroupRenewal = () => {
+    setDialogVisible(true);
+  };
 
   const handleRenewalFee = () => {
     typeof onRenewalFeeClick === 'function' && onRenewalFeeClick();
@@ -37,7 +50,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     }
 
     // 付费站点用户
-    if (paid) {
+    if (isPaySite && paid) {
       if (expiredDays === 0) {
         return (
           <>
@@ -74,14 +87,14 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     if (level > 0) {
       return (
         <>
-          <Button onClick={handleRenewalFee} type="primary" className={styles.btn} style={leftBtnStyle}>续费</Button>
-          {!isTop && <Button onClick={handleRenewalFee} type="primary" className={styles.btn} style={rightBtnStyle}>升级</Button>}
+          <Button onClick={() => {handlePayGroupRenewal(level)}} type="primary" className={styles.btn} style={leftBtnStyle}>续费</Button>
+          {!isTop && <Button onClick={() => {handlePayGroupRenewal(level + 1)}} type="primary" className={styles.btn} style={rightBtnStyle}>升级</Button>}
         </>
       );
     }
 
     // 付费站点用户
-    if (paid && !isIndefiniteDuration) {
+    if (isPaySite && paid && !isIndefiniteDuration) {
       return (
         <Button onClick={handleRenewalFee} type="primary" className={styles.btn}>续费</Button>
       );
@@ -89,24 +102,53 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
 
     // 普通用户且后台设置了付费用户组
     if (hasPayGroup) {
-      return <Button onClick={handleRenewalFee} type="primary" className={styles.btn}>升级</Button>;
+      return <Button onClick={() => {handlePayGroupRenewal(level + 1)}} type="primary" className={styles.btn}>升级</Button>;
     }
 
+  };
+
+  const renderCard = (noBtn = false) => {
+    return (
+      <div className={`${styles.memberShipCardWrapper} ${shipCardClassName}`} style={{backgroundImage: `url(${theme.bgImg})`}}>
+        <div className={styles.MemberShipCardContent}>
+          <div className={styles.roleType} style={{color: theme.groupNameColor}}>{groupName}</div>
+          <div className={styles.tagline} style={{color: theme.desAndDateColor}}>{level > 0 ? description : '访问海量站点内容'}</div>
+          <div className={styles.RenewalFee} style={{visibility: noBtn ? 'hidden' : 'visible'}}>
+            {renderButton()}
+            <span className={styles.feeTimer}>{renderFeeDateContent()}</span>
+          </div>
+        </div>
+      </div>
+    );
   };
 
 
 
   return (
-    <div className={`${styles.memberShipCardWrapper} ${shipCardClassName}`} style={{backgroundImage: `url(${theme.bgImg})`}}>
-      <div className={styles.MemberShipCardContent}>
-        <div className={styles.roleType} style={{color: theme.groupNameColor}}>{groupName}</div>
-        <div className={styles.tagline} style={{color: theme.desAndDateColor}}>{level > 0 ? description : '访问海量站点内容'}</div>
-        <div className={styles.RenewalFee}>
-          {renderButton()}
-          <span className={styles.feeTimer}>{renderFeeDateContent()}</span>
-        </div>
-      </div>
-    </div>
+    <>
+      {renderCard()}
+      <Dialog
+        title="提示"
+        visible={dialogVisible}
+        maskClosable={true}
+        style={{
+          padding: 0
+        }}
+        onClose={() => setVisible(false)}
+        onCancel={() => setVisible(false)}
+        onConfirm={() => setVisible(false)}
+      >
+        <Tabs defaultActiveId={'1'}>
+          {tabList.map(([id, label]) => (
+            <Tabs.TabPanel key={id} id={id} label={label}>
+              <div>
+                {renderCard(true)}
+              </div>
+            </Tabs.TabPanel>
+          ))}
+        </Tabs>
+      </Dialog>
+    </>
   );
 
 
