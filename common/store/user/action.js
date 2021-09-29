@@ -70,10 +70,12 @@ class UserAction extends SiteStore {
   // 获取当前用户的付费用户组
   @action
   async getPayGroups() {
-    const groups = await getPayGroups();
-
-    console.log(groups);
-    debugger;
+    const res = await getPayGroups();
+    const { code, data } = res;
+    if (code === 0) {
+      this.payGroups = data;
+      return data;
+    }
   }
 
   // 更新指定 userid 的 用户信息

@@ -70,3 +70,23 @@
     }
   }
 }
+
+.upgradeBtn {
+  width: 144px;
+  height: 40px !important;
+  border-radius: 5px;
+  background: linear-gradient(#f4daaf 0%, #eabc6c 100%) !important;
+  border: none !important;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 28.53px;
+  text-align: left;
+  color: #624a1e !important;
+}
+
+.upgradePrice {
+  font-size: 16px;
+  line-height: 21px;
+  text-align: left;
+  color: #f50026;
+}
