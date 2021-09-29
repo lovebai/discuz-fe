@@ -34,7 +34,7 @@ import { setStatisticParams } from '@common/utils/api-statistic-params';
 let globalToast = null;
 const api = apiIns({
   baseURL: ENV_CONFIG.COMMON_BASE_URL && ENV_CONFIG.COMMON_BASE_URL !== '' ? ENV_CONFIG.COMMON_BASE_URL : isServer() ? '' : window.location.origin,
-  timeout: isServer() ? 5000 : 0,
+  timeout: isServer() ? 10000 : 0,
   // 200 到 504 状态码全都进入成功的回调中
   validateStatus(status) {
     return status >= 200 && status <= 504;

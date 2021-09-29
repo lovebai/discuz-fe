@@ -36,6 +36,7 @@ import { USER_STATUS } from '@common/constants/login';
 // 获取全站数据
 export default function HOCFetchSiteData(Component, _isPass) {
   @inject('site')
+  @inject('forum')
   @inject('user')
   @inject('thread')
   @inject('emotion')
@@ -120,17 +121,15 @@ export default function HOCFetchSiteData(Component, _isPass) {
       super(props);
       this.handleWxShare = this.handleWxShare.bind(this);
       this.canPublish = this.canPublish.bind(this);
-
       let isNoSiteData;
-      const { serverUser, serverSite, serverEmotion, user, site, emotion } = props;
-
+      const { serverUser, serverSite, serverEmotion, user, site, emotion, forum } = props;
       serverSite && serverSite.platform && site.setPlatform(serverSite.platform);
       serverSite && serverSite.closeSite && site.setCloseSiteConfig(serverSite.closeSite);
       serverSite && serverSite.webConfig && site.setSiteConfig(serverSite.webConfig);
+      serverSite && serverSite.webConfig && forum.setOtherPermissions(serverSite.webConfig);
       serverSite && serverSite.pluginConfig && site.setPluginConfig(serverSite.pluginConfig);
 
       serverUser && serverUser.userInfo && user.setUserInfo(serverUser.userInfo);
-      serverUser && serverUser.userPermissions && user.setUserPermissions(serverUser.userPermissions);
       serverUser && serverUser.userPermissions && user.setUserPermissions(serverUser.userPermissions);
       serverEmotion && serverEmotion.emojis && emotion.setEmoji(serverEmotion.emojis);
 
@@ -148,7 +147,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
 
     async componentDidMount() {
       const { isNoSiteData } = this.state;
-      const { serverUser, serverSite, user, site, emotion } = this.props;
+      const { serverUser, serverSite, user, site, emotion, forum } = this.props;
       let siteConfig;
       let loginStatus = false;
 
@@ -165,6 +164,8 @@ export default function HOCFetchSiteData(Component, _isPass) {
         if (!siteConfig) {
           const result = await readForum({});
           result.data && site.setSiteConfig(result.data);
+          result.data && forum.setOtherPermissions(result.data);
+        
           // 获取插件信息
           const pluginConfig = await readPluginList();
           if (pluginConfig.code === 0) site.setPluginConfig(pluginConfig.data);
