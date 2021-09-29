@@ -40,7 +40,7 @@
     align-items: center;
     justify-content: space-between;
     .btn {
-      width: rem(112);
+      width: rem(66) !important;
       height: rem(36);
 
       @media only screen and (max-width: 1200px) {
@@ -55,7 +55,6 @@
     .feeTimer {
       color: $text-color-regular;
       font-size: rem($font-size-primary);
-      letter-spacing: rem(1);
       height: rem(20);
       line-height: rem(20);
       width: 100%;
@@ -63,7 +62,6 @@
       .feeDay {
         font-size: rem($font-size-h1);
         color: $primary-color;
-        font-weight: $font-weight-regular;
       }
       .noTimeDate {
         text-align: right;

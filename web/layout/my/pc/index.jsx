@@ -135,12 +135,12 @@ class PCMyPage extends React.Component {
     const IS_WECHAT_ACCESSABLE = this.props.site.wechatEnv !== 'none' && !!this.props.user.wxNickname;
     return (
       <>
-        {this.whetherIsShowRenewalCard() && (
+        {/* {this.whetherIsShowRenewalCard() && ( */}
           <MemberShipCard
             shipCardClassName={styles.MemberShipCardWrapperPc}
             onRenewalFeeClick={this.onRenewalFeeClick}
           />
-        )}
+        {/* )} */}
         <SidebarPanel
           platform="h5"
           type="normal"
