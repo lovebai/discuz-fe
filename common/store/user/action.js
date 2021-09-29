@@ -22,6 +22,7 @@ import {
   getSignInFields,
   h5Rebind,
   miniRebind,
+  getPayGroups
 } from '@server';
 import { get } from '../../utils/get';
 import locals from '@common/utils/local-bridge';
@@ -64,6 +65,15 @@ class UserAction extends SiteStore {
 
       this.targetUsers = { ...this.targetUsers };
     }
+  }
+
+  // 获取当前用户的付费用户组
+  @action
+  async getPayGroups() {
+    const groups = await getPayGroups();
+
+    console.log(groups);
+    debugger;
   }
 
   // 更新指定 userid 的 用户信息

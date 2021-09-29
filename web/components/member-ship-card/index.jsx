@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
 import { Button, Dialog, Tabs } from '@discuzq/design';
 import { inject, observer } from 'mobx-react';
@@ -7,7 +7,7 @@ import { payGroupLevelStyle as levelStyle } from '@common/constants/const';
 
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
   const { siteMode } = site;
-  const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt } = user;
+  const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, getPayGroups } = user;
   const { group: { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup } } = userInfo;
   const theme = levelStyle[level];
   const isPaySite = siteMode === 'pay';
@@ -19,6 +19,10 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
 
 
   const [dialogVisible, setDialogVisible] = useState(false);
+
+  useEffect(() => {
+    getPayGroups();
+  }, []);
 
 
   const handlePayGroupRenewal = () => {
