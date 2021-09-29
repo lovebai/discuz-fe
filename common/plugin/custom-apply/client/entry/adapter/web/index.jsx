@@ -348,7 +348,7 @@ export default class CustomApplyEntry extends React.Component {
                         disabled={body.actPeopleLimitType === 0}
                         value={body.totalNumber}
                         onChange={this.handleLimitPeopleChange}
-                        className={styles['text-center']}
+                        className={styles['dzqp-act__limit_input']}
                       />人报名
                     </Radio>
                   </Radio.Group>
