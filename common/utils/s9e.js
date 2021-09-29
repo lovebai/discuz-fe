@@ -2,7 +2,7 @@
 // <p>&lt;p&gt;111&lt;/p&gt;</p>
 import getConfig from '@common/config';
 import Storage from '@common/utils/session-storage';
-
+import isServer from './is-server';
 export const tags = {
   topic: text => {
     if (!text) return;
@@ -92,7 +92,14 @@ function parseEmoji(text) {
 
 const handleEmoji = (value, emojis) => {
   const config = getConfig() || {}
-  const url = config.COMMON_BASE_URL || window.location.origin
+
+
+  let url;
+  if (!isServer()) {
+    url = config.COMMON_BASE_URL || window.location.origin;
+  } else {
+    url = global.ssr_host
+  }
 
   if (!emojis?.length) {
     return {

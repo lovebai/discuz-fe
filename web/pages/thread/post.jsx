@@ -814,7 +814,7 @@ class PostPage extends React.Component {
     if (!(isAutoSave || isPay)) this.toastInstance = Toast.loading({ content: isDraft ? '保存草稿中' : '发布中...', hasMask: true });
     if (threadPost.postData.threadId) ret = await threadPost.updateThread(threadPost.postData.threadId);
     else ret = await threadPost.createThread();
-    console.log(ret);
+
     const { code, data, msg } = ret;
     if (code === 0) {
       this.setState({ data });
