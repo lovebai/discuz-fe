@@ -1,6 +1,6 @@
 import PayBox from '@components/payBox';
 
-export default ({ amount, groupId, title, userStore, siteStore }) => {
+export default ({ amount, groupId, title, user, site }) => {
   return new Promise((resolve, reject) => {
     PayBox.createPayBox({
       data: {
@@ -11,8 +11,8 @@ export default ({ amount, groupId, title, userStore, siteStore }) => {
       },
       isAnonymous: false, // 是否匿名
       success: async (orderInfo) => {
-        await userStore.updateUserInfo(userStore.id);
-        await siteStore.getSiteInfo();
+        await user.updateUserInfo(user.id);
+        await site.getSiteInfo();
         resolve(orderInfo);
       },
       failed: async (orderInfo) => {

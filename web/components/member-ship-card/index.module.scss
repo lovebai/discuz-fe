@@ -1,8 +1,68 @@
 @import '@common/styles/index.scss';
 
+
+
+.dialogWrapper {
+  :global {
+    .dzq-modal__container {
+      width: 900px !important;
+    }
+    .dzq-tabs__bar {
+      box-shadow: none;
+      overflow: hidden;
+    }
+
+    .dzq-tabs__item.is-active .dzq-tabs__label {
+      padding-bottom: 0;
+    }
+  }
+
+
+  .TabPanel {
+    border-top: 1px solid #d5d5d5;
+    border-bottom: 1px solid #d5d5d5;
+    padding: 23px 120px;
+    display: flex;
+    justify-content: space-between;
+
+    .operation {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .upgradePrice {
+        font-weight: normal;
+        font-size: 60px;
+        line-height: 21px;
+        text-align: left;
+        color: #f50026;
+
+      }
+    }
+
+    .tips {
+      font-size: 14px;
+      line-height: 21px;
+      text-align: left;
+      color: #393b42;
+
+      .title {
+        padding: 5px 0;
+      }
+    }
+  }
+
+
+
+
+}
+
+
 .memberShipCardWrapper {
   background-color: $white;
   width: 100%;
+  max-width: rem(340);
   height: rem(140);
   border-radius: rem(5);
   // border: rem(1) solid $white;
@@ -13,6 +73,10 @@
   background-image: url('/dzq-img/ship-card-pc.png');
   background-size: 100% rem(169);
   background-repeat: no-repeat;
+
+
+
+
 }
 
 .MemberShipCardContent {
@@ -84,9 +148,4 @@
   color: #624a1e !important;
 }
 
-.upgradePrice {
-  font-size: 16px;
-  line-height: 21px;
-  text-align: left;
-  color: #f50026;
-}
+

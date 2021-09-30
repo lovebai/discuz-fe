@@ -14,7 +14,8 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   const isPaySite = siteMode === 'pay';
 
 
-  const [dialogVisible, setDialogVisible] = useState(false);
+
+  const [dialogVisible, setDialogVisible] = useState(true);
   const [payGroups, setPayGroups] = useState([]);
   const [defaultActive, setDefaultActive] = useState(1);
 
@@ -22,6 +23,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     const groups = await getPayGroups();
     setPayGroups(groups);
   }, []);
+
 
 
   const handlePayGroupRenewal = (upgradeLevel) => {
@@ -115,13 +117,11 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     if (hasPayGroup) {
       return <Button onClick={() => {handlePayGroupRenewal(level + 1)}} type="primary" className={styles.btn}>升级</Button>;
     }
-
   };
 
   const renderCard = (data, noBtn = false) => {
     const { groupName, level, description } = data;
     const theme = levelStyle[level] || {};
-    debugger;
     return (
       <div className={`${styles.memberShipCardWrapper} ${shipCardClassName}`} style={{backgroundImage: `url(${theme.bgImg})`}}>
         <div className={styles.MemberShipCardContent}>
@@ -136,24 +136,20 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     );
   };
 
-
-
   return (
-    <>
+    <div className={styles.wrapper}>
       {renderCard({groupName, level, description})}
       <Dialog
-        title="提示"
+        className={styles.dialogWrapper}
+        style={{width: '900px'}}
         visible={dialogVisible}
         maskClosable={true}
         style={{
           padding: 0
         }}
-        onClose={() => setVisible(false)}
-        onCancel={() => setVisible(false)}
-        onConfirm={() => setVisible(false)}
       >
         <Tabs defaultActiveId={defaultActive}>
-          {payGroups.map(({ name: groupName, level, description, fee, notice }) => {
+          {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId }) => {
             const data = {
               groupName,
               level,
@@ -162,16 +158,19 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
             return (
               <Tabs.TabPanel key={level} id={level} label={groupName}>
                 <div>
-                  {renderCard(data, true)}
-                  <div>
-                    <div>
-                      <div className={styles.upgradePrice}>{`￥${fee}`}</div>
-                      <div>有效期：一年</div>
+                  <div className={styles.TabPanel}>
+                    {renderCard(data, true)}
+                    <div className={styles.operation}>
+                      <div>
+                        <div className={styles.upgradePrice}>{`￥${fee}`}</div>
+                        <div>有效期：一年</div>
+                      </div>
+                      <Button className={styles.upgradeBtn} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>
                     </div>
-                    <Button className={styles.upgradeBtn} onClick={() => doPay({amount: 1, title: '付费用户组升级', groupd: 1 })}>立即升级</Button>
                   </div>
-                  <div>
-                    <div>购买须知</div>
+
+                  <div className={styles.tips}>
+                    <div className={styles.title}>购买须知</div>
                     <div>{notice}</div>
                   </div>
                 </div>
@@ -180,10 +179,8 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
           })}
         </Tabs>
       </Dialog>
-    </>
+    </div>
   );
-
-
 
 };
 
