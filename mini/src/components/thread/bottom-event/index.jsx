@@ -2,12 +2,14 @@ import React, { useMemo, useState, useEffect } from 'react';
 import styles from './index.module.scss';
 import Tip from '../tip';
 import Icon from '@discuzq/design/dist/components/icon/index';
-import { View, Text } from '@tarojs/components';
+import { View, Text , Image} from '@tarojs/components';
 import ShareButton from '../share-button';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import Taro from '@tarojs/taro';
 import Toast from '@discuzq/design/dist/components/toast';
 import { noop } from '../utils';
+const hongbaoMini = 'https://imgcache.qq.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
+
 /**
  * 帖子底部内容
  * @prop {array}    userImgs 点赞分享用户信息
@@ -39,7 +41,9 @@ const Index = ({
   onPraise = () => {},
   updateViewCount = noop,
   shareIconClick = () => {},
-  isCommented = false
+  isCommented = false,
+  hasCommentHongbao = false,
+
 }) => {
   const postList = useMemo(() => {
     const praise = {
@@ -59,6 +63,7 @@ const Index = ({
         type: 'commonet',
         num: comment,
         actived: isCommented,
+        hasHongbao: hasCommentHongbao,
       },
       {
         icon: 'ShareAltOutlined',
@@ -138,6 +143,8 @@ const Index = ({
               <Text className={(isLiked && item.name === '赞') || item.actived ? styles.fabulousCancel : styles.fabulousPost}>
                 {item.num ? item.num : item.name}
               </Text>
+              {item.hasHongbao &&  <Image className={styles.hongbaoMini} src={hongbaoMini}></Image>}
+
             </View>
           ),
         )}

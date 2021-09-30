@@ -229,7 +229,7 @@ const Index = ({
     return !!file.readyToPlay;
   };
 
-  const Normal = ({ item, index, type }) => {
+  const renderNormal = ({ item, index, type }) => {
     if (isAttachPlayable(item)) {
       const { url, fileName, fileSize } = item;
 
@@ -321,7 +321,8 @@ const Index = ({
               : 'UNKNOWN';
             return (
               !isPay ? (
-                <Normal key={index} item={item} index={index} type={type} />
+                // <Normal key={index} item={item} index={index} type={type} />
+                renderNormal({key: index, item, index, type})
               ) : (
                 <Pay key={index} item={item} index={index} type={type} />
               )

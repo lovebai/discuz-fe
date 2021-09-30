@@ -222,3 +222,17 @@
 .hover {
   cursor: pointer;
 }
+
+
+.hongbaoLikeNum{
+  display: flex;
+  align-items: center;
+  margin:0 5px;
+  .iconzan{
+    color: $orange-color;
+    margin-right: 5px;
+  }
+  >span{
+    color: $error-color;
+  }
+}

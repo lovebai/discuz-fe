@@ -11,7 +11,7 @@ import goToLoginPage from '@common/utils/go-to-login-page';
 import threadPay from '@common/pay-bussiness/thread-pay';
 import ThreadCenterView from './ThreadCenterView';
 import { throttle } from '@common/utils/throttle-debounce';
-import { debounce } from './utils';
+import { debounce, handleAttachmentData } from './utils';
 import { noop } from '@components/thread/utils';
 import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
 import Comment from './comment';
@@ -289,6 +289,7 @@ class Index extends React.Component {
       return <NoData />;
     }
 
+
     const {
       user = {},
       position = {},
@@ -306,6 +307,10 @@ class Index extends React.Component {
       commentList,
     } = data || {};
     const { isEssence, isPrice, isRedPack, isReward } = displayTag || {};
+
+    const {redPacketData} = handleAttachmentData(data.content);
+
+    const hasCommentHongbao = redPacketData && redPacketData.condition === 0 && redPacketData.remainNumber > 0;
 
     return (
       <div className={`${styles.container} ${className} ${showBottomStyle && styles.containerBottom} ${platform === 'pc' && styles.containerPC}`}>
@@ -372,6 +377,7 @@ class Index extends React.Component {
           tipData={{ postId, threadId, platform, payType }}
           platform={platform}
           updateViewCount={this.updateViewCount}
+          hasCommentHongbao={hasCommentHongbao}
         />
 
 

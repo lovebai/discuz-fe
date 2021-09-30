@@ -217,3 +217,18 @@
   width: 18px;
   height: 18px;
 }
+
+.hongbaoLikeNum{
+  display: flex;
+  align-items: center;
+  margin:0 5px;
+  font-size: 12px;
+  .iconzan{
+    color: $orange-color;
+    margin-right: 5px;
+  }
+  .redfont{
+    display: inline;
+    color: $error-color;
+  }
+}

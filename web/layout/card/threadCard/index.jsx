@@ -60,7 +60,9 @@ const ThreadCard = inject('user', 'card')(observer((props) => {
 
   const filterIframe = /<iframe(([\s\S])*?)<\/iframe>/g; // iframe标签不支持生成h5海报
 
-  // console.log(threadStore?.threadData,text, 1);
+  const posthandle = str => (str.length > 6 ? `${str.slice(0, 6)}...` : str);
+
+
   return (
     <div>
       {isReady && (
@@ -68,7 +70,7 @@ const ThreadCard = inject('user', 'card')(observer((props) => {
         <div className={styles.header}>
           <div className={styles.userInfo}>
             <UserInfo
-              name={nickname || ''}
+              name={ posthandle(nickname || '')}
               avatar={avatar || ''}
               location={threadStore?.threadData?.position?.location || ''}
               groupName={threadStore?.threadData?.group?.groupName || ''}

@@ -96,12 +96,25 @@ class CommentList extends React.Component {
     const isSelf = this.props.threadId === this.props?.data?.userId;
     // 评论内容是否通过审核
     const isApproved = this.props?.data?.isApproved === 1;
+    const { redPacketData } = this.props;
+    const remainHongbaoLike = redPacketData?.condition === 1 && redPacketData?.remainNumber; // 是否还有剩余的点赞红包
+    const needLikeNum = redPacketData?.likenum;
+    const curLikeNum = this.props?.data?.likeCount;
+
     return (
       <div className={`${styles.commentList} dzq-comment`}>
         <div className={styles.header}>
           <div className={styles.showGet}>
             <div></div>
             <div className={styles.headerRigth}>
+              {
+                remainHongbaoLike && curLikeNum > 0 && curLikeNum < needLikeNum && (
+                  <div className={styles.hongbaoLikeNum}>
+                    <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
+                    再集 <span> {needLikeNum - curLikeNum} </span> 赞可领红包
+                  </div>
+                )
+              }
               {this.props.data?.rewards ? (
                 <div className={styles.imageNumber}>
                   <img className={styles.rewardImage} src="/dzq-img/coin.png" alt="悬赏图标" />

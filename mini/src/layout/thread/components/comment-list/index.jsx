@@ -117,13 +117,25 @@ class CommentList extends React.Component {
     const { groups } = this.props.data?.user || {};
     // 评论内容是否通过审核
     const isApproved = this.props?.data?.isApproved === 1;
-    const isSelf = this.props.threadId === this.props?.data?.userId
+    const isSelf = this.props.threadId === this.props?.data?.userId;
+    const { redPacketData } = this.props;
+    const remainHongbaoLike = redPacketData?.condition === 1 && redPacketData?.remainNumber; // 是否还有剩余的点赞红包
+    const needLikeNum = redPacketData?.likenum;
+    const curLikeNum = this.props?.data?.likeCount;
     return (
       <View className={styles.commentList}>
         <View className={styles.header}>
           <View className={styles.showGet}>
             <View></View>
             <View className={styles.headerRigth}>
+              {
+                remainHongbaoLike && curLikeNum > 0 && curLikeNum < needLikeNum && (
+                  <View className={styles.hongbaoLikeNum}>
+                    <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
+                    再集 <View className={styles.redfont}> {needLikeNum - curLikeNum} </View> 赞可领红包
+                  </View>
+                )
+              }
               {this.props.data?.rewards ? (
                 <View className={styles.imageNumber}>
                   <Image className={styles.rewardImage} src={coin} alt="悬赏图标" />
