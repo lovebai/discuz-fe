@@ -9,13 +9,13 @@ import groupPay from '@common/pay-bussiness/group-pay';
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
   const { siteMode } = site;
   const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, getPayGroups,  } = user;
-  const { group: { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup } } = userInfo;
+  const { group: { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId  } } = userInfo;
   const theme = levelStyle[level];
   const isPaySite = siteMode === 'pay';
 
 
 
-  const [dialogVisible, setDialogVisible] = useState(true);
+  const [dialogVisible, setDialogVisible] = useState(false);
   const [payGroups, setPayGroups] = useState([]);
   const [defaultActive, setDefaultActive] = useState(1);
 
@@ -100,7 +100,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     if (level > 0) {
       return (
         <>
-          <Button onClick={() => {() => {}}} type="primary" className={styles.btn} style={leftBtnStyle}>续费</Button>
+          <Button onClick={() => doPay({amount, title: '付费用户组续费', groupId })} type="primary" className={styles.btn} style={leftBtnStyle}>续费</Button>
           {!isTop && <Button onClick={() => {handlePayGroupRenewal(level + 1)}} type="primary" className={styles.btn} style={rightBtnStyle}>升级</Button>}
         </>
       );
@@ -141,7 +141,6 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
       {renderCard({groupName, level, description})}
       <Dialog
         className={styles.dialogWrapper}
-        style={{width: '900px'}}
         visible={dialogVisible}
         maskClosable={true}
         style={{
@@ -161,9 +160,9 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
                   <div className={styles.TabPanel}>
                     {renderCard(data, true)}
                     <div className={styles.operation}>
-                      <div>
+                      <div className={styles.top}>
                         <div className={styles.upgradePrice}>{`￥${fee}`}</div>
-                        <div>有效期：一年</div>
+                        <div className={styles.time}>有效期：一年</div>
                       </div>
                       <Button className={styles.upgradeBtn} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>
                     </div>
