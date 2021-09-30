@@ -9,7 +9,8 @@ import groupPay from '@common/pay-bussiness/group-pay';
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
   const { siteMode } = site;
   const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, getPayGroups,  } = user;
-  const { group: { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId  } } = userInfo;
+  const { group } = userInfo;
+  const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId } = group;
   const theme = levelStyle[level];
   const isPaySite = siteMode === 'pay';
 
@@ -164,7 +165,8 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
                         <div className={styles.upgradePrice}>{`￥${fee}`}</div>
                         <div className={styles.time}>有效期：一年</div>
                       </div>
-                      <Button className={styles.upgradeBtn} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>
+
+                      {level > group.level && <Button className={styles.upgradeBtn} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>}
                     </div>
                   </div>
 
