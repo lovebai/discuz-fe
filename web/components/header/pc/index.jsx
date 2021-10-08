@@ -106,13 +106,14 @@ class Header extends React.Component {
     if (site?.webConfig?.setSite?.siteLogo !== '') {
       return (
         <img
+          alt="站点logo"
           className={styles.siteLogo}
           src={site?.webConfig?.setSite?.siteLogo}
           onClick={() => LoginHelper.gotoIndex()}
         />
       );
     }
-    return <img className={styles.siteLogo} src="/dzq-img/admin-logo-pc.png" onClick={() => LoginHelper.gotoIndex()} />;
+    return <img className={styles.siteLogo} alt="站点logo" src="/dzq-img/admin-logo-pc.png" onClick={() => LoginHelper.gotoIndex()} />;
   }
 
   dropdownUserUserCenterActionImpl = () => {
