@@ -5,10 +5,11 @@ import { inject, observer } from 'mobx-react';
 import time from '@discuzq/sdk/dist/time';
 import { payGroupLevelStyle as levelStyle } from '@common/constants/const';
 import groupPay from '@common/pay-bussiness/group-pay';
+import classnames from 'classnames';
 
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
-  const { siteMode } = site;
-  const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, getPayGroups,  } = user;
+  const { siteMode, isPC } = site;
+  const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, getPayGroups, } = user;
   const { group } = userInfo;
   const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId } = group;
   const theme = levelStyle[level];
@@ -20,22 +21,25 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   const [payGroups, setPayGroups] = useState([]);
   const [defaultActive, setDefaultActive] = useState(1);
 
+  // 获取付费用户组数据
   useEffect(async () => {
     const groups = await getPayGroups();
     setPayGroups(groups);
   }, []);
 
 
-
+  // 打开升级付费用户组的弹窗
   const handlePayGroupRenewal = (upgradeLevel) => {
     setDefaultActive(upgradeLevel);
     setDialogVisible(true);
   };
 
+  // 处理付费站点续费
   const handleRenewalFee = () => {
     typeof onRenewalFeeClick === 'function' && onRenewalFeeClick();
   };
 
+  // 执行付费
   const doPay = async ({ amount, groupId, title }) => {
     setDialogVisible(false);
     try {
@@ -137,18 +141,16 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     );
   };
 
-  return (
+  return isAdmini ? null : (
     <div className={styles.wrapper}>
       {renderCard({groupName, level, description})}
       <Dialog
-        className={styles.dialogWrapper}
+        className={isPC ? styles.dialogWrapper : styles.mobileDialogWrapper}
         visible={dialogVisible}
         maskClosable={true}
-        style={{
-          padding: 0
-        }}
+        onClose={() => setDialogVisible(false)}
       >
-        <Tabs defaultActiveId={defaultActive}>
+        <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
           {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId }) => {
             const data = {
               groupName,
@@ -158,19 +160,28 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
             return (
               <Tabs.TabPanel key={level} id={level} label={groupName}>
                 <div>
-                  <div className={styles.TabPanel}>
+                  <div className={classnames(styles.tabPanel, {
+                    [styles.mobileTabPanel]: !isPC
+                  })}>
                     {renderCard(data, true)}
-                    <div className={styles.operation}>
+                    <div className={classnames(styles.operation, {
+                      [styles.mobileOperation]: !isPC
+                    })}>
                       <div className={styles.top}>
-                        <div className={styles.upgradePrice}>{`￥${fee}`}</div>
+                        <div className={classnames({
+                          [styles.upgradePrice]: isPC,
+                          [styles.mobileUpgradePrice]: !isPC,
+                        })}>
+                          {`￥${fee}`}
+                        </div>
                         <div className={styles.time}>有效期：一年</div>
                       </div>
 
-                      {level > group.level && <Button className={styles.upgradeBtn} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>}
+                      {level > group.level && <Button className={styles.upgradeBtn} style={{margin: isPC ? '' : 0}} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>}
                     </div>
                   </div>
 
-                  <div className={styles.tips}>
+                  <div className={styles.tips} style={{padding: isPC ? '' : '16px'}}>
                     <div className={styles.title}>购买须知</div>
                     <div>{notice}</div>
                   </div>
