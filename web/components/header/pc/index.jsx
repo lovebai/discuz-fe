@@ -10,6 +10,7 @@ import clearLoginStatus from '@common/utils/clear-login-status';
 import UnreadRedDot from '@components/unread-red-dot';
 import { unreadUpdateInterval } from '@common/constants/message';
 import LoginHelper from '@common/utils/login-helper';
+import SiteMapLink from '@components/site-map-link';
 
 @inject('site')
 @inject('user')
@@ -226,6 +227,7 @@ class Header extends React.Component {
             <div className={styles.right}>
               <div className={styles.iconList}>
                 <div className={styles.iconItem} onClick={() => LoginHelper.gotoIndex()}>
+                  <SiteMapLink href='/' text='首页'/>
                   <Icon
                     onClick={() => {
                       this.iconClickHandle('home');
@@ -238,6 +240,7 @@ class Header extends React.Component {
                 <div className={styles.iconItem} onClick={() => this.handleRouter('/message')}>
                   <UnreadRedDot unreadCount={totalUnread}>
                     <div className={styles.message}>
+                      <SiteMapLink href='/message' text='消息'/>
                       <Icon
                         onClick={() => {
                           this.iconClickHandle('home');
@@ -253,6 +256,7 @@ class Header extends React.Component {
                   <></>
                 ) : (
                   <div className={styles.iconItem} onClick={() => this.handleClickSearchIcon()}>
+                    <SiteMapLink href='/search' text='发现'/>
                     <Icon
                       onClick={() => {
                         this.iconClickHandle('home');
