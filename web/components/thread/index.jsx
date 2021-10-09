@@ -339,6 +339,7 @@ class Index extends React.Component {
           onImageReady={onImageReady}
           onVideoReady={onVideoReady}
           data={data}
+          threadId={data.threadId}
           onClick={unifyOnClick || this.onClick}
           onPay={unifyOnClick || this.onPay}
           unifyOnClick={unifyOnClick}

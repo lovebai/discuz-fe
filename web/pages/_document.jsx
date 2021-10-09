@@ -48,7 +48,7 @@ class MyDocument extends Document {
   render() {
   
     return (
-      <Html lang="cn">
+      <Html lang="en">
         <Head>
           <meta name="screen-orientation" content="portrait"/>
           <meta name="x5-orientation" content="portrait"/>
