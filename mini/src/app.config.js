@@ -1,3 +1,4 @@
+const pluginsConfig = require('./pluginsConfig');
 /**
  * 入口配置文件：https://taro-docs.jd.com/taro/docs/next/tutorial/
  */
@@ -83,6 +84,7 @@ const config = {
         'my/renew/index',
       ],
     },
+    ...pluginsConfig
   ],
   permission: {
     'scope.userLocation': {
