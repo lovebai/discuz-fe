@@ -4,10 +4,15 @@
 
 .mobileDialogWrapper {
   :global {
+    .dzq-modal__overlay {
+      background: none !important;
+    }
+
     .dzq-modal__container {
       width: 101% !important;
-      height: 101% !important;
+      height: 100% !important;
       padding: 0;
+      border-radius: 0;
 
       .dzq-modal__body {
         padding: 0;
@@ -60,6 +65,7 @@
       line-height: 21px;
       text-align: left;
       color: #f50026;
+      margin-bottom: 5px;
     }
 
     .mobileUpgradeBtn {
