@@ -61,11 +61,14 @@
 
     .mobileUpgradePrice {
       font-weight: normal;
-      font-size: 24px;
       line-height: 21px;
       text-align: left;
       color: #f50026;
       margin-bottom: 5px;
+
+      .price {
+        font-size: 24px;
+      }
     }
 
     .mobileUpgradeBtn {
@@ -95,11 +98,14 @@
 
       .upgradePrice {
         font-weight: normal;
-        font-size: 40px;
         line-height: 21px;
         text-align: left;
         color: #f50026;
         margin-bottom: 30px;
+
+        .price {
+          font-size: 40px;
+        }
       }
       .time {
         font-weight: normal;
@@ -138,6 +144,10 @@
   .title {
     padding: 5px 0;
   }
+}
+
+.symbol {
+  font-size: 16px;
 }
 
 

@@ -149,7 +149,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
         maskClosable={true}
         onClose={() => setDialogVisible(false)}
       >
-        <Header allowJump={false} customJum={() => setDialogVisible(false)} />
+        {isPC ? null : <Header allowJump={false} customJum={() => setDialogVisible(false)} />}
         <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
           {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId, days }) => {
             const data = {
@@ -172,7 +172,8 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
                           [styles.upgradePrice]: isPC,
                           [styles.mobileUpgradePrice]: !isPC,
                         })}>
-                          {`￥${fee}`}
+                          <span className={styles.symbol}>￥</span>
+                          <span className={styles.price}>{fee}</span>
                         </div>
                         <div className={styles.time}>有效期：{`${days}天`}</div>
                       </div>
