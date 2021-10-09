@@ -9,7 +9,7 @@ class MyDocument extends Document {
   }
 
   createMonitor() {
-    if (process.env.NODE_ENV === 'production' ) {
+    if (process.env.NODE_ENV === 'production') {
       return (
         <React.Fragment>
           <script src="https://cdn-go.cn/aegis/aegis-sdk/latest/aegis.min.js?_bid=3977"></script>
@@ -22,7 +22,7 @@ class MyDocument extends Document {
   createTalkingdata() {
     const currEnvConfig = envConfig();
 
-    if ( process.env.NODE_ENV === 'development' ) {
+    if (process.env.NODE_ENV === 'development') {
       return '';
     }
     return `
@@ -42,11 +42,10 @@ class MyDocument extends Document {
       talkingdata.async = true;
       talkingdata.src = url;
       document.getElementsByTagName('body')[0].appendChild(talkingdata);
-    `
+    `;
   }
 
   render() {
-  
     return (
       <Html lang="en">
         <Head>
@@ -71,20 +70,20 @@ class MyDocument extends Document {
 
         <body>
             <Main />
-            <script dangerouslySetInnerHTML={{__html: `
+            <script dangerouslySetInnerHTML={{ __html: `
                 var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
                 var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器
                 var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
                 if(isIE || isIE11) {
                   document.body.innerHTML = '<style>html,body{width: 100%;height: 100%;display: block;}h1{padding: 20px;}h3{padding: 15px;}.box{text-align: center;margin-top: 40vh;}</style><div class="box"><h1>站点不支持IE浏览器！</h1><h3>请使用QQ浏览器、chrome，Edge等浏览器。</h3></div>';
                 }
-            `}}>
+            ` }}>
 
             </script>
             <NextScript/>
         </body>
-        <script dangerouslySetInnerHTML={{__html: this.createTalkingdata()}}/>
-        <script dangerouslySetInnerHTML={{__html: `
+        <script dangerouslySetInnerHTML={{ __html: this.createTalkingdata() }}/>
+        <script dangerouslySetInnerHTML={{ __html: `
           window.sessionStorage.setItem('__TD_td_channel', window.location.hostname.replace(/\./g, '_'));
           var tdjs = document.createElement('script');
           tdjs.type = 'text/javascript';
@@ -97,8 +96,8 @@ class MyDocument extends Document {
           dzqjs.async = true;
           dzqjs.src = 'https://dl.discuz.chat/dzq.js';
           document.getElementsByTagName('body')[0].appendChild(dzqjs);
-        `}}/>
-        <script dangerouslySetInnerHTML={{__html: `
+        ` }}/>
+        <script dangerouslySetInnerHTML={{ __html: `
             // 微信设置字体最大，布局乱的补丁
             function is_weixn() {
               var ua = navigator.userAgent.toLowerCase();
@@ -127,11 +126,9 @@ class MyDocument extends Document {
                 });
               }
             }
-        `}}/>
+        ` }}/>
         {/* <!--腾讯地图定位组件--> */}
         <script async={true} src="https://mapapi.qq.com/web/mapComponents/geoLocation/v/geolocation.min.js"></script>
-        {/* 编辑器markdown依赖 */}
-        <script async={true} src="https://dl.discuz.chat/discuzq-fe/static/lute/lute.min.js"></script>
         {/* 腾讯云cos文件预览sdk */}
         <script async={true} src="https://imgcache.qq.com/operation/dianshi/other/cos-document-preview-sdk-v0.1.1.9128e51973a36da64dfb242554132ab7f86a5125.js"></script>
         {this.createMonitor()}
