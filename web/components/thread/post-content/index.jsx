@@ -43,26 +43,30 @@ const PostContent = ({
   const [showMore, setShowMore] = useState(false); // 根据文本长度显示"查看更多"
   const [imageVisible, setImageVisible] = useState(false);
   const [imageUrlList, setImageUrlList] = useState([]);
+  const [imageLgAndSmUrlList, setImageLgAndSmUrlList] = useState([]);
   const [curImageUrl, setCurImageUrl] = useState('');
   const ImagePreviewerRef = useRef(null); // 富文本中的图片也要支持预览
   const contentWrapperRef = useRef(null);
   let mousePosition = { x: 0, y: 0 };
-  const imageLgAndSmUrlList = [];
 
   const texts = {
     showMore: '查看更多',
     closeMore: '折叠',
   };
 
+  const [openedMore, setOpenedMore] = useState(useShowMore);
+
   const replaceImgSrc = (src) => {
     const [path] = src.split('?');
     const type = path.substr(path.lastIndexOf('.') + 1);
     return calcCosImageQuality(src, type, 7)
   }
-
+  
+  // 将图片链接替换成 webp 及小图
   const replaceImagesFromText = (contentText) => {
     const images = contentText.match(/<img.*?\/>/g)?.filter(image => (!image.includes('emoji')));
     if (images && images.length) {
+      const imageLgAndSmUrlList = []
       for (let i = 0; i < images.length; i++) {
         let imgSrc = images[i].match(/src=[\'\"]?([^\'\"]*)[\'\"]?/i)[0];
         imgSrc = imgSrc ? imgSrc.substring(5, imgSrc.length-1) : ''
@@ -75,17 +79,18 @@ const PostContent = ({
         })
         contentText = contentText.replace(images[i], newImg);
       }
-    }
+      if (imageLgAndSmUrlList.length) {
+        setImageLgAndSmUrlList(imageLgAndSmUrlList)
+      }
+    };
     return contentText
   }
-  content = replaceImagesFromText(content)
-
-  const [openedMore, setOpenedMore] = useState(useShowMore);
 
   // 过滤内容
   const filterContent = useMemo(() => {
     let newContent = content ? s9e.parse(content) : '';
     newContent = xss(newContent);
+    newContent = replaceImagesFromText(newContent);
     return newContent;
   }, [content]);
 
