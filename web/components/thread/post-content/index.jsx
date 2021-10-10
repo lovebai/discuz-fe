@@ -10,6 +10,7 @@ import xss from '@common/utils/xss';
 import { urlToLink } from '@common/utils/replace-url-to-a';
 import replaceStringInRegex from '@common/utils/replace-string-in-regex';
 import isServer from '@common/utils/is-server';
+import calcCosImageQuality from '@common/utils/calc-cos-image-quality';
 import styles from './index.module.scss';
 
 /**
@@ -46,11 +47,38 @@ const PostContent = ({
   const ImagePreviewerRef = useRef(null); // 富文本中的图片也要支持预览
   const contentWrapperRef = useRef(null);
   let mousePosition = { x: 0, y: 0 };
+  const imageLgAndSmUrlList = [];
 
   const texts = {
     showMore: '查看更多',
     closeMore: '折叠',
   };
+
+  const replaceImgSrc = (src) => {
+    const [path] = src.split('?');
+    const type = path.substr(path.lastIndexOf('.') + 1);
+    return calcCosImageQuality(src, type, 7)
+  }
+
+  const replaceImagesFromText = (contentText) => {
+    const images = contentText.match(/<img.*?\/>/g)?.filter(image => (!image.includes('emoji')));
+    if (images && images.length) {
+      for (let i = 0; i < images.length; i++) {
+        let imgSrc = images[i].match(/src=[\'\"]?([^\'\"]*)[\'\"]?/i)[0];
+        imgSrc = imgSrc ? imgSrc.substring(5, imgSrc.length-1) : ''
+        const smImgSrc = imgSrc ? replaceImgSrc(imgSrc) : '';
+        const newImg = images[i].replace(imgSrc, smImgSrc)
+        // 保存图片的缩略图和原图，用于预览时查找对应链接
+        imageLgAndSmUrlList.push({
+          smSrc: smImgSrc,
+          lgSrc: imgSrc
+        })
+        contentText = contentText.replace(images[i], newImg);
+      }
+    }
+    return contentText
+  }
+  content = replaceImagesFromText(content)
 
   const [openedMore, setOpenedMore] = useState(useShowMore);
 
@@ -119,7 +147,9 @@ const PostContent = ({
     updateViewCount();
     if (e?.attribs?.src) {
       setImageVisible(true);
-      setCurImageUrl(e.attribs.src);
+      // 替换大图
+      const imgSrcObj = imageLgAndSmUrlList.find(item => item.smSrc === e.attribs.src)
+      setCurImageUrl(imgSrcObj?.lgSrc || e.attribs.src);
     }
   };
 
@@ -148,6 +178,9 @@ const PostContent = ({
 
     for (let i = 0; i < images.length; i++) {
       images[i] = images[i].replace(/<img\s+[^<>]*src=[\"\'\\]+/gm, '') || '';
+      // 替换大图
+      const imgSrcObj = imageLgAndSmUrlList.find(item => item.smSrc === images[i])
+      imgSrcObj && (images[i] = imgSrcObj.lgSrc)
     }
     return images;
   };

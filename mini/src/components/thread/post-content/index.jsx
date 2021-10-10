@@ -13,6 +13,7 @@ import { View } from '@tarojs/components'
 import styles from './index.module.scss';
 import { urlToLink } from '@common/utils/replace-url-to-a';
 import replaceStringInRegex from '@common/utils/replace-string-in-regex';
+import calcCosImageQuality from '@common/utils/calc-cos-image-quality';
 
 import config from '../../../app.config';
 
@@ -44,17 +45,44 @@ const PostContent = ({
   const [cutContentForDisplay, setCutContentForDisplay] = useState('');
   const [showMore, setShowMore] = useState(false); // 根据文本长度显示"查看更多"
   const [imageVisible, setImageVisible] = useState(false);
-  const [imageUrlList, setImageUrlList] = useState([]);
+  const [imageUrlList, setImageUrlList] = useState({});
   const [curImageUrl, setCurImageUrl] = useState("");
   const [appPageLinks, setAppPageLinks] = useState([]);
   const ImagePreviewerRef = useRef(null); // 富文本中的图片也要支持预览
   const contentWrapperRef = useRef(null);
   const clickedImageId = useRef(null);
+  const imageLgAndSmUrlList = [];
 
   const texts = {
     showMore: '查看更多',
     closeMore: '折叠',
   };
+
+  const replaceImgSrc = (src) => {
+    const [path] = src.split('?');
+    const type = path.substr(path.lastIndexOf('.') + 1);
+    return calcCosImageQuality(src, type, 7)
+  }
+
+  const replaceImagesFromText = (contentText) => {
+    const images = contentText.match(/<img.*?\/>/g)?.filter(image => (!image.includes('emoji')));
+    if (images && images.length) {
+      for (let i = 0; i < images.length; i++) {
+        let imgSrc = images[i].match(/src=[\'\"]?([^\'\"]*)[\'\"]?/i)[0];
+        imgSrc = imgSrc ? imgSrc.substring(5, imgSrc.length-1) : ''
+        const smImgSrc = imgSrc ? replaceImgSrc(imgSrc) : '';
+        const newImg = images[i].replace(imgSrc, smImgSrc)
+        // 保存图片的缩略图和原图，用于预览时查找对应链接
+        imageLgAndSmUrlList.push({
+          smSrc: smImgSrc,
+          lgSrc: imgSrc
+        })
+        contentText = contentText.replace(images[i], newImg);
+      }
+    }
+    return contentText
+  }
+  content = replaceImagesFromText(content)
 
   const [openedMore, setOpenedMore] = useState(useShowMore);
 
@@ -130,7 +158,9 @@ const PostContent = ({
     updateViewCount();
     if (node?.attribs?.src) {
       setImageVisible(true);
-      setCurImageUrl(node.attribs.src);
+      // 替换大图
+      const imgSrcObj = imageLgAndSmUrlList.find(item => item.smSrc === node.attribs.src)
+      setCurImageUrl(imgSrcObj?.lgSrc || node.attribs.src);
       clickedImageId.current = event?.target?.id;
     }
   }
@@ -153,6 +183,9 @@ const PostContent = ({
 
     for (let i = 0; i < images.length; i++) {
       images[i] = images[i].replace(/<img\s+[^<>]*src=[\"\'\\]+/gm, "") || "";
+      // 替换大图
+      const imgSrcObj = imageLgAndSmUrlList.find(item => item.smSrc === images[i])
+      imgSrcObj && (images[i] = imgSrcObj.lgSrc)
     }
     return images;
   }
@@ -189,6 +222,7 @@ const PostContent = ({
     }
 
     const imageUrlList = getImagesFromText(filterContent);
+    console.log('>>> imageUrlList', imageUrlList)
     if (imageUrlList.length) {
       setImageUrlList(imageUrlList);
     }
