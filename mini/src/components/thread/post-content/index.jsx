@@ -45,7 +45,7 @@ const PostContent = ({
   const [cutContentForDisplay, setCutContentForDisplay] = useState('');
   const [showMore, setShowMore] = useState(false); // 根据文本长度显示"查看更多"
   const [imageVisible, setImageVisible] = useState(false);
-  const [imageUrlList, setImageUrlList] = useState({});
+  const [imageUrlList, setImageUrlList] = useState([]);
   const [curImageUrl, setCurImageUrl] = useState("");
   const [appPageLinks, setAppPageLinks] = useState([]);
   const ImagePreviewerRef = useRef(null); // 富文本中的图片也要支持预览
@@ -222,7 +222,6 @@ const PostContent = ({
     }
 
     const imageUrlList = getImagesFromText(filterContent);
-    console.log('>>> imageUrlList', imageUrlList)
     if (imageUrlList.length) {
       setImageUrlList(imageUrlList);
     }
