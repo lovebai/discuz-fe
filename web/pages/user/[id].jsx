@@ -4,24 +4,22 @@ import H5OthersUserCenter from '@layout/my/others-users/h5';
 import PCOthersUserCenter from '@layout/my/others-users/pc';
 import HOCFetchSiteData from '../../middleware/HOCFetchSiteData';
 import ViewAdapter from '@components/view-adapter';
-import { readUser} from '@server';
+import { readUser } from '@server';
 
 @inject('site')
 @inject('user')
 @observer
 class Index extends Component {
-
   static async getInitialProps(ctx, options) {
-
     const id = ctx?.query?.id;
     const serverData = {
-      userData: null
+      userData: null,
     };
 
     if (id) {
       const userRes = await readUser({ params: { userId: id } });
-      console.log(userRes)
-      if ( userRes.code === 0 ) {
+
+      if (userRes.code === 0) {
         serverData.userData = userRes.data;
       }
     }
@@ -33,18 +31,23 @@ class Index extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      userData: props.serverData && props.serverData.userData ? props.serverData.userData : null
+      userData: props.serverData && props.serverData.userData ? props.serverData.userData : null,
     };
   }
 
   render() {
-
     let title = '';
-    if ( this.state.userData ) {
-      title = `${this.state.userData.nickname}的主页`
+    if (this.state.userData) {
+      title = `${this.state.userData.nickname}的主页`;
     } else {
-      title = this.props.user?.targetUserNickname ? `${this.props.user?.targetUserNickname}的主页` : '他人主页';
+      const { query = {} } = this.props.router;
+      const { id = '' } = query;
+
+      const targetUser = this.props.user.targetUsers[id] || {};
+
+      title = targetUser.nickname ? `${targetUser.nickname}的主页` : '他人主页';
     }
 
     return (
