@@ -132,7 +132,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     const { groupName, level, description } = data;
     const theme = levelStyle[level] || {};
     return (
-      <div className={`${styles.memberShipCardWrapper} ${shipCardClassName}`} style={{backgroundImage: `url(${theme.bgImg})`}}>
+      <div className={classnames(`${styles.memberShipCardWrapper} ${shipCardClassName}`, { [styles.memberShipNoMargin]: noBtn && isPC })} style={{backgroundImage: `url(${theme.bgImg})`}}>
         <div className={styles.MemberShipCardContent}>
           <div className={styles.roleType} style={{color: theme.groupNameColor}}>{groupName}</div>
           <div className={styles.tagline} style={{color: theme.desAndDateColor}}>{level > 0 ? description : '访问海量站点内容'}</div>
