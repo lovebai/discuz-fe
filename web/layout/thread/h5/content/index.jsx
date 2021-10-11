@@ -49,6 +49,10 @@ const RenderThreadContent = withRouter(inject('site', 'user')(observer((props) =
   // 是否附件付费帖
   const isAttachmentPay = threadStore?.threadData?.payType === 2 && threadStore?.threadData?.paid === false;
   const attachmentPrice = threadStore?.threadData?.attachmentPrice || 0;
+
+   // 是否可以免费查看付费帖子
+   const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
+
   // 是否需要附加付费
   const needAttachmentPay = !canFreeViewPost && isAttachmentPay && !isSelf && !isPayed;
   // 是否付费帖子
@@ -72,9 +76,6 @@ const RenderThreadContent = withRouter(inject('site', 'user')(observer((props) =
   // const canBeReward = isFree && !isRedPack && !isReward;
   // 是否已打赏
   const isRewarded = threadStore?.threadData?.isReward;
-
-  // 是否可以免费查看付费帖子
-  const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
 
   const parseContent = parseContentData(indexes);
 
@@ -288,7 +289,7 @@ const RenderThreadContent = withRouter(inject('site', 'user')(observer((props) =
               return (
                 <div key={pluginInfo.name}>
                   {render({
-                    site: site,
+                    site: { ...site, isDetailPage: true  },
                     renderData: parseContent.plugin
                   })}
                 </div>

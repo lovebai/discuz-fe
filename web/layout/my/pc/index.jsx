@@ -218,6 +218,7 @@ class PCMyPage extends React.Component {
           <UserCenterAction />
         </div>
 
+        <div id="my-thread"></div>
         <SidebarPanel
           title="主题"
           type="normal"

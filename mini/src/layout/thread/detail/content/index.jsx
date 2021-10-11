@@ -303,7 +303,7 @@ const RenderThreadContent = inject('site', 'user')(
               return (
                 <View key={pluginInfo.name}>
                   {render({
-                    site: site,
+                    site: { ...site, isDetailPage: true  },
                     renderData: parseContent.plugin
                   })}
                 </View>
