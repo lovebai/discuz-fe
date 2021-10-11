@@ -202,7 +202,7 @@ class UserAction extends SiteStore {
       if (follows && follows.data) {
         Object.keys(follows.data).forEach((page) => {
           follows.data[page].forEach((userInfo) => {
-            if (get(userInfo, 'user.pid') !== userId) return;
+            if (get(userInfo, 'user.userId') !== userId) return;
 
             resultArray.push(userInfo);
           });
@@ -214,7 +214,7 @@ class UserAction extends SiteStore {
       if (fans && fans.data) {
         Object.keys(fans.data).forEach((page) => {
           fans.data[page].forEach((userInfo) => {
-            if (get(userInfo, 'user.pid') !== userId) return;
+            if (get(userInfo, 'user.userId') !== userId) return;
 
             resultArray.push(userInfo);
           });
@@ -236,7 +236,7 @@ class UserAction extends SiteStore {
   @action
   followUser({ userId, followRes }) {
     const followTransformer = (userInfo) => {
-      if (get(userInfo, 'user.pid') !== userId) return;
+      if (get(userInfo, 'user.userId') !== userId) return;
       userInfo.userFollow.isMutual = followRes.data.isMutual;
       userInfo.userFollow.isFollow = true;
     };
@@ -265,7 +265,7 @@ class UserAction extends SiteStore {
       let searchFlag = false;
       Object.keys(this.followStore[this.id].data).forEach((page) => {
         this.followStore[this.id].data[page].forEach((userInfo) => {
-          if (userInfo.user.pid === userId) {
+          if (userInfo.user.userId === userId) {
             searchFlag = true;
           }
         });
@@ -302,7 +302,7 @@ class UserAction extends SiteStore {
   @action
   unFollowUser({ userId }) {
     const unfollowTransformer = (userInfo) => {
-      if (get(userInfo, 'user.pid') !== userId) return;
+      if (get(userInfo, 'user.userId') !== userId) return;
       userInfo.userFollow.isFollow = false;
     };
 
