@@ -13,7 +13,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, getPayGroups, } = user;
   const { group } = userInfo;
   const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId, typeTime, remainTime } = group;
-  const theme = levelStyle[level];
+  const theme = levelStyle[level] || {};
   const isPaySite = siteMode === 'pay';
 
   const [dialogVisible, setDialogVisible] = useState(false);
