@@ -59,31 +59,36 @@ const PostContent = ({
   const replaceImgSrc = (src) => {
     const [path] = src.split('?');
     const type = path.substr(path.lastIndexOf('.') + 1);
-    return calcCosImageQuality(src, type, 7)
+    return calcCosImageQuality(src, type, 7);
   }
   
   // 将图片链接替换成 webp 及小图
   const replaceImagesFromText = (contentText) => {
     const images = contentText.match(/<img.*?\/>/g)?.filter(image => (!image.includes('emoji')));
     if (images && images.length) {
-      const imageLgAndSmUrlList = []
+      const imageLgAndSmUrlList = [];
+      const imageUrlList = [];
       for (let i = 0; i < images.length; i++) {
         let imgSrc = images[i].match(/src=[\'\"]?([^\'\"]*)[\'\"]?/i)[0];
-        imgSrc = imgSrc ? imgSrc.substring(5, imgSrc.length-1) : ''
+        imgSrc = imgSrc ? imgSrc.substring(5, imgSrc.length-1) : '';
         const smImgSrc = imgSrc ? replaceImgSrc(imgSrc) : '';
-        const newImg = images[i].replace(imgSrc, smImgSrc)
+        const newImg = images[i].replace(imgSrc, smImgSrc);
+        imageUrlList.push(imgSrc);
         // 保存图片的缩略图和原图，用于预览时查找对应链接
         imageLgAndSmUrlList.push({
           smSrc: smImgSrc,
           lgSrc: imgSrc
-        })
+        });
         contentText = contentText.replace(images[i], newImg);
       }
+      if (imageUrlList.length) {
+        setImageUrlList(imageUrlList);
+      }
       if (imageLgAndSmUrlList.length) {
-        setImageLgAndSmUrlList(imageLgAndSmUrlList)
+        setImageLgAndSmUrlList(imageLgAndSmUrlList);
       }
     };
-    return contentText
+    return contentText;
   }
 
   // 过滤内容
@@ -153,7 +158,7 @@ const PostContent = ({
     if (e?.attribs?.src) {
       setImageVisible(true);
       // 替换大图
-      const imgSrcObj = imageLgAndSmUrlList.find(item => item.smSrc === e.attribs.src)
+      const imgSrcObj = imageLgAndSmUrlList.find(item => item.smSrc === e.attribs.src);
       setCurImageUrl(imgSrcObj?.lgSrc || e.attribs.src);
     }
   };
@@ -177,18 +182,15 @@ const PostContent = ({
     setCutContentForDisplay(ctnSubstring);
   };
 
-  const getImagesFromText = (text) => {
-    const _text = replaceStringInRegex(text, 'emoj', '');
-    const images = _text.match(/<img\s+[^<>]*src=[\"\'\\]+([^\"\']*)/gm) || [];
+  // const getImagesFromText = (text) => {
+  //   const _text = replaceStringInRegex(text, 'emoj', '');
+  //   const images = _text.match(/<img\s+[^<>]*src=[\"\'\\]+([^\"\']*)/gm) || [];
 
-    for (let i = 0; i < images.length; i++) {
-      images[i] = images[i].replace(/<img\s+[^<>]*src=[\"\'\\]+/gm, '') || '';
-      // 替换大图
-      const imgSrcObj = imageLgAndSmUrlList.find(item => item.smSrc === images[i])
-      imgSrcObj && (images[i] = imgSrcObj.lgSrc)
-    }
-    return images;
-  };
+  //   for (let i = 0; i < images.length; i++) {
+  //     images[i] = images[i].replace(/<img\s+[^<>]*src=[\"\'\\]+/gm, '') || '';
+  //   }
+  //   return images;
+  // };
 
   useEffect(() => {
     const lengthInLine = parseInt((contentWrapperRef.current.offsetWidth || 704) / 16);
@@ -209,10 +211,10 @@ const PostContent = ({
       setContentTooLong(false);
     }
 
-    const imageUrlList = getImagesFromText(filterContent);
-    if (imageUrlList.length) {
-      setImageUrlList(imageUrlList);
-    }
+    // const imageUrlList = getImagesFromText(filterContent);
+    // if (imageUrlList.length) {
+    //   setImageUrlList(imageUrlList);
+    // }
   }, [filterContent]);
   
   return (
