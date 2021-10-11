@@ -120,7 +120,7 @@
       width: 144px;
       height: 40px !important;
       border-radius: 5px;
-      background: linear-gradient(#f4daaf 0%, #eabc6c 100%) !important;
+      background: linear-gradient(to right, #f4daaf 0%, #eabc6c 100%) !important;
       border: none !important;
       font-weight: bold;
       font-size: 14px;
@@ -143,6 +143,15 @@
 
   .title {
     padding: 5px 0;
+    font-weight: bold;
+  }
+
+  .text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: left;
+    color: #393b42;
   }
 }
 
@@ -154,7 +163,7 @@
 .memberShipCardWrapper {
   background-color: $white;
   width: 100%;
-  max-width: rem(400);
+  max-width: rem(340);
   height: rem(140);
   border-radius: rem(5);
   // border: rem(1) solid $white;

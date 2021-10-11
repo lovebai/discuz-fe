@@ -12,7 +12,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   const { siteMode, isPC } = site;
   const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, getPayGroups, } = user;
   const { group } = userInfo;
-  const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId } = group;
+  const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId, typeTime, remainTime } = group;
   const theme = levelStyle[level];
   const isPaySite = siteMode === 'pay';
 
@@ -56,11 +56,16 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   };
 
   const renderFeeDateContent = () => {
+    const typeMap = {
+      0: '天',
+      1: '时',
+      2: '分',
+    };
     // 付费用户组用户
     if (level > 0) {
       return (
         <>
-          <span className={styles.feeDay} style={{color: theme.otherColor}}>{remainDays}</span>天&nbsp;•&nbsp;
+          <span className={styles.feeDay} style={{color: theme.otherColor}}>{remainTime}</span>{typeMap[typeTime]}&nbsp;•&nbsp;
           <span style={{color: theme.desAndDateColor}}>{time.formatDate(expirationTime, getDateFormat())}到期</span>
         </>
       );
@@ -184,7 +189,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
 
                   <div className={styles.tips} style={{padding: isPC ? '' : '16px'}}>
                     <div className={styles.title}>购买须知</div>
-                    <div>{notice}</div>
+                    <div className={styles.text}>{notice}</div>
                   </div>
                 </div>
               </Tabs.TabPanel>
