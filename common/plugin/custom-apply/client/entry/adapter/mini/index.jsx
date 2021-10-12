@@ -20,8 +20,8 @@ export default class CustomApplyEntry extends React.Component {
   };
 
   handleDialogOpen = () => {
-    const { siteData } = this.props;
-    const { navInfo = {} } = siteData.threadPost || {};
+    const { postData } = this.props;
+    const { navInfo = {} } = postData.threadPost || {};
     const navStyle = {
       marginTop: `${navInfo.statusBarHeight}px`,
       height: `${navInfo.navHeight}px`,
