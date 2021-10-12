@@ -199,20 +199,16 @@ class H5OthersPage extends React.Component {
   };
 
   getBackgroundUrl = async () => {
-    const { previewBackgroundUrl } = this.state;
+    if (this.state.previewBackgroundUrl) return;
     let backgroundUrl = '';
     const { id = '' } = getCurrentInstance().router.params;
     if (id && this.props.user?.targetUsers[id]) {
       const targetUsers = this.props.user.targetUsers[id];
       backgroundUrl = await checkImgExists(targetUsers.originalBackGroundUrl, targetUsers.backgroundUrl);
     }
-
-    if (previewBackgroundUrl) {
-      backgroundUrl = previewBackgroundUrl;
-    }
-
-    if (!backgroundUrl) return false;
-    return backgroundUrl;
+    backgroundUrl && this.setState({
+      previewBackgroundUrl: backgroundUrl
+    })
   };
 
   previewBackgroundPreLoad = async () => {
