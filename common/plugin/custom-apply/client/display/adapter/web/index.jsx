@@ -160,8 +160,11 @@ class CustomApplyDisplay extends React.Component {
         threadId: tid,
         _plugin,
       };
-      updateThread(tomId, tomValue);
+      console.log(renderData)
+      console.log(tid, tomId, tomValue)
+      console.log(updateThread(tomId, tomValue));
       const newThreadData = updateListThreadIndexes(tid, tomId, tomValue);
+      console.log(newThreadData)
       if (newThreadData && recomputeRowHeights) recomputeRowHeights(newThreadData);
       Toast.info({ content: isRegistered ? '取消报名成功' : '报名成功' });
     } else Toast.error({ content: res.msg || '报名失败' });
