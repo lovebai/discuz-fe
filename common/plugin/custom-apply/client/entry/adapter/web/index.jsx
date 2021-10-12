@@ -6,7 +6,6 @@ import DatePickers from '@components/thread/date-picker';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';
-import { PLUGIN_TOMID_CONFIG } from '@common/plugin/plugin-tomid-config';
 import { getPostData, formatPostData } from '@common/plugin/custom-apply/client/common';
 import styles from '../index.module.scss';
 
@@ -149,8 +148,8 @@ export default class CustomApplyEntry extends React.Component {
       Toast.info({ content: '活动结束时间必须大于当前时间' });
       return false;
     }
-    const { renderData } = this.props;
-    const postData = getPostData(body) || {};
+    const { renderData, _pluginInfo } = this.props;
+    const postData = getPostData(body, _pluginInfo.options.tomId) || {};
     if (renderData?.body?.activityId) postData.body.activityId = renderData?.body?.activityId;
     this.props.onConfirm({ postData });
     this.handleDialogClose();
@@ -190,10 +189,10 @@ export default class CustomApplyEntry extends React.Component {
    * 插件入口是否显示判断
    */
   isShowApplyIcon = () => {
-    const { siteData } = this.props;
+    const { siteData, _pluginInfo } = this.props;
     const { pluginConfig } = siteData;
     if (!pluginConfig) return false;
-    const [act] = (pluginConfig || []).filter(item => item.app_id === PLUGIN_TOMID_CONFIG.apply);
+    const [act] = (pluginConfig || []).filter(item => item.app_id === _pluginInfo.options.tomId);
     if (act?.authority?.canUsePlugin) return true;
     return false;
   };
