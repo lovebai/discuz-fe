@@ -169,9 +169,10 @@ class CustomApplyDisplay extends React.Component {
   };
 
   handleMoreClick = () => {
-    const { siteData, dzqRouter } = this.props;
-    if (siteData?.threadId) {
-      dzqRouter.push({url: `/thread/${siteData?.threadId}`});
+    const { dzqRouter, threadData } = this.props;
+    const tid = this.state.isDetailPage ? threadData?.id : threadData?.threadId;
+    if (tid) {
+      dzqRouter.push({url: `/thread/${tid}`});
     }
   };
 

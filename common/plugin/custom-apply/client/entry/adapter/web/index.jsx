@@ -354,14 +354,14 @@ export default class CustomApplyEntry extends React.Component {
                   </Radio.Group>
                 </div>
               </div>
-              <DatePickers
-                onSelects={this.handleMobileTimeChange}
-                time={this.getMobileCurClickTime()}
-                isOpen={showMobileDatePicker}
-                onCancels={() => this.setState({ showMobileDatePicker: false })}
-              />
             </>
           )}
+          <DatePickers
+            onSelects={this.handleMobileTimeChange}
+            time={this.getMobileCurClickTime()}
+            isOpen={showMobileDatePicker}
+            onCancels={() => this.setState({ showMobileDatePicker: false })}
+          />
         </Dialog>
       </>
     );

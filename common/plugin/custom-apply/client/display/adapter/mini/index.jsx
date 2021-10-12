@@ -14,7 +14,7 @@ class CustomApplyDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isDetailPage: false,
+      isDetailPage: props.dzqRouter.router.Current.router.path.indexOf('/indexPages/thread/index') > -1,
       popupShow: false,
       loading: false,
       days: 0,
@@ -169,9 +169,10 @@ class CustomApplyDisplay extends React.Component {
   };
 
   handleMoreClick = () => {
-    const { siteData, dzqRouter } = this.props;
-    if (siteData?.threadId) {
-      dzqRouter.push({ url: `/indexPages/thread/index?id=${siteData?.threadId}` });
+    const { dzqRouter, threadData } = this.props;
+    const tid = this.state.isDetailPage ? threadData?.id : threadData?.threadId;
+    if (tid) {
+      dzqRouter.push({ url: `/indexPages/thread/index?id=${tid}` });
     }
   };
 
