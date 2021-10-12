@@ -50,7 +50,6 @@ const ClassifyPopup = (props) => {
   };
 
   const setSeletedCategory = () => {
-    debugger
     const id = props?.threadPost?.postData?.categoryId || '';
     const categorySelected = props?.threadPost?.getCategorySelectById(id);
     const { parent, child } = categorySelected;
