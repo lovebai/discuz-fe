@@ -96,7 +96,10 @@ const Index = inject('site', 'user', 'threadPost')(observer((props) => {
             onConfirm: props.threadPost.setPluginPostData,
             renderData: props.threadPost.postData.plugin,
             showPluginDialog: props.showPluginDialog,
-            closePluginDialog: props.closePluginDialog
+            closePluginDialog: props.closePluginDialog,
+            postData: {
+              navInfo: threadPost.navInfo,
+            },
           })}
         </View>
       )
