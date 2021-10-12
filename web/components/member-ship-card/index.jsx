@@ -120,7 +120,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
       return (
         <>
           <Button onClick={handleRenewalFee} type="primary" className={styles.btn}>续费</Button>
-          {upgrade}
+          {hasPayGroup && upgrade}
         </>
       );
     }
