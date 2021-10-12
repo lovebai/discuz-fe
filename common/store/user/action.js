@@ -67,9 +67,9 @@ class UserAction extends SiteStore {
     }
   }
 
-  // 获取当前用户的付费用户组
+  // 获取付费用户组信息
   @action
-  async getPayGroups() {
+  async queryPayGroups() {
     const res = await getPayGroups();
     const { code, data } = res;
     if (code === 0) {
@@ -146,7 +146,6 @@ class UserAction extends SiteStore {
         this.followStore[userId].attribs.currentPage = get(followersData, 'data.currentPage');
       }
     }
-    console.log(this.followStore);
     this.followStore = { ...this.followStore };
   }
 
@@ -466,7 +465,6 @@ class UserAction extends SiteStore {
     });
 
     if (followsRes.code !== 0) {
-      console.error(followsRes);
       return;
     }
 

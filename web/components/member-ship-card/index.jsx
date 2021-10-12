@@ -10,20 +10,18 @@ import Header from '@components/header';
 
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
   const { siteMode, isPC } = site;
-  const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, getPayGroups, } = user;
+  const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, payGroups } = user;
   const { group } = userInfo;
   const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId, typeTime, remainTime } = group;
   const theme = levelStyle[level] || {};
   const isPaySite = siteMode === 'pay';
 
   const [dialogVisible, setDialogVisible] = useState(false);
-  const [payGroups, setPayGroups] = useState([]);
   const [defaultActive, setDefaultActive] = useState(1);
 
   // 获取付费用户组数据
   useEffect(async () => {
-    const groups = await getPayGroups();
-    setPayGroups(groups);
+    user.queryPayGroups();
   }, []);
 
 
@@ -115,16 +113,21 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
       );
     }
 
+    const upgrade = (<Button onClick={() => {handlePayGroupRenewal(level + 1)}} type="primary" className={styles.btn}>升级</Button>);
+
     // 付费站点用户
     if (isPaySite && paid && !isIndefiniteDuration) {
       return (
-        <Button onClick={handleRenewalFee} type="primary" className={styles.btn}>续费</Button>
+        <>
+          <Button onClick={handleRenewalFee} type="primary" className={styles.btn}>续费</Button>
+          {upgrade}
+        </>
       );
     }
 
     // 普通用户且后台设置了付费用户组
     if (hasPayGroup) {
-      return <Button onClick={() => {handlePayGroupRenewal(level + 1)}} type="primary" className={styles.btn}>升级</Button>;
+      return ({upgrade});
     }
   };
 

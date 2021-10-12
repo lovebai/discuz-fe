@@ -8,30 +8,35 @@ import { payGroupLevelStyle as levelStyle } from '@common/constants/const';
 import groupPay from '@common/pay-bussiness/group-pay';
 import classnames from 'classnames';
 import Header from '@components/header';
+import Router from '@discuzq/sdk/dist/router';
 
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
   const { siteMode, isPC } = site;
-  const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, getPayGroups, } = user;
+  const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, payGroups } = user;
   const { group = {} } = userInfo || {};
   const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId, typeTime, remainTime } = group;
+
   const theme = levelStyle[level] || {};
   const isPaySite = siteMode === 'pay';
 
   const [dialogVisible, setDialogVisible] = useState(false);
-  const [payGroups, setPayGroups] = useState([]);
+  // const [payGroups, setPayGroups] = useState([]);
   const [defaultActive, setDefaultActive] = useState(1);
 
   // 获取付费用户组数据
-  useEffect(async () => {
-    const groups = await getPayGroups();
-    setPayGroups(groups);
+  useEffect(() => {
+    user.queryPayGroups();
   }, []);
-
 
   // 打开升级付费用户组的弹窗
   const handlePayGroupRenewal = (upgradeLevel) => {
-    setDefaultActive(upgradeLevel);
-    setDialogVisible(true);
+
+
+    Router.push({url: `/userPages/my/upgrade/index?level=${upgradeLevel}`});
+
+
+    // setDefaultActive(upgradeLevel);
+    // setDialogVisible(true);
   };
 
   // 处理付费站点续费
