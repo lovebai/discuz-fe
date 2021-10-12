@@ -71,8 +71,8 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     if (level > 0) {
       return (
         <>
-          <Text className={styles.feeDay} style={{color: theme.otherColor}}>{remainTime}</Text>{typeMap[typeTime]}&nbsp;•&nbsp;
-          <Text style={{color: theme.desAndDateColor}}>{time.formatDate(expirationTime, getDateFormat())}到期</Text>
+          <Text className={styles.feeDay} style={{color: theme.otherColor}}>{remainTime}</Text>
+          <Text style={{color: theme.desAndDateColor}}>{typeMap[typeTime]}&nbsp;•&nbsp;{time.formatDate(expirationTime, getDateFormat())}到期</Text>
         </>
       );
     }

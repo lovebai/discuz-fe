@@ -12,7 +12,7 @@ import Taro from '@tarojs/taro';
 
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
   // const { siteMode, isPC } = site;
-  // const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, payGroups, } = user;
+  const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, payGroups, } = user;
   // const { group = {} } = userInfo || {};
   // const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId, typeTime, remainTime } = group;
   // const theme = levelStyle[level] || {};
