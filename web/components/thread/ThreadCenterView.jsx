@@ -76,7 +76,6 @@ const Index = (props) => {
       iframeData,
       plugin
     } = handleAttachmentData(data);
-
     return (
       <>
         {text && <PostContent
@@ -161,8 +160,14 @@ const Index = (props) => {
             return (
               <div key={pluginInfo.name}>
                 {render({
-                  site: { ...props.site, recomputeRowHeights: props.recomputeRowHeights, threadId },
-                  renderData: plugin
+                  site: props.site,
+                  renderData: plugin,
+                  threadData: props.data,
+                  updateListThreadIndexes: props.updateListThreadIndexes,
+                  updateThread: props.updateThread,
+                  isLogin: props.user.isLogin.bind(props.user),
+                  userInfo: props.user.userInfo,
+                  recomputeRowHeights: props.recomputeRowHeights
                 })}
               </div>
             )

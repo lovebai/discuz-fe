@@ -280,7 +280,7 @@ class Index extends React.Component {
   }
 
   render() {
-    const { data, card, className = '', site = {}, showBottomStyle = true, collect = '', unifyOnClick = null, isShowIcon = false, user: users, onTextItemClick = null, extraTag, extraInfo } = this.props;
+    const { index, thread, data, card, className = '', site = {}, showBottomStyle = true, collect = '', unifyOnClick = null, isShowIcon = false, user: users, onTextItemClick = null, extraTag, extraInfo } = this.props;
     const { platform = 'pc' } = site;
     const threadStore = this.props.thread;
 
@@ -335,6 +335,9 @@ class Index extends React.Component {
 
         <ThreadCenterView
           site={site}
+          user={users}
+          updateThread={thread.updateThread.bind(thread)}
+          updateListThreadIndexes={index.updateListThreadIndexes.bind(index)}
           onContentHeightChange={onContentHeightChange}
           onImageReady={onImageReady}
           onVideoReady={onVideoReady}
