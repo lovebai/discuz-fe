@@ -24,8 +24,10 @@ class H5OthersPage extends React.Component {
     super(props);
     this.state = {
       fetchUserInfoLoading: true,
-      previewBackgroundUrl: null,
+      previewBackgroundUrl: null // 预览背景图片链接
     };
+
+    this.previewBackgroundLoading = false; // 预览背景图片是否在预加载
 
     const { id = '' } = getCurrentInstance().router.params;
 
@@ -197,7 +199,7 @@ class H5OthersPage extends React.Component {
   };
 
   getBackgroundUrl = async () => {
-    if (this.state.previewBackgroundUrl) retrun;
+    if (this.state.previewBackgroundUrl) return;
     let backgroundUrl = '';
     const { id = '' } = getCurrentInstance().router.params;
     if (id && this.props.user?.targetUsers[id]) {
@@ -208,6 +210,23 @@ class H5OthersPage extends React.Component {
       previewBackgroundUrl: backgroundUrl
     })
   };
+
+  previewBackgroundPreLoad = async () => {
+    const { previewBackgroundUrl } = this.state;
+    const { id = '' } = getCurrentInstance().router.params;
+    const { user } = this.props;
+
+    if( !id || !user.targetUsers[id] || previewBackgroundUrl || this.previewBackgroundLoading){
+      return;
+    }
+    this.previewBackgroundLoading = true;
+    const imgUrl = await checkImgExists(user.targetUsers[id].originalBackGroundUrl, user.targetUsers[id].backgroundUrl);
+    this.previewBackgroundLoading = false;
+    this.setState({
+      previewBackgroundUrl: imgUrl
+    })
+
+  }
 
   showPreviewerRef = () => {
     if (this.previewerRef.current) {
@@ -230,6 +249,7 @@ class H5OthersPage extends React.Component {
     const { lists } = threadList;
     const { previewBackgroundUrl } = this.state
 
+    this.previewBackgroundPreLoad(); // 背景图预加载
     const userThreadsList = threadList.getList({
       namespace: `user/${targetUserId}`,
     });
