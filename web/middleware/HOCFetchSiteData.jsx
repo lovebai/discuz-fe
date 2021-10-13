@@ -48,8 +48,8 @@ export default function HOCFetchSiteData(Component, _isPass) {
       try {
 
         // 根据运行时配置获取参数
-        global.ssr_host = global.dzq_host || ctx.req.headers.host;
-      
+        global.ssr_host = global.dzq_host || (ctx.req && ctx.req.headers && ctx.req.headers.host);
+
         // 将ctx保存到global
         global.ctx = ctx;
 
@@ -165,7 +165,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
           const result = await readForum({});
           result.data && site.setSiteConfig(result.data);
           result.data && forum.setOtherPermissions(result.data);
-        
+
           // 获取插件信息
           const pluginConfig = await readPluginList();
           if (pluginConfig.code === 0) site.setPluginConfig(pluginConfig.data);
@@ -454,7 +454,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
       const { site } = this.props;
       // CSR不渲染任何内容
       if (site.platform === 'static') return null;
-      
+
       if (isNoSiteData || !isPass) {
         return (
           <div className={styles.loadingBox}>

@@ -30,7 +30,7 @@ export const updateMyThreadAvatar = ({ avatarUrl, threadList }) => {
 export const updateThreadAssignInfoInLists = (threadId, obj = {}) => {
   const targetThreadList = threadListStore.getInstance().findAssignThreadInLists({ threadId });
 
-  const { updateType, updatedInfo, user, openedMore } = obj;
+  const { updateType, updatedInfo, user, openedMore, recomputeRowHeights } = obj;
 
   const threadUpdater = ({ data, callback = () => {} }) => {
     if (!data && !data?.likeReward && !data?.likeReward?.users) return;
@@ -57,6 +57,7 @@ export const updateThreadAssignInfoInLists = (threadId, obj = {}) => {
 
       data.likeReward.users = newLikeUsers;
       data.likeReward.likePayCount = likePayCount;
+      if (typeofFn.isFunction(recomputeRowHeights)) recomputeRowHeights(data);
     }
 
     // 更新评论：新增
@@ -117,14 +118,13 @@ export const updatePayThreadInfo = (threadId, obj) => {
  * 获取指定帖子下的评论列表
  * @param {*} threadId 帖子id
  */
-export const getThreadCommentList = async (threadId) => {
+export const getThreadCommentList = async (threadId, recomputeRowHeights) => {
   const targetThreadList = threadListStore.getInstance().findAssignThreadInLists({ threadId });
 
   let res;
 
   if (targetThreadList?.length) {
     targetThreadList.forEach(async (targetThread) => {
-      console.log(targetThread);
       if (targetThread && targetThread.data) {
         if (!Reflect.has(targetThread.data, 'commentList')) {
           _observerCommentList(targetThread.data);
@@ -158,6 +158,7 @@ export const getThreadCommentList = async (threadId) => {
         }
 
         targetThread.data.isLoading = false;
+        if (typeof recomputeRowHeights === 'function') recomputeRowHeights(targetThread.data);
       }
     });
   }
