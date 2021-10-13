@@ -48,7 +48,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
       try {
 
         // 根据运行时配置获取参数
-        global.ssr_host = global.dzq_host || ctx.req.headers.host;
+        global.ssr_host = global.dzq_host || (ctx.req && ctx.req.headers && ctx.req.headers.host);
 
         // 将ctx保存到global
         global.ctx = ctx;
