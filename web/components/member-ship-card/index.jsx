@@ -15,7 +15,6 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId, typeTime, remainTime } = group;
   const theme = levelStyle[level] || {};
   const isPaySite = siteMode === 'pay';
-
   const [dialogVisible, setDialogVisible] = useState(false);
   const [defaultActive, setDefaultActive] = useState(1);
 
@@ -23,7 +22,6 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   useEffect(async () => {
     user.queryPayGroups();
   }, []);
-
 
   // 打开升级付费用户组的弹窗
   const handlePayGroupRenewal = (upgradeLevel) => {
