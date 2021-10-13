@@ -1,12 +1,10 @@
-import React, { useState, useRef, useEffect }from 'react';
-import styles from './index.module.scss';
+import React, { useState, useRef, useEffect}from 'react';
 import { inject, observer } from 'mobx-react';
 import Toast from '@discuzq/design/dist/components/toast/index';
 import Spin from '@discuzq/design/dist/components/spin/index';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import AudioPlayer from '@discuzq/design/dist/components/audio-player/index';
 import { AUDIO_FORMAT } from '@common/constants/thread-post';
-import { extensionList, isPromise, noop } from '../utils';
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import getAttachmentIconLink from '@common/utils/get-attachment-icon-link';
@@ -15,6 +13,8 @@ import { ATTACHMENT_FOLD_COUNT } from '@common/constants';
 import Router from '@discuzq/sdk/dist/router';
 import { readDownloadAttachment } from '@server';
 import goToLoginPage from '@common/utils/go-to-login-page';
+import styles from './index.module.scss';
+import { extensionList, isPromise, noop } from '../utils';
 
 /**
  * 附件
@@ -265,12 +265,11 @@ const Index = ({
     }
   };
 
-  const Normal = ({ item, index, type }) => {
+  const audioRef = useRef();
+  const audioWrapperRef = useRef();
+  const renderNormal = ({ item, index, type }) => {
     if (isAttachPlayable(item)) {
       const { url, fileName, fileSize } = item;
-      const audioRef = useRef();
-      const audioWrapperRef = useRef();
-
       return (
         <View className={styles.audioContainer} key={index} onClick={onClick} ref={audioWrapperRef}>
           <AudioPlayer
@@ -352,7 +351,8 @@ const Index = ({
 
             return (
               !isPay ? (
-                <Normal key={index} item={item} index={index} type={type} />
+                // <Normal key={index} item={item} index={index} type={type} />
+                renderNormal({item,index,type})
               ) : (
                 <Pay key={index} item={item} index={index} type={type} />
               )

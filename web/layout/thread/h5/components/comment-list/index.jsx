@@ -98,17 +98,30 @@ class CommentList extends React.Component {
     const { thread } = this.props;
     // 评论内容是否通过审核
     const isApproved = this.props?.data?.isApproved === 1;
+    const { redPacketData } = this.props;
+    const remainHongbaoLike = redPacketData?.condition === 1 && redPacketData?.remainNumber; // 是否还有剩余的点赞红包
+    const needLikeNum = redPacketData?.likenum;
+    const curLikeNum = this.props?.data?.likeCount;
+
     return (
       <div className={`${styles.commentList} dzq-comment`}>
         <div className={styles.header}>
           <div className={styles.showGet}>
             <div></div>
             <div className={styles.headerRigth}>
+              {
+                remainHongbaoLike && curLikeNum < needLikeNum && (
+                  <div className={styles.hongbaoLikeNum}>
+                    <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
+                    再集 <span> &nbsp;{needLikeNum - curLikeNum} &nbsp;</span> 赞可领红包
+                  </div>
+                )
+              }
               {this.props.data?.rewards ? (
                 <div className={styles.imageNumber}>
                   <img className={styles.rewardImage} src="/dzq-img/coin.png" alt="悬赏图标" />
                   <div className={styles.showMoneyNum}>
-                    获得<span className={styles.moneyNumber}>{this.props.data.rewards}</span>元悬赏金
+                    获得<span className={styles.moneyNumber}>&nbsp;{this.props.data.rewards}&nbsp;</span>元悬赏金
                   </div>
                 </div>
               ) : (
@@ -118,7 +131,7 @@ class CommentList extends React.Component {
                 <div className={`${styles.redpacket} ${styles.imageNumber}`}>
                   <img className={styles.image} src="/dzq-img/redpacket-mini.png" alt="红包图标" />
                   <div className={styles.showMoneyNum}>
-                    获得<span className={styles.moneyNumber}>{this.props.data.redPacketAmount}</span>元红包
+                    获得<span className={styles.moneyNumber}>&nbsp;{this.props.data.redPacketAmount}&nbsp;</span>元红包
                   </div>
                 </div>
               ) : (
