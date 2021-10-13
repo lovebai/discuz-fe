@@ -127,7 +127,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
 
     // 普通用户且后台设置了付费用户组
     if (hasPayGroup) {
-      return ({upgrade});
+      return upgrade;
     }
   };
 
