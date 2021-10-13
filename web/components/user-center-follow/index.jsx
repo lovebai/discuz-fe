@@ -323,7 +323,7 @@ class UserCenterFollows extends React.Component {
                   type={this.judgeFollowsStatus(user)}
                   imgUrl={user.avatar}
                   withHeaderUserInfo={this.props.isPc}
-                  onContainerClick={this.props.onContainerClick}
+                  onContainerClick={() => this.props.onContainerClick({id: user.id})}
                   nickName={user.nickName}
                   userGroup={user.groupName}
                   followHandler={this.followUser}
