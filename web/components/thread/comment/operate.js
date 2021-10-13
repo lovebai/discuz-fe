@@ -110,6 +110,7 @@ class CommentAction {
       newData.lastThreeComments = [];
 
       this.list.push(newData);
+      this.list =  this.list.filter(item => item.id !== newData.id);
 
       return {
         redPacketAmount: res.data.redPacketAmount,

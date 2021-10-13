@@ -329,17 +329,14 @@ export default class ListStore {
     let result = null;
 
     const { data } = this.lists[namespace];
-
     Object.keys(data).forEach((page) => {
       data[page].forEach((thread, index) => {
         if (thread.threadId === threadId) {
-          const { likeReward, commentList = [] } = thread;
           result = {
             listName: namespace,
             page,
             index,
-            // 避免同引用，list数据多次赋值问题
-            data: { ...thread, likeReward: { ...likeReward }, commentList },
+            data: thread,
           };
         }
       });
