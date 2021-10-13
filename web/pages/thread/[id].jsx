@@ -343,7 +343,7 @@ class Detail extends React.Component {
     }
     return (
       <ViewAdapter
-        h5={<ThreadH5Page />}
+        h5={<ThreadH5Page canPublish={canPublish} />}
         pc={<ThreadPCPage canPublish={canPublish} />}
         title={this.props?.thread?.title || ''}
         showSiteName={showSiteName}
