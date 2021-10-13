@@ -417,7 +417,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
 
           const code = router.query.inviteCode;
           const query = code ? `?inviteCode=${code}` : '';
-          if (!user?.paid) {
+          if (!user?.paid && user?.group?.level === 0) {
             LoginHelper.saveAndRedirect(`/forum/partner-invite${query}`);
             return false;
           }
