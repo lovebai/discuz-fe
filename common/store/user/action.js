@@ -73,7 +73,7 @@ class UserAction extends SiteStore {
     const res = await getPayGroups();
     const { code, data } = res;
     if (code === 0) {
-      this.payGroups = data;
+      this.payGroups = data || [];
       return data;
     }
   }
