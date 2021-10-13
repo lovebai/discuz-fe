@@ -80,7 +80,7 @@ class Index extends React.Component {
         showCommentList: !this.state.showCommentList,
       });
       if (!this.state.showCommentList) {
-        await getThreadCommentList(threadId);
+        await getThreadCommentList(threadId, this.props.recomputeRowHeights);
       }
     } else {
       console.log('帖子不存在');
