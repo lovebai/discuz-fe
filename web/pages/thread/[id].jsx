@@ -210,6 +210,13 @@ class Detail extends React.Component {
         this.setState({
           isServerError: true,
         });
+        
+        // 没有权限 返回首页
+        if (res.code === -4002) {
+          setTimeout(() => {
+            Router.redirect({ url: '/' });
+          }, 1000);
+        }
         return;
       }
 
