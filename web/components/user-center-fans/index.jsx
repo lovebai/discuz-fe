@@ -216,14 +216,15 @@ class UserCenterFans extends React.Component {
   render() {
     const dataSource = followerAdapter(this.props.user.fansStore[this.props.userId || this.props.user.id]?.data || {});
     const isNoData = dataSource.length === 0 && !this.state.loading;
-    
+
     return (
       <div
         className={`${this.props.className} user-center-friends`}
         ref={this.containerRef}
         style={{
+          width: '100%',
           height: '100%',
-          overflow: 'scroll',
+          overflowY: 'scroll',
           ...this.props.styles,
         }}
       >

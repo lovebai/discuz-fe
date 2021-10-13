@@ -46,6 +46,7 @@ const Index = (props) => {
       position="center"
       isNew={true}
       title={title}
+      width={572}
       headerClassName={styles.dialogHeader}
       bodyClassName={styles.dialogBody}
       footerClassName={styles.dialogFooter}
