@@ -11,8 +11,8 @@ export default ({ amount, groupId, title, user, site }) => {
       },
       isAnonymous: false, // 是否匿名
       success: async (orderInfo) => {
-        await user.updateUserInfo(user.id);
-        await site.getSiteInfo();
+        user.updateUserInfo(user.id);
+        site.getSiteInfo();
         resolve(orderInfo);
       },
       failed: async (orderInfo) => {

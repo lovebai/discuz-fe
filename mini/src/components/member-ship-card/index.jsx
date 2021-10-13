@@ -19,10 +19,6 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   const theme = levelStyle[level] || {};
   const isPaySite = siteMode === 'pay';
 
-  const [dialogVisible, setDialogVisible] = useState(false);
-  // const [payGroups, setPayGroups] = useState([]);
-  const [defaultActive, setDefaultActive] = useState(1);
-
   // 获取付费用户组数据
   useEffect(() => {
     user.queryPayGroups();
@@ -30,13 +26,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
 
   // 打开升级付费用户组的弹窗
   const handlePayGroupRenewal = (upgradeLevel) => {
-
-
     Router.push({url: `/userPages/my/upgrade/index?level=${upgradeLevel}`});
-
-
-    // setDefaultActive(upgradeLevel);
-    // setDialogVisible(true);
   };
 
   // 处理付费站点续费
@@ -46,7 +36,6 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
 
   // 执行付费
   const doPay = async ({ amount, groupId, title }) => {
-    setDialogVisible(false);
     try {
       await groupPay({ amount, groupId, title, user, site });
     } catch (error) {}
@@ -154,55 +143,6 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   return isAdmini ? null : (
     <View className={styles.wrapper}>
       {renderCard({groupName, level, description})}
-      {/* <Dialog
-        className={styles.mobileDialogWrapper}
-        visible={dialogVisible}
-        maskClosable={true}
-        onClose={() => setDialogVisible(false)}
-      >
-        {isPC ? null : <Header allowJump={false} customJum={() => setDialogVisible(false)} />}
-        <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
-          {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId, days }) => {
-            const data = {
-              groupName,
-              level,
-              description,
-            };
-            return (
-              <Tabs.TabPanel key={level} id={level} label={groupName}>
-                <View>
-                  <View className={classnames(styles.tabPanel, {
-                    [styles.mobileTabPanel]: !isPC
-                  })}>
-                    {renderCard(data, true)}
-                    <View className={classnames(styles.operation, {
-                      [styles.mobileOperation]: !isPC
-                    })}>
-                      <View className={styles.top}>
-                        <View className={classnames({
-                          [styles.upgradePrice]: isPC,
-                          [styles.mobileUpgradePrice]: !isPC,
-                        })}>
-                          <Text className={styles.symbol}>￥</Text>
-                          <Text className={styles.price}>{fee}</Text>
-                        </View>
-                        <View className={styles.time}>有效期：{`${days}天`}</View>
-                      </View>
-
-                      {level > group.level && <Button className={styles.upgradeBtn} style={{margin: isPC ? '' : 0}} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>}
-                    </View>
-                  </View>
-
-                  <View className={styles.tips} style={{padding: isPC ? '' : '16px'}}>
-                    <View className={styles.title}>购买须知</View>
-                    <View className={styles.text}>{notice}</View>
-                  </View>
-                </View>
-              </Tabs.TabPanel>
-            );
-          })}
-        </Tabs>
-      </Dialog> */}
     </View>
   );
 

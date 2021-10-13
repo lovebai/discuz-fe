@@ -1,59 +1,11 @@
 @import '@common/styles/index.scss';
 
-
-
-.mobileDialogWrapper {
-  :global {
-    .dzq-tabs__list {
-      overflow-x: scroll;
-    }
-
-    .dzq-modal__overlay {
-      background: none !important;
-    }
-
-    .dzq-modal__container {
-      width: 101% !important;
-      height: 100% !important;
-      padding: 0;
-      border-radius: 0;
-
-      .dzq-modal__body {
-        padding: 0;
-      }
-    }
-
-    .dzq-tabs__content {
-      padding: 0;
-    }
-  }
-}
-
-
-
-.dialogWrapper {
-  :global {
-    .dzq-modal__container {
-      width: 900px !important;
-    }
-    .dzq-tabs__bar {
-      box-shadow: none !important;
-      overflow: hidden;
-    }
-
-    .dzq-tabs__item.is-active .dzq-tabs__label {
-      padding-bottom: 0;
-    }
-  }
-}
-
 .mobileTabPanel {
   flex-direction: column;
   padding: 0 16px !important;
   border-top: 10px solid #f4f6f7 !important;
   border-bottom: 10px solid #f4f6f7 !important;
   align-items: center;
-
 
   .mobileOperation {
     flex-direction: row !important;
@@ -169,13 +121,10 @@
   width: 100%;
   height: rem(170);
   border-radius: rem(5);
-  // border: rem(1) solid $white;
   box-shadow: $border-shadow-color-8;
   margin-top: rem($margin-4n);
   padding: rem($padding-4n);
   box-sizing: border-box;
-  // background-image: url('/dzq-img/ship-card-pc.png');
-  // background-size: 100% rem(169);
   background-repeat: no-repeat;
   background-size:cover;
 }
@@ -189,7 +138,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   .roleType {
     font-weight: bold;
     font-size: rem($font-size-middle-extra);

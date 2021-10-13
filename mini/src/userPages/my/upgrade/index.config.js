@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '升级用户组',
-};
+    navigationBarTitleText: '用户组升级',
+}
