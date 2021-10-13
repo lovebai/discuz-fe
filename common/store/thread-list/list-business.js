@@ -30,7 +30,7 @@ export const updateMyThreadAvatar = ({ avatarUrl, threadList }) => {
 export const updateThreadAssignInfoInLists = (threadId, obj = {}) => {
   const targetThreadList = threadListStore.getInstance().findAssignThreadInLists({ threadId });
 
-  const { updateType, updatedInfo, user, openedMore } = obj;
+  const { updateType, updatedInfo, user, openedMore, recomputeRowHeights } = obj;
 
   const threadUpdater = ({ data, callback = () => {} }) => {
     if (!data && !data?.likeReward && !data?.likeReward?.users) return;
@@ -57,6 +57,7 @@ export const updateThreadAssignInfoInLists = (threadId, obj = {}) => {
 
       data.likeReward.users = newLikeUsers;
       data.likeReward.likePayCount = likePayCount;
+      if (typeofFn.isFunction(recomputeRowHeights)) recomputeRowHeights(data);
     }
 
     // 更新评论：新增

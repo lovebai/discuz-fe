@@ -102,7 +102,7 @@ class Index extends React.Component {
       goToLoginPage({ url: '/user/login' });
       return;
     }
-    const { data = {}, user } = this.props;
+    const { data = {}, user, recomputeRowHeights } = this.props;
     const { threadId = '', isLike, postId } = data;
     this.setState({ isSendingLike: true });
     this.props.index.updateThreadInfo({ pid: postId, id: threadId, data: { attributes: { isLiked: !isLike } } }).then((result) => {
@@ -111,10 +111,11 @@ class Index extends React.Component {
           updateType: 'like',
           updatedInfo: result.data,
           user: user.userInfo,
+          recomputeRowHeights,
         });
 
-        const { recomputeRowHeights = noop } = this.props;
-        recomputeRowHeights();
+        // const { recomputeRowHeights = noop } = this.props;
+        // recomputeRowHeights();
       }
       this.setState({ isSendingLike: false });
     });
