@@ -119,7 +119,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     if (isPaySite && paid && !isIndefiniteDuration) {
       return (
         <>
-          <Button onClick={handleRenewalFee} type="primary" className={styles.btn}>续费</Button>
+          <Button onClick={handleRenewalFee} type="primary" className={styles.btn} style={{marginRight: '12px'}}>续费</Button>
           {hasPayGroup && upgrade}
         </>
       );
