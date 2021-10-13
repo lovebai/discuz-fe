@@ -134,6 +134,7 @@ class CommentList extends React.Component {
     };
   }
 
+
   render() {
     const { canDelete, canEdit, canLike, canHide } = this.generatePermissions(this.props.data);
     const { groups } = this.props.data?.user || {};
@@ -142,10 +143,22 @@ class CommentList extends React.Component {
     // 评论内容是否通过审核
     const isApproved = this.props?.data?.isApproved === 1;
     const isSelf = this.props.threadId === this.props?.data?.userId;
+    const { redPacketData } = this.props;
+    const remainHongbaoLike = redPacketData?.condition === 1 && redPacketData?.remainNumber; // 是否还有剩余的点赞红包
+    const needLikeNum = redPacketData?.likenum;
+    const curLikeNum = this.props?.data?.likeCount;
+
     return (
       <div className={`${styles.commentList} dzq-comment`}>
-        {this.props.data?.rewards || this.props.data?.redPacketAmount ? (
           <div className={styles.header}>
+            {
+               remainHongbaoLike && curLikeNum < needLikeNum && (
+                 <div className={styles.hongbaoLikeNum}>
+                   <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
+                   再集 <span>&nbsp; {needLikeNum - curLikeNum} &nbsp;</span> 赞可领红包
+                 </div>
+               )
+            }
             {this.props.data?.rewards ? <RewardDisplay number={this.props.data.rewards}></RewardDisplay> : ''}
 
             {this.props.data?.redPacketAmount ? (
@@ -156,9 +169,6 @@ class CommentList extends React.Component {
               ''
             )}
           </div>
-        ) : (
-          ''
-        )}
         <div className={styles.content}>
           <div className={styles.commentListAvatar}>
             <SiteMapLink href={`/user/${this.props?.data?.userId}`} text={this.props.data?.user?.nickname || this.props.data?.user?.userName || '异'}/>
