@@ -108,10 +108,10 @@ class CommentList extends React.Component {
             <div></div>
             <div className={styles.headerRigth}>
               {
-                remainHongbaoLike && curLikeNum > 0 && curLikeNum < needLikeNum && (
+                remainHongbaoLike && curLikeNum < needLikeNum && (
                   <div className={styles.hongbaoLikeNum}>
                     <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
-                    再集 <span> {needLikeNum - curLikeNum} </span> 赞可领红包
+                    再集 <span> &nbsp;{needLikeNum - curLikeNum} &nbsp;</span> 赞可领红包
                   </div>
                 )
               }
@@ -119,7 +119,7 @@ class CommentList extends React.Component {
                 <div className={styles.imageNumber}>
                   <img className={styles.rewardImage} src="/dzq-img/coin.png" alt="悬赏图标" />
                   <div className={styles.showMoneyNum}>
-                    获得<span className={styles.moneyNumber}>{this.props.data.rewards}</span>元悬赏金
+                    获得<span className={styles.moneyNumber}>&nbsp;{this.props.data.rewards}&nbsp;</span>元悬赏金
                   </div>
                 </div>
               ) : (
@@ -129,7 +129,7 @@ class CommentList extends React.Component {
                 <div className={`${styles.redpacket} ${styles.imageNumber}`}>
                   <img className={styles.image} src="/dzq-img/redpacket-mini.png" alt="红包图标" />
                   <div className={styles.showMoneyNum}>
-                    获得<span className={styles.moneyNumber}>{this.props.data.redPacketAmount}</span>元红包
+                    获得<span className={styles.moneyNumber}>&nbsp;{this.props.data.redPacketAmount}&nbsp;</span>元红包
                   </div>
                 </div>
               ) : (

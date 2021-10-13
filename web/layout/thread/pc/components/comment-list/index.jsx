@@ -149,10 +149,10 @@ class CommentList extends React.Component {
       <div className={`${styles.commentList} dzq-comment`}>
           <div className={styles.header}>
             {
-               remainHongbaoLike && curLikeNum > 0 && curLikeNum < needLikeNum && (
+               remainHongbaoLike && curLikeNum < needLikeNum && (
                  <div className={styles.hongbaoLikeNum}>
                    <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
-                   再集 <span> {needLikeNum - curLikeNum} </span> 赞可领红包
+                   再集 <span>&nbsp; {needLikeNum - curLikeNum} &nbsp;</span> 赞可领红包
                  </div>
                )
             }

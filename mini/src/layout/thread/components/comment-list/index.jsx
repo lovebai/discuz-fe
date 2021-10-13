@@ -129,10 +129,10 @@ class CommentList extends React.Component {
             <View></View>
             <View className={styles.headerRigth}>
               {
-                remainHongbaoLike && curLikeNum > 0 && curLikeNum < needLikeNum && (
+                remainHongbaoLike && curLikeNum < needLikeNum && (
                   <View className={styles.hongbaoLikeNum}>
                     <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
-                    再集 <View className={styles.redfont}> {needLikeNum - curLikeNum} </View> 赞可领红包
+                    再集 <View className={styles.redfont}>&nbsp;{needLikeNum - curLikeNum}&nbsp;</View> 赞可领红包
                   </View>
                 )
               }
@@ -140,7 +140,7 @@ class CommentList extends React.Component {
                 <View className={styles.imageNumber}>
                   <Image className={styles.rewardImage} src={coin} alt="悬赏图标" />
                   <View className={styles.showMoneyNum}>
-                    获得<Text className={styles.moneyNumber}>{this.props.data.rewards}</Text>元悬赏金
+                    获得<Text className={styles.moneyNumber}>&nbsp;{this.props.data.rewards}&nbsp;</Text>元悬赏金
                   </View>
                 </View>
               ) : (
@@ -150,7 +150,7 @@ class CommentList extends React.Component {
                 <View className={`${styles.redpacket} ${styles.imageNumber}`}>
                   <Image className={styles.image} src={redPacketMini} alt="红包图标" />
                   <View className={styles.showMoneyNum}>
-                    获得<Text className={styles.moneyNumber}>{this.props.data.redPacketAmount}</Text>元红包
+                    获得<Text className={styles.moneyNumber}>&nbsp;{this.props.data.redPacketAmount}&nbsp;</Text>元红包
                   </View>
                 </View>
               ) : (
