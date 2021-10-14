@@ -42,6 +42,7 @@ export default class CustomApplyEntry extends React.Component {
       onConfirm: this.handleDialogConfirm,
       onCancel: () => {
         const { renderData, _pluginInfo } = this.props;
+        if (!renderData) return;
         this.props.onConfirm({ postData: renderData, _pluginInfo });
       },
     });
