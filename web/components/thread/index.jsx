@@ -187,16 +187,16 @@ class Index extends React.Component {
   onOpen = () => {
     const { threadId = '' } = this.props.data || {};
 
-    updateThreadAssignInfoInLists(threadId, { updateType: 'openedMore', openedMore: true });
+    updateThreadAssignInfoInLists(threadId, { updateType: 'openedMore', openedMore: true, recomputeRowHeights: this.props.recomputeRowHeights });
 
-    const { recomputeRowHeights = noop } = this.props;
-    recomputeRowHeights();
+    // const { recomputeRowHeights = noop } = this.props;
+    // recomputeRowHeights();
   }
   onClose = () => {
     const { threadId = '' } = this.props.data || {};
-    updateThreadAssignInfoInLists(threadId, { updateType: 'openedMore', openedMore: false });
-    const { recomputeRowHeights = noop } = this.props;
-    recomputeRowHeights();
+    updateThreadAssignInfoInLists(threadId, { updateType: 'openedMore', openedMore: false, recomputeRowHeights: this.props.recomputeRowHeights });
+    // const { recomputeRowHeights = noop } = this.props;
+    // recomputeRowHeights();
   }
 
   // 判断能否进入详情逻辑
