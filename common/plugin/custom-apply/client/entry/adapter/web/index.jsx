@@ -133,6 +133,9 @@ export default class CustomApplyEntry extends React.Component {
 
   handleDialogClose = () => {
     this.setState({ visible: false });
+    const { renderData, _pluginInfo } = this.props;
+    if (!renderData) return;
+    this.props.onConfirm({ postData: renderData, _pluginInfo });
   };
 
   handleMoreClick = () => {
@@ -152,7 +155,7 @@ export default class CustomApplyEntry extends React.Component {
     const { renderData, _pluginInfo } = this.props;
     const postData = getPostData(body, _pluginInfo.options.tomId) || {};
     if (renderData?.body?.activityId) postData.body.activityId = renderData?.body?.activityId;
-    this.props.onConfirm({ postData });
+    this.props.onConfirm({ postData, _pluginInfo });
     this.handleDialogClose();
   };
 
@@ -207,6 +210,7 @@ export default class CustomApplyEntry extends React.Component {
       ? classNames(styles['dzqp-act--more'], styles.fold) : classNames(styles['dzqp-act--more'], styles.expand);
 
     if (!this.isShowApplyIcon()) return null;
+    const { renderData } = this.props;
 
     return (
       <>
@@ -216,7 +220,7 @@ export default class CustomApplyEntry extends React.Component {
           size="20"
         />
         <Dialog
-          visible={visible}
+          visible={visible || renderData?.isShow}
           onCancel={this.handleDialogClose}
           onClose={this.handleDialogClose}
           onConfirm={this.handleDialogConfirm}
