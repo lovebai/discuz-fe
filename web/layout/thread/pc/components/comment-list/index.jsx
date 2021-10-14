@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import Avatar from '@components/avatar';
 import ReplyList from '../reply-list/index';
 import { diffDate } from '@common/utils/diff-date';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { Icon, Divider } from '@discuzq/design';
 import classnames from 'classnames';
 import CommentInput from '../comment-input/index';
@@ -17,6 +17,7 @@ import { debounce } from '@common/utils/throttle-debounce';
 import { urlToLink } from '@common/utils/replace-url-to-a';
 import SiteMapLink from '@components/site-map-link';
 
+@inject('user')
 @observer
 class CommentList extends React.Component {
   constructor(props) {
@@ -144,15 +145,15 @@ class CommentList extends React.Component {
     const isApproved = this.props?.data?.isApproved === 1;
     const isSelf = this.props.threadId === this.props?.data?.userId;
     const { redPacketData } = this.props;
-    const remainHongbaoLike = redPacketData?.condition === 1 && redPacketData?.remainNumber; // 是否还有剩余的点赞红包
+    const remainHongbaoLike = redPacketData?.condition === 1 && redPacketData?.remainNumber ; // 是否还有剩余的点赞红包
     const needLikeNum = redPacketData?.likenum;
     const curLikeNum = this.props?.data?.likeCount;
-
+    const isCommenter = this.props?.data?.userId === this.props?.user?.userInfo?.id;
     return (
       <div className={`${styles.commentList} dzq-comment`}>
           <div className={styles.header}>
             {
-               remainHongbaoLike && curLikeNum < needLikeNum && (
+               isCommenter && remainHongbaoLike && curLikeNum < needLikeNum && !this.props.data?.redPacketAmount && (
                  <div className={styles.hongbaoLikeNum}>
                    <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
                    再集 <span>&nbsp; {needLikeNum - curLikeNum} &nbsp;</span> 赞可领红包
