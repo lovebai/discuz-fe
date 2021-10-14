@@ -110,7 +110,7 @@ class CommentAction {
       const newData = res.data;
       const isApproved = res.data.isApproved === 1;
       newData.lastThreeComments = [];
-      console.log(this.list);
+
       if ((this.list || []).slice().filter(item => item.id === newData.id).length === 0) this.list.push(newData);
 
       return {
