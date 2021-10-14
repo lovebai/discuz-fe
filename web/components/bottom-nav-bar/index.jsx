@@ -92,11 +92,11 @@ const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 
               <div className={styles.text}>{i.text}</div>
             </div>
           </>
-            
+
         ) : (
           <>
             <SiteMapLink href={i.router} text='发帖'/>
-            <div key={idx} style={{ flex: 1, textAlign: 'center' }} onClick={(e) => handleClick(e, i, idx)}>
+            <div key={idx} className={styles.addIconWrapper} onClick={(e) => handleClick(e, i, idx)}>
               <div className={styles.addIcon}>
                 <Icon name={i.icon} size={28} color="#fff" />
               </div>
