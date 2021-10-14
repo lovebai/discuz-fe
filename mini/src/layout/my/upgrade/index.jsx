@@ -45,44 +45,46 @@ const Index = ({ site, user, shipCardClassName }) => {
   };
 
   return (
-    <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
-      {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId, days }) => {
-        const data = {
-          groupName,
-          level,
-          description,
-        };
-        return (
-          <Tabs.TabPanel key={level} id={level} label={groupName}>
-            <View>
-              <View className={classnames(styles.tabPanel, {
-                [styles.mobileTabPanel]: true
-              })}>
-                {renderCard(data)}
-                <View className={classnames(styles.operation, {
-                  [styles.mobileOperation]: true
+    <View className={styles.wrapper}>
+      <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
+        {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId, days }) => {
+          const data = {
+            groupName,
+            level,
+            description,
+          };
+          return (
+            <Tabs.TabPanel key={level} id={level} label={groupName}>
+              <View>
+                <View className={classnames(styles.tabPanel, {
+                  [styles.mobileTabPanel]: true
                 })}>
-                  <View className={styles.top}>
-                    <View className={styles.mobileUpgradePrice}>
-                      <Text className={styles.symbol}>￥</Text>
-                      <Text className={styles.price}>{fee}</Text>
+                  {renderCard(data)}
+                  <View className={classnames(styles.operation, {
+                    [styles.mobileOperation]: true
+                  })}>
+                    <View className={styles.top}>
+                      <View className={styles.mobileUpgradePrice}>
+                        <Text className={styles.symbol}>￥</Text>
+                        <Text className={styles.price}>{fee}</Text>
+                      </View>
+                      <View className={styles.time}>有效期：{`${days}天`}</View>
                     </View>
-                    <View className={styles.time}>有效期：{`${days}天`}</View>
-                  </View>
 
-                  {level > group.level && <Button className={styles.upgradeBtn} style={{margin: 0}} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>}
+                    {level > group.level && <Button className={styles.upgradeBtn} style={{margin: 0}} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>}
+                  </View>
+                </View>
+
+                <View className={styles.tips} style={{padding: '16px'}}>
+                  <View className={styles.title}>购买须知</View>
+                  <View className={styles.text}>{notice}</View>
                 </View>
               </View>
-
-              <View className={styles.tips} style={{padding: '16px'}}>
-                <View className={styles.title}>购买须知</View>
-                <View className={styles.text}>{notice}</View>
-              </View>
-            </View>
-          </Tabs.TabPanel>
-        );
-      })}
-    </Tabs>
+            </Tabs.TabPanel>
+          );
+        })}
+      </Tabs>
+    </View>
   );
 
 };
