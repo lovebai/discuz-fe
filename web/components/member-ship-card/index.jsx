@@ -47,7 +47,8 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     if (time.isCurrentYear(expiredAt)) {
       return 'MM月DD日';
     } else {
-      return 'YYYY年MM月DD日';
+      // return 'YYYY年MM月DD日';
+      return 'MM月DD日';
     }
   };
 
