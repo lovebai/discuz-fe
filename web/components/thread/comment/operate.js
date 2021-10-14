@@ -110,9 +110,8 @@ class CommentAction {
       const newData = res.data;
       const isApproved = res.data.isApproved === 1;
       newData.lastThreeComments = [];
-
-      this.list.push(newData);
-      this.list =  this.list.filter(item => item.id !== newData.id);
+      console.log(this.list);
+      if ((this.list || []).slice().filter(item => item.id === newData.id).length === 0) this.list.push(newData);
 
       return {
         redPacketAmount: res.data.redPacketAmount,
