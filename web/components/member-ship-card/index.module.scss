@@ -27,6 +27,7 @@
     text-align: left;
     color: $text-color-primary;
     height: rem(25);
+    @include text-ellipsis();
   }
   .tagline {
     font-size: rem($font-size-primary);
