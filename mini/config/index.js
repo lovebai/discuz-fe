@@ -15,6 +15,9 @@ const config = {
   defineConstants: {
     LOCATION_APIKEY: JSON.stringify('FF7BZ-27T3X-C574Z-73YBG-FGAJ2-4CF7I')
   },
+  presets: [
+    '/Users/fishcui/Documents/dzq/discuz-fe/mini/src/withPagePlugin.ts'
+  ],
   alias: {
     '@components': path.resolve(__dirname, '../src/components'),
     '@layout': path.resolve(__dirname, '../src/layout'),
