@@ -73,6 +73,7 @@
               overflow: hidden;
               padding-top: rem($padding-2n);
               line-height: rem(20);
+              text-overflow: ellipsis;
             }
           }
           .isApproved {

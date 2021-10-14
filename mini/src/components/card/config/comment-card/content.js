@@ -103,8 +103,7 @@ const getAvatarImage = (comment) => {
     }
 }
 
-const handleCommentBox = totalContentHeight =>{
-  return {
+const handleCommentBox = totalContentHeight =>({
     height: totalContentHeight,
     blocks: [
       {
@@ -116,11 +115,9 @@ const handleCommentBox = totalContentHeight =>{
         borderRadius: 10,
       },
     ],
-  };
-}
+  })
 
-const handleTimes = (comment,totalContentHeight) =>{
-  return {
+const handleTimes = (comment,totalContentHeight) =>({
     height: 40,
     texts: [
       {
@@ -138,13 +135,13 @@ const handleTimes = (comment,totalContentHeight) =>{
         fontFamily: 'PingFang SC',
       },
     ],
-  }
-}
+  })
 
 const handleTitleName = comment =>{
   const nickname = comment.user?.nickname;
-  const groupname = comment.user?.groups?.name;
-  const titleY = 50
+  let groupname = comment.user?.groups?.name;
+  groupname = groupname.length>7? `${groupname.slice(0,7)}...`:groupname;
+  const titleY = 50;
   return {
     height: 60,
     texts: [
