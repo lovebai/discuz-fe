@@ -279,4 +279,4 @@ class IndexPCPage extends React.Component {
   }
 }
 // eslint-disable-next-line new-cap
-export default HOCFetchSiteData(withRouter(IndexPCPage));
+export default withRouter(IndexPCPage);
