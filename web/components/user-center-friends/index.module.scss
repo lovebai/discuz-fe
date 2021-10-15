@@ -11,6 +11,10 @@
   cursor: pointer;
 }
 
+.friendItemH5 {
+  padding: rem($padding-4n);
+}
+
 .friendInfo {
   display: flex;
   width: calc(100% - 104px);

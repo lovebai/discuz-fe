@@ -685,7 +685,6 @@ class UserAction extends SiteStore {
       data: param,
     });
 
-    this.userInfo.backgroundUrl = '';
 
     if (updateBackgroundRes.code === 0) {
       // 因为背景图 url 是一致的，所以会导致不更新，这里进行先赋予空值，再延时赋值

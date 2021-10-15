@@ -276,6 +276,7 @@ class PCMyPage extends React.Component {
           onRefresh={this.fetchUserThreads}
           isShowLayoutRefresh={!isLoading && !!myThreadsList?.length}
           showHeaderLoading={IS_USER_INFO_LOADING}
+          bottomViewStyle={{ width: '68%' }}
         >
           <div>
             <div>
