@@ -209,7 +209,7 @@ function avatar(props) {
 
     if (userInfo === 'padding') {
       return (
-        <div className={styles.userInfoBox} style={direction === 'left' ? { right: 0 } : { left: 0 }}>
+        <div className={styles.userInfoBox} style={direction === 'left' ? { right: 0 } : { left: 0 }} onClick={e => e.stopPropagation()}>
           <div className={styles.userInfoContent}>
             <LoadingBox style={{ minHeight: `${isSameWithMe ? '145px' : '205px'}` }} />
           </div>
@@ -230,6 +230,7 @@ function avatar(props) {
         id="avatar-popup"
         className={`${styles.userInfoBox} ${direction}`}
         style={direction === 'left' ? { right: 0 } : { left: 0 }}
+        onClick={e => e.stopPropagation()}
       >
         <div className={classNames(styles.userInfoContent, isSameWithMe ? styles.myContent : '')}>
           <div className={styles.header}>
