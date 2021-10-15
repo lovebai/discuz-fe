@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import IndexH5Page from '@layout/index/h5';
 import IndexPCPage from '@layout/index/pc';
-import { readCategories, readStickList, readThreadList } from '@server';
+import { readCategories, readStickList, readThreadList, readRecommends } from '@server';
 import { handleString2Arr } from '@common/utils/handleCategory';
 import HOCFetchSiteData from '../middleware/HOCFetchSiteData';
 import ViewAdapter from '@components/view-adapter';
@@ -27,6 +27,8 @@ class Index extends React.Component {
   page = 1;
   prePage = 10;
   static async getInitialProps(ctx, { user, site }) {
+
+    const { platform } = site;
     const result = getRouterCategory(ctx, site);
     const { essence = 0, sequence = 0, attention = 0, sort = 1 } = result;
     const newTypes = handleString2Arr(result, 'types');
@@ -37,18 +39,27 @@ class Index extends React.Component {
     const sticks = await readStickList({ params: { categoryIds } }, ctx);
     const threads = await readThreadList({
       params: {
-        perPage: 10,
+        // 为优化seo，对ssr部署时，获取50条数据，普通用户10条
+        perPage: process.env.NODE_ENV !== 'development' && process.env.DISCUZ_RUN === 'ssr' ? 50 : 10,
         page: 1,
         sequence,
         filter: { categoryids: categoryIds, types: newTypes, essence, attention, sort },
       },
     }, ctx);
+    
+
+    // 只有pc下才去加载推荐内容
+    let recommend = null;
+    if (platform === 'pc') {
+      recommend = await readRecommends({ params: { categoryIds } })
+    }
 
     return {
       serverIndex: {
         categories: categories && categories.code === 0 ? categories.data : null,
         sticks: sticks && sticks.code === 0 ? sticks.data : null,
         threads: threads && threads.code === 0 ? threads.data : null,
+        recommend: recommend && recommend.code === 0 ? recommend.data : null,
       },
     };
   }
@@ -65,6 +76,7 @@ class Index extends React.Component {
     serverIndex && serverIndex.categories && index.setCategories(serverIndex.categories);
     serverIndex && serverIndex.sticks && index.setSticks(serverIndex.sticks);
     serverIndex && serverIndex.threads && index.setThreads(serverIndex.threads);
+    serverIndex && serverIndex.threads && index.setRecommends(serverIndex.recommend);
   }
 
   componentDidMount() {

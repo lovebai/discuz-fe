@@ -277,7 +277,7 @@ class IndexAction extends IndexStore {
    */
   @action.bound
   async getReadCategories(opt = {}, ctx = null) {
-    console.log(opt);
+
     const result = await readCategories(opt, ctx);
     if (result.code === 0) {
       if (result.data) {
