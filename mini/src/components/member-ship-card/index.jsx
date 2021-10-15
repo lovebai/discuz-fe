@@ -46,7 +46,8 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     if (time.isCurrentYear(expiredAt)) {
       return 'MM月DD日';
     } else {
-      return 'YYYY年MM月DD日';
+      // return 'YYYY年MM月DD日';
+      return 'MM月DD日';
     }
   };
 
@@ -110,16 +111,21 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
       );
     }
 
+    const upgrade = (<Button onClick={() => {handlePayGroupRenewal(level + 1)}} type="primary" className={styles.btn}>升级</Button>);
+
     // 付费站点用户
     if (isPaySite && paid && !isIndefiniteDuration) {
       return (
-        <Button onClick={handleRenewalFee} type="primary" className={styles.btn}>续费</Button>
+        <>
+          <Button onClick={handleRenewalFee} type="primary" className={styles.btn} style={{marginRight: '12px'}}>续费</Button>
+          {hasPayGroup && upgrade}
+        </>
       );
     }
 
     // 普通用户且后台设置了付费用户组
     if (hasPayGroup) {
-      return <Button onClick={() => {handlePayGroupRenewal(level + 1)}} type="primary" className={styles.btn}>升级</Button>;
+      return upgrade;
     }
   };
 

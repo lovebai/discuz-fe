@@ -176,10 +176,11 @@ class Index extends React.Component {
 
   render() {
     const { categoryName = '' } = this.props.index || {}
+    const { canPublish } = this.props;
     const { setSite: { siteTitle } = {} } = this.props.site.webConfig || {}
     return <ViewAdapter
-            h5={<IndexH5Page dispatch={this.dispatch} />}
-            pc={<IndexPCPage dispatch={this.dispatch} />}
+            h5={<IndexH5Page dispatch={this.dispatch} canPublish={canPublish}/>}
+            pc={<IndexPCPage dispatch={this.dispatch} canPublish={canPublish}/>}
             title={categoryName || siteTitle || ""}
           />;
   }

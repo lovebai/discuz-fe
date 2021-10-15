@@ -1,5 +1,14 @@
 @import '@common/styles/index.scss';
 
+
+.wrapper {
+  :global {
+    .dzq-tabs__bar {
+      box-shadow: none;
+    }
+  }
+}
+
 .mobileTabPanel {
   flex-direction: column;
   padding: 0 16px !important;

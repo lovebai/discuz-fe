@@ -284,7 +284,6 @@ class Index extends React.Component {
     const { index, thread, data, card, className = '', site = {}, showBottomStyle = true, collect = '', unifyOnClick = null, isShowIcon = false, user: users, onTextItemClick = null, extraTag, extraInfo } = this.props;
     const { platform = 'pc' } = site;
     const threadStore = this.props.thread;
-
     const { onContentHeightChange = noop, onImageReady = noop, onVideoReady = noop } = this.props;
     if (!data) {
       return <NoData />;
@@ -312,7 +311,6 @@ class Index extends React.Component {
     const {redPacketData} = handleAttachmentData(data.content);
 
     const hasCommentHongbao = redPacketData && redPacketData.condition === 0 && redPacketData.remainNumber > 0;
-
     return (
       <div className={`${styles.container} ${className} ${showBottomStyle && styles.containerBottom} ${platform === 'pc' && styles.containerPC}`}>
         <div className={styles.header} onClick={unifyOnClick || this.onClick}>
@@ -418,4 +416,4 @@ Index.defaultProps = {
 };
 
 // eslint-disable-next-line new-cap
-export default HOCFetchSiteData(withRouter(Index));
+export default withRouter(Index);
