@@ -156,7 +156,7 @@ function avatar(props) {
       try {
         if (userInfo.isDeny) {
           await myself.undenyUser(userId);
-          await myself.setTargetUserNotBeDenied();
+          await myself.setTargetUserNotBeDenied({ userId });
           userInfo.isDeny = false;
           Toast.success({
             content: '解除屏蔽成功',
@@ -165,7 +165,7 @@ function avatar(props) {
           });
         } else {
           await myself.denyUser(userId);
-          await myself.setTargetUserDenied();
+          await myself.setTargetUserDenied({ userId });
           userInfo.isDeny = true;
           Toast.success({
             content: '屏蔽成功',
