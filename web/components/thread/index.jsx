@@ -257,6 +257,11 @@ class Index extends React.Component {
   createComment = () => {
     const { data } = this.props;
     const { threadId = '' } = data || {};
+
+    // 新增评论以后进入详情页需要刷新帖子数据
+    if (this.props.thread?.threadData) {
+      this.props.thread.threadData.needupdate = true;
+    }
     updateThreadAssignInfoInLists(threadId, {
       updateType: 'comment',
     });
