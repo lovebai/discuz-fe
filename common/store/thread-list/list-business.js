@@ -62,12 +62,12 @@ export const updateThreadAssignInfoInLists = (threadId, obj = {}) => {
 
     // 更新评论：新增
     if (updateType === 'comment' && data?.likeReward) {
-      data.likeReward.postCount = data.likeReward.postCount + 1;
+      data.likeReward.postCount = data.commentList.length;
     }
 
     // 更新评论：减少
     if (updateType === 'decrement-comment' && data?.likeReward && data.likeReward.postCount > 0) {
-      data.likeReward.postCount = data.likeReward.postCount - 1;
+      data.likeReward.postCount = data.commentList.length;;
     }
 
     // 更新分享
