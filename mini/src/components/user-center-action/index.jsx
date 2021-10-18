@@ -12,49 +12,77 @@ import UnreadRedDot from '@components/unread-red-dot';
 @inject('message')
 @observer
 class UserCenterAction extends React.Component {
-  // 点击我的消息
-  handleMyMessage = () => {
-    Router.push({ url: '/subPages/message/index' });
-  };
+  constructor(props) {
+    super(props)
+    this.state = {
+      actions: [
+        {
+          cid: 'message',
+          name: '我的消息',
+          url: '/message',
+          iconName: 'MailOutlined',
+          totalUnread: 9
+        },
+        {
+          cid: 'wallet',
+          name: '我的钱包',
+          url: '/wallet',
+          iconName: 'PayOutlined'
 
-  // 点击我的钱包
-  handleMyWallet = () => {
-    Router.push({ url: '/subPages/wallet/index' });
-  };
+        },
+        {
+          cid: 'collect',
+          name: '我的收藏',
+          url: '/my/collect',
+          iconName: 'CollectOutlinedBig'
 
-  // 草稿箱
-  handleMyDraft = () => {};
+        },
+        {
+          cid: 'block',
+          name: '我的屏蔽',
+          url: '/my/block',
+          iconName: 'ShieldOutlined'
 
-  // 点击我的购买
-  handleMyBuy = () => {
-    Router.push({ url: '/userPages/my/buy/index' });
+        },
+        {
+          cid: 'buy',
+          name: '我的购买',
+          url: '/my/buy',
+          iconName: 'ShoppingCartOutlined'
+
+        },
+        {
+          cid: 'draft',
+          name: '我的草稿箱',
+          url: '/my/draft',
+          iconName: 'RetrieveOutlined'
+
+        },
+        {
+          cid: 'forum',
+          name: '站点信息',
+          url: '/forum',
+          iconName: 'NotepadOutlined'
+
+        },
+        {
+          cid: 'invite',
+          name: '推广邀请',
+          url: '/invite',
+          iconName: 'NotbookOutlined'
+
+        },
+        {
+          cid: 'shopOutlined',
+          name: '商城',
+          url: '',
+          iconName: 'ShopOutlined'
+
+        }
+      ]
+    }
   }
-
-  // 点击我的收藏
-  handleMyCollect = () => {
-    Router.push({ url: '/userPages/my/collect/index' });
-  }
-
-  // 草稿箱
-  handleMyDraft = () => {
-    Router.push({ url: '/userPages/my/draft/index' });
-  }
-
-  // 点击站点信息
-  handleMySiteInfo = () => {
-    Router.push({ url: '/subPages/forum/index' });
-  };
-
-  // 点击推广信息
-  handleMyInvite = () => {
-    Router.push({ url: '/subPages/invite/index' });
-  };
-
-  // 点击我的屏蔽
-  handleMyBlock = () => {
-    Router.push({ url: '/userPages/my/block/index' });
-  };
-
+  
   componentDidMount() {
     this.props.message.readUnreadCount();
   }
@@ -63,103 +91,28 @@ class UserCenterAction extends React.Component {
     const { totalUnread } = this.props.message;
     const { webConfig: { other: { threadOptimize } } } = this.props.site;
     return (
-      <View className={styles.userActionMobile}>
-        <View className={styles.userCenterAction}>
-          <View className={styles.userCenterActionItemContainer}>
+      <View className={styles.userCenterAction}>
+        {
+          this.state.actions.map((item, index) => (
             <View onClick={this.handleMyMessage} className={styles.userCenterActionItem}>
               <View className={styles.userCenterActionItemIcon}>
-                <UnreadRedDot unreadCount={totalUnread}>
-                  <Icon name={'MailOutlined'} color={'#4F5A70'} size={20} />
-                </UnreadRedDot>
+              {
+                item.cid === 'message' ?
+                  <UnreadRedDot unreadCount={totalUnread}>
+                    <Icon name={item.iconName} color={'#4F5A70'} size={20} />
+                  </UnreadRedDot>
+                  :
+                  <Badge>
+                    <Icon name={item.iconName} color={'#4F5A70'} size={20} />
+                  </Badge>
+              }
               </View>
-              <View className={styles.userCenterActionItemDesc}>我的消息</View>
+              <View className={styles.userCenterActionItemDesc}>{item.name}</View>
             </View>
-          </View>
-          <View className={styles.userCenterActionItemContainer}>
-            <View onClick={this.handleMyWallet} className={styles.userCenterActionItem}>
-              <View className={styles.userCenterActionItemIcon}>
-                <Badge>
-                  <Icon name={'PayOutlined'} color={'#4F5A70'} size={20} />
-                </Badge>
-              </View>
-              <View className={styles.userCenterActionItemDesc}>我的钱包</View>
-            </View>
-          </View>
-
-          <View className={styles.userCenterActionItemContainer}>
-            <View onClick={this.handleMyCollect} className={styles.userCenterActionItem}>
-              <View className={styles.userCenterActionItemIcon}>
-                <Badge>
-                  <Icon name={'CollectOutlinedBig'} color={'#4F5A70'} size={20} />
-                </Badge>
-              </View>
-              <View className={styles.userCenterActionItemDesc}>我的收藏</View>
-            </View>
-          </View>
-
-          <View className={styles.userCenterActionItemContainer}>
-            <View onClick={this.handleMyBlock} className={styles.userCenterActionItem}>
-              <View className={styles.userCenterActionItemIcon}>
-                <Badge>
-                  <Icon name={'ShieldOutlined'} color={'#4F5A70'} size={20} />
-                </Badge>
-              </View>
-              <View className={styles.userCenterActionItemDesc}>我的屏蔽</View>
-            </View>
-          </View>
-        </View>
-
-        <View className={styles.userCenterAction}>
-
-          <View className={styles.userCenterActionItemContainer}>
-            <View onClick={this.handleMyDraft} className={styles.userCenterActionItem}>
-              <View className={styles.userCenterActionItemIcon}>
-                <Badge>
-                  <Icon name={'RetrieveOutlined'} color={'#4F5A70'} size={20} />
-                </Badge>
-              </View>
-              <View className={styles.userCenterActionItemDesc}>我的草稿箱</View>
-            </View>
-          </View>
-
-          <View className={styles.userCenterActionItemContainer}>
-            <View onClick={this.handleMySiteInfo} className={styles.userCenterActionItem}>
-              <View className={styles.userCenterActionItemIcon}>
-                <Badge>
-                  <Icon name={'NotepadOutlined'} color={'#4F5A70'} size={20} />
-                </Badge>
-              </View>
-              <View className={styles.userCenterActionItemDesc}>站点信息</View>
-            </View>
-          </View>
-
-          <View onClick={this.handleMyBuy} className={styles.userCenterActionItemContainer}
-            style={threadOptimize ? {} : { visibility: 'hidden', order: 4 }}
-          >
-            <View className={styles.userCenterActionItem}>
-              <View className={styles.userCenterActionItemIcon}>
-                <Badge>
-                  <Icon name={'ShoppingCartOutlined'} color={'#4F5A70'} size={20} />
-                </Badge>
-              </View>
-              <View className={styles.userCenterActionItemDesc}>我的购买</View>
-            </View>
-          </View>
-
-          <View className={styles.userCenterActionItemContainer} style={{ visibility: this.props.user.isAdmini && 'hidden' }}>
-            <View onClick={this.handleMyInvite} className={styles.userCenterActionItem}>
-              <View className={styles.userCenterActionItemIcon}>
-                <Badge>
-                  <Icon name={'NotbookOutlined'} color={'#4F5A70'} size={20} />
-                </Badge>
-              </View>
-              <View className={styles.userCenterActionItemDesc}>推广邀请</View>
-            </View>
-          </View>
-
-        </View>
-
+          ))
+        }
       </View>
+
     );
   }
 }

@@ -1,44 +1,47 @@
 @import '@common/styles/index.scss';
 
+.userCenterColumnStyle {
+    justify-content: space-between;
+}
 .userCenterAction {
     display: flex;
-    padding: rem($padding-4n);
     flex-wrap: wrap;
-    justify-content: space-between;
 
-    .userCenterActionItemContainer {
+    .userCenterActionItem {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        width: percentage(100/9/100);
 
-        .userCenterActionItem {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-right: rem(32);
-            min-width: rem(60);
-            cursor: pointer;
+        .userCenterActionItemIcon {}
 
-            &:last-child {
-                margin-right: 0;
-            }
-
-            .userCenterActionItemIcon {}
-
-            .userCenterActionItemDesc {
-                margin-top: rem($margin-2n);
-                color: $text-color-regular;
-                font-size: rem($font-size-small);
-            }
+        .userCenterActionItemDesc {
+            color: $text-color-regular;
+            margin-top: rem($margin-2n);
+            font-size: rem($font-size-small);
         }
     }
-
 }
 
-.userActionMobile {
-    .userCenterActionItemContainer {
-        display: flex;
-
+.userCenterAction {
+    &.h5 {
         .userCenterActionItem {
-            margin: 0;
+            width: 25%;
+            padding-top: rem($padding-4n);
+            padding-bottom: rem($padding-4n);
+        }
+    }
+}
+
+.userCenterAction {
+    &.pc {
+        padding: rem($padding-6n) rem($padding-2n) 0 rem($padding-2n); 
+        // padding-top: rem($padding-6n)
+        .userCenterActionItem {
+            width: percentage(100/9/100);
+            padding-bottom: rem($padding-6n);
         }
     }
 }
