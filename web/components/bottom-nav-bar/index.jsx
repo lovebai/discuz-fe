@@ -15,7 +15,7 @@ import SiteMapLink from '@components/site-map-link';
  * @prop {boolean} curr 常亮icon
  */
 
-const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 'home', onClick = noop, message, canPublish }) => {
+const BottomNavBar = ({ router, index, user, fixed = true, placeholder = false, curr = 'home', onClick = noop, message, canPublish }) => {
   const { totalUnread, readUnreadCount } = message;
   const checkCurrActiveTab = useCallback((curr, target) => {
     return curr === target;
@@ -58,8 +58,15 @@ const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 
         return;
       }
     }
+
+    let url = i.router;
+    const {categoryids = [],sequence=0 } = index.filter;
     if (i.router === '/') {
       LoginHelper.clear();
+
+      if(categoryids?.length || sequence !== 0) {
+        url = `/?categoryId=${categoryids.join('_')}&sequence=${sequence}` ;
+      }
     }
 
     onClick(i, idx)
@@ -70,7 +77,7 @@ const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 
       setTabs(temp);
     }
 
-    router.push(i.router);
+    router.push(url);
   };
 
   return (
@@ -113,4 +120,4 @@ const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 
   );
 };
 
-export default HOCFetchSiteData(withRouter(inject('user', 'message')(observer(BottomNavBar))));
+export default HOCFetchSiteData(withRouter(inject('index', 'user', 'message')(observer(BottomNavBar))));
