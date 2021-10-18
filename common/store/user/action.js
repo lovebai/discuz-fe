@@ -22,6 +22,7 @@ import {
   getSignInFields,
   h5Rebind,
   miniRebind,
+  getPayGroups
 } from '@server';
 import { get } from '../../utils/get';
 import locals from '@common/utils/local-bridge';
@@ -63,6 +64,17 @@ class UserAction extends SiteStore {
       }
 
       this.targetUsers = { ...this.targetUsers };
+    }
+  }
+
+  // 获取付费用户组信息
+  @action
+  async queryPayGroups() {
+    const res = await getPayGroups();
+    const { code, data } = res;
+    if (code === 0) {
+      this.payGroups = data || [];
+      return data;
     }
   }
 
@@ -134,7 +146,6 @@ class UserAction extends SiteStore {
         this.followStore[userId].attribs.currentPage = get(followersData, 'data.currentPage');
       }
     }
-    console.log(this.followStore);
     this.followStore = { ...this.followStore };
   }
 
@@ -454,7 +465,6 @@ class UserAction extends SiteStore {
     });
 
     if (followsRes.code !== 0) {
-      console.error(followsRes);
       return;
     }
 
@@ -675,7 +685,6 @@ class UserAction extends SiteStore {
       data: param,
     });
 
-    this.userInfo.backgroundUrl = '';
 
     if (updateBackgroundRes.code === 0) {
       // 因为背景图 url 是一致的，所以会导致不更新，这里进行先赋予空值，再延时赋值

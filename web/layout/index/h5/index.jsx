@@ -17,6 +17,8 @@ import DynamicLoading from '@components/dynamic-loading';
 import { debounce, throttle } from '@common/utils/throttle-debounce.js';
 import Autoplay from '@common/utils/autoplay';
 import PacketOpen from '@components/red-packet-animation/web';
+import ThreadContent from '@components/thread/SSRAdapter';
+import SiteMapLink from '@components/site-map-link';
 
 
 @inject('site')
@@ -182,6 +184,9 @@ class IndexH5Page extends React.Component {
               ref={this.listRef}
               className={`${styles.homeContent} ${!this.enableVlist && fixedTab && styles.fixed}`}
             >
+              {currentCategories?.map((item, index) => (
+                <SiteMapLink href={`/?categoryId=${item.pid === 'all' ? '' : item.pid}&sequence=0`} text={`分类_${item.name}`}/>
+              ))}
               <Tabs
                 className={styles.tabsBox}
                 scrollable
@@ -195,7 +200,7 @@ class IndexH5Page extends React.Component {
                 }
               >
                 {currentCategories?.map((item, index) => (
-                  <Tabs.TabPanel key={index} id={item.categoryId} label={item.name} />
+                  <Tabs.TabPanel key={index} id={item.pid} label={item.name} />
                 ))}
               </Tabs>
             </div>
@@ -219,6 +224,38 @@ class IndexH5Page extends React.Component {
       </>
     );
   };
+
+  renderSSRContent(thread, sticks) {
+    if (  process.env.DISCUZ_RUN === 'ssr' && ThreadContent ) {
+      const { pageData } = thread
+      
+      return (
+        <div className='ssr-box' style={{display: 'none'}}>
+          <HomeHeader />
+          {this.renderTabs()}
+          {this.renderHeaderContent()}
+          <div>
+            {
+              pageData && pageData.length != 0 && pageData.map((item, index) => {
+                return (
+                  <ThreadContent
+                    onContentHeightChange={() => {}}
+                    onImageReady={() => {}}
+                    onVideoReady={() => {}}
+                    key={`${item.threadId}-${item.updatedAt}`}
+                    data={item}
+                    recomputeRowHeights={() => {}}
+                  />
+                );
+              })
+            }
+          </div>
+          
+        </div>
+      );
+    }
+    return null;
+  }
 
   render() {
     const { index, thread} = this.props;
@@ -248,7 +285,7 @@ class IndexH5Page extends React.Component {
           <div className={classnames(styles.vTabs, 'text', this.state.fixedTab && styles.vFixed)}>
             {this.renderTabs()}
           </div>
-
+          {this.renderSSRContent(index.threads, index.sticks)}
           <this.DynamicVListLoading
             pageData={pageData}
             sticks={sticks}

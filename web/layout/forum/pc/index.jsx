@@ -54,7 +54,7 @@ class ForumPCPage extends React.Component {
   // 右侧 - 潮流话题 粉丝 版权信息
   renderRight = () => (
       <>
-        <UserCenterUsersPc/>
+        <UserCenterUsersPc itemStyle={{padding: '8px 0'}}/>
         <Copyright/>
       </>
   );
