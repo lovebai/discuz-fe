@@ -3,11 +3,13 @@ import { Icon, Dialog, Button, Input, Textarea, Radio, Toast } from '@discuzq/de
 // 移动端时间选择
 import DatePickers from '@components/thread/date-picker';
 // pc 端时间选择
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import { zhCN } from 'date-fns/locale';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';
 import { getPostData, formatPostData } from '@common/plugin/custom-apply/client/common';
 import styles from '../index.module.scss';
+registerLocale('zh-CN', zhCN);
 
 const TimeType = {
   actStart: 'activityStartTime',
@@ -234,6 +236,7 @@ export default class CustomApplyEntry extends React.Component {
             <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.actStart)}>
               {isPc
                 ? <DatePicker
+                    locale="zh-CN"
                     selected={body.activityStartTime}
                     minDate={new Date()}
                     onChange={date => this.handleTimeChange(date, TimeType.actStart)}
@@ -250,6 +253,7 @@ export default class CustomApplyEntry extends React.Component {
             <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.actEnd)}>
               {isPc
                 ? <DatePicker
+                    locale="zh-CN"
                     selected={body.activityEndTime}
                     minDate={body.activityStartTime}
                     onChange={date => this.handleTimeChange(date, TimeType.actEnd)}
@@ -297,6 +301,7 @@ export default class CustomApplyEntry extends React.Component {
                 <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.applyStart)}>
                   {isPc
                     ? <DatePicker
+                        locale="zh-CN"
                         selected={body.registerStartTime}
                         maxDate={body.activityEndTime}
                         onChange={date => this.handleTimeChange(date, TimeType.applyStart)}
@@ -313,6 +318,7 @@ export default class CustomApplyEntry extends React.Component {
                 <div className={styles['dzqp-act--item_right']} onClick={() => this.handleTimeClick(TimeType.applyEnd)}>
                   {isPc
                     ? <DatePicker
+                        locale="zh-CN"
                         selected={body.registerEndTime}
                         minDate={body.registerStartTime || body.activityStartTime}
                         maxDate={body.activityEndTime}
