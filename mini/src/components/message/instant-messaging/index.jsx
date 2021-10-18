@@ -218,7 +218,6 @@ const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialo
 
   const messagesHistory = useMemo(() => {
     setTimeout(() => {
-      scrollEnd();
       // 把消息状态更新为已读
       updateDialog(dialogId);
     }, 100);
