@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Tabs } from '@discuzq/design';
 import { goodImages } from '@common/constants/const';
+import ShopProductItem from '../../../components/shopProductItem';
 import { readProcutAnalysis } from '@common/server';
 import styles from '../index.module.scss';
 
@@ -12,33 +13,70 @@ export default class CustomApplyEntry extends React.Component {
       visible: false,
       activeTab: 'miniShop',
       link: '',
+      currentPage: 1,
+      totalPage: 1,
+      miniShopProducts: {},
+      selectedMiniShopProducts: {},
     };
   }
 
   handleDialogOpen = () => {
     this.setState({ visible: true });
+
+    this.fetchMiniShopProductList();
   };
 
   handleDialogClose = () => {
     this.setState({ visible: false });
   };
 
-  handleDialogConfirm = async () => {
-    let product;
-    if (this.state.activeTab === 'platformShop') {
-      product = await this.fetchProductAnalysis({ address: this.state.link });
-    }
+  fetchMiniShopProductList = async (page) => {
+    const { dzqRequest } = this.props;
 
-    this.props.onConfirm({
-      postData: {
-        tomId: '61540fef8f4de8',
-        body: {
-          product,
-        },
+    const { code, data, msg } = await dzqRequest.request.http({
+      url: '/plugin/shop/api/wxshop/list',
+      method: 'GET',
+      params: {
+        page,
+        perpage: '50',
       },
     });
 
-    console.log(this.props.renderData);
+    if (code !== 0) {
+      Toast.error({
+        content: msg,
+      });
+    }
+
+    const { totalCount, totalPage, pageData, currentPage } = data;
+
+    const { miniShopProducts } = this.state;
+
+    const nextMiniShopProducts = Object.assign(
+      {},
+      {
+        [currentPage]: pageData,
+        ...miniShopProducts,
+      },
+    );
+
+    this.setState({
+      totalPage,
+      miniShopProducts: nextMiniShopProducts,
+    });
+  };
+
+  handleDialogConfirm = async () => {
+    let product;
+    if (this.state.link) {
+      product = await this.fetchProductAnalysis({ address: this.state.link });
+    }
+
+    const miniShopProducts = Object.keys(this.state.selectedMiniShopProducts);
+
+    console.log('填写的商品 -> ', product);
+
+    console.log('选择的微信小商店商品 -> ', miniShopProducts);
 
     this.handleDialogClose();
   };
@@ -68,7 +106,7 @@ export default class CustomApplyEntry extends React.Component {
       return data;
     }
     Toast.error({ content: msg });
-  }
+  };
 
   // TODO: 完善商品 tab 状态判断函数
   /**
@@ -77,15 +115,39 @@ export default class CustomApplyEntry extends React.Component {
   isShowMiniShopTab = () => true;
 
   /**
+   * 处理点击行为
+   * @param {*} checkedStatus
+   * @param {*} productInfo
+   */
+  handleProductSelected = (checkedStatus, productInfo) => {
+    const { productId } = productInfo;
+
+    const nextSelectedStatus = Object.assign({}, this.state.selectedMiniShopProducts);
+
+    nextSelectedStatus[productId] = checkedStatus;
+
+    this.setState({
+      selectedMiniShopProducts: nextSelectedStatus,
+    });
+  };
+
+  /**
    * 渲染小商店 tab
    */
   renderMiniShopTab = () => {
-    console.log('mini shop');
     if (!this.isShowMiniShopTab()) return null;
     return (
       <Tabs.TabPanel key={'miniShop'} id={'miniShop'} label={'添加微信小店商品'}>
-        <div>
-          1
+        <div className={styles.productItemWrapper}>
+          {this.miniShopProductsAdapter().map(productInfo => (
+            <ShopProductItem
+              isSelected={this.state.selectedMiniShopProducts[productInfo.productId] === true}
+              onSelected={(checkedStatus) => {
+                this.handleProductSelected(checkedStatus, productInfo);
+              }}
+              productInfo={productInfo}
+            />
+          ))}
         </div>
       </Tabs.TabPanel>
     );
@@ -126,6 +188,19 @@ export default class CustomApplyEntry extends React.Component {
         </div>
       </Tabs.TabPanel>
     );
+  };
+
+  miniShopProductsAdapter = () => {
+    let formatedMiniShopProducts = [];
+    const { miniShopProducts } = this.state;
+
+    console.log(miniShopProducts);
+
+    for (const page in miniShopProducts) {
+      formatedMiniShopProducts = [...formatedMiniShopProducts, ...miniShopProducts[page]];
+    }
+
+    return formatedMiniShopProducts;
   };
 
   render() {

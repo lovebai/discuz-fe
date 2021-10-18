@@ -1,0 +1,9 @@
+{
+  "pluginName": "select_product_page",
+  "version": "1.0.0",
+  "target": "plugin_page",
+  "hookName": "page_extension_entry_hook",
+  "platform": ["pc", "h5", "mini"],
+  "registerPath": "/selectProduct",
+  "disables": false
+}

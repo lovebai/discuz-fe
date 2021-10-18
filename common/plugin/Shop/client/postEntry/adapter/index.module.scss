@@ -106,10 +106,24 @@
     .dzq-tabs__list {
       justify-content: center;
     }
+
+    .dzq-modal__container {
+      max-width: 916px !important;
+      width: fit-content !important;
+    }
+
+    .dzq-tabs__content {
+      max-height: 500px;
+      overflow-y: scroll;
+    }
   }
 
   .shopDialogBody {
     max-height: 600px;
-    overflow: hidden;
+  }
+
+  .productItemWrapper {
+    display: flex;
+    flex-wrap: wrap;
   }
 }
