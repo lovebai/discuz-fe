@@ -101,9 +101,11 @@ class PostPage extends React.Component {
 
   handleRouteChange = (url) => {
     // 如果不是修改支付密码的页面则重置发帖信息
+    // 对于插件页面，也不清空信息
     if ((url || '').indexOf('/my/edit/paypwd') === -1
     && (url || '').indexOf('/pay/middle') === -1
-    && (url || '').indexOf('/my/edit/find-paypwd') === -1) {
+    && (url || '').indexOf('/my/edit/find-paypwd') === -1
+    && (url || '').indexOf('/plugin') === -1) {
       if (this.vditor) this.vditor.setValue('');
       this.props.threadPost.resetPostData();
     }

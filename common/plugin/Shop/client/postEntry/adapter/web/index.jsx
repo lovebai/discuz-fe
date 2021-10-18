@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Tabs } from '@discuzq/design';
+import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Tabs, Spin } from '@discuzq/design';
 import { goodImages } from '@common/constants/const';
 import ShopProductItem from '../../../components/shopProductItem';
 import { readProcutAnalysis } from '@common/server';
@@ -11,19 +11,24 @@ export default class CustomApplyEntry extends React.Component {
 
     this.state = {
       visible: false,
-      activeTab: 'miniShop',
-      link: '',
-      currentPage: 1,
-      totalPage: 1,
-      miniShopProducts: {},
-      selectedMiniShopProducts: {},
+      activeTab: 'miniShop', // 当前选中的 tab 类别
+      link: '', // 平台商品的解析链接
+      currentPage: 1, // 小商店的当前页数
+      totalPage: 1, // 小商店的总页数
+      totalCount: 0, // 小商店的商品总数
+      miniShopProducts: {}, // 小商店的商品列表
+      selectedMiniShopProducts: {}, // 选中的小商店商品
+      loading: false, // 是否正在加载中
+      fetchError: '', // 加载错误信息
     };
   }
 
-  handleDialogOpen = () => {
+  miniShopListRef = React.createRef(null);
+
+  handleDialogOpen = async () => {
     this.setState({ visible: true });
 
-    this.fetchMiniShopProductList();
+    await this.fetchMiniShopProductList();
   };
 
   handleDialogClose = () => {
@@ -33,37 +38,56 @@ export default class CustomApplyEntry extends React.Component {
   fetchMiniShopProductList = async (page) => {
     const { dzqRequest } = this.props;
 
-    const { code, data, msg } = await dzqRequest.request.http({
-      url: '/plugin/shop/api/wxshop/list',
-      method: 'GET',
-      params: {
-        page,
-        perpage: '50',
-      },
-    });
-
-    if (code !== 0) {
-      Toast.error({
-        content: msg,
-      });
-    }
-
-    const { totalCount, totalPage, pageData, currentPage } = data;
-
-    const { miniShopProducts } = this.state;
-
-    const nextMiniShopProducts = Object.assign(
-      {},
-      {
-        [currentPage]: pageData,
-        ...miniShopProducts,
-      },
-    );
-
+    // 请求前 loading
     this.setState({
-      totalPage,
-      miniShopProducts: nextMiniShopProducts,
+      loading: true,
     });
+
+    try {
+      const { code, data, msg } = await dzqRequest.request.http({
+        url: '/plugin/shop/api/wxshop/list',
+        method: 'GET',
+        params: {
+          page,
+          perPage: '16',
+        },
+      });
+
+      if (code !== 0) {
+        Toast.error({
+          content: msg,
+        });
+      }
+
+      const { totalCount, totalPage, pageData, currentPage } = data;
+
+      const { miniShopProducts } = this.state;
+
+      const nextMiniShopProducts = Object.assign(
+        {},
+        {
+          [currentPage]: pageData,
+          ...miniShopProducts,
+        },
+      );
+      this.setState({
+        totalPage,
+        totalCount,
+        miniShopProducts: nextMiniShopProducts,
+      });
+
+      this.setState({
+        loading: false,
+      });
+
+      return nextMiniShopProducts;
+    } catch (error) {
+      this.setState({
+        loading: false,
+      });
+
+      this.props.dzqRequestHandleError(error);
+    }
   };
 
   handleDialogConfirm = async () => {
@@ -87,7 +111,6 @@ export default class CustomApplyEntry extends React.Component {
   isShowShopIcon = () => {
     const { siteData, _pluginInfo } = this.props;
     const { pluginConfig } = siteData;
-    console.log(pluginConfig);
     if (!pluginConfig) return false;
     const [act] = (pluginConfig || []).filter(item => item.app_id === _pluginInfo.options.tomId);
     if (act?.authority?.canUsePlugin) return true;
@@ -102,7 +125,6 @@ export default class CustomApplyEntry extends React.Component {
     const ret = await readProcutAnalysis({ data: options });
     const { code, data = {}, msg } = ret;
     if (code === 0) {
-      console.log('分析成功, data -> ', data);
       return data;
     }
     Toast.error({ content: msg });
@@ -131,6 +153,28 @@ export default class CustomApplyEntry extends React.Component {
     });
   };
 
+  // 处理触底加载
+  handleReachBottom = () => {
+    if (this.state.currentPage < this.state.totalPage) {
+      this.fetchMiniShopProductList(this.state.currentPage + 1);
+
+      this.setState({
+        currentPage: this.state.currentPage + 1,
+      });
+    }
+  }
+
+  // 滚动行为监听
+  handleListScroll = (e) => {
+    const { scrollTop } = e.target;
+    const { scrollHeight } = e.target;
+    const offsetHeight = Math.ceil(e.target.getBoundingClientRect().height);
+    const currentHeight = scrollTop + offsetHeight;
+    if (currentHeight >= scrollHeight) {
+      this.handleReachBottom();
+    }
+  };
+
   /**
    * 渲染小商店 tab
    */
@@ -138,7 +182,7 @@ export default class CustomApplyEntry extends React.Component {
     if (!this.isShowMiniShopTab()) return null;
     return (
       <Tabs.TabPanel key={'miniShop'} id={'miniShop'} label={'添加微信小店商品'}>
-        <div className={styles.productItemWrapper}>
+        <div className={styles.productItemWrapper} ref={this.miniShopListRef} onScroll={this.handleListScroll}>
           {this.miniShopProductsAdapter().map(productInfo => (
             <ShopProductItem
               isSelected={this.state.selectedMiniShopProducts[productInfo.productId] === true}
@@ -148,6 +192,11 @@ export default class CustomApplyEntry extends React.Component {
               productInfo={productInfo}
             />
           ))}
+          {this.state.loading && (
+            <div className={styles.spinner}>
+              <Spin type="spinner">加载中...</Spin>
+            </div>
+          )}
         </div>
       </Tabs.TabPanel>
     );
@@ -193,8 +242,6 @@ export default class CustomApplyEntry extends React.Component {
   miniShopProductsAdapter = () => {
     let formatedMiniShopProducts = [];
     const { miniShopProducts } = this.state;
-
-    console.log(miniShopProducts);
 
     for (const page in miniShopProducts) {
       formatedMiniShopProducts = [...formatedMiniShopProducts, ...miniShopProducts[page]];
