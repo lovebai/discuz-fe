@@ -6,9 +6,11 @@ import { withRouter } from 'next/router';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 
 // 插件插槽埋入
-/**DZQ->plugin->register<plugin_page@page_extension_entry_hook>**/
+/**DZQ->plugin->register<plugin_system@add_page_hook>**/
 
 @inject('site')
+@inject('user')
+@observer
 class PagePlugin extends React.Component {
   constructor(props) {
     super(props);
@@ -18,14 +20,15 @@ class PagePlugin extends React.Component {
   }
 
   getTargetPlugin = () => {
-    const { site } = this.props;
-    return DZQPluginCenter.injection('plugin_page', 'page_extension_entry_hook').map(({ render, pluginInfo }) => {
-      if (pluginInfo.registerPath === this.state.pluginPath) {
+    const { site, user } = this.props;
+    return DZQPluginCenter.injection('plugin_system', 'add_page_hook').map(({ render, pluginInfo }) => {
+      if (pluginInfo.path === this.state.pluginPath) {
         return (
           <div key={pluginInfo.name}>
             {render({
-              renderData: {},
               site,
+              userInfo: user.userInfo,
+              isLogin: user.isLogin.bind(user),
               pluginInfo,
             })}
           </div>

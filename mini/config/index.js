@@ -1,4 +1,14 @@
 const path = require('path');
+const getCompileInClude = require('@discuzq/cli/config/taro/getCompileInClude');
+
+const include = [
+  path.resolve(__dirname, '../../common')
+];
+const pluginDir = getCompileInClude();
+if (pluginDir) {
+  include.push(pluginDir)
+}
+
 const config = {
   projectName: 'discuz-app-mini',
   date: '2021-2-19',
@@ -15,9 +25,6 @@ const config = {
   defineConstants: {
     LOCATION_APIKEY: JSON.stringify('FF7BZ-27T3X-C574Z-73YBG-FGAJ2-4CF7I')
   },
-  presets: [
-    '/Users/fishcui/Documents/dzq/discuz-fe/mini/src/withPagePlugin.ts'
-  ],
   alias: {
     '@components': path.resolve(__dirname, '../src/components'),
     '@layout': path.resolve(__dirname, '../src/layout'),
@@ -45,9 +52,7 @@ const config = {
   framework: 'react',
   mini: {
     compile: {
-      include: [
-        path.resolve(__dirname, '../../common'),
-      ],
+      include: include,
     },
     baseLevel: 20,
     postcss: {
