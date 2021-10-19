@@ -83,7 +83,8 @@ class UserCenterAction extends React.Component {
           iconName: 'ShopOutlined'
 
         }
-      ]
+      ],
+      actionsView: [] // 用于页面渲染
     }
   }
 
@@ -96,40 +97,78 @@ class UserCenterAction extends React.Component {
   componentDidMount() {
     this.props.message.readUnreadCount();
     const actions = this.state.actions.slice()
+    const actionsView = [] 
+    const platform = this.props.site.platform
 
-    // 管理员去除 推广邀请配置
+    // 管理员 去除 推广邀请配置
     if (this.props.user.isAdmini) {
       const inviteIndex = this.state.actions.findIndex(item => item.cid === 'invite')
       inviteIndex > -1 && actions.splice(inviteIndex, 1)
     }
+
     // h5 去除 我的点赞 配置
-    if(this.props.site.platform !== 'pc') {
+    if(platform !== 'pc') {
       const likeIndex = this.state.actions.findIndex(item => item.cid === 'like')
       likeIndex > -1 && actions.splice(likeIndex, 1)
     }
 
-    this.setState({actions})
+    const step = platform === 'pc' ? 9 : 4
+    for (let i = 0; i < actions.length; i+=step) {
+      if ((i + step) <= actions.length) {
+        actionsView.push(actions.slice(i, i + step))
+      } else {
+        actionsView.push(actions.slice(i, actions.length))
+      }
+    }
+   
+    // 如果不止一行，最后一个数组补齐元素，用于页面渲染
+    if (actions.length > step && actions.length % step) {
+      const count = step - actions.length % step
+      const lastRowActions =  actionsView[actionsView.length-1]
+      for (let i = 0; i < count; i++) {
+        lastRowActions.push({})
+      }
+    }
+
+    this.setState({actionsView})
+  }
+
+  renderActionItem = (item, totalUnread) => {
+    return (
+      <div onClick={() => {this.handleActionItem(item)}} className={styles.userCenterActionItem}>
+        <div className={styles.userCenterActionItemIcon}>
+          {
+            item.cid === 'message' ?
+            <UnreadRedDot unreadCount={totalUnread}>
+              <Icon name={item.iconName} size={20} />
+            </UnreadRedDot>
+            :
+            <Icon name={item.iconName} size={20} />
+          }
+        </div>
+        <div className={styles.userCenterActionItemDesc}>{item.name}</div>
+      </div>
+    )
+  }
+
+  renderExtraActionItem = () => {
+    return (
+      <div className={styles.userCenterActionItem}></div>
+    )
   }
 
   render() {
-    const { message } = this.props;
-    const { totalUnread } = message;
+    const { message } = this.props
+    const { totalUnread } = message
+    const { actionsView } = this.state
     return (
-      <div className={`${styles.userCenterAction} ${this.props.user.isAdmini && styles.userCenterColumnStyle} ${this.props.site.platform === 'pc' ? styles.pc : styles.h5}`}>
+      <div className={`${styles.userCenterAction} ${this.props.site.platform === 'pc' ? styles.pc : styles.h5}`}>
         {
-          this.state.actions.map((item, index) => (
-            <div onClick={() => {this.handleActionItem(item)}} className={styles.userCenterActionItem}>
-            <div className={styles.userCenterActionItemIcon}>
+          actionsView.map((items) => (
+            <div className={styles.userCenterActionItemContainer}>
               {
-                item.cid === 'message' ?
-                <UnreadRedDot unreadCount={totalUnread}>
-                  <Icon name={item.iconName} size={20} />
-                </UnreadRedDot>
-                :
-                <Icon name={item.iconName} size={20} />
+                items.length && items.map(item => item.cid ? this.renderActionItem(item, totalUnread) : this.renderExtraActionItem()) 
               }
-            </div>
-            <div className={styles.userCenterActionItemDesc}>{item.name}</div>
             </div>
           ))
         }

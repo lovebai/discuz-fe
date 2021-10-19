@@ -1,27 +1,27 @@
 @import '@common/styles/index.scss';
 
 .userCenterAction {
-    display: flex;
-    padding: $padding-4n;
-    flex-wrap: wrap;
-
-    .userCenterActionItem {
+    .userCenterActionItemContainer {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        width: 25%;
-        padding-top: rem($padding-4n);
-        padding-bottom: rem($padding-4n);
+        justify-content: space-between;
+        padding: rem($padding-4n);
 
-        .userCenterActionItemIcon {}
+        .userCenterActionItem {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            min-width: rem(60);
 
-        .userCenterActionItemDesc {
-            margin-top: $margin-2n;
-            color: $text-color-regular;
-            font-size: $font-size-label;
-            line-height: 17px;
+            .userCenterActionItemIcon {}
+
+            .userCenterActionItemDesc {
+                margin-top: rem($margin-2n);
+                color: $text-color-regular;
+                font-size: rem($font-size-small);
+            }
         }
     }
+
 }

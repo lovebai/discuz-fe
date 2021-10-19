@@ -3,45 +3,41 @@
 .userCenterColumnStyle {
     justify-content: space-between;
 }
-.userCenterAction {
-    display: flex;
-    flex-wrap: wrap;
 
-    .userCenterActionItem {
+.userCenterAction {
+    .userCenterActionItemContainer {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        width: percentage(100/9/100);
+        justify-content: space-between;
 
-        .userCenterActionItemIcon {}
-
-        .userCenterActionItemDesc {
-            color: $text-color-regular;
-            margin-top: rem($margin-2n);
-            font-size: rem($font-size-small);
-        }
-    }
-}
-
-.userCenterAction {
-    &.h5 {
         .userCenterActionItem {
-            width: 25%;
-            padding-top: rem($padding-4n);
-            padding-bottom: rem($padding-4n);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            min-width: rem(60);
+
+            .userCenterActionItemIcon {}
+
+            .userCenterActionItemDesc {
+                margin-top: rem($margin-2n);
+                color: $text-color-regular;
+                font-size: rem($font-size-small);
+            }
         }
     }
+
 }
 
 .userCenterAction {
     &.pc {
-        padding: rem($padding-6n) rem($padding-2n) 0 rem($padding-2n); 
-        // padding-top: rem($padding-6n)
-        .userCenterActionItem {
-            width: percentage(100/9/100);
-            padding-bottom: rem($padding-6n);
+        .userCenterActionItemContainer {
+            padding: rem($padding-6n);
+        }
+    }
+    &.h5 {
+        .userCenterActionItemContainer {
+            padding: rem($padding-4n);
         }
     }
 }
