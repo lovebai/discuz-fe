@@ -49,7 +49,7 @@ const MoneyInput = (props) => {
         </div>
       ) : (
         <div className={styles.leastMoney}>
-          充值金额最低0.1元
+          充值金额最低1元
         </div>
       )}
     </div>

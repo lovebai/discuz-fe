@@ -46,7 +46,7 @@ const MoneyInput = (props) => {
           {parseFloat(maxmoney) < parseFloat(value) && <p className={styles.leasterr}>提现金额不得大于可提现金额</p>}
           提现金额最低{minmoney || 0}元
         </div>
-        ) : (<div className={styles.leastMoney}>充值金额最低0.1元</div>)
+        ) : (<div className={styles.leastMoney}>充值金额最低1元</div>)
       }
     </div>
   );

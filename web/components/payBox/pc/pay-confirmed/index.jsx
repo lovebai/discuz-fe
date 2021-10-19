@@ -451,8 +451,8 @@ export default class index extends Component {
 
   render() {
     const { options = {}, qrCodeTimeout } = this.props?.payBox;
-    const { amount = 0 } = options;
-    const isRecharge = this.isToRecharge();
+    const { amount = 0, type } = options;
+    const isRecharge = type === 30;
     return (
       <div>
         <div className={styles.payconfirmWrapper}>

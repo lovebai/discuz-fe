@@ -41,10 +41,17 @@ class WithdrawalPop extends Component {
   // 获取禁用逻辑
   getDisabeledButton = () => {
     const { inputValue } = this.state;
-    const btnDisabled =
-      !inputValue ||
-      parseFloat(inputValue) > parseFloat(this.props.wallet?.walletAvaAmount) ||
-      parseFloat(inputValue) < parseFloat(this.props.site?.cashMinSum);
+    const { operateWalletType } = this.props;
+    let btnDisabled = false;
+    if (operateWalletType === 'withdrawal') {
+      btnDisabled =
+        !inputValue ||
+        parseFloat(inputValue) > parseFloat(this.props.wallet?.walletAvaAmount) ||
+        parseFloat(inputValue) < parseFloat(this.props.site?.cashMinSum);
+    }
+    if (operateWalletType === 'recharge') {
+      btnDisabled = btnDisabled = !inputValue || parseFloat(inputValue) < 1;
+    }
     return btnDisabled;
   };
 
@@ -113,7 +120,6 @@ class WithdrawalPop extends Component {
         this.props.onCreateCash();
       }
       this.initState();
-      Router.back();
     } else {
       Toast.error({
         content: msg,
@@ -156,7 +162,7 @@ class WithdrawalPop extends Component {
               inputValue={this.state.inputValue}
               onChange={this.onChange}
               updateState={this.updateState}
-              visible={this.state.visible}
+              visible={this.props.visible}
               minAmount={cashMinSum}
               maxAmount={walletAvaAmount}
               moneyInputType={operateWalletType}

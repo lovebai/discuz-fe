@@ -114,7 +114,7 @@ class Recharge extends React.Component {
   getDisabeledButton = () => {
     const { inputValue } = this.state;
     const btnDisabled =
-      !inputValue || parseFloat(inputValue) < 0.1;
+      !inputValue || parseFloat(inputValue) < 1;
     return btnDisabled;
   };
 
