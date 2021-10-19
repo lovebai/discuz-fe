@@ -789,7 +789,6 @@ class Index extends Component {
     if (showEmoji || bottomHeight) defaultToolbarStyle = { paddingBottom: '0px', height: '45px' };
     const { site } = this.props;
     const headTitle = get(site, 'webConfig.setSite.siteName', '');
-    console.log('categories', categories)
     return (
       <>
         <View className={styles.container} style={containerStyle} onClick={this.handleContentFocus}>
