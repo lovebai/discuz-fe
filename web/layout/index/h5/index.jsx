@@ -22,10 +22,11 @@ import SiteMapLink from '@components/site-map-link';
 
 /**DZQ->plugin->register<plugin_index@topping_replace_hook,topping_insert_before_hook,topping_insert_after_hook>**/
 /**DZQ->plugin->register<plugin_index@header_replace_hook,header_insert_before_hook,header_insert_after_hook>**/
+/**DZQ->plugin->register<plugin_index@tabs_replace_hook>**/
 
+import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
 import IndexHeaderHooks from '@common/plugin-hooks/plugin_index@header';
 import IndexTabsHook from '@common/plugin-hooks/plugin_index@tabs';
-import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
 
 @inject('site')
 @inject('user')

@@ -16,10 +16,10 @@ import PacketOpen from '@components/red-packet-animation';
 
 /**DZQ->plugin->register<plugin_index@topping_replace_hook,topping_insert_before_hook,topping_insert_after_hook>**/
 /**DZQ->plugin->register<plugin_index@header_replace_hook,header_insert_before_hook,header_insert_after_hook>**/
-
+/**DZQ->plugin->register<plugin_index@tabs_replace_hook>**/
 import IndexHeaderHooks from '@common/plugin-hooks/plugin_index@header';
-// import IndexTabsHook from '@common/plugin-hooks/plugin_index@tabs';
 import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
+import IndexTabsHook from '@common/plugin-hooks/plugin_index@tabs';
 
 @inject('site')
 @inject('user')
@@ -164,7 +164,10 @@ class IndexH5Page extends React.Component {
         {/* 顶部插件hooks */}
         <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
 
-        <IndexTabs onClickTab={this.onClickTab} searchClick={this.searchClick} ref={this.tabsRef} />
+        <IndexTabsHook
+          component={<IndexTabs onClickTab={this.onClickTab} searchClick={this.searchClick} ref={this.tabsRef} />}
+          site={this.props.site}
+        ></IndexTabsHook>
 
         <View style={{ display: isClickTab ? 'none' : 'block' }}>
           {this.renderHeaderContent()}
@@ -183,7 +186,6 @@ class IndexH5Page extends React.Component {
             ))
           )}
         </View>
-
         <FilterView
           data={currentCategories}
           current={filter}
