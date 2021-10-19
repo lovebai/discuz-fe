@@ -15,6 +15,9 @@ import ThreadList from '@components/virtual-list'
 import PacketOpen from '@components/red-packet-animation';
 
 
+/**DZQ->plugin->register<plugin_index@topping_replace_hook,topping_insert_before_hook,topping_insert_after_hook>**/
+import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
+
 @inject('site')
 @inject('user')
 @inject('index')
@@ -118,15 +121,15 @@ class IndexH5Page extends React.Component {
   renderHeaderContent = () => {
     const { sticks = [] } = this.props.index || {};
 
-    return (
-      <>
-        {sticks && sticks.length > 0 && (
-          <View className={styles.homeContentTop}>
-            <TopNew data={sticks} itemMargin="1" />
-          </View>
-        )}
-      </>
-    );
+    const component = <>
+      {sticks && sticks.length > 0 && (
+        <View className={styles.homeContentTop}>
+          <TopNew data={sticks} itemMargin="1" />
+        </View>
+      )}
+    </> 
+
+    return <IndexToppingHooks component={component} site={this.props.site}></IndexToppingHooks>
   };
 
   render() {

@@ -7,6 +7,9 @@ import ThreadContent from '@components/thread';
 import WindowVList from '@components/virtual-list/pc';
 import styles from './index.module.scss';
 
+/**DZQ->plugin->register<plugin_index@topping_replace_hook,topping_insert_before_hook,topping_insert_after_hook>**/
+import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
+
 const TopFilterView = ({ onFilterClick, isShowDefault, onPostThread, ishide }) => {
   return (
     <div className={styles.topWrapper} style={{ visibility: ishide ? 'hidden' : 'visible' }}>
@@ -93,13 +96,28 @@ export default class DynamicVList extends React.Component {
       requestError,
       noMore,
       errorText,
-      onScroll = () => {}
+      onScroll = () => {},
     } = this.props;
     const { sticks, threads } = data;
     const { pageData } = threads || {};
     const { siteStore } = this.props;
     const { countThreads = 0 } = siteStore?.webConfig?.other || {};
-    
+
+    const toppingComponent = (
+      <div className={styles.contnetTop}>
+        {sticks?.length > 0 && (
+          <div className={`${styles.TopNewsBox} ${!visible && styles.noBorder}`}>
+            <TopNews data={sticks} platform="pc" isShowBorder={false} />
+          </div>
+        )}
+        {visible && (
+          <div className={styles.topNewContent}>
+            <NewContent visible={visible} conNum={conNum} goRefresh={goRefresh} />
+          </div>
+        )}
+      </div>
+    );
+
     return (
       <WindowVList
         list={pageData}
@@ -125,7 +143,8 @@ export default class DynamicVList extends React.Component {
               data={item}
               className={styles.listItem}
               recomputeRowHeights={measure}
-            />)
+            />
+          );
         }}
       >
         <div className={styles.indexContent}>
@@ -135,19 +154,9 @@ export default class DynamicVList extends React.Component {
             isShowDefault={isShowDefault}
             ishide={true}
           />
-
-          <div className={styles.contnetTop}>
-            {sticks?.length > 0 && (
-              <div className={`${styles.TopNewsBox} ${!visible && styles.noBorder}`}>
-                <TopNews data={sticks} platform="pc" isShowBorder={false} />
-              </div>
-            )}
-            {visible && (
-              <div className={styles.topNewContent}>
-                <NewContent visible={visible} conNum={conNum} goRefresh={goRefresh} />
-              </div>
-            )}
-          </div>
+          
+          <IndexToppingHooks component={toppingComponent} site={this.props.siteStore}></IndexToppingHooks>
+          
         </div>
       </WindowVList>
     );
