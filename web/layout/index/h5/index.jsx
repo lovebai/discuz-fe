@@ -20,8 +20,8 @@ import PacketOpen from '@components/red-packet-animation/web';
 import ThreadContent from '@components/thread/SSRAdapter';
 import SiteMapLink from '@components/site-map-link';
 
-
 /**DZQ->plugin->register<plugin_index@topping_replace_hook,topping_insert_before_hook,topping_insert_after_hook>**/
+/**DZQ->plugin->register<plugin_index@header_replace_hook,header_insert_before_hook,header_insert_after_hook>**/
 
 import IndexHeaderHooks from '@common/plugin-hooks/plugin_index@header';
 import IndexTabsHook from '@common/plugin-hooks/plugin_index@tabs';
@@ -60,7 +60,9 @@ class IndexH5Page extends React.Component {
     loading: (res) => (
       <div>
         {/* 顶部插件hooks */}
-        <IndexHeaderHooks site={this.props.site} component={<HomeHeader ref={this.headerRef} />}></IndexHeaderHooks>
+        <div ref={this.headerRef}>
+          <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
+        </div>
         <DynamicLoading
           data={res}
           style={{ padding: '0 0 20px' }}
@@ -165,7 +167,7 @@ class IndexH5Page extends React.Component {
   }, 50);
 
   handleScroll = ({ scrollTop = 0, startNum, stopNum } = {}) => {
-    const { height = 180 } = this.headerRef.current?.state || {};
+    const height = this.headerRef.current?.clientHeight || 180;
     const { fixedTab } = this.state;
 
     this.checkVideoPlause();
@@ -297,7 +299,9 @@ class IndexH5Page extends React.Component {
             platform={'h5'}
           >
             {/* 头部插件hooks */}
-            <IndexHeaderHooks site={this.props.site} component={<HomeHeader ref={this.headerRef} />}></IndexHeaderHooks>
+            <div ref={this.headerRef}>
+              <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
+            </div>
 
             <Observer>{() => this.renderTabs()}</Observer>
             <Observer>{() => this.renderHeaderContent()}</Observer>

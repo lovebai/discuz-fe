@@ -8,10 +8,9 @@ export default ({ target, hookNames }) => {
 
   return (props) => {
     const { component, ...others } = props;
-    const insertBeforePlugins = DZQPluginCenter.injection(target, replaceHookName);
-    const replacePlugin = DZQPluginCenter.injection(target, beofroHookName).pop();
-    const insertAfterPlugins = DZQPluginCenter.injection(target, afterHookName);
-
+    const insertBeforePlugins = beofroHookName && DZQPluginCenter.injection(target, beofroHookName);
+    const replacePlugin = replaceHookName && DZQPluginCenter.injection(target, replaceHookName).pop();
+    const insertAfterPlugins = afterHookName && DZQPluginCenter.injection(target, afterHookName);
     return (
       <>
         {/* 前插入hooks */}

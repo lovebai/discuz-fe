@@ -1,3 +1,3 @@
 export default function (props) {
-  return <h1>topping_insert_before_hook</h1>;
+  return <h1>{props._pluginInfo.pluginName}</h1>;
 }

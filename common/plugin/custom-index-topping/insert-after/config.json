@@ -1,5 +1,5 @@
 {
-  "pluginName": "CustomIndexTopping3",
+  "pluginName": "AfterCustomIndexTopping",
   "version": "1.0.0",
   "target": "plugin_index",
   "hookName": "topping_insert_after_hook",
