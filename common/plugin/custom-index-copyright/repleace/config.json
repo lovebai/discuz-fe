@@ -1,0 +1,8 @@
+{
+  "pluginName": "ReplaceCustomIndexCopyright",
+  "version": "1.0.0",
+  "target": "plugin_index",
+  "hookName": "copyright_replace_hook",
+  "platform": ["pc"],
+  "disables": false
+}

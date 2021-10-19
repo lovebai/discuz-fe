@@ -1,0 +1,8 @@
+{
+  "pluginName": "ReplaceCustomIndexQrcode",
+  "version": "1.0.0",
+  "target": "plugin_index",
+  "hookName": "qrcode_replace_hook",
+  "platform": ["pc"],
+  "disables": false
+}

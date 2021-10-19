@@ -1,0 +1,8 @@
+{
+  "pluginName": "ReplaceCustomIndexRight",
+  "version": "1.0.0",
+  "target": "plugin_index",
+  "hookName": "right_replace_hook",
+  "platform": ["pc"],
+  "disables": true
+}

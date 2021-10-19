@@ -1,0 +1,8 @@
+{
+  "pluginName": "ReplaceCustomIndexLeft",
+  "version": "1.0.0",
+  "target": "plugin_index",
+  "hookName": "left_replace_hook",
+  "platform": ["pc"],
+  "disables": false
+}

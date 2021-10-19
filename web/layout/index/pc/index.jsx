@@ -20,6 +20,12 @@ import PacketOpen from '@components/red-packet-animation/web';
 import ThreadContent from '@components/thread/SSRAdapter';
 import TopNews from '../h5/components/top-news/SSRAdapter';
 
+/**DZQ->plugin->register<plugin_index@recommend_replace_hook,qrcode_replace_hook,copyright_replace_hook,left_replace_hook,right_replace_hook>**/
+import IndexRecommendHook from '@common/plugin-hooks/plugin_index@recommend';
+import IndexQrcodeHook from '@common/plugin-hooks/plugin_index@qrcode';
+import IndexCopyrightHook from '@common/plugin-hooks/plugin_index@copyright';
+import IndexLeftHook from '@common/plugin-hooks/plugin_index@left';
+import IndexRightHook from '@common/plugin-hooks/plugin_index@right';
 
 const DynamicVListLoading = dynamic(() => import('./components/dynamic-vlist'), {
   loading: (res) => {
@@ -184,8 +190,7 @@ class IndexPCPage extends React.Component {
   // 左侧 -- 分类
   renderLeft = (countThreads = 0) => {
     const { currentCategories, activeCategoryId, activeChildCategoryId, categoryError } = this.props.index;
-
-    return (
+    const component = (
       <div className={styles.indexLeft}>
         <div className={styles.indexLeftBox}>
           <Navigation
@@ -200,17 +205,27 @@ class IndexPCPage extends React.Component {
         </div>
       </div>
     );
+    return <IndexLeftHook component={component} site={this.props.site}></IndexLeftHook>;
   };
   // 右侧 -- 二维码 推荐内容
-  renderRight = (data) => (
-    <div className={styles.indexRight}>
-      <Recommend />
-      <div className={styles.indexRightCon}>
-        <QcCode />
+  renderRight = (data) => {
+    const component = (
+      <div className={styles.indexRight}>
+        <IndexRecommendHook component={<Recommend />} site={this.props.site}></IndexRecommendHook>
+        <IndexQrcodeHook
+          component={
+            <div className={styles.indexRightCon}>
+              <QcCode />
+            </div>
+          }
+          site={this.props.site}
+        ></IndexQrcodeHook>
+        <IndexCopyrightHook component={<Copyright />} site={this.props.site}></IndexCopyrightHook>
       </div>
-      <Copyright />
-    </div>
-  );
+    );
+
+    return <IndexRightHook component={component} site={this.props.site}></IndexRightHook>;
+  };
 
   checkIsOpenDefaultTab() {
     return this.props.site.checkSiteIsOpenDefautlThreadListData();
@@ -232,15 +247,16 @@ class IndexPCPage extends React.Component {
   };
 
   renderSSRContent(thread, sticks) {
-    if (  process.env.DISCUZ_RUN === 'ssr' && ThreadContent ) {
-      const { pageData } = thread
-      
+    if (process.env.DISCUZ_RUN === 'ssr' && ThreadContent) {
+      const { pageData } = thread;
+
       return (
-        <div className='ssr-box' style={{display: 'none'}}>
+        <div className="ssr-box" style={{ display: 'none' }}>
           {sticks && sticks.length > 0 && <TopNews data={sticks} platform="pc" isShowBorder={false} />}
           <div>
-            {
-              pageData && pageData.length != 0 && pageData.map((item, index) => {
+            {pageData &&
+              pageData.length != 0 &&
+              pageData.map((item, index) => {
                 return (
                   <ThreadContent
                     onContentHeightChange={() => {}}
@@ -251,10 +267,8 @@ class IndexPCPage extends React.Component {
                     recomputeRowHeights={() => {}}
                   />
                 );
-              })
-            }
+              })}
           </div>
-          
         </div>
       );
     }
@@ -305,9 +319,7 @@ class IndexPCPage extends React.Component {
           renderLeft={this.renderLeft}
           enabledVList={this.enabledVList}
         />
-        {
-          hasRedPacket > 0 && <PacketOpen onClose={() => thread.setRedPacket(0)} money={hasRedPacket} />
-        }
+        {hasRedPacket > 0 && <PacketOpen onClose={() => thread.setRedPacket(0)} money={hasRedPacket} />}
       </BaseLayout>
     );
   }

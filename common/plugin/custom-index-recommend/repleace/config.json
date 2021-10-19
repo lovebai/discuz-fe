@@ -1,0 +1,8 @@
+{
+  "pluginName": "ReplaceCustomIndexRecommend",
+  "version": "1.0.0",
+  "target": "plugin_index",
+  "hookName": "recommend_replace_hook",
+  "platform": ["pc"],
+  "disables": false
+}
