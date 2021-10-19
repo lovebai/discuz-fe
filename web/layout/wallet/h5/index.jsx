@@ -312,7 +312,6 @@ class WalletH5Page extends React.Component {
             </Button>)
           }
         </div>
-        
       </div>
     )
   }
