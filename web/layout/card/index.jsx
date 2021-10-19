@@ -51,7 +51,7 @@ const Index = ({ card, threadId, commentId}) => {
       </div>
       {ready && imgReady ? (
         <div className={styles.imgbox}>
-          <img alt="图片" className={styles.centImage} src={url} />
+          <img alt="" className={styles.centImage} src={url} />
         </div>
       ) : (
         <div className={styles.imgbox}></div>
