@@ -4,6 +4,10 @@ import { goodImages } from '@common/constants/const';
 import ShopProductItem from '../../../components/shopProductItem';
 import { readProcutAnalysis } from '@common/server';
 import styles from '../index.module.scss';
+import EventBus from '../../../event';
+
+const MINI_SHOP_TYPE = 11;
+const PLATFORM_SHOP_TYPE = 10;
 
 export default class CustomApplyEntry extends React.Component {
   constructor(props) {
@@ -20,10 +24,69 @@ export default class CustomApplyEntry extends React.Component {
       selectedMiniShopProducts: {}, // 选中的小商店商品
       loading: false, // 是否正在加载中
       fetchError: '', // 加载错误信息
+      products: {},
     };
   }
 
   miniShopListRef = React.createRef(null);
+
+  // 加载当前 postData 中的基础数据
+  componentDidMount() {
+    this.init();
+
+    EventBus.addEventListener('showMiniDialog', this.handleMiniDialogOpen);
+    EventBus.addEventListener('showPlatformDialog', this.handlePlatformDialogOpen);
+  }
+
+  componentWillUnmount() {
+    EventBus.removeEventListener('showMiniDialog', this.handleMiniDialogOpen);
+    EventBus.removeEventListener('showPlatformDialog', this.handlePlatformDialogOpen);
+  }
+
+  // 如果有外层导致的渲染数据更新，重新更新选中的范围
+  componentDidUpdate(prevProps) {
+    if (prevProps.renderData !== this.props.renderData) {
+      this.init();
+    }
+  }
+
+  init = () => {
+    const { renderData } = this.props;
+    const { body } = renderData || { body: { products: [] } };
+    const { products } = body || { products: [] };
+
+    let platformProductLink = '';
+    const currentMiniShopProducts = {};
+
+    products.forEach((productInfo) => {
+      if (productInfo.type === MINI_SHOP_TYPE) {
+        currentMiniShopProducts[productInfo.data.productId] = productInfo.data;
+      }
+
+      if (productInfo.type === PLATFORM_SHOP_TYPE) {
+        platformProductLink = productInfo.data.readyContent;
+      }
+    });
+
+    this.setState({
+      selectedMiniShopProducts: currentMiniShopProducts,
+      link: platformProductLink,
+    });
+  };
+
+  handleMiniDialogOpen = () => {
+    this.setState({
+      activeTab: 'miniShop',
+    });
+    this.handleDialogOpen();
+  };
+
+  handlePlatformDialogOpen = () => {
+    this.setState({
+      activeTab: 'platformShop',
+    });
+    this.handleDialogOpen();
+  };
 
   handleDialogOpen = async () => {
     this.setState({ visible: true });
@@ -32,6 +95,7 @@ export default class CustomApplyEntry extends React.Component {
   };
 
   handleDialogClose = () => {
+    this.init();
     this.setState({ visible: false });
   };
 
@@ -90,6 +154,34 @@ export default class CustomApplyEntry extends React.Component {
     }
   };
 
+  /**
+   * 发布数据格式化函数
+   */
+  postDataAdapter = ({ miniShopProducts = [], product }) => {
+    const products = [];
+
+    if (miniShopProducts.length) {
+      miniShopProducts.forEach((productId) => {
+        products.push({
+          type: MINI_SHOP_TYPE,
+          data: {
+            productId,
+            ...this.state.selectedMiniShopProducts[productId],
+          },
+        });
+      });
+    }
+
+    if (product) {
+      products.push({
+        type: PLATFORM_SHOP_TYPE,
+        data: product,
+      });
+    }
+
+    return products;
+  };
+
   handleDialogConfirm = async () => {
     let product;
     if (this.state.link) {
@@ -98,9 +190,19 @@ export default class CustomApplyEntry extends React.Component {
 
     const miniShopProducts = Object.keys(this.state.selectedMiniShopProducts);
 
-    console.log('填写的商品 -> ', product);
+    const postData = this.postDataAdapter({
+      product,
+      miniShopProducts,
+    });
 
-    console.log('选择的微信小商店商品 -> ', miniShopProducts);
+    this.props.onConfirm({
+      postData: {
+        tomId: '61540fef8f4de8',
+        body: {
+          products: postData,
+        },
+      },
+    });
 
     this.handleDialogClose();
   };
@@ -146,7 +248,11 @@ export default class CustomApplyEntry extends React.Component {
 
     const nextSelectedStatus = Object.assign({}, this.state.selectedMiniShopProducts);
 
-    nextSelectedStatus[productId] = checkedStatus;
+    if (checkedStatus) {
+      nextSelectedStatus[productId] = productInfo;
+    } else {
+      delete nextSelectedStatus[productId];
+    }
 
     this.setState({
       selectedMiniShopProducts: nextSelectedStatus,
@@ -162,7 +268,7 @@ export default class CustomApplyEntry extends React.Component {
         currentPage: this.state.currentPage + 1,
       });
     }
-  }
+  };
 
   // 滚动行为监听
   handleListScroll = (e) => {
@@ -185,7 +291,7 @@ export default class CustomApplyEntry extends React.Component {
         <div className={styles.productItemWrapper} ref={this.miniShopListRef} onScroll={this.handleListScroll}>
           {this.miniShopProductsAdapter().map(productInfo => (
             <ShopProductItem
-              isSelected={this.state.selectedMiniShopProducts[productInfo.productId] === true}
+              isSelected={this.state.selectedMiniShopProducts[productInfo.productId]}
               onSelected={(checkedStatus) => {
                 this.handleProductSelected(checkedStatus, productInfo);
               }}

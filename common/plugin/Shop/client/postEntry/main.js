@@ -9,6 +9,6 @@ export default class CustomIfram {
   static platform = config.platform;
   static component = <Component/> // 需要渲染的组件
   static options = {
-    tomId: '612f4217ae890',
+    tomId: '61540fef8f4de8',
   } // 需要在注入时提供的额外数据
 }

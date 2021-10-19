@@ -1,30 +1,133 @@
 import React from 'react';
 import { Icon } from '@discuzq/design';
 import styles from '../index.module.scss';
+import EventBus from '../../../event';
+
+const MINI_SHOP_TYPE = 11;
+const PLATFORM_SHOP_TYPE = 10;
 
 export default class CustomApplyPost extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  render() {
-    const { renderData, deletePlugin, postData  } = this.props;
+  // 删除指定 类别 或 id 的 商品
+  deleteProductItem({ type, productId }) {
+    const { renderData } = this.props;
     if (!renderData) return null;
 
-    console.log(postData);
+    const { body = { products: [] } } = renderData;
 
+    const { products } = body;
+
+    const nextProducts = Array.from(products);
+
+    nextProducts.forEach((product, idx) => {
+      if (product.type === type) {
+        if (product.type === PLATFORM_SHOP_TYPE) {
+          nextProducts.splice(idx, 1);
+          return;
+        }
+
+        if (product.data.productId === productId) {
+          nextProducts.splice(idx, 1);
+          return;
+        }
+      }
+    });
+
+    this.props.updatePlugin({
+      postData: {
+        tomId: '61540fef8f4de8',
+        body: {
+          products: nextProducts,
+        },
+      },
+    });
+  }
+
+  handleMiniShopItemClick = () => {
+    EventBus.dispatch('showMiniDialog');
+  };
+
+  handlePlatformItemClick = () => {
+    EventBus.dispatch('showPlatformDialog');
+  };
+
+  renderMiniShopItem(product) {
+    const { data: good } = product;
     return (
-      <div className={styles['dzqp-post-widget']}>
-        <div className={styles['dzqp-post-widget__right']}>
-          <Icon className={styles['dzqp-post-widget__icon']} name='ApplyOutlined' />
-          <span className={styles['dzqp-post-widget__text']}>活动报名</span>
+      <div
+        className={styles.content}
+        key={`${MINI_SHOP_TYPE}-${good.productId}`}
+        onClick={this.handleMiniShopItemClick}
+      >
+        <div className={styles['content-left']}>
+          <img className={styles.image} src={good.imagePath} alt={good.title} />
         </div>
-        <Icon
-          className={styles['dzqp-post-widget__left']}
-          name='DeleteOutlined'
-          onClick={() => deletePlugin()}
-        />
+        <div className={styles['content-right']}>
+          <p className={styles['content-title']}>{good.title}</p>
+          <span className={styles['content-price']}>￥{good.price}</span>
+          <div
+            className={styles['delete-icon']}
+            onClick={(e) => {
+              e.stopPropagation();
+              this.deleteProductItem({
+                type: MINI_SHOP_TYPE,
+                productId: good.productId,
+              });
+            }}
+          >
+            <Icon name="DeleteOutlined" size={16} color="#8590A6" />
+          </div>
+        </div>
       </div>
     );
+  }
+
+  renderPlatformItem(product) {
+    const { data: good } = product;
+
+    return (
+      <div className={styles.content} key={`${PLATFORM_SHOP_TYPE}-${good.id}`} onClick={this.handlePlatformItemClick}>
+        <div className={styles['content-left']}>
+          <img className={styles.image} src={good.imagePath} alt={good.title} />
+        </div>
+        <div className={styles['content-right']}>
+          <p className={styles['content-title']}>{good.title}</p>
+          <span className={styles['content-price']}>￥{good.price}</span>
+          <div
+            className={styles['delete-icon']}
+            onClick={() => {
+              this.deleteProductItem({
+                type: PLATFORM_SHOP_TYPE,
+                productId: good.id,
+              });
+            }}
+          >
+            <Icon name="DeleteOutlined" size={16} color="#8590A6" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    const { renderData } = this.props;
+    if (!renderData) return null;
+
+    const { body = { products: [] } } = renderData;
+
+    const { products } = body;
+
+    return products.map((product) => {
+      if (product.type === MINI_SHOP_TYPE) {
+        return this.renderMiniShopItem(product);
+      }
+
+      if (product.type === PLATFORM_SHOP_TYPE) {
+        return this.renderPlatformItem(product);
+      }
+    });
   }
 }
