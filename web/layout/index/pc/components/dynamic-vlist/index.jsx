@@ -7,8 +7,6 @@ import ThreadContent from '@components/thread';
 import WindowVList from '@components/virtual-list/pc';
 import styles from './index.module.scss';
 
-/**DZQ->plugin->register<plugin_index@topping_replace_hook,topping_insert_before_hook,topping_insert_after_hook>**/
-/**DZQ->plugin->register<plugin_index@tabs_replace_hook>**/
 import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
 import IndexTabsHook from '@common/plugin-hooks/plugin_index@tabs';
 

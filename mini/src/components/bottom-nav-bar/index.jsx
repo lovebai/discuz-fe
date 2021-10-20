@@ -10,7 +10,7 @@ import UnreadRedDot from '@components/unread-red-dot';
 import { unreadUpdateInterval } from '@common/constants/message';
 import canPublish from '@common/utils/can-publish';
 
-/**DZQ->plugin->register<plugin_global@footer_replace_hook>**/
+
 import GlobalFooter from '@common/plugin-hooks/plugin_global@footer';
 
 /**

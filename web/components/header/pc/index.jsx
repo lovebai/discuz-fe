@@ -12,7 +12,6 @@ import { unreadUpdateInterval } from '@common/constants/message';
 import LoginHelper from '@common/utils/login-helper';
 import SiteMapLink from '@components/site-map-link';
 
-/**DZQ->plugin->register<plugin_global@header_replace_hook>**/
 import GlobalHeader from '@common/plugin-hooks/plugin_global@header';
 
 @inject('site')

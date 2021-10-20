@@ -20,7 +20,6 @@ import PacketOpen from '@components/red-packet-animation/web';
 import ThreadContent from '@components/thread/SSRAdapter';
 import TopNews from '../h5/components/top-news/SSRAdapter';
 
-/**DZQ->plugin->register<plugin_index@recommend_replace_hook,qrcode_replace_hook,copyright_replace_hook,left_replace_hook,right_replace_hook>**/
 import IndexRecommendHook from '@common/plugin-hooks/plugin_index@recommend';
 import IndexQrcodeHook from '@common/plugin-hooks/plugin_index@qrcode';
 import IndexCopyrightHook from '@common/plugin-hooks/plugin_index@copyright';

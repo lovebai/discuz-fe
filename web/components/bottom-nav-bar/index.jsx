@@ -10,7 +10,6 @@ import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 import LoginHelper from '@common/utils/login-helper';
 import SiteMapLink from '@components/site-map-link';
 
-/**DZQ->plugin->register<plugin_global@footer_replace_hook>**/
 import GlobalFooter from '@common/plugin-hooks/plugin_global@footer';
 
 /**

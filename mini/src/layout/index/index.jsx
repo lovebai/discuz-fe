@@ -14,9 +14,6 @@ import IndexTabs from './components/tabs';
 import ThreadList from '@components/virtual-list';
 import PacketOpen from '@components/red-packet-animation';
 
-/**DZQ->plugin->register<plugin_index@topping_replace_hook,topping_insert_before_hook,topping_insert_after_hook>**/
-/**DZQ->plugin->register<plugin_index@header_replace_hook,header_insert_before_hook,header_insert_after_hook>**/
-/**DZQ->plugin->register<plugin_index@tabs_replace_hook>**/
 import IndexHeaderHooks from '@common/plugin-hooks/plugin_index@header';
 import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
 import IndexTabsHook from '@common/plugin-hooks/plugin_index@tabs';
