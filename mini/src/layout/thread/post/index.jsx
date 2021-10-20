@@ -187,6 +187,7 @@ class Index extends Component {
       const status = isDraft ? THREAD_STATUS.draft : THREAD_STATUS.edit;
       threadPost.setThreadStatus(status);
       threadPost.formatThreadDetailToPostData(ret.data, true);
+
       this.setCategory(categoryId);
       // isDraft && this.openSaveDraft(); // 现阶段，自动保存功能关闭
     } else {
@@ -767,7 +768,8 @@ class Index extends Component {
     // const { categories } = this.props.threadPost;
     const categories = this.props.threadPost?.getCurrentCategories();
     const { postData, setPostData, setCursorPosition, navInfo, cursorPosition } = this.props.threadPost;
-    const { rewardQa, redpacket, video, product, position, contentText = '' } = postData;
+    const { rewardQa, redpacket, video, product, position, contentText = '', title } = postData;
+    console.log(postData)
     const {
       postType,
       isShowTitle,
@@ -804,7 +806,7 @@ class Index extends Component {
           <View className={styles.content}>
             <View id="thread-post-content">
               <Title
-                value={postData.title}
+                value={title}
                 show={isShowTitle}
                 onChange={this.onTitleChange}
                 onFocus={() => {
