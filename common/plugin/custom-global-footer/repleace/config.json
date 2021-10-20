@@ -1,0 +1,8 @@
+{
+  "pluginName": "ReplaceCustomGlobalFooter",
+  "version": "1.0.0",
+  "target": "plugin_global",
+  "hookName": "footer_replace_hook",
+  "platform": ["mini", "h5"],
+  "disables": false
+}

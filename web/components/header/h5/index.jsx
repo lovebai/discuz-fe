@@ -9,12 +9,20 @@ import { unreadUpdateInterval } from '@common/constants/message';
 import LoginHelper from '@common/utils/login-helper';
 import SiteMapLink from '@components/site-map-link';
 
+/**DZQ->plugin->register<plugin_global@header_replace_hook>**/
+import GlobalHeader from '@common/plugin-hooks/plugin_global@header';
+
 const H5Header = (props) => {
-  const { allowJump = true, customJum = () => { }, message: { totalUnread, readUnreadCount }, user } = props;
+  const {
+    allowJump = true,
+    customJum = () => {},
+    message: { totalUnread, readUnreadCount },
+    user,
+  } = props;
   // todo
   const iconClickHandle = useCallback((link) => {
     if (allowJump) {
-      link === '/' ?  LoginHelper.gotoIndex() : Router.push({ url: link });
+      link === '/' ? LoginHelper.gotoIndex() : Router.push({ url: link });
       return;
     }
     customJum(link);
@@ -24,7 +32,7 @@ const H5Header = (props) => {
     if (allowJump) {
       window.history.length <= 1 ? Router.redirect({ url: '/' }) : Router.back();
       return;
-    };
+    }
     customJum();
   }, []);
 
@@ -43,42 +51,28 @@ const H5Header = (props) => {
     return () => clearTimeout(timeoutRef.current);
   }, []);
 
-  return (
+  const component = (
     <div className={styles.header}>
       <div className={styles.headerContent}>
         <div onClick={goBackClickHandle} className={styles.left}>
-          <Icon
-            className={browser.env('android') ? styles.icon : ''}
-            name="LeftOutlined"
-            size={16}
-          />
+          <Icon className={browser.env('android') ? styles.icon : ''} name="LeftOutlined" size={16} />
           <div className={styles.text}>返回</div>
         </div>
         <div className={styles.right}>
-          <SiteMapLink href='/' text='首页'/>
-          <Icon
-            className={styles.icon}
-            onClick={() => iconClickHandle('/')}
-            name="HomeOutlined"
-          />
-          <UnreadRedDot style={{ margin: "0 24px" }} unreadCount={totalUnread}>
-            <SiteMapLink href='/message' text='消息'/>
-            <Icon
-              className={styles.icon}
-              onClick={() => iconClickHandle('/message')}
-              name="MailOutlined"
-            />
+          <SiteMapLink href="/" text="首页" />
+          <Icon className={styles.icon} onClick={() => iconClickHandle('/')} name="HomeOutlined" />
+          <UnreadRedDot style={{ margin: '0 24px' }} unreadCount={totalUnread}>
+            <SiteMapLink href="/message" text="消息" />
+            <Icon className={styles.icon} onClick={() => iconClickHandle('/message')} name="MailOutlined" />
           </UnreadRedDot>
-          <SiteMapLink href='/my' text='个人中心'/>
-          <Icon
-            className={styles.icon}
-            onClick={() => iconClickHandle('/my')}
-            name="ProfessionOutlined"
-          />
+          <SiteMapLink href="/my" text="个人中心" />
+          <Icon className={styles.icon} onClick={() => iconClickHandle('/my')} name="ProfessionOutlined" />
         </div>
       </div>
     </div>
   );
-}
 
-export default inject("message", 'user')(observer(H5Header));
+  return <GlobalHeader component={component} site={props.site}></GlobalHeader>;
+};
+
+export default inject('message', 'user')(observer(H5Header));
