@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from '@discuzq/design';
+import classNames from 'classnames';
 import styles from '../index.module.scss';
 
 export default class CustomApplyPost extends React.Component {
@@ -8,7 +9,8 @@ export default class CustomApplyPost extends React.Component {
   }
 
   render() {
-    const { renderData, deletePlugin, _pluginInfo, updatePlugin } = this.props;
+    const { siteData, renderData, deletePlugin, _pluginInfo, updatePlugin } = this.props;
+    const isPC = siteData.platform === 'pc';
     if (!renderData) return null;
     if (renderData && renderData?.tomId === _pluginInfo.options.tomId) {
       const { body } = renderData || {};
@@ -16,7 +18,7 @@ export default class CustomApplyPost extends React.Component {
       if (!activityStartTime) return null;
     }
     return (
-      <div className={styles['dzqp-post-widget']}
+      <div className={classNames(styles['dzqp-post-widget'], isPC && styles['dzqp-pc'])}
         onClick={(e) => {
           e.stopPropagation();
           updatePlugin({ postData: renderData, _pluginInfo, isShow: true });
