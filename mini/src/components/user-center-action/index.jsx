@@ -21,106 +21,81 @@ class UserCenterAction extends React.Component {
           name: '我的消息',
           url: '/subPages/message/index',
           iconName: 'MailOutlined',
-          totalUnread: 9
+          visible: true
         },
         {
           cid: 'wallet',
           name: '我的钱包',
           url: '/subPages/wallet/index',
-          iconName: 'PayOutlined'
+          iconName: 'PayOutlined',
+          visible: true
 
         },
         {
           cid: 'collect',
           name: '我的收藏',
           url: '/userPages/my/collect/index',
-          iconName: 'CollectOutlinedBig'
-
+          iconName: 'CollectOutlinedBig',
+          visible: true
         },
         {
           cid: 'block',
           name: '我的屏蔽',
           url: '/userPages/my/block/index',
-          iconName: 'ShieldOutlined'
-
+          iconName: 'ShieldOutlined',
+          visible: true
         },
         {
           cid: 'buy',
           name: '我的购买',
           url: '/userPages/my/buy/index',
-          iconName: 'ShoppingCartOutlined'
-
+          iconName: 'ShoppingCartOutlined',
+          visible: true
         },
         {
           cid: 'draft',
           name: '我的草稿箱',
           url: '/userPages/my/draft/index',
-          iconName: 'RetrieveOutlined'
-
+          iconName: 'RetrieveOutlined',
+          visible: true
         },
         {
           cid: 'forum',
           name: '站点信息',
           url: '/subPages/forum/index',
-          iconName: 'NotepadOutlined'
-
+          iconName: 'NotepadOutlined',
+          visible: true
         },
         {
           cid: 'invite',
           name: '推广邀请',
           url: '/subPages/invite/index',
-          iconName: 'NotbookOutlined'
-
+          iconName: 'NotbookOutlined',
+          visible: !this.props.user.isAdmini
         },
         {
           cid: 'shopOutlined',
           name: '商城',
           url: '',
-          iconName: 'ShopOutlined'
-
+          iconName: 'ShopOutlined',
+          visible: true
         }
       ],
-      actionsView: [] // 用于页面渲染
+      rowActionCount: this.props.site.platform === 'pc' ? 9 : 4
     }
   }
 
   handleActionItem = (item) => {
-    if (item.url) {
-      Router.push({ url: item.url });
+    if (item.onClick && typeof item.onClick === 'function') {
+      item.onClick(item)
+      return
     }
+
+    item.url && Router.push({ url: item.url })
   }
 
   componentDidMount() {
     this.props.message.readUnreadCount();
-    const actions = this.state.actions.slice()
-    const actionsView = [] 
-    const platform = this.props.site.platform
-
-    // 管理员 去除 推广邀请配置
-    if (this.props.user.isAdmini) {
-      const inviteIndex = this.state.actions.findIndex(item => item.cid === 'invite')
-      inviteIndex > -1 && actions.splice(inviteIndex, 1)
-    }
-
-    const step = 4
-    for (let i = 0; i < actions.length; i+=step) {
-      if ((i + step) <= actions.length) {
-        actionsView.push(actions.slice(i, i + step))
-      } else {
-        actionsView.push(actions.slice(i, actions.length))
-      }
-    }
-   
-    // 如果不止一行，最后一个数组补齐元素，用于页面渲染
-    if (actions.length > step && actions.length % step) {
-      const count = step - actions.length % step
-      const lastRowActions =  actionsView[actionsView.length-1]
-      for (let i = 0; i < count; i++) {
-        lastRowActions.push({})
-      }
-    }
-
-    this.setState({actionsView})
   }
 
   renderActionItem = (item, totalUnread) => {
@@ -143,30 +118,51 @@ class UserCenterAction extends React.Component {
     )
   }
 
+  // 补齐元素
   renderExtraActionItem = () => {
     return (
       <View className={styles.userCenterActionItem}></View>
     )
   }
-  
-  
+
+  renderActionRow = (itemEles) => {
+    return (
+      <view className={styles.userCenterActionItemContainer}>
+        { itemEles }
+      </view>
+    )
+  }
+
+  renderActionRows = () => {
+    const { totalUnread } = this.props.message
+    const { actions, rowActionCount } = this.state
+    const itemEles = []
+    const rowEles = []
+    
+    actions.map(item => {
+      item.visible && itemEles.push(this.renderActionItem(item, totalUnread))
+    })
+
+    // 如果不止一行，最后一个数组补齐元素
+    if(itemEles.length > rowActionCount && itemEles.length % rowActionCount) {
+      const extraCount = rowActionCount - itemEles.length % rowActionCount
+      for (let i = 0; i < extraCount; i++) {
+        itemEles.push(this.renderExtraActionItem())
+      }
+    }
+
+    // 按行拼装
+    for (let i = 0; i < itemEles.length; i += rowActionCount) {
+      const end = (i + rowActionCount) <= itemEles.length ? i + rowActionCount : itemEles.length
+      rowEles.push(this.renderActionRow(itemEles.slice(i, end)))
+    }
+    return rowEles
+  }
 
   render() {
-    const { totalUnread } = this.props.message;
-    const { actionsView } = this.state
-    const { webConfig: { other: { threadOptimize } } } = this.props.site;
     return (
       <View className={styles.userCenterAction}>
-        {
-          actionsView.map(items => (
-            <view className={styles.userCenterActionItemContainer}>
-              {
-                items.length && items.map(item => item.cid ? this.renderActionItem(item, totalUnread) : this.renderExtraActionItem()) 
-              }
-            </view>
-            
-          ))
-        }
+        { this.renderActionRows() }
       </View>
     );
   }
