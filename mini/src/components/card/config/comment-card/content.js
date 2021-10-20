@@ -1,5 +1,8 @@
+import s9e from '@common/utils/s9e';
+import replaceStringInRegex from '@common/utils/replace-string-in-regex';
 import htmlparser2 from 'htmlparser2';
 import { getByteLen } from '../../utils';
+
 
 
 import {
@@ -46,8 +49,11 @@ const handleTexts = (comment, baseHeight) => {
     },
   });
 
+  let commentText = s9e.parse(comment.content);
+  commentText = replaceStringInRegex(commentText, 'code', '');
+  commentText = replaceStringInRegex(commentText, 'img', '');
 
-  parse.parseComplete(comment.content);
+  parse.parseComplete(commentText);
   const contentStr = content.join('');
 
   // 统计有几个换行

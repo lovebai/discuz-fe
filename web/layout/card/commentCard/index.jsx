@@ -3,8 +3,7 @@ import { inject, observer } from 'mobx-react';
 import ImageDisplay from '@components/thread/image-display';
 import UserInfo from '@components/thread/user-info';
 import styles from './index.module.scss';
-import htmlparser2 from 'htmlparser2';
-
+import PostContent from '@components/thread/post-content';
 
 const ThreadCard = inject('user', 'card', 'comment')(observer((props) => {
   const { commentDetail: data } = props.comment;
@@ -15,39 +14,23 @@ const ThreadCard = inject('user', 'card', 'comment')(observer((props) => {
   const [overMaxHeight, setOverMaxHeight] = useState(false);
 
   useEffect(() => {
-    if (!data?.IMAGE) {
-      props.card.setImgReady();
-    }
-    if (imgReadyLength === data?.images?.length) {
+    if (!data?.images || data.images.length === 0) {
+        props.card.setImgReady();
+    } else if (imgReadyLength === data?.images?.length) {
       props.card.setImgReady();
       props.card.clearImgReadyLength();
     }
     if (imgReady && content?.current?.scrollHeight >= 1900) {
       setOverMaxHeight(true);
     }
-  });
+  }, []);
   const postLoad = () => {
     props.card.setImgReadyLength();
   };
   const posthandle = str => (str.length > 6 ? `${str.slice(0, 6)}...` : str);
 
-  const contentText = [];
-  const { Parser } = htmlparser2;
-  const parse = new Parser({
-    ontext(text) {
-      contentText.push(text);
-    },
-    onclosetag(tagname) {
-      // 处理换行
-      if (tagname === 'br') {
-        contentText.push('\n');
-      }
-    },
-  });
 
-
-  parse.parseComplete(data.content);
-
+  const filterIframe = /<iframe(([\s\S])*?)<\/iframe>/g; // iframe标签不支持生成h5海报
   return (
     <div>
       {isReady && (
@@ -67,8 +50,7 @@ const ThreadCard = inject('user', 'card', 'comment')(observer((props) => {
         <div className={styles.body} ref={content}>
 
           {/* 文字 */}
-          <div className={styles.commentText}>{contentText.join('')}</div>
-
+          {data.content && <PostContent needShowMore={false} content={data.content.replace(filterIframe, '') || ''} className={styles.content}/>}
 
           {/* 图片 */}
           {data.images && (
