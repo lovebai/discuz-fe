@@ -1,7 +1,7 @@
 import Component from './adapter';
 import config from './config.json';
 
-export default class CustomIfram {
+export default class ShopCreateDisplay {
   static pluginName = config.pluginName // 插件名称
   static version = config.version // 插件版本
   static target = config.target // 插件使用目标

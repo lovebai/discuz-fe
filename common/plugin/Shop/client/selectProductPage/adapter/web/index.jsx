@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Dialog, Button, Input } from '@discuzq/design';
 
-export default class CustomIfram extends React.PureComponent {
+export default class SelectProduct extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

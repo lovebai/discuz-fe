@@ -6,7 +6,7 @@ import EventBus from '../../../event';
 const MINI_SHOP_TYPE = 11;
 const PLATFORM_SHOP_TYPE = 10;
 
-export default class CustomApplyPost extends React.Component {
+export default class ShopCreateDisplay extends React.Component {
   constructor(props) {
     super(props);
   }

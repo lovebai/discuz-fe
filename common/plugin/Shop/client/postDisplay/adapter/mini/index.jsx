@@ -4,7 +4,7 @@ import { Icon } from '@discuzq/design';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
 
-export default class CustomApplyPost extends React.Component {
+export default class ShopCreateDisplay extends React.Component {
   constructor(props) {
     super(props);
   }

@@ -1,9 +1,9 @@
 {
   "pluginName": "qrcode_page",
   "version": "1.0.0",
-  "target": "plugin_page",
-  "hookName": "page_extension_entry_hook",
-  "platform": ["pc", "h5", "mini"],
-  "registerPath": "/minishop/qrcode",
+  "target": "plugin_system",
+  "hookName": "add_page_hook",
+  "platform": ["pc", "h5"],
+  "path": "/minishop/qrcode",
   "disables": false
 }

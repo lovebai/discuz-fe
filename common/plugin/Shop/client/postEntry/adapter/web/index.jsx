@@ -9,7 +9,7 @@ import EventBus from '../../../event';
 const MINI_SHOP_TYPE = 11;
 const PLATFORM_SHOP_TYPE = 10;
 
-export default class CustomApplyEntry extends React.Component {
+export default class ShopPostEntry extends React.Component {
   constructor(props) {
     super(props);
 
