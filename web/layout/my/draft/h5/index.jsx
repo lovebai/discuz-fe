@@ -7,12 +7,28 @@ import SliderScroll from '@components/slider-scroll';
 import ThreadCenterView from '@components/thread/ThreadCenterView';
 
 @inject('index')
+@inject('user')
+@inject('thread')
+@inject('plugin')
 @observer
 class Index extends React.Component {
   // 渲染单项草稿组件
   renderItem = ({ item, onEdit, isLast }) => (
       <div className={classNames(styles.item, { [styles['border-none']]: isLast })}>
-        <ThreadCenterView data={item} onClick={() => onEdit(item)} />
+        <ThreadCenterView 
+          plugin={{
+            pluginComponent: this.props.plugin.pluginComponent,
+            plugin: {
+              setPluginStore: this.props.plugin.setPluginStore,
+              getPluginStore: this.props.plugin.getPluginStore,
+            }
+          }}
+          data={item} 
+          user={this.props.user} 
+          onClick={() => onEdit(item)} 
+          updateThread={this.props.thread.updateThread.bind(this.props.thread)}
+          updateListThreadIndexes={this.props.index.updateListThreadIndexes.bind(this.props.index)}
+        />
         <div className={styles['item-time']} onClick={() => onEdit(item)}>
           编辑于&nbsp;{item.updatedAt}
         </div>

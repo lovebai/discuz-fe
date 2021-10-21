@@ -4,12 +4,14 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
+import DZQPluginCenterInjectionPolyfill from '../../utils/DZQPluginCenterInjectionPolyfill';
 
 // 插件插槽埋入
 /**DZQ->plugin->register<plugin_system@add_page_hook>**/
 
 @inject('site')
 @inject('user')
+@inject('plugin')
 @observer
 class PagePlugin extends React.Component {
   constructor(props) {
@@ -20,22 +22,13 @@ class PagePlugin extends React.Component {
   }
 
   getTargetPlugin = () => {
-    const { site, user } = this.props;
-    return DZQPluginCenter.injection('plugin_system', 'add_page_hook').map(({ render, pluginInfo }) => {
-      if (pluginInfo.path === this.state.pluginPath) {
-        return (
-          <div key={pluginInfo.name}>
-            {render({
-              site,
-              userInfo: user.userInfo,
-              isLogin: user.isLogin.bind(user),
-              pluginInfo,
-            })}
-          </div>
-        );
-      }
-      return null;
-    });
+    return (<DZQPluginCenterInjectionPolyfill
+          target='plugin_system' 
+          hookName='add_page_hook'
+          condition={(pluginInfo) => {
+            return pluginInfo.path === this.state.pluginPath
+          }}
+    />)
   }
 
   renderTargetPlugin = () => {

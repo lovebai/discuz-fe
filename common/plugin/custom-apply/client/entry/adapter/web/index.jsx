@@ -18,7 +18,6 @@ const TimeType = {
 export default class CustomApplyEntry extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     const oneHour = 3600 * 1000 * 24;
 
     this.state = {

@@ -343,7 +343,7 @@ class Detail extends React.Component {
     }
     return (
       <ViewAdapter
-        h5={<ThreadH5Page />}
+        h5={<ThreadH5Page canPublish={canPublish}/>}
         pc={<ThreadPCPage canPublish={canPublish} />}
         title={this.props?.thread?.title || ''}
         showSiteName={showSiteName}
@@ -353,4 +353,4 @@ class Detail extends React.Component {
 }
 
 // eslint-disable-next-line new-cap
-export default withRouter(HOCFetchSiteData(Detail));
+export default HOCFetchSiteData(withRouter(Detail));

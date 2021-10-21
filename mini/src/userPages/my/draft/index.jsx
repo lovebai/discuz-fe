@@ -14,6 +14,7 @@ import ThreadCenterView from '@components/thread/ThreadCenterView';
 
 @inject('index')
 @inject('thread')
+@inject('plugin')
 @observer
 class Index extends Component {
   page = 1;
@@ -67,7 +68,20 @@ class Index extends Component {
   // 渲染草稿单项
   renderItem = ({ item, isLast }) => (
       <View className={classNames(styles.item, { [styles['border-none']]: isLast })}>
-        <ThreadCenterView data={item} onClick={() => this.handleEdit(item)} />
+        <ThreadCenterView
+          data={item}
+          plugin={{
+            pluginComponent: this.props.plugin.pluginComponent,
+            plugin: {
+              setPluginStore: this.props.plugin.setPluginStore,
+              getPluginStore: this.props.plugin.getPluginStore,
+            }
+          }}
+          user={this.props.user}
+          onClick={() => this.handleEdit(item)}
+          updateThread={this.props.thread.updateThread.bind(this.props.thread)}
+          updateListThreadIndexes={this.props.index.updateListThreadIndexes.bind(this.props.index)}
+        />
         <View className={styles['item-time']} onClick={() => this.handleEdit(item)}>
           编辑于&nbsp;{item.updatedAt}
         </View>
