@@ -204,7 +204,19 @@ class IndexPCPage extends React.Component {
         </div>
       </div>
     );
-    return <IndexLeftHook component={component} site={this.props.site}></IndexLeftHook>;
+    return (
+      <IndexLeftHook
+        component={component}
+        site={this.props.site}
+        categories={currentCategories}
+        activeCategoryId={activeCategoryId}
+        activeChildCategoryId={activeChildCategoryId}
+        totalThreads={countThreads}
+        onNavigationClick={this.onNavigationClick}
+        isError={categoryError.isError}
+        errorText={categoryError.errorText}
+      ></IndexLeftHook>
+    );
   };
   // 右侧 -- 二维码 推荐内容
   renderRight = (data) => {
