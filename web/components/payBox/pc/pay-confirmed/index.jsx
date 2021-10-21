@@ -62,6 +62,7 @@ export default class index extends Component {
     // 隐藏钱包支付，保留微信支付
     if (type === 30) {
       this.props.payBox.payWay = PAYWAY_MAP.WX;
+      this.handleChangePaymentType(PAYWAY_MAP.WX);
       return;
     }
   }

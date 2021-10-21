@@ -50,7 +50,7 @@ class WithdrawalPop extends Component {
         parseFloat(inputValue) < parseFloat(this.props.site?.cashMinSum);
     }
     if (operateWalletType === 'recharge') {
-      btnDisabled = btnDisabled = !inputValue || parseFloat(inputValue) < 1;
+      btnDisabled = btnDisabled = !inputValue || parseFloat(inputValue) < 0.1;
     }
     return btnDisabled;
   };

@@ -42,7 +42,7 @@ export const INCOME_DETAIL_CONSTANTS = {
     code: 12,
   },
   WEIXIN_CHARGE: {
-    text: '微信充值',
+    text: '自动充值',
     code: 180,
   },
 };
