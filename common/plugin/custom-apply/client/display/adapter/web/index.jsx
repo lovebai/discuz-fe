@@ -30,7 +30,7 @@ class CustomApplyDisplay extends React.Component {
   }
 
   componentDidMount() {
-    
+
     if (!countDownIns) countDownIns = new CountDown();
     const { renderData } = this.props;
 
@@ -162,7 +162,7 @@ class CustomApplyDisplay extends React.Component {
         threadId: tid,
         _plugin,
       };
-      
+      updateThread(tomId, tomValue);
       const newThreadData = updateListThreadIndexes(tid, tomId, tomValue);
       if (newThreadData && recomputeRowHeights) recomputeRowHeights(newThreadData);
       Toast.info({ content: isRegistered ? '取消报名成功' : '报名成功' });
