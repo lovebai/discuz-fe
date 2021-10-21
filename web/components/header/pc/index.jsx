@@ -12,7 +12,7 @@ import { unreadUpdateInterval } from '@common/constants/message';
 import LoginHelper from '@common/utils/login-helper';
 import SiteMapLink from '@components/site-map-link';
 
-import GlobalHeader from '@common/plugin-hooks/plugin_global@header';
+import GlobalHeaderHooks from '@common/plugin-hooks/plugin_global@header';
 
 @inject('site')
 @inject('user')
@@ -286,7 +286,15 @@ class Header extends React.Component {
       </div>
     );
 
-    return <GlobalHeader component={component} site={this.props.site}></GlobalHeader>;
+    return (
+      <GlobalHeaderHooks
+        component={component}
+        site={this.props.site}
+        userInfo={user.userInfo}
+        forum={{ otherPermissions }}
+        message={{ totalUnread }}
+      ></GlobalHeaderHooks>
+    );
   }
 }
 
