@@ -78,6 +78,7 @@ class PostPage extends React.Component {
     const { fetchEmoji, emojis } = this.props.threadPost;
     if (emojis.length === 0) fetchEmoji();
     this.fetchDetail();
+
   }
 
   componentWillUnmount() {
@@ -941,7 +942,7 @@ class PostPage extends React.Component {
 
   render() {
     // const { isPC } = this.props.site;
-
+   
     const pc = (
       <IndexPCPage
         setPostData={data => this.setPostData(data)}
