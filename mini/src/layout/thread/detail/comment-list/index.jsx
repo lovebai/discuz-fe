@@ -423,6 +423,7 @@ class RenderCommentList extends React.Component {
                 threadId={this.props.thread.threadData.userId}
                 active={val.id === postId}
                 isAnonymous={isAnonymous}
+                redPacketData = {parseContent?.RED_PACKET}
               ></CommentList>
             </View>
           ))}

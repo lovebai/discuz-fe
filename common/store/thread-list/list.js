@@ -329,17 +329,14 @@ export default class ListStore {
     let result = null;
 
     const { data } = this.lists[namespace];
-
     Object.keys(data).forEach((page) => {
       data[page].forEach((thread, index) => {
         if (thread.threadId === threadId) {
-          const { likeReward, commentList = [] } = thread;
           result = {
             listName: namespace,
             page,
             index,
-            // 避免同引用，list数据多次赋值问题
-            data: { ...thread, likeReward: { ...likeReward }, commentList },
+            data: thread,
           };
         }
       });
@@ -378,6 +375,7 @@ export default class ListStore {
 
     targetThreads.forEach(({ listName, page, index }) => {
       this.lists[listName].data[page].splice(index, 1);
+      this.lists[listName].attribs.totalCount -= 1;
     });
 
     this.lists = { ...this.lists };

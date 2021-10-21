@@ -18,7 +18,6 @@ import { minus } from '@common/utils/calculate';
 import classnames from 'classnames';
 import UserInfo from '@components/thread/user-info';
 import Packet from '@components/thread/packet'
-import PacketOpen from '@components/red-packet-animation';
 import Avatar from '@components/avatar';
 import DZQPluginCenterInjection from '@discuzq/plugin-center/dist/components/DZQPluginCenterInjection';
 import { setClipboardData } from '@tarojs/taro';
@@ -34,7 +33,6 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread')(
     const { store: threadStore, site, index, thread, user } = props;
     const { text, indexes } = threadStore?.threadData?.content || {};
     const { parentCategoryName, categoryName } = threadStore?.threadData;
-    const { hasRedPacket } = threadStore; // 是否有红包领取的数据
     const { webConfig: { other: { threadOptimize } } } = site;
 
     const tipData = {
@@ -401,10 +399,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread')(
           </View>
         )}
 
-        {
-          hasRedPacket > 0
-          && <PacketOpen onClose={() => threadStore.setRedPacket(0)} money={hasRedPacket} />
-        }
+     
       </View>
     );
   }),

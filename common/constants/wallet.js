@@ -41,6 +41,10 @@ export const INCOME_DETAIL_CONSTANTS = {
     text: '提现失败',
     code: 12,
   },
+  WEIXIN_CHARGE: {
+    text: '自动充值',
+    code: 180,
+  },
 };
 
 // 支出明细筛选类型
@@ -48,6 +52,10 @@ export const EXPAND_DETAIL_CONSTANTS = {
   REGISTER_EXPAND: {
     text: '注册支出',
     code: 70,
+  },
+  UPGRADE_EXPAND: {
+    text: '付费升级',
+    code: 51,
   },
   LABOR_EXPAND: {
     text: '人工支出',

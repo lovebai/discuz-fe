@@ -69,21 +69,25 @@ const PostContent = ({
   // 将图片链接替换成 webp 及小图
   const replaceImagesFromText = (contentText) => {
     const images = contentText.match(/<img.*?\/>/g)?.filter(image => (!image.includes('emoji')));
+
     if (images && images.length) {
       const imageLgAndSmUrlList = [];
       const imageUrlList = [];
       for (let i = 0; i < images.length; i++) {
-        let imgSrc = images[i].match(/src=[\'\"]?([^\'\"]*)[\'\"]?/i)[0];
-        imgSrc = imgSrc ? imgSrc.substring(5, imgSrc.length-1) : '';
-        const smImgSrc = imgSrc ? replaceImgSrc(imgSrc) : '';
-        const newImg = images[i].replace(imgSrc, smImgSrc);
-        imageUrlList.push(imgSrc);
-        // 保存图片的缩略图和原图，用于预览时查找对应链接
-        imageLgAndSmUrlList.push({
-          smSrc: smImgSrc,
-          lgSrc: imgSrc
-        });
-        contentText = contentText.replace(images[i], newImg);
+        const imgSrcs = images[i].match(/src=[\'\"]?([^\'\"]*)[\'\"]?/i);
+        if (imgSrcs && imgSrcs.length) {
+          let imgSrc = imgSrcs[0];
+          imgSrc = imgSrc ? imgSrc.substring(5, imgSrc.length-1) : '';
+          const smImgSrc = imgSrc ? replaceImgSrc(imgSrc) : '';
+          const newImg = images[i].replace(imgSrc, smImgSrc);
+          imageUrlList.push(imgSrc);
+          // 保存图片的缩略图和原图，用于预览时查找对应链接
+          imageLgAndSmUrlList.push({
+            smSrc: smImgSrc,
+            lgSrc: imgSrc
+          });
+          contentText = contentText.replace(images[i], newImg);
+        }
       }
       if (imageUrlList.length) {
         setImageUrlList(imageUrlList);

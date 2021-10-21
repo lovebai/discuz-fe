@@ -1,7 +1,5 @@
 import React from 'react';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
-import SiteCard from '../../layout/card/siteCard';
-import ThreadCard from '../../layout/card/threadCard';
 import ErrorH5Page from '@layout/error/h5';
 import { inject, observer } from 'mobx-react';
 import { Toast } from '@discuzq/design';
@@ -66,7 +64,7 @@ class CreateCard extends React.Component {
   }
   render() {
     const { router } = this.props;
-    const { threadId } = router?.query || '';
+    const { threadId, commentId} = router?.query || '';
     const { site } = this.props;
     const { platform } = site;
     if (this.state.isServerError && platform === 'h5') {
@@ -76,7 +74,7 @@ class CreateCard extends React.Component {
     }
     return (
         <div>
-          <Card threadId={threadId}></Card>
+          <Card threadId={threadId} commentId={commentId}></Card>
         </div>
     );
   }

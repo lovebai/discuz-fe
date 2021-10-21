@@ -4,7 +4,9 @@ import { plus } from '@common/utils/calculate';
 
 class CommentAction {
   constructor(props) {
+    console.log(props.threadData, 3);
     this.list = props.list;
+    this.threadData = props.threadData;
   }
 
   updateList(list) {
@@ -109,7 +111,7 @@ class CommentAction {
       const isApproved = res.data.isApproved === 1;
       newData.lastThreeComments = [];
 
-      this.list.push(newData);
+      if ((this.list || []).slice().filter(item => item.id === newData.id).length === 0) this.list.push(newData);
 
       return {
         redPacketAmount: res.data.redPacketAmount,
@@ -348,6 +350,11 @@ class CommentAction {
           comment.rewards = plus(Number(comment.rewards), Number(rewards));
         }
       });
+
+      if (this.threadData?.content?.indexes[107]?.body) {
+        const remainMoney =  this.threadData?.content?.indexes[107]?.body.remainMoney ;
+        this.threadData.content.indexes[107].body.remainMoney = Number(remainMoney - rewards).toFixed(2) ;
+      }
 
       return {
         msg: '操作成功',

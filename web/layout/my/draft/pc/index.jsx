@@ -13,7 +13,6 @@ import { withRouter } from 'next/router';
 @inject('index')
 @inject('user')
 @inject('thread')
-@inject('plugin')
 @observer
 class PC extends React.Component {
   // 加载更多
@@ -52,13 +51,6 @@ class PC extends React.Component {
               <div className={styles['item-left']}>
                 <ThreadCenterView 
                   data={item} 
-                  plugin={{
-                    pluginComponent: plugin.pluginComponent,
-                    plugin: {
-                      setPluginStore: plugin.setPluginStore,
-                      getPluginStore: plugin.getPluginStore,
-                    }
-                  }}
                   user={this.props.user} 
                   onClick={() => this.props.onEdit(item)}
                   updateThread={this.props.thread.updateThread.bind(this.props.thread)}

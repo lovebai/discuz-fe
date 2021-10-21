@@ -7,6 +7,8 @@ import MorePopop from '@components/more-popop';
 import Router from '@discuzq/sdk/dist/router';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import Toast from '@discuzq/design/dist/components/toast';
+const hongbaoMini = 'https://imgcache.qq.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
+
 
 /**
  * 帖子底部内容
@@ -36,6 +38,7 @@ const Index = ({
   onPraise = () => { },
   updateViewCount = noop,
   handleShare = noop,
+  hasCommentHongbao = false,
 }) => {
   const postList = useMemo(() => {
     const praise = {
@@ -56,6 +59,7 @@ const Index = ({
         type: 'commonet',
         num: comment,
         actived: isCommented,
+        hasHongbao: hasCommentHongbao,
       },
       {
         icon: 'ShareAltOutlined',
@@ -113,6 +117,7 @@ const Index = ({
     Router.push({ url: `/card?threadId=${threadId}` });
   };
   const needHeight = useMemo(() => userImgs.length !== 0, [userImgs]);
+
   return (
     <div>
       <div className={needHeight ? styles.user : styles.users}>
@@ -152,17 +157,20 @@ const Index = ({
               <span className={item.actived ? styles.fabulousCancel : styles.fabulousPost}>
                 {item.num ? item.num : item.name}
               </span>
+              {item.hasHongbao &&  <img className={styles.hongbaoMini} src={hongbaoMini}></img>}
             </div>
           </div>
         ))}
       </div>
-      <MorePopop
-        show={show}
-        fromThread
-        handleH5Share={handleH5Share}
-        onClose={onClose}
-        createCard={createCard}
-      ></MorePopop>
+      {show && (
+        <MorePopop
+          show={show}
+          fromThread
+          handleH5Share={handleH5Share}
+          onClose={onClose}
+          createCard={createCard}
+        ></MorePopop>
+      )}
     </div>
   );
 };

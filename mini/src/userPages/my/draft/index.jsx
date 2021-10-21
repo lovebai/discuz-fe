@@ -13,6 +13,7 @@ import SliderScroll from '@components/slider-scroll';
 import ThreadCenterView from '@components/thread/ThreadCenterView';
 
 @inject('index')
+@inject('user')
 @inject('thread')
 @inject('plugin')
 @observer
@@ -70,13 +71,6 @@ class Index extends Component {
       <View className={classNames(styles.item, { [styles['border-none']]: isLast })}>
         <ThreadCenterView
           data={item}
-          plugin={{
-            pluginComponent: this.props.plugin.pluginComponent,
-            plugin: {
-              setPluginStore: this.props.plugin.setPluginStore,
-              getPluginStore: this.props.plugin.getPluginStore,
-            }
-          }}
           user={this.props.user}
           onClick={() => this.handleEdit(item)}
           updateThread={this.props.thread.updateThread.bind(this.props.thread)}

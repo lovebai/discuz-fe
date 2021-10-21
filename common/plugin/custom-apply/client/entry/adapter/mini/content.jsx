@@ -44,7 +44,7 @@ export default class CustomApplyEntryContent extends React.Component {
       const body = formatPostData(this.props?.renderData?.body);
       this.setState({ body });
       this.props.onChange(body);
-    }
+    } else  this.props.onChange(this.state.body);
   }
 
   componentDidUpdate(prevProps) {
@@ -132,21 +132,21 @@ export default class CustomApplyEntryContent extends React.Component {
     this.setState({ body: { ...body, title: e.target.value } }, () => {
       this.props.onChange(this.state.body);
     });
-  }, 200);
+  }, 400);
 
   handlecontentChange = debounce((e) => {
     const { body } = this.state;
     this.setState({ body: { ...body, content: e.target.value } }, () => {
       this.props.onChange(this.state.body);
     });
-  }, 200);
+  }, 400);
 
   handlePlaceChange = debounce((e) => {
     const { body } = this.state;
     this.setState({ body: { ...body, actPlace: e.target.value } }, () => {
       this.props.onChange(this.state.body);
     });
-  }, 200)
+  }, 400)
 
   handleMoreClick = () => {
     this.setState({ showMore: !this.state.showMore });

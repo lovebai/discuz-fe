@@ -29,6 +29,7 @@ import typeofFn from '@common/utils/typeof';
 @inject('payBox')
 @inject('vlist')
 @inject('baselayout')
+@inject('threadList')
 @observer
 class PostPage extends React.Component {
   toastInstance = null;
@@ -104,7 +105,8 @@ class PostPage extends React.Component {
     // 如果不是修改支付密码的页面则重置发帖信息
     if ((url || '').indexOf('/my/edit/paypwd') === -1
     && (url || '').indexOf('/pay/middle') === -1
-    && (url || '').indexOf('/my/edit/find-paypwd') === -1) {
+    && (url || '').indexOf('/my/edit/find-paypwd') === -1
+    && (url || '').indexOf('/wallet/recharge') === -1) {
       if (this.vditor) this.vditor.setValue('');
       this.props.threadPost.resetPostData();
     }
@@ -720,7 +722,7 @@ class PostPage extends React.Component {
   }
 
   async createThread(isDraft, isAutoSave = false, isPay = false) {
-    const { threadPost, thread, site } = this.props;
+    const { threadPost, thread, site, threadList } = this.props;
 
     // 图文混排：第三方图片转存
     const { webConfig: { setAttach, qcloud } } = site;
@@ -728,11 +730,12 @@ class PostPage extends React.Component {
     const { qcloudCosBucketName, qcloudCosBucketArea, qcloudCosSignUrl, qcloudCos } = qcloud;
 
 
-    const errorTips = '帖子内容中，有部分图片转存失败，请先替换相关图片再重新发布';
+    const errorTips = '部分图片转存失败，请替换标注红框的图片';
     const vditorEl = document.getElementById('dzq-vditor');
     if (vditorEl) {
       const errorImg = vditorEl.querySelectorAll('.editor-upload-error');
       if (errorImg.length) {
+        this.jumpToErrorImgElement(errorImg[0]);
         Toast.error({
           content: errorTips,
           hasMask: true,
@@ -788,6 +791,11 @@ class PostPage extends React.Component {
       const uploadErrorImages = document.querySelectorAll('img[alt=uploadError]');
       for (let i = 0; i < uploadErrorImages.length; i++) {
         const element = uploadErrorImages[i];
+        // 如果是第一个，则滚动至此
+        if (i === 0) {
+          this.jumpToErrorImgElement(element);
+        }
+
         element.setAttribute('class', 'editor-upload-error');
       }
 
@@ -802,7 +810,7 @@ class PostPage extends React.Component {
 
       if (uploadError.length) {
         Toast.error({
-          content: '帖子内容中，有部分图片转存失败，请先处理相关图片再重新发布',
+          content: '部分图片转存失败，请替换标注红框的图片',
           hasMask: true,
           duration: 4000,
         });
@@ -815,13 +823,17 @@ class PostPage extends React.Component {
     if (!(isAutoSave || isPay)) this.toastInstance = Toast.loading({ content: isDraft ? '保存草稿中' : '发布中...', hasMask: true });
     if (threadPost.postData.threadId) ret = await threadPost.updateThread(threadPost.postData.threadId);
     else ret = await threadPost.createThread();
-
     const { code, data, msg } = ret;
     if (code === 0) {
       this.setState({ data });
       thread.reset({});
       this.toastInstance && this.toastInstance?.destroy();
       this.setPostData({ threadId: data.threadId });
+
+      // 编辑帖子，帖子含敏感字段就操作删除
+      if (threadPost.postData.threadId && !data.isApproved) {
+        threadList.deleteListItem({ item: data });
+      }
       // 防止被清除
 
       // 未支付的订单
@@ -852,6 +864,32 @@ class PostPage extends React.Component {
     Toast.error({ content: msg });
   }
 
+  /**
+   * 跳转到第一个上传错误图片
+   * @param {*} element
+   */
+  jumpToErrorImgElement = (element) => {
+    const { top }  = element.getBoundingClientRect();
+
+    const isPc = this.props.site?.platform === 'pc';
+    const editorbox = document.querySelector('#post-inner');
+    const currentScrollTop = editorbox.scrollTop;
+
+    const { height: boxHeight } = editorbox.getBoundingClientRect();
+
+    if (isPc) {
+      editorbox.scrollTo({
+        top: currentScrollTop + top,
+        behavior: 'smooth',
+      });
+    } else {
+      editorbox.scrollTo({
+        top: currentScrollTop + top - (0.5 * boxHeight),
+        behavior: 'smooth',
+      });
+    }
+  }
+
   setIndexPageData = () => {
     const { data } = this.state;
     const { postData } = this.props.threadPost;
@@ -861,9 +899,9 @@ class PostPage extends React.Component {
       this.props.index.updateAssignThreadAllData(postData.threadId, data);
       // 添加帖子到首页数据
     } else {
-      const { categoryId = '' } = data;
+      const { pid = '' } = data;
       // 首页如果是全部或者是当前分类，则执行数据添加操作
-      if (this.props.index.isNeedAddThread(categoryId) && data?.isApproved) {
+      if (this.props.index.isNeedAddThread(pid) && data?.isApproved) {
         this.props.vlist.resetPosition();
         this.props.baselayout.setJumpingToTop();
         this.props.index.addThread(data);

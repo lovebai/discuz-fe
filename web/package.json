@@ -32,9 +32,10 @@
     "classnames": "2.3.1",
     "cos-js-sdk-v5": "^1.2.18",
     "create-next-app": "10.0.6",
+    "date-fns": "2.25.0",
     "eslint": "7.19.0",
     "exif-js": "2.3.0",
-    "html2canvas": "1.1.4",
+    "html2canvas": "^1.3.2",
     "js-sha1": "0.6.0",
     "mobx": "4.8.0",
     "mobx-react": "6.1.4",
@@ -59,7 +60,11 @@
     "@babel/core": "7.11.1",
     "@babel/plugin-proposal-class-properties": "7.12.13",
     "@babel/plugin-proposal-decorators": "7.12.13",
+<<<<<<< HEAD
     "@discuzq/cli": "1.2.2",
+=======
+    "@discuzq/cli": "1.1.26",
+>>>>>>> releases
     "@types/react": "17.0.3",
     "autoprefixer": "9.7.4",
     "babel-loader": "8.2.2",
