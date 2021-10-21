@@ -60,11 +60,7 @@
     "@babel/core": "7.11.1",
     "@babel/plugin-proposal-class-properties": "7.12.13",
     "@babel/plugin-proposal-decorators": "7.12.13",
-<<<<<<< HEAD
     "@discuzq/cli": "1.2.2",
-=======
-    "@discuzq/cli": "1.1.26",
->>>>>>> releases
     "@types/react": "17.0.3",
     "autoprefixer": "9.7.4",
     "babel-loader": "8.2.2",
