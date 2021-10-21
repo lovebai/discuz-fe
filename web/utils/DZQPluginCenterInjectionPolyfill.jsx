@@ -15,9 +15,9 @@ export default class DZQPluginCenterInjectionPolyfill extends Component {
     }
 
     render() {
-        // 为保证能正常触发mobx更新，需显式注入pluginComponent
+        // 为保证能正常触发mobx更新，需显式注入pluginComponent和__pluginStore
         const { plugin } = this.props;
-        return (<DZQPluginCenterInjection pluginComponent={plugin.pluginComponent} {...this.props}/>);
+        return (<DZQPluginCenterInjection __pluginStore={plugin.pluginStore} pluginComponent={plugin.pluginComponent} {...this.props}/>);
     }
 }
 

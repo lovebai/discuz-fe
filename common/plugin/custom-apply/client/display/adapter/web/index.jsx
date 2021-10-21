@@ -12,6 +12,8 @@ let countDownIns = null;
 class CustomApplyDisplay extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
+
     this.state = {
       isDetailPage: props.dzqRouter.router.router.pathname === '/thread/[id]' ? true : false,
       popupShow: false,
@@ -29,6 +31,7 @@ class CustomApplyDisplay extends React.Component {
   }
 
   componentDidMount() {
+    
     if (!countDownIns) countDownIns = new CountDown();
     const { renderData } = this.props;
 
