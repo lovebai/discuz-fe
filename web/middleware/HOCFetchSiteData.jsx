@@ -348,7 +348,6 @@ export default function HOCFetchSiteData(Component, _isPass) {
     checkJump() {
       const { router } = this.props;
       const jumpPage = LoginHelper.getUrl();
-      console.log(jumpPage, '---------jumpPage');
       if (jumpPage) {
         const urlObj = new URL(jumpPage);
         if (urlObj.pathname === router.asPath) { // 目标地址已达到，清空即可
