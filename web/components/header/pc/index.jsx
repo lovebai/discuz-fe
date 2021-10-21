@@ -290,7 +290,7 @@ class Header extends React.Component {
       <GlobalHeaderHooks
         component={component}
         site={this.props.site}
-        userInfo={user.userInfo}
+        user={{ userInfo: user.userInfo }}
         forum={{ otherPermissions }}
         message={{ totalUnread }}
       ></GlobalHeaderHooks>

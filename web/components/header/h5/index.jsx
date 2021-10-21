@@ -9,7 +9,7 @@ import { unreadUpdateInterval } from '@common/constants/message';
 import LoginHelper from '@common/utils/login-helper';
 import SiteMapLink from '@components/site-map-link';
 
-import GlobalHeader from '@common/plugin-hooks/plugin_global@header';
+import GlobalHeaderHooks from '@common/plugin-hooks/plugin_global@header';
 
 const H5Header = (props) => {
   const {
@@ -71,7 +71,14 @@ const H5Header = (props) => {
     </div>
   );
 
-  return <GlobalHeader component={component} site={props.site}></GlobalHeader>;
+  return (
+    <GlobalHeaderHooks
+      component={component}
+      site={props.site}
+      user={{ userInfo: user.userInfo }}
+      message={{ totalUnread }}
+    ></GlobalHeaderHooks>
+  );
 };
 
 export default inject('message', 'user')(observer(H5Header));

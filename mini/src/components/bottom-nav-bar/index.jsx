@@ -10,8 +10,7 @@ import UnreadRedDot from '@components/unread-red-dot';
 import { unreadUpdateInterval } from '@common/constants/message';
 import canPublish from '@common/utils/can-publish';
 
-
-import GlobalFooter from '@common/plugin-hooks/plugin_global@footer';
+import GlobalFooterHook from '@common/plugin-hooks/plugin_global@footer';
 
 /**
  * BottomNavBar组件
@@ -133,7 +132,7 @@ class BottomNavBar extends React.Component {
   };
 
   render() {
-    const { fixed = true, placeholder = false } = this.props;
+    const { fixed = true, placeholder = false, site, user } = this.props;
     const { totalUnread } = this.props.message;
     const { hiddenTabBar } = this.props.index;
     const { tabs } = this.state;
@@ -176,7 +175,14 @@ class BottomNavBar extends React.Component {
         )}
       </>
     );
-    return <GlobalFooter component={component} site={this.props.site}></GlobalFooter>;
+    return (
+      <GlobalFooterHook
+        component={component}
+        site={site}
+        user={{ permissions: user?.permissions }}
+        message={{ totalUnread }}
+      ></GlobalFooterHook>
+    );
   }
 }
 

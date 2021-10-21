@@ -10,7 +10,7 @@ import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 import LoginHelper from '@common/utils/login-helper';
 import SiteMapLink from '@components/site-map-link';
 
-import GlobalFooter from '@common/plugin-hooks/plugin_global@footer';
+import GlobalFooterHook from '@common/plugin-hooks/plugin_global@footer';
 
 /**
  * BottomNavBar组件
@@ -134,7 +134,14 @@ const BottomNavBar = ({
     </>
   );
 
-  return <GlobalFooter component={component} site={site}></GlobalFooter>;
+  return (
+    <GlobalFooterHook
+      component={component}
+      site={site}
+      user={{ permissions: user.permissions }}
+      message={{ totalUnread }}
+    ></GlobalFooterHook>
+  );
 };
 
 export default HOCFetchSiteData(withRouter(inject('site', 'index', 'user', 'message')(observer(BottomNavBar))));
