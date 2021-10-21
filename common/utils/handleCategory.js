@@ -91,8 +91,8 @@ export const getSelectedCategoryIds = (categories, id) => {
       tmp[0]?.children?.forEach((item) => {
         newCategoryIds.push(item.categoryId);
       });
-    } else newCategoryIds = ['all'];
-
+    }
+    if (!tmp?.length) newCategoryIds = ['all'];
     return newCategoryIds
 }
 
