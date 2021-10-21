@@ -74,8 +74,15 @@ const BottomNavBar = ({
         return;
       }
     }
+
+    let url = i.router;
+    const {categoryids = [],sequence=0 } = index.filter;
     if (i.router === '/') {
       LoginHelper.clear();
+
+      if(categoryids?.length || sequence !== 0) {
+        url = `/?categoryId=${categoryids.join('_')}&sequence=${sequence}` ;
+      }
     }
 
     onClick(i, idx);
@@ -86,7 +93,7 @@ const BottomNavBar = ({
       setTabs(temp);
     }
 
-    router.push(i.router);
+    router.push(url);
   };
 
   const component = (
@@ -130,4 +137,4 @@ const BottomNavBar = ({
   return <GlobalFooter component={component} site={site}></GlobalFooter>;
 };
 
-export default HOCFetchSiteData(withRouter(inject('site', 'user', 'message')(observer(BottomNavBar))));
+export default HOCFetchSiteData(withRouter(inject('site', 'index', 'user', 'message')(observer(BottomNavBar))));
