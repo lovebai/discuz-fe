@@ -1,9 +1,10 @@
 import React from 'react';
 import Taro, { eventCenter, getCurrentInstance } from '@tarojs/taro';
-import { Icon, Button, Input, Tabs, Toast, Spin } from '@discuzq/design';
+import { Icon, Button, Input, Tabs, Toast, Spin, Divider } from '@discuzq/design';
 import { View, Image } from '@tarojs/components';
 import { goodImages } from '@common/constants/const';
 import styles from '../index.module.scss';
+import ShopProductItem from '../../../components/shopProductItem';
 
 export default class SelectProduct extends React.PureComponent {
   constructor(props) {
@@ -27,10 +28,32 @@ export default class SelectProduct extends React.PureComponent {
   componentWillMount() {
     const onReadyEventId = this.$instance.router.onReady;
     const onShowEventId = this.$instance.router.onShow;
+
     // 监听
     eventCenter.on(onShowEventId, this.onShow);
     eventCenter.once(onReadyEventId, this.onReady);
   }
+
+  /**
+   * 处理点击行为
+   * @param {*} checkedStatus
+   * @param {*} productInfo
+   */
+  handleProductSelected = (checkedStatus, productInfo) => {
+    const { productId } = productInfo;
+
+    const nextSelectedStatus = Object.assign({}, this.state.selectedMiniShopProducts);
+
+    if (checkedStatus) {
+      nextSelectedStatus[productId] = productInfo;
+    } else {
+      delete nextSelectedStatus[productId];
+    }
+
+    this.setState({
+      selectedMiniShopProducts: nextSelectedStatus,
+    });
+  };
 
   fetchMiniShopProductList = async (page) => {
     const { dzqRequest } = this.props;
@@ -119,6 +142,7 @@ export default class SelectProduct extends React.PureComponent {
     if (!this.isShowMiniShopTab()) return null;
     return (
       <Tabs.TabPanel key={'miniShop'} id={'miniShop'} label={'添加微信小店商品'}>
+        <Divider />
         <View className={styles.productItemWrapper} ref={this.miniShopListRef} onScroll={this.handleListScroll}>
           {this.miniShopProductsAdapter().map(productInfo => (
             <ShopProductItem
@@ -139,6 +163,10 @@ export default class SelectProduct extends React.PureComponent {
     );
   };
 
+  onReachBottom = () => {
+    console.log('reach bottom');
+  }
+
   /**
    * 渲染平台商品 tab
    */
@@ -146,6 +174,7 @@ export default class SelectProduct extends React.PureComponent {
     const { link } = this.state;
     return (
       <Tabs.TabPanel key={'platformShop'} id={'platformShop'} label={'添加平台商品链接'}>
+        <Divider />
         <View className={styles.platformShopBox}>
           <View className={styles['parse-goods-box']}>
             <View className={styles.wrapper}>
