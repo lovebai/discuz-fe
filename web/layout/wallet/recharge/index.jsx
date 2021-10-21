@@ -71,7 +71,7 @@ class Recharge extends React.Component {
   // 获取禁用逻辑
   getDisabeledButton = () => {
     const { inputValue } = this.state;
-    const btnDisabled = !inputValue || parseFloat(inputValue) < 1;
+    const btnDisabled = !inputValue || parseFloat(inputValue) < 0.1;
     return btnDisabled;
   };
 
