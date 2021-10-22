@@ -1,0 +1,8 @@
+{
+  "pluginName": "shop_user_center_entry",
+  "version": "1.0.0",
+  "target": "plugin_user",
+  "hookName": "user_extension_action_hook",
+  "platform": ["pc", "h5", "mini"],
+  "disables": false
+}

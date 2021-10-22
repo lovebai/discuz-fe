@@ -132,41 +132,33 @@ class UserCenterAction extends React.Component {
     );
   };
 
-  // 补齐元素
-  renderExtraActionItem = () => <div className={styles.userCenterActionItem}></div>;
-
-  renderActionRow = itemEles => <div className={styles.userCenterActionItemContainer}>{itemEles}</div>;
-
-  renderActionRows = () => {
+  renderActionItems = () => {
     const { totalUnread } = this.props.message;
-    const { actions, rowActionCount } = this.state;
+    const { actions } = this.state;
     const itemEles = [];
-    const rowEles = [];
 
     actions.map((item) => {
       item.visible && itemEles.push(this.renderActionItem(item, totalUnread));
     });
 
-    // 如果不止一行，最后一个行数组补齐元素
-    if (itemEles.length > rowActionCount && itemEles.length % rowActionCount) {
-      const extraCount = rowActionCount - (itemEles.length % rowActionCount);
-      for (let i = 0; i < extraCount; i++) {
-        itemEles.push(this.renderExtraActionItem());
-      }
-    }
-
-    // 按行拼装
-    for (let i = 0; i < itemEles.length; i += rowActionCount) {
-      const end = i + rowActionCount <= itemEles.length ? i + rowActionCount : itemEles.length;
-      rowEles.push(this.renderActionRow(itemEles.slice(i, end)));
-    }
-    return rowEles;
+    return itemEles;
   };
 
   render() {
+    const { actions, rowActionCount } = this.state;
+
     return (
-      <div className={`${styles.userCenterAction} ${this.props.site.platform === 'pc' ? styles.pc : styles.h5}`}>
-        {this.renderActionRows()}
+      <div
+        className={`${styles.userCenterAction} ${this.props.site.platform === 'pc' ? styles.pc : styles.h5} ${
+          actions.length < rowActionCount && styles.userCenterColumnStyle
+        }`}
+      >
+        {this.renderActionItems()}
+        <DZQPluginCenterInjectionPolyfill
+          className={styles.userCenterActionItem}
+          target="plugin_user"
+          hookName="user_extension_action_hook"
+        />
       </div>
     );
   }
