@@ -93,7 +93,7 @@ const config = {
         'my/renew/index',
       ],
     },
-    [...mergedConfig]
+    ...mergedConfig
   ],
   permission: {
     'scope.userLocation': {
