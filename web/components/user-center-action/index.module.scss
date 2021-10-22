@@ -1,25 +1,21 @@
 @import '@common/styles/index.scss';
 
-.userCenterAction {
-    display: flex;
-    padding: rem($padding-4n);
-    flex-wrap: wrap;
+.userCenterColumnStyle {
     justify-content: space-between;
+}
 
+.userCenterAction {
     .userCenterActionItemContainer {
+        display: flex;
+        justify-content: space-between;
 
         .userCenterActionItem {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-right: rem(32);
-            min-width: rem(60);
             cursor: pointer;
-
-            &:last-child {
-                margin-right: 0;
-            }
+            min-width: rem(60);
 
             .userCenterActionItemIcon {}
 
@@ -33,12 +29,15 @@
 
 }
 
-.userActionMobile {
-    .userCenterActionItemContainer {
-        display: flex;
-
-        .userCenterActionItem {
-            margin: 0;
+.userCenterAction {
+    &.pc {
+        .userCenterActionItemContainer {
+            padding: rem($padding-6n);
+        }
+    }
+    &.h5 {
+        .userCenterActionItemContainer {
+            padding: rem($padding-4n);
         }
     }
 }
