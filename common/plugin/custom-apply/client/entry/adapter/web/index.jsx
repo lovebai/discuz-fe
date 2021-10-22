@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Dialog, Button, Input, Textarea, Radio, Toast } from '@discuzq/design';
+import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Checkbox } from '@discuzq/design';
 // 移动端时间选择
 import DatePickers from '@components/thread/date-picker';
 // pc 端时间选择
@@ -26,8 +26,8 @@ export default class CustomApplyEntry extends React.Component {
     const nowTime = new Date();
     const time = new Date().getTime() + oneDay;
     this.state = {
-      visible: false,
-      showMore: false,
+      visible: true,
+      showMore: true,
       showMobileDatePicker: false,
       body: {
         activityStartTime: nowTime, // 活动开始时间
@@ -39,6 +39,7 @@ export default class CustomApplyEntry extends React.Component {
         actPlace: '', // 活动地点
         actPeopleLimitType: 0, // 0 不限制；1 限制
         totalNumber: '',
+        options: [], // 报名选项
       },
       curClickTime: TimeType.actStart,
       minTime: setHours(setMinutes(new Date(), getMinutes(nowTime)), getHours(nowTime)),
@@ -271,6 +272,15 @@ export default class CustomApplyEntry extends React.Component {
     return false;
   };
 
+  handleCheckAll = (val) => {
+    const options = val ? ['name', 'phone', 'wechatid', 'address'] : [];
+    this.setState({ body: { ...this.state.body, options } });
+  };
+
+  handleCheck = (list) => {
+    this.setState({ body: { ...this.state.body, options: list } });
+  };
+
   render() {
     const { siteData } = this.props;
     const platform = siteData.platform === 'h5' ? styles.h5 : styles.pc;
@@ -433,6 +443,24 @@ export default class CustomApplyEntry extends React.Component {
                     </Radio>
                   </Radio.Group>
                 </div>
+              </div>
+              <div className={classNames(styles['dzqp-act--item'], styles.options)}>
+                <div className={styles.flex}>
+                  <div className={styles['dzqp-act--item_title']}>报名必填</div>
+                  <div className={styles['dzqp-act--item_right']}>
+                    <Checkbox checked={body.options?.length === 4} onChange={this.handleCheckAll}>全选</Checkbox>
+                  </div>
+                </div>
+                <Checkbox.Group
+                  onChange={this.handleCheck}
+                  value={body.options}
+                  className={styles['apply-options']}
+                >
+                  <Checkbox name='name'>姓名</Checkbox>
+                  <Checkbox name='phone'>手机号</Checkbox>
+                  <Checkbox name='wechatid'>微信号</Checkbox>
+                  <Checkbox name='address'>地址</Checkbox>
+                </Checkbox.Group>
               </div>
             </>
           )}

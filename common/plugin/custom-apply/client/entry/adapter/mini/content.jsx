@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components';
-import { Icon, Dialog, Button, Input, Textarea, Radio, Toast } from '@discuzq/design';
+import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Checkbox } from '@discuzq/design';
 import DatePickers from '@components/thread-post/date-time-picker';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';
@@ -32,6 +32,7 @@ export default class CustomApplyEntryContent extends React.Component {
         actPlace: '', // 活动地点
         actPeopleLimitType: 0, // 0 不限制；1 限制
         totalNumber: '',
+        options: [], // 报名选项
       },
       curClickTime: TimeType.actStart,
     };
@@ -185,6 +186,15 @@ export default class CustomApplyEntryContent extends React.Component {
     return new Date();
   };
 
+  handleCheckAll = (val) => {
+    const options = val ? ['name', 'phone', 'wechatid', 'address'] : [];
+    this.setState({ body: { ...this.state.body, options } });
+  };
+
+  handleCheck = (list) => {
+    this.setState({ body: { ...this.state.body, options: list } });
+  };
+
   render() {
     const { showMore, body } = this.state;
     const moreClass = !showMore
@@ -281,6 +291,24 @@ export default class CustomApplyEntryContent extends React.Component {
                     />人报名
                   </Radio>
                 </Radio.Group>
+              </View>
+              <View className={classNames(styles['dzqp-act--item'], styles.options)}>
+                <View className={styles.flex}>
+                  <View className={styles['dzqp-act--item_title']}>报名必填</View>
+                  <View className={styles['dzqp-act--item_right']}>
+                    <Checkbox checked={body.options?.length === 4} onChange={this.handleCheckAll}>全选</Checkbox>
+                  </View>
+                </View>
+                <Checkbox.Group
+                  onChange={this.handleCheck}
+                  value={body.options}
+                  className={styles['apply-options']}
+                >
+                  <Checkbox name='name'>姓名</Checkbox>
+                  <Checkbox name='phone'>手机号</Checkbox>
+                  <Checkbox name='wechatid'>微信号</Checkbox>
+                  <Checkbox name='address'>地址</Checkbox>
+                </Checkbox.Group>
               </View>
             </View>
           </>
