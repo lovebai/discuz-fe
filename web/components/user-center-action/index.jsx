@@ -1,16 +1,22 @@
+/* eslint-disable spaced-comment */
 import React from 'react';
 import { Icon } from '@discuzq/design';
 import styles from './index.module.scss';
 import Router from '@discuzq/sdk/dist/router';
 import { observer, inject } from 'mobx-react';
 import UnreadRedDot from '@components/unread-red-dot';
+import DZQPluginCenterInjectionPolyfill from '../../utils/DZQPluginCenterInjectionPolyfill';
+
+// 插件引入
+/**DZQ->plugin->register<plugin_user@user_extension_action_hook>**/
+
 @inject('user')
 @inject('message')
 @inject('site')
 @observer
 class UserCenterAction extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       actions: [
         {
@@ -18,153 +24,149 @@ class UserCenterAction extends React.Component {
           name: '我的消息',
           url: '/message',
           iconName: 'MailOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'wallet',
           name: '我的钱包',
           url: '/wallet',
           iconName: 'PayOutlined',
-          visible: true
-
+          visible: true,
         },
         {
           cid: 'collect',
           name: '我的收藏',
           url: '/my/collect',
           iconName: 'CollectOutlinedBig',
-          visible: true
-
+          visible: true,
         },
         {
           cid: 'like',
           name: '我的点赞',
           url: '/my/like',
           iconName: 'LikeOutlined',
-          visible: this.props.site.platform === 'pc'
-
+          visible: this.props.site.platform === 'pc',
         },
         {
           cid: 'block',
           name: '我的屏蔽',
           url: '/my/block',
           iconName: 'ShieldOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'buy',
           name: '我的购买',
           url: '/my/buy',
           iconName: 'ShoppingCartOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'draft',
           name: '我的草稿箱',
           url: '/my/draft',
           iconName: 'RetrieveOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'forum',
           name: '站点信息',
           url: '/forum',
           iconName: 'NotepadOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'invite',
           name: '推广邀请',
           url: '/invite',
           iconName: 'NotbookOutlined',
-          visible: !this.props.user.isAdmini
+          visible: !this.props.user.isAdmini,
         },
         {
           cid: 'shopOutlined',
           name: '商城',
           url: '',
           iconName: 'ShopOutlined',
-          visible: true
-        }
+          visible: true,
+        },
       ],
-      rowActionCount: this.props.site.platform === 'pc' ? 9 : 4
-    }
+      rowActionCount: this.props.site.platform === 'pc' ? 9 : 4,
+    };
   }
 
   handleActionItem = (item) => {
     if (item.onClick && typeof item.onClick === 'function') {
-      item.onClick(item)
-      return
+      item.onClick(item);
+      return;
     }
 
-    item.url && Router.push({ url: item.url })
-  }
+    item.url && Router.push({ url: item.url });
+  };
 
   componentDidMount() {
     this.props.message.readUnreadCount();
   }
 
   renderActionItem = (item, totalUnread) => {
+    if (item.render) {
+      return item.render();
+    }
     return (
-      <div onClick={() => {this.handleActionItem(item)}} className={styles.userCenterActionItem}>
+      <div
+        onClick={() => {
+          this.handleActionItem(item);
+        }}
+        className={styles.userCenterActionItem}
+      >
         <div className={styles.userCenterActionItemIcon}>
-          {
-            item.cid === 'message' ?
+          {item.cid === 'message' ? (
             <UnreadRedDot unreadCount={totalUnread}>
               <Icon name={item.iconName} size={20} />
             </UnreadRedDot>
-            :
+          ) : (
             <Icon name={item.iconName} size={20} />
-          }
+          )}
         </div>
         <div className={styles.userCenterActionItemDesc}>{item.name}</div>
       </div>
-    )
-  }
+    );
+  };
 
   // 补齐元素
-  renderExtraActionItem = () => {
-    return (
-      <div className={styles.userCenterActionItem}></div>
-    )
-  }
+  renderExtraActionItem = () => <div className={styles.userCenterActionItem}></div>;
 
-  renderActionRow = (itemEles) => {
-    return (
-      <div className={styles.userCenterActionItemContainer}>{itemEles}</div>
-    )
-  }
+  renderActionRow = itemEles => <div className={styles.userCenterActionItemContainer}>{itemEles}</div>;
 
   renderActionRows = () => {
-    const { totalUnread } = this.props.message
-    const { actions, rowActionCount } = this.state
-    const itemEles = []
-    const rowEles = []
-    
-    actions.map(item => {
-      item.visible && itemEles.push(this.renderActionItem(item, totalUnread))
-    })
+    const { totalUnread } = this.props.message;
+    const { actions, rowActionCount } = this.state;
+    const itemEles = [];
+    const rowEles = [];
+
+    actions.map((item) => {
+      item.visible && itemEles.push(this.renderActionItem(item, totalUnread));
+    });
 
     // 如果不止一行，最后一个行数组补齐元素
-    if(itemEles.length > rowActionCount && itemEles.length % rowActionCount) {
-      const extraCount = rowActionCount - itemEles.length % rowActionCount
+    if (itemEles.length > rowActionCount && itemEles.length % rowActionCount) {
+      const extraCount = rowActionCount - (itemEles.length % rowActionCount);
       for (let i = 0; i < extraCount; i++) {
-        itemEles.push(this.renderExtraActionItem())
+        itemEles.push(this.renderExtraActionItem());
       }
     }
 
     // 按行拼装
     for (let i = 0; i < itemEles.length; i += rowActionCount) {
-      const end = (i + rowActionCount) <= itemEles.length ? i + rowActionCount : itemEles.length
-      rowEles.push(this.renderActionRow(itemEles.slice(i, end)))
+      const end = i + rowActionCount <= itemEles.length ? i + rowActionCount : itemEles.length;
+      rowEles.push(this.renderActionRow(itemEles.slice(i, end)));
     }
-    return rowEles
-  }
+    return rowEles;
+  };
 
   render() {
     return (
       <div className={`${styles.userCenterAction} ${this.props.site.platform === 'pc' ? styles.pc : styles.h5}`}>
-        { this.renderActionRows() }
+        {this.renderActionRows()}
       </div>
     );
   }

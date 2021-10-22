@@ -2,9 +2,13 @@ import React from 'react';
 import Taro, { eventCenter, getCurrentInstance } from '@tarojs/taro';
 import { Icon, Button, Input, Tabs, Toast, Spin, Divider } from '@discuzq/design';
 import { View, Image } from '@tarojs/components';
+import { readProcutAnalysis } from '@common/server';
 import { goodImages } from '@common/constants/const';
 import styles from '../index.module.scss';
 import ShopProductItem from '../../../components/shopProductItem';
+
+const MINI_SHOP_TYPE = 11;
+const PLATFORM_SHOP_TYPE = 10;
 
 export default class SelectProduct extends React.PureComponent {
   constructor(props) {
@@ -25,14 +29,96 @@ export default class SelectProduct extends React.PureComponent {
 
   $instance = getCurrentInstance();
 
-  componentWillMount() {
-    const onReadyEventId = this.$instance.router.onReady;
-    const onShowEventId = this.$instance.router.onShow;
+  /**
+   * 发布数据格式化函数
+   */
+     postDataAdapter = ({ miniShopProducts = [], product }) => {
+       const products = [];
 
-    // 监听
-    eventCenter.on(onShowEventId, this.onShow);
-    eventCenter.once(onReadyEventId, this.onReady);
-  }
+       if (miniShopProducts.length) {
+         miniShopProducts.forEach((productId) => {
+           products.push({
+             type: MINI_SHOP_TYPE,
+             data: {
+               productId,
+               ...this.state.selectedMiniShopProducts[productId],
+             },
+           });
+         });
+       }
+
+       if (product) {
+         products.push({
+           type: PLATFORM_SHOP_TYPE,
+           data: product,
+         });
+       }
+
+       return products;
+     };
+
+
+     componentWillMount() {
+       const onReadyEventId = this.$instance.router.onReady;
+       const onShowEventId = this.$instance.router.onShow;
+
+       // 监听
+       eventCenter.on(onShowEventId, this.onShow);
+       eventCenter.once(onReadyEventId, this.onReady);
+
+       this.props.pluginAction.set('select_product_page', {
+         onReachBottom: this.onReachBottom,
+       });
+     }
+
+  handleConfirm = async () => {
+    let product;
+    if (this.state.link) {
+      product = await this.fetchProductAnalysis({ address: this.state.link });
+    }
+
+    const miniShopProducts = Object.keys(this.state.selectedMiniShopProducts);
+
+    const postData = this.postDataAdapter({
+      product,
+      miniShopProducts,
+    });
+
+    console.log({
+      postData: {
+        tomId: '61540fef8f4de8',
+        body: {
+          products: postData,
+        },
+      },
+    });
+  };
+
+  /**
+   * 获取商品信息
+   * @param {*} options
+   */
+  fetchProductAnalysis = async (options = {}) => {
+    const ret = await readProcutAnalysis({ data: options });
+    const { code, data = {}, msg } = ret;
+    if (code === 0) {
+      return data;
+    }
+    Toast.error({ content: msg });
+  };
+
+  /**
+   * 触底逻辑
+   */
+  onReachBottom = () => {
+    if (this.state.currentPage < this.state.totalPage) {
+      this.fetchMiniShopProductList(this.state.currentPage + 1);
+
+      this.setState({
+        currentPage: this.state.currentPage + 1,
+      });
+    }
+  };
 
   /**
    * 处理点击行为
@@ -163,10 +249,6 @@ export default class SelectProduct extends React.PureComponent {
     );
   };
 
-  onReachBottom = () => {
-    console.log('reach bottom');
-  };
-
   /**
    * 渲染平台商品 tab
    */
@@ -180,7 +262,6 @@ export default class SelectProduct extends React.PureComponent {
         <View className={styles.platformShopBox}>
           <View className={styles['parse-goods-box']}>
             <View className={styles.wrapper}>
-              <View className={styles['parse-goods-title']}>现支持以下商品链接</View>
               <View className={styles['parse-goods-image']}>
                 {goodImages.map(item => (
                   <View className={styles['image-item']} key={item.name}>
@@ -227,7 +308,9 @@ export default class SelectProduct extends React.PureComponent {
           {this.renderPlatformShopTab()}
         </Tabs>
         <View className={styles.footer}>
-          <Button type="primary" full>确定</Button>
+          <Button type="primary" full onClick={this.handleConfirm}>
+            确定
+          </Button>
         </View>
       </View>
     );
