@@ -1,26 +1,29 @@
 @import '@common/styles/index.scss';
 
+.userCenterColumnStyle {
+    justify-content: space-between;
+}
+
 .userCenterAction {
-    .userCenterActionItemContainer {
+    display: flex;
+    flex-wrap: wrap;
+
+    .userCenterActionItem {
         display: flex;
-        justify-content: space-between;
-        padding: rem($padding-4n);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        min-width: rem(60);
+        padding: rem($padding-4n) 0;
+        width: percentage(100/4/100);
 
-        .userCenterActionItem {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            min-width: rem(60);
+        .userCenterActionItemIcon {}
 
-            .userCenterActionItemIcon {}
-
-            .userCenterActionItemDesc {
-                margin-top: rem($margin-2n);
-                color: $text-color-regular;
-                font-size: rem($font-size-small);
-            }
+        .userCenterActionItemDesc {
+            margin-top: rem($margin-2n);
+            color: $text-color-regular;
+            font-size: rem($font-size-small);
         }
     }
 
