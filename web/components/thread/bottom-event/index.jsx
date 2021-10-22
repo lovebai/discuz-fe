@@ -7,7 +7,7 @@ import MorePopop from '@components/more-popop';
 import Router from '@discuzq/sdk/dist/router';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import Toast from '@discuzq/design/dist/components/toast';
-const hongbaoMini = 'https://imgcache.qq.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
+const hongbaoMini = 'https://cloudcache.tencentcs.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
 
 
 /**
@@ -162,13 +162,15 @@ const Index = ({
           </div>
         ))}
       </div>
-      <MorePopop
-        show={show}
-        fromThread
-        handleH5Share={handleH5Share}
-        onClose={onClose}
-        createCard={createCard}
-      ></MorePopop>
+      {show && (
+        <MorePopop
+          show={show}
+          fromThread
+          handleH5Share={handleH5Share}
+          onClose={onClose}
+          createCard={createCard}
+        ></MorePopop>
+      )}
     </div>
   );
 };

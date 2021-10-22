@@ -17,8 +17,8 @@ import styles from './index.module.scss';
 // import coin from '../../../../../../web/public/dzq-img/coin.png';
 import ReplyList from '../reply-list/index';
 
-const coin = 'https://imgcache.qq.com/operation/dianshi/other/coin.e66d1d9205f2d6a18b38fe29b733eb109e168504.png';
-const redPacketMini = 'https://imgcache.qq.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
+const coin = 'https://cloudcache.tencentcs.com/operation/dianshi/other/coin.e66d1d9205f2d6a18b38fe29b733eb109e168504.png';
+const redPacketMini = 'https://cloudcache.tencentcs.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
 
 @inject('user')
 @observer
@@ -132,7 +132,7 @@ class CommentList extends React.Component {
             <View></View>
             <View className={styles.headerRigth}>
               {
-                isCommenter && remainHongbaoLike && curLikeNum < needLikeNum && !this.props.data?.redPacketAmount &&(
+                isCommenter && remainHongbaoLike*1>0 && curLikeNum < needLikeNum && !this.props.data?.redPacketAmount &&(
                   <View className={styles.hongbaoLikeNum}>
                     <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
                     再集 <View className={styles.redfont}>&nbsp;{needLikeNum - curLikeNum}&nbsp;</View> 赞可领红包

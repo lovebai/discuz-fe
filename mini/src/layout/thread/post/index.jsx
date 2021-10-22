@@ -21,7 +21,7 @@ import * as localData from '@common/utils/thread-post-localdata';
 import TagLocalData from '@components/thread-post/tag-localdata';
 import VoteWidget from '@components/thread-post/vote-widget';
 import typeofFn from '@common/utils/typeof';
-
+import DZQPluginCenterInjection from '@discuzq/plugin-center/dist/components/DZQPluginCenterInjection';
 import Dialog from '@discuzq/design/dist/components/dialog/index';
 
 // 插件引入
@@ -30,6 +30,7 @@ import Dialog from '@discuzq/design/dist/components/dialog/index';
 @inject('payBox')
 @inject('index')
 @inject('site')
+@inject('plugin')
 @inject('user')
 @inject('thread')
 @inject('threadPost')
@@ -682,7 +683,6 @@ class Index extends Component {
       setTimeout(() => {
         Taro.hideLoading();
         Taro.redirectTo({ url: `/userPages/my/draft/index` });
-        // this.handlePageJump(true);
       }, 1000);
     } else {
       this.postToast('保存失败');
@@ -729,16 +729,13 @@ class Index extends Component {
 
   // 处理左上角按钮点击跳路由
   handlePageJump = async (canJump = false, url) => {
-    const { postType, threadId } = this.state;
-    // 已发布主题再编辑，不可保存草稿
-    if (postType === "isEdit") {
-      return Taro.redirectTo({ url: `/indexPages/thread/index?id=${threadId}` });
-    }
+    const { postType } = this.state;
 
     if (!this.checkAudioRecordStatus()) return;
 
+    // 判断是否可以保存草稿
     const { postData: { contentText, images, video, files, audio } } = this.props.threadPost;
-    if (!canJump && (contentText || video.id || audio.id || Object.values(images).length || Object.values(files).length)) {
+    if (!canJump && postType !== 'isEdit' && (contentText || video.id || audio.id || Object.values(images).length || Object.values(files).length)) {
       this.setState({ showDraftOption: true });
       return;
     }
@@ -863,22 +860,16 @@ class Index extends Component {
                 )}
 
                 {product.detailContent && <Units type='product' productSrc={product.imagePath} productDesc={product.title} productPrice={product.price} onDelete={() => setPostData({ product: {} })} />}
-
-                {
-                  DZQPluginCenter.injection('plugin_post', 'post_extension_content_hook').map(({render, pluginInfo}) => (
-                      <View key={pluginInfo.pluginName}>
-                        {render({
-                          site: this.props.site,
-                          renderData: postData.plugin,
-                          deletePlugin: this.props.threadPost.deletePluginPostData,
-                          updatePlugin: this.props.threadPost.setPluginPostData,
-                          showPluginDialog: this.showPluginDialog,
-                          closePluginDialog: this.closePluginDialog
-                        })}
-                      </View>
-                    ))
-                }
-
+                <DZQPluginCenterInjection
+                  target='plugin_post'
+                  hookName='post_extension_content_hook'
+                  pluginProps={{
+                    renderData: postData.plugin,
+                    deletePlugin: this.props.threadPost.deletePluginPostData,
+                    updatePlugin: this.props.threadPost.setPluginPostData,
+                    showPluginDialog: this.showPluginDialog,
+                    closePluginDialog: this.closePluginDialog
+                }}/>
               </View>
 
             </View>

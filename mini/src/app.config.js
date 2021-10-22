@@ -1,3 +1,11 @@
+const pluginsConfig = require('./.pluginConfig');
+
+let mergedConfig = [];
+
+if (pluginsConfig.pages.length > 0) {
+  mergedConfig = [pluginsConfig]
+}
+
 /**
  * 入口配置文件：https://taro-docs.jd.com/taro/docs/next/tutorial/
  */
@@ -41,6 +49,7 @@ const config = {
         'wallet/index',
         'wallet/frozen/index',
         'wallet/withdrawal/index',
+        'wallet/recharge/index',
         'forum/index',
         'forum/partner-invite/index',
         'invite/index',
@@ -84,6 +93,7 @@ const config = {
         'my/renew/index',
       ],
     },
+    ...mergedConfig
   ],
   permission: {
     'scope.userLocation': {
