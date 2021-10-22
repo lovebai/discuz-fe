@@ -1,49 +1,27 @@
 @import '@common/styles/index.scss';
-@import '@common/styles/index.scss';
 
 .userCenterAction {
-    display: flex;
-    padding: $padding-4n;
-    flex-wrap: wrap;
-    justify-content: space-between;
-
     .userCenterActionItemContainer {
+        display: flex;
+        justify-content: space-between;
+        padding: rem($padding-4n);
 
         .userCenterActionItem {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-width: 60px;
             cursor: pointer;
-
-            & + .userCenterActionItem {
-                margin-left: 32px;
-            }
-
-            &:last-child {
-                margin-right: 0;
-            }
+            min-width: rem(60);
 
             .userCenterActionItemIcon {}
 
             .userCenterActionItemDesc {
-                margin-top: $margin-2n;
+                margin-top: rem($margin-2n);
                 color: $text-color-regular;
-                font-size: $font-size-label;
-                line-height: 17px;
+                font-size: rem($font-size-small);
             }
         }
     }
 
-}
-
-.userActionMobile {
-    .userCenterActionItemContainer {
-        display: flex;
-
-        .userCenterActionItem {
-            margin: 0;
-        }
-    }
 }
