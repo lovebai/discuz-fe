@@ -8,5 +8,5 @@
   "miniPageConfig": {
     "navigationBarTitleText": "插件页面"
   },
-  "disables": false
+  "disables": true
 }
