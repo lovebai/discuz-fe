@@ -78,7 +78,6 @@ class PostPage extends React.Component {
     const { fetchEmoji, emojis } = this.props.threadPost;
     if (emojis.length === 0) fetchEmoji();
     this.fetchDetail();
-
   }
 
   componentWillUnmount() {
@@ -106,7 +105,7 @@ class PostPage extends React.Component {
     if ((url || '').indexOf('/my/edit/paypwd') === -1
     && (url || '').indexOf('/pay/middle') === -1
     && (url || '').indexOf('/my/edit/find-paypwd') === -1
-    && (url || '').indexOf('/wallet/recharge') === -1) {
+    && (url || '').indexOf('/wallet') === -1) {
       if (this.vditor) this.vditor.setValue('');
       this.props.threadPost.resetPostData();
     }
@@ -942,7 +941,7 @@ class PostPage extends React.Component {
 
   render() {
     // const { isPC } = this.props.site;
-   
+
     const pc = (
       <IndexPCPage
         setPostData={data => this.setPostData(data)}
