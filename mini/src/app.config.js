@@ -114,7 +114,6 @@ const config = {
   }
 };
 
-console.log(66, config.subPackages)
 if (pluginsConfig?.pages?.length) {
   config.subPackages.push(pluginsConfig)
 }
