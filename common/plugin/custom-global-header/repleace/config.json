@@ -4,5 +4,5 @@
   "target": "plugin_global",
   "hookName": "header_replace_hook",
   "platform": ["pc", "h5"],
-  "disables": true
+  "disables": false
 }

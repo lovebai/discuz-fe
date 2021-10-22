@@ -4,5 +4,5 @@
   "target": "plugin_index",
   "hookName": "right_replace_hook",
   "platform": ["pc"],
-  "disables": true
+  "disables": false
 }

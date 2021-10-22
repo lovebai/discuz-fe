@@ -1,5 +1,4 @@
-import DZQPluginCenter from '@discuzq/plugin-center';
-import Block from './components/block';
+import PluginCenterInjection from './components/PluginCenterInjection';
 
 export default ({ target, hookNames }) => {
   if (!target || !hookNames) return;
@@ -7,42 +6,50 @@ export default ({ target, hookNames }) => {
   const [beofroHookName, replaceHookName, afterHookName] = hookNames;
 
   return (props) => {
-    const { component, ...others } = props;
-    const insertBeforePlugins = beofroHookName && DZQPluginCenter.injection(target, beofroHookName);
-    const replacePlugin = replaceHookName && DZQPluginCenter.injection(target, replaceHookName).pop();
-    const insertAfterPlugins = afterHookName && DZQPluginCenter.injection(target, afterHookName);
+    const { className, style, component, ...others } = props;
+
     return (
       <>
         {/* 前插入hooks */}
-        {insertBeforePlugins?.length > 0 &&
-          insertBeforePlugins.map(({ render, pluginInfo }) => (
-            <Block key={pluginInfo.name} className="before">
-              {render({
-                ...others,
-              })}
-            </Block>
-          ))}
+        {target && beofroHookName && (
+          <PluginCenterInjection
+            className={className}
+            style={style}
+            target={target}
+            hookName={beofroHookName}
+            pluginProps={{
+              ...others,
+            }}
+          />
+        )}
 
         {/* 替换hooks */}
-        {replacePlugin && replacePlugin.pluginInfo ? (
-          <Block key={replacePlugin.pluginInfo.name} className="replace">
-            {replacePlugin.render({
+        {target && replaceHookName ? (
+          <PluginCenterInjection
+            className={className}
+            style={style}
+            target={target}
+            hookName={replaceHookName}
+            pluginProps={{
               ...others,
-            })}
-          </Block>
+            }}
+          />
         ) : (
           component
         )}
 
         {/* 后插入hooks */}
-        {insertAfterPlugins?.length > 0 &&
-          insertAfterPlugins.map(({ render, pluginInfo }) => (
-            <Block key={pluginInfo.name} className="after">
-              {render({
-                ...others,
-              })}
-            </Block>
-          ))}
+        {target && afterHookName && (
+          <PluginCenterInjection
+            className={className}
+            style={style}
+            target={target}
+            hookName={afterHookName}
+            pluginProps={{
+              ...others,
+            }}
+          />
+        )}
       </>
     );
   };
