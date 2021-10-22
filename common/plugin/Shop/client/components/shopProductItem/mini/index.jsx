@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image } from '@tarojs/components';
 import { Checkbox } from '@discuzq/design';
 import styles from '../index.module.scss';
+import classnames from 'classnames';
 
 export default class ShopProductItemWebInstance extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class ShopProductItemWebInstance extends React.Component {
     const { isSelected } = this.props;
     const { productId, imagePath, price, title } = this.props.productInfo;
     return (
-      <View className={styles.productItem} onClick={this.onChange}>
+      <View className={classnames(styles.productItem, styles.productItemMini)} onClick={this.onChange}>
         <Checkbox checked={isSelected} onChange={this.onChange} />
         <View className={styles.productItemBackgroundWrapper}>
           <View className={styles.productItemWrapper}>

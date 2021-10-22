@@ -59,3 +59,14 @@
         }
     }
 }
+
+.productItemMini {
+    width: 50%;
+    margin-right: 0px;
+
+    :global {
+        .dzq-checkbox-wrap {
+            margin-inline-end: 0;
+        }
+    }
+}

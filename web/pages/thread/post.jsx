@@ -78,7 +78,6 @@ class PostPage extends React.Component {
     const { fetchEmoji, emojis } = this.props.threadPost;
     if (emojis.length === 0) fetchEmoji();
     this.fetchDetail();
-
   }
 
   componentWillUnmount() {
@@ -104,15 +103,17 @@ class PostPage extends React.Component {
   handleRouteChange = (url) => {
     // 如果不是修改支付密码的页面则重置发帖信息
     // 对于插件页面，也不清空信息
-    if ((url || '').indexOf('/my/edit/paypwd') === -1
-    && (url || '').indexOf('/pay/middle') === -1
-    && (url || '').indexOf('/my/edit/find-paypwd') === -1
-    && (url || '').indexOf('/plugin') === -1) {
-    && (url || '').indexOf('/wallet/recharge') === -1) {
+    if (
+      (url || '').indexOf('/my/edit/paypwd') === -1
+      && (url || '').indexOf('/pay/middle') === -1
+      && (url || '').indexOf('/my/edit/find-paypwd') === -1
+      && (url || '').indexOf('/plugin') === -1
+      && (url || '').indexOf('/wallet/recharge') === -1
+    ) {
       if (this.vditor) this.vditor.setValue('');
       this.props.threadPost.resetPostData();
     }
-  }
+  };
 
   saveDataLocal = () => {
     const { threadPost, user } = this.props;
@@ -120,14 +121,11 @@ class PostPage extends React.Component {
   };
 
   // 从本地缓存中获取数据
-  getPostDataFromLocal = () => localData.getThreadPostDataLocal(
-    this.props.user.userInfo.id,
-    this.props.router.query.id,
-  );
+  getPostDataFromLocal = () => localData.getThreadPostDataLocal(this.props.user.userInfo.id, this.props.router.query.id);
 
   removeLocalData = () => {
     localData.removeThreadPostDataLocal();
-  }
+  };
 
   fetchPermissions() {
     const { user } = this.props;
@@ -319,7 +317,10 @@ class PostPage extends React.Component {
           const version = v[1].replace(/_/g, '.').split('.')
             .splice(0, 2)
             .join('.');
-          if ((Number(version) < 14.3) && !(u.indexOf('safari') > -1 && u.indexOf('chrome') < 0 && u.indexOf('qqbrowser') < 0 && u.indexOf('360') < 0)) {
+          if (
+            Number(version) < 14.3
+            && !(u.indexOf('safari') > -1 && u.indexOf('chrome') < 0 && u.indexOf('qqbrowser') < 0 && u.indexOf('360') < 0)
+          ) {
             Toast.info({ content: 'iOS版本太低，请升级至iOS 14.3及以上版本或使用Safari浏览器访问' });
             return;
           }
@@ -384,13 +385,11 @@ class PostPage extends React.Component {
       const top = rect.y || 0;
       this.handleEditorBoxScroller(top);
     }, 0);
-  }
-
+  };
 
   // 表情等icon
   handleDefaultIconClick = (item, child, data) => {
     if (!this.checkAudioRecordStatus()) return;
-
 
     const { postData } = this.props.threadPost;
 
@@ -424,7 +423,7 @@ class PostPage extends React.Component {
         }
       });
     }
-  }
+  };
 
   checkFileType = (file, supportType) => {
     const { name, imageType } = file;
@@ -457,7 +456,7 @@ class PostPage extends React.Component {
     let isAllLegalSize = true;
     for (let i = 0; i < cloneList.length; i++) {
       const imageSize = cloneList[i].size;
-      const isLegalType = type === THREAD_TYPE.image
+      const isLegalType =        type === THREAD_TYPE.image
         ? this.checkFileType(cloneList[i], supportImgExt)
         : this.checkFileType(cloneList[i], supportFileExt);
       const isLegalSize = imageSize > 0 && imageSize < photoMaxSize * 1024 * 1024;
@@ -478,7 +477,7 @@ class PostPage extends React.Component {
     if (type === THREAD_TYPE.image) this.imageList = [...cloneList];
 
     return true;
-  }
+  };
 
   // 附件和图片上传
   handleUploadChange = (fileList, type) => {
@@ -548,11 +547,11 @@ class PostPage extends React.Component {
 
   handleVditorInit = (vditor) => {
     if (vditor) this.vditor = vditor;
-  }
+  };
 
   handleVditorFocus = () => {
     if (this.vditor) this.vditor.focus();
-  }
+  };
 
   // 关注列表
   handleAtListChange = (atList) => {
@@ -563,29 +562,36 @@ class PostPage extends React.Component {
     const { postData } = this.props.threadPost;
     // 附件付费设置了需要判断是否进行了附件的上传
     if (postData.attachmentPrice) {
-      if (!(postData.audio.id || postData.video.id
-        || Object.keys(postData.images)?.length
-        || Object.keys(postData.files)?.length)) return false;
+      if (
+        !(
+          postData.audio.id
+          || postData.video.id
+          || Object.keys(postData.images)?.length
+          || Object.keys(postData.files)?.length
+        )
+      ) return false;
       return true;
     }
     return true;
-  }
+  };
 
   checkAudioRecordStatus() {
-    const { threadPost: { postData } } = this.props;
+    const {
+      threadPost: { postData },
+    } = this.props;
     const { audioRecordStatus } = postData;
     // 判断录音状态
     if (audioRecordStatus === 'began') {
       Toast.info({ content: '您有录制中的录音未处理，请先上传或撤销录音', duration: 3000 });
       return false;
-    } if (audioRecordStatus === 'completed') {
+    }
+    if (audioRecordStatus === 'completed') {
       Toast.info({ content: '您有录制完成的录音未处理，请先上传或撤销录音', duration: 3000 });
       return false;
     }
 
     return true;
   }
-
 }
 
 // eslint-disable-next-line new-cap

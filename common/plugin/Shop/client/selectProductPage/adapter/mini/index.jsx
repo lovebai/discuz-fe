@@ -165,13 +165,15 @@ export default class SelectProduct extends React.PureComponent {
 
   onReachBottom = () => {
     console.log('reach bottom');
-  }
+  };
 
   /**
    * 渲染平台商品 tab
    */
   renderPlatformShopTab = () => {
+    const { siteData: site } = this.props;
     const { link } = this.state;
+    const { envConfig } = site;
     return (
       <Tabs.TabPanel key={'platformShop'} id={'platformShop'} label={'添加平台商品链接'}>
         <Divider />
@@ -182,7 +184,10 @@ export default class SelectProduct extends React.PureComponent {
               <View className={styles['parse-goods-image']}>
                 {goodImages.map(item => (
                   <View className={styles['image-item']} key={item.name}>
-                    <Image src={item.src} alt={item.name} width={item.width} height={item.height} />
+                    <Image
+                      src={`${envConfig.COMMON_BASE_URL}/${item.src}`}
+                      style={{ width: `${item.width}px`, height: `${item.height}px` }}
+                    />
                     <View className={styles['image-text']}>{item.name}</View>
                   </View>
                 ))}
@@ -221,6 +226,9 @@ export default class SelectProduct extends React.PureComponent {
           {this.renderMiniShopTab()}
           {this.renderPlatformShopTab()}
         </Tabs>
+        <View className={styles.footer}>
+          <Button type="primary" full>确定</Button>
+        </View>
       </View>
     );
   }
