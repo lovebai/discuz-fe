@@ -292,24 +292,24 @@ export default class CustomApplyEntryContent extends React.Component {
                   </Radio>
                 </Radio.Group>
               </View>
-              <View className={classNames(styles['dzqp-act--item'], styles.options)}>
-                <View className={styles.flex}>
-                  <View className={styles['dzqp-act--item_title']}>报名必填</View>
-                  <View className={styles['dzqp-act--item_right']}>
-                    <Checkbox checked={body.options?.length === 4} onChange={this.handleCheckAll}>全选</Checkbox>
-                  </View>
+            </View>
+            <View className={classNames(styles['dzqp-act--item'], styles.options)}>
+              <View className={styles.flex}>
+                <View className={styles['dzqp-act--item_title']}>报名必填</View>
+                <View className={styles['dzqp-act--item_right']}>
+                  <Checkbox checked={body.options?.length === 4} onChange={this.handleCheckAll}>全选</Checkbox>
                 </View>
-                <Checkbox.Group
-                  onChange={this.handleCheck}
-                  value={body.options}
-                  className={styles['apply-options']}
-                >
-                  <Checkbox name='name'>姓名</Checkbox>
-                  <Checkbox name='phone'>手机号</Checkbox>
-                  <Checkbox name='wechatid'>微信号</Checkbox>
-                  <Checkbox name='address'>地址</Checkbox>
-                </Checkbox.Group>
               </View>
+              <Checkbox.Group
+                onChange={this.handleCheck}
+                value={body.options}
+                className={styles['apply-options']}
+              >
+                <Checkbox name='name'>姓名</Checkbox>
+                <Checkbox name='phone'>手机号</Checkbox>
+                <Checkbox name='wechatid'>微信号</Checkbox>
+                <Checkbox name='address'>地址</Checkbox>
+              </Checkbox.Group>
             </View>
           </>
         )}
