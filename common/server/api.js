@@ -111,7 +111,10 @@ http.interceptors.response.use((res) => {
   // ssr服务日志
   if (process.env.NODE_ENV !== 'development' && isServer()) {
     const content = data ? JSON.stringify(data) : '';
+    global.ssr_trace_router.spanID += 1;
     const consoleData = {
+      ssr_log_type: 'api',
+      ...global.ssr_trace_router,
       req_method: res.request.method,
       req_host: res.request.host,
       req_url: res.request.path,
