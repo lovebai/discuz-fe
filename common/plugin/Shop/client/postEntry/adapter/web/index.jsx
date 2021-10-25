@@ -89,9 +89,32 @@ export default class ShopPostEntry extends React.Component {
   };
 
   handleDialogOpen = async () => {
-    this.setState({ visible: true });
+    const { siteData } = this.props;
+    const isPc = siteData.platform !== 'h5';
 
-    await this.fetchMiniShopProductList();
+    if (isPc) {
+      this.setState({ visible: true });
+
+      await this.fetchMiniShopProductList();
+    } else {
+      const { dzqRouter } = this.props;
+      const { router } = dzqRouter;
+
+      const currentPluginStore = this.props.pluginAction.get('shop');
+      console.log(this.props.postData.plugin.shop);
+      if (currentPluginStore) {
+        this.props.pluginAction.set('shop', {
+          ...currentPluginStore,
+          renderData: this.props.postData.plugin.shop,
+        });
+      } else {
+        this.props.pluginAction.set('shop', {
+          renderData: this.props.postData.plugin.shop,
+        });
+      }
+
+      router.push('/plugin/selectProduct');
+    }
   };
 
   handleDialogClose = () => {
@@ -357,11 +380,9 @@ export default class ShopPostEntry extends React.Component {
   };
 
   render() {
-    const { siteData } = this.props;
-    const platform = siteData.platform === 'h5' ? styles.h5 : styles.pc;
-    const isPc = siteData.platform !== 'h5';
-
     const { visible } = this.state;
+
+    console.log(this.props);
 
     if (!this.isShowShopIcon()) return null;
 

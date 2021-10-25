@@ -29,47 +29,76 @@ export default class SelectProduct extends React.PureComponent {
 
   $instance = getCurrentInstance();
 
+  init = () => {
+    const currentPluginStore = this.props.pluginAction.get('shop');
+
+    const { body } = currentPluginStore;
+    const { products } = body || { products: [] };
+
+    let platformProductLink = '';
+    const currentMiniShopProducts = {};
+
+    products.forEach((productInfo) => {
+      if (productInfo.type === MINI_SHOP_TYPE) {
+        currentMiniShopProducts[productInfo.data.productId] = productInfo.data;
+      }
+
+      if (productInfo.type === PLATFORM_SHOP_TYPE) {
+        platformProductLink = productInfo.data.readyContent;
+      }
+    });
+
+    this.setState({
+      selectedMiniShopProducts: currentMiniShopProducts,
+      link: platformProductLink,
+    });
+  };
+
   /**
    * 发布数据格式化函数
    */
-     postDataAdapter = ({ miniShopProducts = [], product }) => {
-       const products = [];
+  postDataAdapter = ({ miniShopProducts = [], product }) => {
+    const products = [];
 
-       if (miniShopProducts.length) {
-         miniShopProducts.forEach((productId) => {
-           products.push({
-             type: MINI_SHOP_TYPE,
-             data: {
-               productId,
-               ...this.state.selectedMiniShopProducts[productId],
-             },
-           });
-         });
-       }
+    if (miniShopProducts.length) {
+      miniShopProducts.forEach((productId) => {
+        products.push({
+          type: MINI_SHOP_TYPE,
+          data: {
+            productId,
+            ...this.state.selectedMiniShopProducts[productId],
+          },
+        });
+      });
+    }
 
-       if (product) {
-         products.push({
-           type: PLATFORM_SHOP_TYPE,
-           data: product,
-         });
-       }
+    if (product) {
+      products.push({
+        type: PLATFORM_SHOP_TYPE,
+        data: product,
+      });
+    }
 
-       return products;
-     };
+    return products;
+  };
 
+  componentDidMount = () => {
+    const onReadyEventId = this.$instance.router.onReady;
+    const onShowEventId = this.$instance.router.onShow;
 
-     componentWillMount() {
-       const onReadyEventId = this.$instance.router.onReady;
-       const onShowEventId = this.$instance.router.onShow;
+    // 监听
+    eventCenter.on(onShowEventId, this.onShow);
+    eventCenter.once(onReadyEventId, this.onReady);
+    this.props.pluginAction.registerLifecycle('onReachBottom', this.onReachBottom);
+  }
 
-       // 监听
-       eventCenter.on(onShowEventId, this.onShow);
-       eventCenter.once(onReadyEventId, this.onReady);
+  componentWillUnmount() {
+    const onReadyEventId = this.$instance.router.onReady;
+    const onShowEventId = this.$instance.router.onShow;
 
-       this.props.pluginAction.set('select_product_page', {
-         onReachBottom: this.onReachBottom,
-       });
-     }
+    eventCenter.off(onShowEventId, this.onShow);
+    eventCenter.off(onReadyEventId, this.onReady);
+  }
 
   handleConfirm = async () => {
     let product;
@@ -84,14 +113,21 @@ export default class SelectProduct extends React.PureComponent {
       miniShopProducts,
     });
 
-    console.log({
-      postData: {
-        tomId: '61540fef8f4de8',
-        body: {
-          products: postData,
+    const currentPluginStore = this.props.pluginAction.get('shop');
+
+    this.props.pluginAction.set('shop', {
+      shopPluginData: {
+        postData: {
+          tomId: '61540fef8f4de8',
+          body: {
+            products: postData,
+          },
         },
       },
+      ...currentPluginStore,
     });
+
+    Taro.navigateBack();
   };
 
   /**
@@ -200,8 +236,9 @@ export default class SelectProduct extends React.PureComponent {
   onReady = () => {};
 
   // on show 生命周期
-  onShow = () => {
-    this.fetchMiniShopProductList();
+  onShow = async () => {
+    await this.fetchMiniShopProductList();
+    this.init();
   };
 
   // TODO: 完善商品 tab 状态判断函数
@@ -293,7 +330,7 @@ export default class SelectProduct extends React.PureComponent {
 
   render() {
     return (
-      <View>
+      <View className={styles.shopPageWrapper}>
         <Tabs
           scrollable={true}
           type={'primary'}

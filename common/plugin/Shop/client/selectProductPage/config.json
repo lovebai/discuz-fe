@@ -1,5 +1,5 @@
 {
-  "pluginName": "select_product_page",
+  "pluginName": "shop",
   "version": "1.0.0",
   "target": "plugin_system",
   "hookName": "add_page_hook",

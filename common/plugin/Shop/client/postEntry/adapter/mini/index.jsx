@@ -1,5 +1,5 @@
 import React from 'react';
-import Taro from '@tarojs/taro';
+import Taro, { eventCenter, getCurrentInstance } from '@tarojs/taro';
 import { Icon, Dialog, Toast } from '@discuzq/design';
 
 export default class ShopPostEntry extends React.Component {
@@ -7,7 +7,24 @@ export default class ShopPostEntry extends React.Component {
     super(props);
   }
 
+  $instance = getCurrentInstance();
+
   handleIconClick = () => {
+    const currentPluginStore = this.props.pluginAction.get('shop');
+
+    if (currentPluginStore) {
+      this.props.pluginAction.set('shop', {
+        ...currentPluginStore,
+        renderData: this.props.renderData,
+      });
+    } else {
+      this.props.pluginAction.set('shop', {
+        renderData: this.props.renderData,
+      });
+    }
+
+    console.log(this.props.pluginAction.get('shop'));
+
     Taro.navigateTo({ url: '/pluginPages/selectProduct/index' });
   };
 
@@ -24,11 +41,7 @@ export default class ShopPostEntry extends React.Component {
     if (!this.isShowApplyIcon()) return null;
     return (
       <>
-        <Icon
-          onClick={this.handleIconClick}
-          name="ShoppingCartOutlined"
-          size="20"
-        />
+        <Icon onClick={this.handleIconClick} name="ShoppingCartOutlined" size="20" />
       </>
     );
   }

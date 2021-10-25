@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import { Checkbox } from '@discuzq/design';
 import styles from '../index.module.scss';
 
@@ -12,10 +13,15 @@ export default class ShopProductItemWebInstance extends React.Component {
   };
 
   render() {
-    const { isSelected } = this.props;
+    const { isSelected, isMini } = this.props;
     const { productId, imagePath, price, title } = this.props.productInfo;
     return (
-      <div className={styles.productItem} onClick={this.onChange}>
+      <div
+        className={classnames(styles.productItem, {
+          [styles.productItemMini]: isMini,
+        })}
+        onClick={this.onChange}
+      >
         <Checkbox checked={isSelected} onChange={this.onChange} />
         <div className={styles.productItemBackgroundWrapper}>
           <div className={styles.productItemWrapper}>

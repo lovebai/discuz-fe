@@ -1,5 +1,5 @@
 {
-  "pluginName": "shop_user_center_entry",
+  "pluginName": "shop",
   "version": "1.0.0",
   "target": "plugin_user",
   "hookName": "user_extension_action_hook",

@@ -1,9 +1,12 @@
 {
-  "pluginName": "qrcode_page",
+  "pluginName": "qrcoshopde_page",
   "version": "1.0.0",
   "target": "plugin_system",
   "hookName": "add_page_hook",
   "platform": ["pc", "h5"],
   "path": "/minishop/qrcode",
+  "miniPageConfig": {
+    "navigationBarTitleText": "二维码"
+  },
   "disables": false
 }

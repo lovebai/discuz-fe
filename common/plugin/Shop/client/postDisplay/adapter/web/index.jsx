@@ -11,6 +11,18 @@ export default class ShopCreateDisplay extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    const selectPagePluginData = this.props.pluginAction.get('shop');
+
+    if (selectPagePluginData) {
+      const { shopPluginData } = selectPagePluginData;
+
+      if (shopPluginData && shopPluginData.postData && shopPluginData.postData.tomId) {
+        this.props.updatePlugin(shopPluginData);
+      }
+    }
+  }
+
   // 删除指定 类别 或 id 的 商品
   deleteProductItem({ type, productId }) {
     const { renderData } = this.props;

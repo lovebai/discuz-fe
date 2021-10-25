@@ -1,37 +1,145 @@
 import React from 'react';
-import { View, Text } from '@tarojs/components';
+import Taro, { eventCenter, getCurrentInstance } from '@tarojs/taro';
+import { View, Text, Image } from '@tarojs/components';
 import { Icon } from '@discuzq/design';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
+
+const MINI_SHOP_TYPE = 11;
+const PLATFORM_SHOP_TYPE = 10;
 
 export default class ShopCreateDisplay extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  render() {
-    const { renderData, deletePlugin, _pluginInfo } = this.props;
-    if (!renderData) return null;
-    if (renderData && renderData?.tomId === _pluginInfo.options.tomId) {
-      const { body } = renderData || {};
-      const { activityStartTime } = body || {};
-      if (!activityStartTime) return null;
+  $instance = getCurrentInstance();
+
+  componentDidMount = () => {
+    const onShowEventId = this.$instance.router.onShow;
+    eventCenter.on(onShowEventId, this.onShow);
+  }
+
+  onShow = () => {
+    const selectPagePluginData = this.props.pluginAction.get('shop');
+
+    if (selectPagePluginData) {
+      const { shopPluginData } = selectPagePluginData;
+      if (shopPluginData && shopPluginData.postData && shopPluginData.postData.tomId) {
+        this.props.updatePlugin(shopPluginData);
+      }
     }
+  }
 
-    console.log(renderData);
+  // 删除指定 类别 或 id 的 商品
+  deleteProductItem({ type, productId }) {
+    const { renderData } = this.props;
+    if (!renderData) return null;
 
+    const { body = { products: [] } } = renderData;
+
+    const { products } = body;
+
+    const nextProducts = Array.from(products);
+
+    nextProducts.forEach((product, idx) => {
+      if (product.type === type) {
+        if (product.type === PLATFORM_SHOP_TYPE) {
+          nextProducts.splice(idx, 1);
+          return;
+        }
+
+        if (product.data.productId === productId) {
+          nextProducts.splice(idx, 1);
+          return;
+        }
+      }
+    });
+
+    this.props.updatePlugin({
+      postData: {
+        tomId: '61540fef8f4de8',
+        body: {
+          products: nextProducts,
+        },
+      },
+    });
+  }
+
+  renderMiniShopItem(product) {
+    const { data: good } = product;
     return (
-      <View className={classNames(styles['dzqp-post-widget'], styles['dzqp-mini'])}>
-        <View className={styles['dzqp-post-widget__right']}>
-          <Icon className={styles['dzqp-post-widget__icon']} name='ApplyOutlined' />
-          <Text className={styles['dzqp-post-widget__text']}>活动报名</Text>
+      <View
+        className={styles.content}
+        key={`${MINI_SHOP_TYPE}-${good.productId}`}
+        onClick={this.handleMiniShopItemClick}
+      >
+        <View className={styles['content-left']}>
+          <Image className={styles.image} src={good.imagePath} alt={good.title} />
         </View>
-        <Icon
-          className={styles['dzqp-post-widget__left']}
-          name='DeleteOutlined'
-          onClick={() => deletePlugin()}
-        />
+        <View className={styles['content-right']}>
+          <View className={styles['content-title']}>{good.title}</View>
+          <View className={styles['content-price']}>￥{good.price}</View>
+          <View
+            className={styles['delete-icon']}
+            onClick={(e) => {
+              e.stopPropagation();
+              this.deleteProductItem({
+                type: MINI_SHOP_TYPE,
+                productId: good.productId,
+              });
+            }}
+          >
+            <Icon name="DeleteOutlined" size={16} color="#8590A6" />
+          </View>
+        </View>
       </View>
     );
+  }
+
+  renderPlatformItem(product) {
+    const { data: good } = product;
+
+    return (
+      <View className={styles.content} key={`${PLATFORM_SHOP_TYPE}-${good.id}`} onClick={this.handlePlatformItemClick}>
+        <View className={styles['content-left']}>
+          <Image className={styles.image} src={good.imagePath} alt={good.title} />
+        </View>
+        <View className={styles['content-right']}>
+          <View className={styles['content-title']}>{good.title}</View>
+          <View className={styles['content-price']}>￥{good.price}</View>
+          <View
+            className={styles['delete-icon']}
+            onClick={() => {
+              this.deleteProductItem({
+                type: PLATFORM_SHOP_TYPE,
+                productId: good.id,
+              });
+            }}
+          >
+            <Icon name="DeleteOutlined" size={16} color="#8590A6" />
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  render() {
+    const { renderData } = this.props;
+    if (!renderData) return null;
+
+    const { body = { products: [] } } = renderData;
+
+    const { products } = body;
+
+    return products.map((product) => {
+      if (product.type === MINI_SHOP_TYPE) {
+        return this.renderMiniShopItem(product);
+      }
+
+      if (product.type === PLATFORM_SHOP_TYPE) {
+        return this.renderPlatformItem(product);
+      }
+    });
   }
 }
