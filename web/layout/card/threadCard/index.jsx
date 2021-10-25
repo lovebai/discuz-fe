@@ -62,6 +62,7 @@ const ThreadCard = inject('user', 'card')(observer((props) => {
 
   const posthandle = str => (str.length > 6 ? `${str.slice(0, 6)}...` : str);
 
+  console.log(text,123);
 
   return (
     <div>
@@ -90,7 +91,7 @@ const ThreadCard = inject('user', 'card')(observer((props) => {
           {title && <div className={styles.title}>{title}</div>}
 
           {/* 文字 */}
-          {text && <PostContent needShowMore={false} content={text.replace(filterIframe, '') || ''} className={styles.content}/>}
+          {text && <PostContent style={{ display: props.hidePart ? 'none' : 'block' }} needShowMore={false} content={text.replace(filterIframe, '') || ''} className={styles.content}/>}
 
 
           {/* 图片 */}

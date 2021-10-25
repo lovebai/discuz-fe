@@ -15,7 +15,7 @@ const ThreadCard = inject('user', 'card', 'comment')(observer((props) => {
 
   useEffect(() => {
     if (!data?.images || data.images.length === 0) {
-        props.card.setImgReady();
+      props.card.setImgReady();
     } else if (imgReadyLength === data?.images?.length) {
       props.card.setImgReady();
       props.card.clearImgReadyLength();
@@ -47,7 +47,7 @@ const ThreadCard = inject('user', 'card', 'comment')(observer((props) => {
           </div>
         </div>
 
-        <div className={styles.body} ref={content}>
+        <div style={{ display: props.hidePart ? 'none' : 'block' }} className={styles.body} ref={content}>
 
           {/* 文字 */}
           {data.content && <PostContent needShowMore={false} content={data.content.replace(filterIframe, '') || ''} className={styles.content}/>}
