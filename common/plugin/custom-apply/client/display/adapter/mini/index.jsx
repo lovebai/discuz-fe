@@ -130,7 +130,7 @@ class CustomApplyDisplay extends React.Component {
       return;
     }
     const { tomId, body, _plugin } = renderData || {};
-    const { isRegistered, activityId, registerUsers, totalNumber, additionalInfoType = [1] } = body;
+    const { isRegistered, activityId, registerUsers, totalNumber, additionalInfoType = [] } = body;
 
     // 报名 + 并且有额外需要添加的字段
     if (!isRegistered && additionalInfoType && additionalInfoType.length) {
