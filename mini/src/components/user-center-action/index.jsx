@@ -1,3 +1,4 @@
+/* eslint-disable spaced-comment */
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { View } from '@tarojs/components';
@@ -6,6 +7,10 @@ import Badge from '@discuzq/design/dist/components/badge/index';
 import styles from './index.module.scss';
 import Router from '@discuzq/sdk/dist/router';
 import UnreadRedDot from '@components/unread-red-dot';
+import DZQPluginCenterInjection from '@discuzq/plugin-center/dist/components/DZQPluginCenterInjection';
+
+// 插件引入
+/**DZQ->plugin->register<plugin_user@user_extension_action_hook>**/
 
 @inject('user')
 @inject('site')
@@ -13,7 +18,7 @@ import UnreadRedDot from '@components/unread-red-dot';
 @observer
 class UserCenterAction extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       actions: [
         {
@@ -21,120 +26,122 @@ class UserCenterAction extends React.Component {
           name: '我的消息',
           url: '/subPages/message/index',
           iconName: 'MailOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'wallet',
           name: '我的钱包',
           url: '/subPages/wallet/index',
           iconName: 'PayOutlined',
-          visible: true
-
+          visible: true,
         },
         {
           cid: 'collect',
           name: '我的收藏',
           url: '/userPages/my/collect/index',
           iconName: 'CollectOutlinedBig',
-          visible: true
+          visible: true,
         },
         {
           cid: 'block',
           name: '我的屏蔽',
           url: '/userPages/my/block/index',
           iconName: 'ShieldOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'buy',
           name: '我的购买',
           url: '/userPages/my/buy/index',
           iconName: 'ShoppingCartOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'draft',
           name: '我的草稿箱',
           url: '/userPages/my/draft/index',
           iconName: 'RetrieveOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'forum',
           name: '站点信息',
           url: '/subPages/forum/index',
           iconName: 'NotepadOutlined',
-          visible: true
+          visible: true,
         },
         {
           cid: 'invite',
           name: '推广邀请',
           url: '/subPages/invite/index',
           iconName: 'NotbookOutlined',
-          visible: !this.props.user.isAdmini
+          visible: !this.props.user.isAdmini,
         },
         {
           cid: 'shopOutlined',
           name: '商城',
           url: '',
           iconName: 'ShopOutlined',
-          visible: true
-        }
+          visible: true,
+        },
       ],
-      rowActionCount: this.props.site.platform === 'pc' ? 9 : 4
-    }
+      rowActionCount: this.props.site.platform === 'pc' ? 9 : 4,
+    };
   }
 
   handleActionItem = (item) => {
     if (item.onClick && typeof item.onClick === 'function') {
-      item.onClick(item)
-      return
+      item.onClick(item);
+      return;
     }
 
-    item.url && Router.push({ url: item.url })
-  }
+    item.url && Router.push({ url: item.url });
+  };
 
   componentDidMount() {
     this.props.message.readUnreadCount();
   }
 
-  renderActionItem = (item, totalUnread) => {
-    return (
-      <View onClick={() => {this.handleActionItem(item)}} className={styles.userCenterActionItem}>
-        <View className={styles.userCenterActionItemIcon}>
-        {
-          item.cid === 'message' ?
-            <UnreadRedDot unreadCount={totalUnread}>
-              <Icon name={item.iconName} color={'#4F5A70'} size={20} />
-            </UnreadRedDot>
-            :
-            <Badge>
-              <Icon name={item.iconName} color={'#4F5A70'} size={20} />
-            </Badge>
-        }
-        </View>
-        <View className={styles.userCenterActionItemDesc}>{item.name}</View>
+  renderActionItem = (item, totalUnread) => (
+    <View
+      onClick={() => {
+        this.handleActionItem(item);
+      }}
+      className={styles.userCenterActionItem}
+    >
+      <View className={styles.userCenterActionItemIcon}>
+        {item.cid === 'message' ? (
+          <UnreadRedDot unreadCount={totalUnread}>
+            <Icon name={item.iconName} color="#4F5A70" size={20} />
+          </UnreadRedDot>
+        ) : (
+          <Badge>
+            <Icon name={item.iconName} color="#4F5A70" size={20} />
+          </Badge>
+        )}
       </View>
-    )
-  }
+      <View className={styles.userCenterActionItemDesc}>{item.name}</View>
+    </View>
+  );
 
   renderActionItems = () => {
-    const { totalUnread } = this.props.message
-    const { actions } = this.state
-    const itemEles = []
-    
-    actions.map(item => {
-      item.visible && itemEles.push(this.renderActionItem(item, totalUnread))
-    })
+    const { totalUnread } = this.props.message;
+    const { actions } = this.state;
+    const itemEles = [];
 
-    return itemEles
-  }
+    actions.map((item) => {
+      item.visible && itemEles.push(this.renderActionItem(item, totalUnread));
+    });
+
+    return itemEles;
+  };
 
   render() {
-    const { actions, rowActionCount } = this.state
+    const { actions, rowActionCount } = this.state;
     return (
-      <View className={`${styles.userCenterAction} ${(actions.length < rowActionCount) && styles.userCenterColumnStyle}`}>
-        { this.renderActionItems() }
+      <View className={`${styles.userCenterAction} ${actions.length < rowActionCount && styles.userCenterColumnStyle}`}>
+        {this.renderActionItems()}
+        <DZQPluginCenterInjection target="plugin_user" hookName="user_extension_action_hook" />
       </View>
     );
   }
