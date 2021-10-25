@@ -1,12 +1,17 @@
 import PluginCenterInjection from './components/PluginCenterInjection';
+import PluginCenterReplaceInjection from './components/PluginCenterReplaceInjection';
+import DZQPluginCenter from '@discuzq/plugin-center';
 
 export default ({ target, hookNames }) => {
   if (!target || !hookNames) return;
 
-  const [beofroHookName, replaceHookName, afterHookName] = hookNames;
+  const { before: beofroHookName, replace: replaceHookName, after: afterHookName } = hookNames;
+
+  const replacePlugin = DZQPluginCenter.replaceInjection(target, replaceHookName);
+
 
   return (props) => {
-    const { className, style, component, ...others } = props;
+    const { className = '', style = {}, component, ...others } = props;
 
     return (
       <>
@@ -24,7 +29,7 @@ export default ({ target, hookNames }) => {
         )}
 
         {/* 替换hooks */}
-        {target && replaceHookName ? (
+        {target && replaceHookName && replacePlugin ? (
           <PluginCenterInjection
             className={className}
             style={style}
