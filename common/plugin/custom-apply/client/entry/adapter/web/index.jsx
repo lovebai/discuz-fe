@@ -8,7 +8,7 @@ import { zhCN } from 'date-fns/locale';
 import { getHours, setHours, getMinutes, setMinutes, format } from 'date-fns';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';
-import { getPostData, formatPostData } from '@common/plugin/custom-apply/client/common';
+import { getPostData, formatPostData, ATTACH_INFO_TYPE } from '@common/plugin/custom-apply/client/common';
 import styles from '../index.module.scss';
 registerLocale('zh-CN', zhCN);
 
@@ -273,7 +273,7 @@ export default class CustomApplyEntry extends React.Component {
   };
 
   handleCheckAll = (val) => {
-    const options = val ? ['name', 'phone', 'wechatid', 'address'] : [];
+    const options = val ? Object.values(ATTACH_INFO_TYPE) : [];
     this.setState({ body: { ...this.state.body, options } });
   };
 
@@ -456,10 +456,10 @@ export default class CustomApplyEntry extends React.Component {
                   value={body.options}
                   className={styles['apply-options']}
                 >
-                  <Checkbox name='name'>姓名</Checkbox>
-                  <Checkbox name='phone'>手机号</Checkbox>
-                  <Checkbox name='wechatid'>微信号</Checkbox>
-                  <Checkbox name='address'>地址</Checkbox>
+                  <Checkbox name={ATTACH_INFO_TYPE.name}>姓名</Checkbox>
+                  <Checkbox name={ATTACH_INFO_TYPE.mobile}>手机号</Checkbox>
+                  <Checkbox name={ATTACH_INFO_TYPE.weixin}>微信号</Checkbox>
+                  <Checkbox name={ATTACH_INFO_TYPE.address}>地址</Checkbox>
                 </Checkbox.Group>
               </div>
             </>

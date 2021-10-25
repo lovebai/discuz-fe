@@ -68,3 +68,30 @@ export const formatPostData = (body) => {
     options,
   };
 };
+
+// 报名附加信息
+export const ATTACH_INFO_TYPE = {
+  name: 1,
+  mobile: 2,
+  weixin: 3,
+  address: 4,
+};
+
+export const ATTACH_INFO_NAME = {
+  [ATTACH_INFO_TYPE.name]: {
+    value: '姓名',
+    key: 'name',
+  },
+  [ATTACH_INFO_TYPE.mobile]: {
+    value: '手机号',
+    key: 'mobile',
+  },
+  [ATTACH_INFO_TYPE.weixin]: {
+    value: '微信号',
+    key: 'weixin',
+  },
+  [ATTACH_INFO_TYPE.address]: {
+    value: '联系地址',
+    key: 'address',
+  },
+};

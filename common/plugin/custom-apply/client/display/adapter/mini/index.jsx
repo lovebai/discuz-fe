@@ -1,12 +1,15 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
-import { Button, Icon, Avatar, Toast } from '@discuzq/design';
+import { Button, Icon, Avatar, Toast, Dialog } from '@discuzq/design';
 import PopupList from '@components/thread/popup-list';
 import CountDown from '@common/utils/count-down';
 import LoginHelper from '@common/utils/login-helper';
+import CustomApplyAttach from './attach';
+import { ATTACH_INFO_NAME } from '@common/plugin/custom-apply/client/common';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
+import actEntryStyles from '../../../entry/adapter/index.module.scss';
 
 let countDownIns = null;
 
@@ -23,6 +26,7 @@ class CustomApplyDisplay extends React.Component {
       seconds: 0,
       isApplyEnd: false, // 报名时间是否已结束
       isApplyStart: false, // 报名时间是否已开始
+      additionalInfo: {}, // 报名字段详细信息
     };
     this.handleActOperate = this.handleActOperate.bind(this);
     this.createRegister = this.createRegister.bind(this);
@@ -126,11 +130,21 @@ class CustomApplyDisplay extends React.Component {
       return;
     }
     const { tomId, body, _plugin } = renderData || {};
-    const { isRegistered, activityId, registerUsers, totalNumber } = body;
+    const { isRegistered, activityId, registerUsers, totalNumber, additionalInfoType = [1] } = body;
+
+    // 报名 + 并且有额外需要添加的字段
+    if (!isRegistered && additionalInfoType && additionalInfoType.length) {
+      this.handleAttachDialogOpen();
+      return;
+    }
+
     const action = isRegistered ? this.deleteRegister : this.createRegister;
     this.setState({ loading: true });
-    const res = await action({ data: { activityId } });
+    const params = { activityId };
+    if (Object.keys(this.state.additionalInfo)) params.additionalInfo = this.state.additionalInfo;
+    const res = await action({ data: params });
     this.setState({ loading: false });
+
     if (res.code === 0) {
       const authorInfo = userInfo;
       const uid = authorInfo.id;
@@ -176,12 +190,55 @@ class CustomApplyDisplay extends React.Component {
     }
   };
 
+  change = (additionalInfo) => {
+    this.setState({ additionalInfo });
+  }
+
+  handleAttachDialogOpen = () => {
+    const { siteData } = this.props;
+    const { navInfo = {} } = siteData || {};
+    const navStyle = !this.state.isDetailPage ? {
+      marginTop: `${navInfo.statusBarHeight}px`,
+      height: `${navInfo.navHeight}px`,
+    } : {};
+    Dialog.confirm({
+      isNew: true,
+      className: classNames(actEntryStyles['dzqp-act'], actEntryStyles.h5, actEntryStyles.mini),
+      headerStyle: navStyle,
+      title: '填写信息',
+      content: <CustomApplyAttach {...this.props} onChange={this.change} />,
+      onConfirm: this.handleAttachConfirm,
+    });
+  };
+
+  handleAttachConfirm = async () => {
+    const { body } = this.props.renderData || {};
+    const { additionalInfo = {} } = this.state;
+    const { additionalInfoType = [] } = body || {};
+    const len = (additionalInfoType || [])?.length;
+    let flag = false;
+    for (let i = 0; i < len; i++) {
+      const key = additionalInfoType[i];
+      if (!additionalInfo[ATTACH_INFO_NAME[key]?.key]) {
+        flag = true;
+        Toast.info({ content: `请输入${ATTACH_INFO_NAME[key]?.value}` });
+        break;
+      }
+    }
+    if (!flag) {
+      this.handleActOperate();
+      Dialog && Dialog.hide();
+      return true;
+    }
+    return false;
+  };
+
   render() {
     const { siteData, renderData } = this.props;
     const { isApplyEnd, minutes, seconds, days, hours, isApplyStart } = this.state;
     if (!renderData) return null;
     const { body } = renderData || {};
-    const { isRegistered } = body;
+    const { isRegistered } = body || {};
     // 过期 || 已满 || 结束 || 未开始
     const isCanNotApply = body?.isExpired || body?.isMemberFull || isApplyEnd || !isApplyStart;
     const { popupShow } = this.state;
