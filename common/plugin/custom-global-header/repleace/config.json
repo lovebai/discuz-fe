@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "target": "plugin_global",
   "hookName": "header_replace_hook",
-  "platform": ["pc", "h5"],
+  "platform": ["pc"],
   "disables": false
 }

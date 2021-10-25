@@ -80,6 +80,17 @@ class Header extends React.Component {
     }
   };
 
+  handlePluginSearch = (value) => {
+    const { onSearch } = this.props;
+    this.props.search.resetIndexData();
+    this.props.baselayout.search = -1;
+    if (!onSearch) {
+      Router.push({ url: `/search?keyword=${value}` });
+    } else {
+      onSearch(value);
+    }
+  };
+
   handleClickSearchIcon = () => {
     this.props.baselayout.search = -1;
     if (this.props.router.pathname.indexOf('/search') !== -1 && this.props.router.pathname.indexOf('/result-') === -1)
@@ -289,10 +300,8 @@ class Header extends React.Component {
     return (
       <GlobalHeaderHooks
         component={component}
-        site={this.props.site}
-        user={{ userInfo: user.userInfo }}
-        forum={{ otherPermissions }}
         message={{ totalUnread }}
+        onSearch={(value) => this.handlePluginSearch(value)}
       ></GlobalHeaderHooks>
     );
   }
