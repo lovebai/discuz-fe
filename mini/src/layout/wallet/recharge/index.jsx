@@ -1,7 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Button from '@discuzq/design/dist/components/button/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import { View } from '@tarojs/components';
 import classNames from 'classnames';
@@ -63,10 +62,11 @@ class Recharge extends React.Component {
         Taro.navigateBack();
       }, 200)
     } else {
-      Toast.error({
-        content: msg,
-        duration: 2000,
-      });
+      Taro.showToast({
+        title: msg,
+        icon: 'fail',
+        duration: 2000
+      })
     }
   }
 
