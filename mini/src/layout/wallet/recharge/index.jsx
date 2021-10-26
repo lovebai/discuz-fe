@@ -48,13 +48,14 @@ class Recharge extends React.Component {
     const inputValue = this.state.inputValue;
     const { rechargeMoney } = this.props.wallet;
     const { success, msg } = await rechargeMoney(inputValue);
-
+    
     if (success) {
-      Toast.success({
-        content: msg,
-        duration: 2000,
-      });
-      const { getUserWalletInfo, getIncomeDetail } = this.props.wallet;
+      Taro.showToast({
+        title: msg,
+        icon: 'success',
+        duration: 2000
+      })
+      const { getUserWalletInfo, getIncomeDetail} = this.props.wallet;
       await getIncomeDetail();
       await getUserWalletInfo();
       this.initState();
