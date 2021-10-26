@@ -110,18 +110,20 @@ http.interceptors.response.use((res) => {
 
   // ssr服务日志
   if (process.env.NODE_ENV !== 'development' && isServer()) {
-    const content = data ? JSON.stringify(data) : '';
-    const consoleData = {
-      req_method: res.request.method,
-      req_host: res.request.host,
-      req_url: res.request.path,
-      req_ua: res.request._header,
-      res_status:res.request.res.statusCode,
-      res_msg: res.request.res.statusMessage,
-      res_content: content,
-      res_content_length: content.length
+    if ( global.clsLog ) {
+      const pathName = res.request.path.split('?')[0];
+      clsLog.console({
+        LOG_TYPE: 'api',
+        API_METHOD: res.request.method,
+        API_HOST: res.request.host,
+        API_HEADER: res.headers,
+        API_PATHNAME: pathName,
+        API_URl: res.request.path,
+        API_STATUS: res.request.res.statusCode,
+        API_MESSAGE: res.request.res.statusMessage,
+        API_RES_BODY_LENGTH: data ? JSON.stringify(data).length : 0
+      });
     }
-    console.log(JSON.stringify(consoleData));
   }
 
   // 如果4002将重定向到登录
