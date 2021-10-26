@@ -249,15 +249,15 @@ const PostContent = ({
         onClick={!showMore ? onShowMore : handleClick}
       >
         <View className={styles.content}>
-            <RichText
-              className={styles.richtext} 
-              content={openedMore && cutContentForDisplay ? cutContentForDisplay : urlToLink(filterContent)}
-              onClick={handleClick}
-              onImgClick={handleImgClick}
-              onLinkClick={handleLinkClick}
-              transformer={transformer}
-              iframeWhiteList={['bilibili', 'youku', 'iqiyi', 'music.163.com', 'ixigua', 'qq.com', 'myqcloud.com']}
-            />
+          <RichText
+            className={styles.richtext} 
+            content={openedMore && cutContentForDisplay ? cutContentForDisplay : urlToLink(filterContent)}
+            onClick={handleClick}
+            onImgClick={handleImgClick}
+            onLinkClick={handleLinkClick}
+            transformer={transformer}
+            iframeWhiteList={['bilibili', 'youku', 'iqiyi', 'music.163.com', 'ixigua', 'qq.com', 'myqcloud.com']}
+          />
 
           {imageVisible && (
             <ImagePreviewer
