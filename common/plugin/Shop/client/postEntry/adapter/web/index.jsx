@@ -78,11 +78,17 @@ export default class ShopPostEntry extends React.Component {
     this.setState({
       activeTab: 'miniShop',
     });
+    this.props.pluginAction.set('shop', {
+      activeTab: 'miniShop',
+    });
     this.handleDialogOpen();
   };
 
   handlePlatformDialogOpen = () => {
     this.setState({
+      activeTab: 'platformShop',
+    });
+    this.props.pluginAction.set('shop', {
       activeTab: 'platformShop',
     });
     this.handleDialogOpen();
@@ -101,7 +107,6 @@ export default class ShopPostEntry extends React.Component {
       const { router } = dzqRouter;
 
       const currentPluginStore = this.props.pluginAction.get('shop');
-      console.log(this.props.postData.plugin.shop);
       if (currentPluginStore) {
         this.props.pluginAction.set('shop', {
           ...currentPluginStore,

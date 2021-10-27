@@ -23,8 +23,6 @@ export default class ShopPostEntry extends React.Component {
       });
     }
 
-    console.log(this.props.pluginAction.get('shop'));
-
     Taro.navigateTo({ url: '/pluginPages/selectProduct/index' });
   };
 

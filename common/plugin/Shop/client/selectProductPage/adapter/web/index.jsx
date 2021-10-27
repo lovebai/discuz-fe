@@ -28,6 +28,8 @@ export default class SelectProduct extends React.PureComponent {
   init = () => {
     const currentPluginStore = this.props.pluginAction.get('shop');
 
+    const { activeTab = 'miniShop' } = currentPluginStore || {};
+
     const { body } = currentPluginStore.renderData || {};
     const { products } = body || { products: [] };
 
@@ -47,6 +49,7 @@ export default class SelectProduct extends React.PureComponent {
     this.setState({
       selectedMiniShopProducts: currentMiniShopProducts,
       link: platformProductLink,
+      activeTab,
     });
   };
 
@@ -127,8 +130,6 @@ export default class SelectProduct extends React.PureComponent {
       miniShopProducts,
     });
 
-    const currentPluginStore = this.props.pluginAction.get('shop');
-
     this.props.pluginAction.set('shop', {
       shopPluginData: {
         postData: {
@@ -138,7 +139,6 @@ export default class SelectProduct extends React.PureComponent {
           },
         },
       },
-      ...currentPluginStore,
     });
 
     const { dzqRouter } = this.props;

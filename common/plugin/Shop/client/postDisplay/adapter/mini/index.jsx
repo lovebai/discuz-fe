@@ -66,6 +66,37 @@ export default class ShopCreateDisplay extends React.Component {
     });
   }
 
+  handleItemClick = () => {
+    const currentPluginStore = this.props.pluginAction.get('shop');
+
+    if (currentPluginStore) {
+      this.props.pluginAction.set('shop', {
+        ...currentPluginStore,
+        renderData: this.props.renderData,
+      });
+    } else {
+      this.props.pluginAction.set('shop', {
+        renderData: this.props.renderData,
+      });
+    }
+
+    Taro.navigateTo({ url: '/pluginPages/selectProduct/index' });
+  }
+
+  handlePlatformItemClick = () => {
+    this.props.pluginAction.set('shop', {
+      activeTab: 'platformShop',
+    });
+    this.handleItemClick();
+  }
+
+  handleMiniShopItemClick = () => {
+    this.props.pluginAction.set('shop', {
+      activeTab: 'miniShop',
+    });
+    this.handleItemClick();
+  }
+
   renderMiniShopItem(product) {
     const { data: good } = product;
     return (

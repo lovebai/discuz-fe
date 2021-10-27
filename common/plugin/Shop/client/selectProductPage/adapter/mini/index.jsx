@@ -32,7 +32,9 @@ export default class SelectProduct extends React.PureComponent {
   init = () => {
     const currentPluginStore = this.props.pluginAction.get('shop');
 
-    const { body } = currentPluginStore;
+    const { activeTab = 'miniShop' } = currentPluginStore || {};
+
+    const { body } = currentPluginStore.renderData || {};
     const { products } = body || { products: [] };
 
     let platformProductLink = '';
@@ -51,6 +53,7 @@ export default class SelectProduct extends React.PureComponent {
     this.setState({
       selectedMiniShopProducts: currentMiniShopProducts,
       link: platformProductLink,
+      activeTab,
     });
   };
 

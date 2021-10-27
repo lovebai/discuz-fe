@@ -14,9 +14,11 @@ export default class ShopCreateDisplay extends React.Component {
   componentDidMount() {
     const selectPagePluginData = this.props.pluginAction.get('shop');
 
+    console.log(selectPagePluginData);
+
     if (selectPagePluginData) {
       const { shopPluginData } = selectPagePluginData;
-
+      console.log(shopPluginData);
       if (shopPluginData && shopPluginData.postData && shopPluginData.postData.tomId) {
         this.props.updatePlugin(shopPluginData);
       }
