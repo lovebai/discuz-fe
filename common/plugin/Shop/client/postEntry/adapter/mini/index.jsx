@@ -26,7 +26,7 @@ export default class ShopPostEntry extends React.Component {
     Taro.navigateTo({ url: '/pluginPages/selectProduct/index' });
   };
 
-  isShowApplyIcon = () => {
+  isShowShopIcon = () => {
     const { siteData, _pluginInfo } = this.props;
     const { pluginConfig } = siteData;
     if (!pluginConfig) return false;
@@ -36,7 +36,7 @@ export default class ShopPostEntry extends React.Component {
   };
 
   render() {
-    if (!this.isShowApplyIcon()) return null;
+    if (!this.isShowShopIcon()) return null;
     return (
       <>
         <Icon onClick={this.handleIconClick} name="ShoppingCartOutlined" size="20" />

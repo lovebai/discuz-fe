@@ -4,6 +4,7 @@ import { goodImages } from '@common/constants/const';
 import styles from '../index.module.scss';
 import Header from '@components/header';
 import ShopProductItem from '../../../components/shopProductItem';
+import { isShowMiniShopTab } from '../../../common';
 
 const MINI_SHOP_TYPE = 11;
 const PLATFORM_SHOP_TYPE = 10;
@@ -20,7 +21,7 @@ export default class SelectProduct extends React.PureComponent {
       miniShopProducts: {}, // 小商店的商品列表
       selectedMiniShopProducts: {}, // 选中的小商店商品
       loading: false, // 是否正在加载中
-      fetchError: '', // 加载错误信息
+      isShowMiniShopTabError: '', // 加载错误信息
       products: {},
     };
   }
@@ -28,7 +29,13 @@ export default class SelectProduct extends React.PureComponent {
   init = () => {
     const currentPluginStore = this.props.pluginAction.get('shop');
 
-    const { activeTab = 'miniShop' } = currentPluginStore || {};
+    let { activeTab = 'miniShop' } = currentPluginStore || {};
+
+    if (!isShowMiniShopTab(this.props)) {
+      if (activeTab === 'miniShop') {
+        activeTab = 'platformShop';
+      }
+    }
 
     const { body } = currentPluginStore.renderData || {};
     const { products } = body || { products: [] };
@@ -266,12 +273,6 @@ export default class SelectProduct extends React.PureComponent {
     }
   };
 
-  // TODO: 完善商品 tab 状态判断函数
-  /**
-   * 是否展示小商店商品 tab 判断
-   */
-  isShowMiniShopTab = () => true;
-
   miniShopProductsAdapter = () => {
     let formatedMiniShopProducts = [];
     const { miniShopProducts } = this.state;
@@ -286,9 +287,7 @@ export default class SelectProduct extends React.PureComponent {
   /**
    * 渲染小商店 tab
    */
-  renderMiniShopTab = () => {
-    if (!this.isShowMiniShopTab()) return null;
-    return (
+  renderMiniShopTab = () => (
       <Tabs.TabPanel key={'miniShop'} id={'miniShop'} label={'添加微信小店商品'}>
         <Divider />
         <div className={styles.productItemWrapper} ref={this.miniShopListRef} onScroll={this.handleListScroll}>
@@ -309,8 +308,7 @@ export default class SelectProduct extends React.PureComponent {
           )}
         </div>
       </Tabs.TabPanel>
-    );
-  };
+  );
 
   /**
    * 渲染平台商品 tab
@@ -351,6 +349,19 @@ export default class SelectProduct extends React.PureComponent {
     );
   };
 
+
+  renderTabs() {
+    const tabs = [];
+
+    if (isShowMiniShopTab(this.props)) {
+      tabs.push(this.renderMiniShopTab());
+    }
+
+    tabs.push(this.renderPlatformShopTab());
+
+    return tabs;
+  }
+
   render() {
     return (
       <div className={styles.shopPageWrapper}>
@@ -365,8 +376,7 @@ export default class SelectProduct extends React.PureComponent {
             });
           }}
         >
-          {this.renderMiniShopTab()}
-          {this.renderPlatformShopTab()}
+          {this.renderTabs()}
         </Tabs>
         <div className={styles.footerH5}>
           <Button type="primary" onClick={this.handleConfirm}>

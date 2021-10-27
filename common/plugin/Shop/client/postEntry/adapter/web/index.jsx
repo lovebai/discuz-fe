@@ -5,6 +5,7 @@ import ShopProductItem from '../../../components/shopProductItem';
 import { readProcutAnalysis } from '@common/server';
 import styles from '../index.module.scss';
 import EventBus from '../../../event';
+import { isShowMiniShopTab } from '../../../common';
 
 const MINI_SHOP_TYPE = 11;
 const PLATFORM_SHOP_TYPE = 10;
@@ -15,7 +16,7 @@ export default class ShopPostEntry extends React.Component {
 
     this.state = {
       visible: false,
-      activeTab: 'miniShop', // 当前选中的 tab 类别
+      activeTab: '', // 当前选中的 tab 类别
       link: '', // 平台商品的解析链接
       currentPage: 1, // 小商店的当前页数
       totalPage: 1, // 小商店的总页数
@@ -33,6 +34,16 @@ export default class ShopPostEntry extends React.Component {
   // 加载当前 postData 中的基础数据
   componentDidMount() {
     this.init();
+
+    if (isShowMiniShopTab(this.props)) {
+      this.setState({
+        activeTab: 'miniShop',
+      });
+    } else {
+      this.setState({
+        activeTab: 'platformShop',
+      });
+    }
 
     EventBus.addEventListener('showMiniDialog', this.handleMiniDialogOpen);
     EventBus.addEventListener('showPlatformDialog', this.handlePlatformDialogOpen);
@@ -247,24 +258,28 @@ export default class ShopPostEntry extends React.Component {
     return false;
   };
 
+  readProductAnalysis = async ({ data }) => {
+    const { dzqRequest } = this.props;
+    const ret = await dzqRequest.request.http({
+      url: '/plugin/shop/api/goods/analysis',
+      method: 'POST',
+      data,
+    });
+    return ret;
+  };
+
   /**
    * 获取商品信息
    * @param {*} options
    */
   fetchProductAnalysis = async (options = {}) => {
-    const ret = await readProcutAnalysis({ data: options });
+    const ret = await this.readProductAnalysis({ data: options });
     const { code, data = {}, msg } = ret;
     if (code === 0) {
       return data;
     }
     Toast.error({ content: msg });
   };
-
-  // TODO: 完善商品 tab 状态判断函数
-  /**
-   * 是否展示小商店商品 tab 判断
-   */
-  isShowMiniShopTab = () => true;
 
   /**
    * 处理点击行为
@@ -313,7 +328,8 @@ export default class ShopPostEntry extends React.Component {
    * 渲染小商店 tab
    */
   renderMiniShopTab = () => {
-    if (!this.isShowMiniShopTab()) return null;
+    if (!isShowMiniShopTab(this.props)) return null;
+
     return (
       <Tabs.TabPanel key={'miniShop'} id={'miniShop'} label={'添加微信小店商品'}>
         <div className={styles.productItemWrapper} ref={this.miniShopListRef} onScroll={this.handleListScroll}>
@@ -384,6 +400,18 @@ export default class ShopPostEntry extends React.Component {
     return formatedMiniShopProducts;
   };
 
+  renderTabs() {
+    const tabs = [];
+
+    if (isShowMiniShopTab(this.props)) {
+      tabs.push(this.renderMiniShopTab());
+    }
+
+    tabs.push(this.renderPlatformShopTab());
+
+    return tabs;
+  }
+
   render() {
     const { visible } = this.state;
 
@@ -413,8 +441,7 @@ export default class ShopPostEntry extends React.Component {
               });
             }}
           >
-            {this.renderMiniShopTab()}
-            {this.renderPlatformShopTab()}
+            {this.renderTabs()}
           </Tabs>
         </Dialog>
       </>

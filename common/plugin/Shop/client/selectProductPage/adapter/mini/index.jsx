@@ -2,10 +2,10 @@ import React from 'react';
 import Taro, { eventCenter, getCurrentInstance } from '@tarojs/taro';
 import { Icon, Button, Input, Tabs, Toast, Spin, Divider } from '@discuzq/design';
 import { View, Image } from '@tarojs/components';
-import { readProcutAnalysis } from '@common/server';
 import { goodImages } from '@common/constants/const';
 import styles from '../index.module.scss';
 import ShopProductItem from '../../../components/shopProductItem';
+import { isShowMiniShopTab } from '../../../common';
 
 const MINI_SHOP_TYPE = 11;
 const PLATFORM_SHOP_TYPE = 10;
@@ -32,7 +32,13 @@ export default class SelectProduct extends React.PureComponent {
   init = () => {
     const currentPluginStore = this.props.pluginAction.get('shop');
 
-    const { activeTab = 'miniShop' } = currentPluginStore || {};
+    let { activeTab = 'miniShop' } = currentPluginStore || {};
+
+    if (!isShowMiniShopTab(this.props)) {
+      if (activeTab === 'miniShop') {
+        activeTab = 'platformShop';
+      }
+    }
 
     const { body } = currentPluginStore.renderData || {};
     const { products } = body || { products: [] };
@@ -133,12 +139,22 @@ export default class SelectProduct extends React.PureComponent {
     Taro.navigateBack();
   };
 
+  readProductAnalysis = async ({ data }) => {
+    const { dzqRequest } = this.props;
+    const ret = await dzqRequest.request.http({
+      url: '/plugin/shop/api/goods/analysis',
+      method: 'POST',
+      data,
+    });
+    return ret;
+  };
+
   /**
    * 获取商品信息
    * @param {*} options
    */
   fetchProductAnalysis = async (options = {}) => {
-    const ret = await readProcutAnalysis({ data: options });
+    const ret = await this.readProductAnalysis({ data: options });
     const { code, data = {}, msg } = ret;
     if (code === 0) {
       return data;
@@ -244,12 +260,6 @@ export default class SelectProduct extends React.PureComponent {
     this.init();
   };
 
-  // TODO: 完善商品 tab 状态判断函数
-  /**
-   * 是否展示小商店商品 tab 判断
-   */
-  isShowMiniShopTab = () => true;
-
   miniShopProductsAdapter = () => {
     let formatedMiniShopProducts = [];
     const { miniShopProducts } = this.state;
@@ -264,9 +274,7 @@ export default class SelectProduct extends React.PureComponent {
   /**
    * 渲染小商店 tab
    */
-  renderMiniShopTab = () => {
-    if (!this.isShowMiniShopTab()) return null;
-    return (
+  renderMiniShopTab = () => (
       <Tabs.TabPanel key={'miniShop'} id={'miniShop'} label={'添加微信小店商品'}>
         <Divider />
         <View className={styles.productItemWrapper} ref={this.miniShopListRef} onScroll={this.handleListScroll}>
@@ -286,8 +294,7 @@ export default class SelectProduct extends React.PureComponent {
           )}
         </View>
       </Tabs.TabPanel>
-    );
-  };
+  );
 
   /**
    * 渲染平台商品 tab
@@ -331,6 +338,18 @@ export default class SelectProduct extends React.PureComponent {
     );
   };
 
+  renderTabs() {
+    const tabs = [];
+
+    if (isShowMiniShopTab(this.props)) {
+      tabs.push(this.renderMiniShopTab());
+    }
+
+    tabs.push(this.renderPlatformShopTab());
+
+    return tabs;
+  }
+
   render() {
     return (
       <View className={styles.shopPageWrapper}>
@@ -344,8 +363,7 @@ export default class SelectProduct extends React.PureComponent {
             });
           }}
         >
-          {this.renderMiniShopTab()}
-          {this.renderPlatformShopTab()}
+          {this.renderTabs()}
         </Tabs>
         <View className={styles.footer}>
           <Button type="primary" full onClick={this.handleConfirm}>
