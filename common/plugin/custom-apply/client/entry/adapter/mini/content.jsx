@@ -32,7 +32,7 @@ export default class CustomApplyEntryContent extends React.Component {
         actPlace: '', // 活动地点
         actPeopleLimitType: 0, // 0 不限制；1 限制
         totalNumber: '',
-        options: [], // 报名选项
+        additionalInfoType: [], // 报名选项
       },
       curClickTime: TimeType.actStart,
     };
@@ -187,12 +187,12 @@ export default class CustomApplyEntryContent extends React.Component {
   };
 
   handleCheckAll = (val) => {
-    const options = val ? Object.values(ATTACH_INFO_TYPE) : [];
-    this.setState({ body: { ...this.state.body, options } });
+    const additionalInfoType = val ? Object.values(ATTACH_INFO_TYPE) : [];
+    this.setState({ body: { ...this.state.body, additionalInfoType } });
   };
 
   handleCheck = (list) => {
-    this.setState({ body: { ...this.state.body, options: list } });
+    this.setState({ body: { ...this.state.body, additionalInfoType: list } });
   };
 
   render() {
@@ -297,12 +297,12 @@ export default class CustomApplyEntryContent extends React.Component {
               <View className={styles.flex}>
                 <View className={styles['dzqp-act--item_title']}>报名必填</View>
                 <View className={styles['dzqp-act--item_right']}>
-                  <Checkbox checked={body.options?.length === 4} onChange={this.handleCheckAll}>全选</Checkbox>
+                  <Checkbox checked={body.additionalInfoType?.length === 4} onChange={this.handleCheckAll}>全选</Checkbox>
                 </View>
               </View>
               <Checkbox.Group
                 onChange={this.handleCheck}
-                value={body.options}
+                value={body.additionalInfoType}
                 className={styles['apply-options']}
               >
                 <Checkbox name={ATTACH_INFO_TYPE.name}>姓名</Checkbox>

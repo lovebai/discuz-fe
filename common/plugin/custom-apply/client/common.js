@@ -15,7 +15,7 @@ export const getPostData = (body, tomId) => {
     content,
     actPlace,
     totalNumber,
-    options,
+    additionalInfoType,
   } = body;
   const registerStartTime = body.registerStartTime ? body.registerStartTime : body.activityStartTime;
   const registerEndTime = body.registerEndTime ? body.registerEndTime : body.activityEndTime;
@@ -28,7 +28,7 @@ export const getPostData = (body, tomId) => {
     activityEndTime: getTime(activityEndTime),
     registerStartTime: getTime(registerStartTime),
     registerEndTime: getTime(registerEndTime),
-    options,
+    additionalInfoType,
   };
   if (actPlace) result = { ...result, position: {
     address: actPlace,
@@ -53,7 +53,7 @@ export const formatPostData = (body) => {
     content,
     totalNumber,
     position,
-    options,
+    additionalInfoType,
   } = body;
   return {
     activityStartTime: getDateTime(activityStartTime),
@@ -65,7 +65,7 @@ export const formatPostData = (body) => {
     actPlace: position?.location || '',
     totalNumber: totalNumber === 0 ? '' : totalNumber,
     actPeopleLimitType: totalNumber === 0 ? 0 : 1,
-    options,
+    additionalInfoType,
   };
 };
 

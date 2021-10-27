@@ -26,8 +26,8 @@ export default class CustomApplyEntry extends React.Component {
     const nowTime = new Date();
     const time = new Date().getTime() + oneDay;
     this.state = {
-      visible: true,
-      showMore: true,
+      visible: false,
+      showMore: false,
       showMobileDatePicker: false,
       body: {
         activityStartTime: nowTime, // 活动开始时间
@@ -39,7 +39,7 @@ export default class CustomApplyEntry extends React.Component {
         actPlace: '', // 活动地点
         actPeopleLimitType: 0, // 0 不限制；1 限制
         totalNumber: '',
-        options: [], // 报名选项
+        additionalInfoType: [], // 报名选项
       },
       curClickTime: TimeType.actStart,
       minTime: setHours(setMinutes(new Date(), getMinutes(nowTime)), getHours(nowTime)),
@@ -227,7 +227,7 @@ export default class CustomApplyEntry extends React.Component {
     const postData = getPostData(body, _pluginInfo.options.tomId) || {};
     if (renderData?.body?.activityId) postData.body.activityId = renderData?.body?.activityId;
     this.props.onConfirm({ postData, _pluginInfo });
-    this.handleDialogClose();
+    this.setState({ visible: false });
   };
 
   handleLimitChange = (val) => {
@@ -273,12 +273,12 @@ export default class CustomApplyEntry extends React.Component {
   };
 
   handleCheckAll = (val) => {
-    const options = val ? Object.values(ATTACH_INFO_TYPE) : [];
-    this.setState({ body: { ...this.state.body, options } });
+    const additionalInfoType = val ? Object.values(ATTACH_INFO_TYPE) : [];
+    this.setState({ body: { ...this.state.body, additionalInfoType } });
   };
 
   handleCheck = (list) => {
-    this.setState({ body: { ...this.state.body, options: list } });
+    this.setState({ body: { ...this.state.body, additionalInfoType: list } });
   };
 
   render() {
@@ -448,12 +448,13 @@ export default class CustomApplyEntry extends React.Component {
                 <div className={styles.flex}>
                   <div className={styles['dzqp-act--item_title']}>报名必填</div>
                   <div className={styles['dzqp-act--item_right']}>
-                    <Checkbox checked={body.options?.length === 4} onChange={this.handleCheckAll}>全选</Checkbox>
+                    <Checkbox
+                      checked={body.additionalInfoType?.length === 4} onChange={this.handleCheckAll}>全选</Checkbox>
                   </div>
                 </div>
                 <Checkbox.Group
                   onChange={this.handleCheck}
-                  value={body.options}
+                  value={body.additionalInfoType}
                   className={styles['apply-options']}
                 >
                   <Checkbox name={ATTACH_INFO_TYPE.name}>姓名</Checkbox>
