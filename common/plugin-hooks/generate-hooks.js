@@ -30,7 +30,7 @@ export default ({ target, hookNames }) => {
 
         {/* 替换hooks */}
         {target && replaceHookName && replacePlugin ? (
-          <PluginCenterInjection
+          <PluginCenterReplaceInjection
             className={className}
             style={style}
             target={target}
