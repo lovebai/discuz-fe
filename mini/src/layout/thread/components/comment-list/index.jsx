@@ -83,7 +83,7 @@ class CommentList extends React.Component {
   }
 
   // 点击头像
-  avatarClick(e) {
+  avatarClick() {
     typeof this.props?.avatarClick === 'function' && this.props.avatarClick();
   }
   // 点击评论列表用户头像
