@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Tabs, Popup, Icon, Spin } from '@discuzq/design';
+import { Tabs, Popup, Icon, Spin, Button } from '@discuzq/design';
 import { readRegisterList } from '@discuzq/sdk/dist/api/plugin/read-register';
 import UserItem from '../user-item';
 import styles from './index.module.scss';
@@ -17,8 +17,8 @@ import { withRouter } from 'next/router';
  * @param {boolean} isCustom 自定义，主要是报名插件需要使用
  */
 
-const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, isCustom = false, activityId }) => {
-
+const Index = ({ visible = false, onHidden = () => { }, tipData = {}, router,
+  isCustom = false, activityId, exportFn }) => {
   const allPageNum = useRef(1);
   const likePageNum = useRef(1);
   const tipPageNum = useRef(1);
@@ -259,11 +259,14 @@ const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, isC
           activeId={current}
           className={`${styles.tabs} ${tipData?.platform === 'pc' && styles.tabsPC}`}
           tabBarExtraContent={
-            tipData?.platform === 'pc' && (
-              <div onClick={onClose} className={styles.tabIcon}>
-                <Icon name="CloseOutlined" size={12} />
-              </div>
-            )
+            <>
+              {isCustom && <Button type="text" onClick={exportFn} className={styles.export}>导出</Button>}
+              {tipData?.platform === 'pc' && (
+                <div onClick={onClose} className={styles.tabIcon}>
+                  <Icon name="CloseOutlined" size={12} />
+                </div>
+              )}
+            </>
           }
         >
           {renderTabPanel(tipData?.platform)}

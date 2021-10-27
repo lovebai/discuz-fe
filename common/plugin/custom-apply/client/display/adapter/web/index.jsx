@@ -36,7 +36,6 @@ class CustomApplyDisplay extends React.Component {
   componentDidMount() {
     if (!countDownIns) countDownIns = new CountDown();
     const { renderData } = this.props;
-
     const { body } = renderData || {};
     if (body?.registerEndTime || body?.registerStartTime) {
       const start = body?.registerStartTime?.replace(/-/g, '/');
@@ -92,6 +91,18 @@ class CustomApplyDisplay extends React.Component {
       };
       const result = await this.props.dzqRequest.dispatcher(options);
       return result;
+    } catch (error) {
+      return this.props.dzqRequestHandleError(error);
+    }
+  }
+
+  async exportInfo() {
+    try {
+      const { renderData, siteData } = this.props;
+      const { body } = renderData || {};
+      const { activityId } = body;
+      Toast.info({ content: '导出中...' });
+      window.location.href = `${siteData?.envConfig?.COMMON_BASE_URL}/plugin/activity/api/register/export?activityId=${activityId}`;
     } catch (error) {
       return this.props.dzqRequestHandleError(error);
     }
@@ -335,6 +346,7 @@ class CustomApplyDisplay extends React.Component {
           visible={popupShow}
           onHidden={() => this.setState({ popupShow: false })}
           tipData={{ platform: siteData.platform }}
+          exportFn={this.exportInfo.bind(this)}
         />}
         {this.state.isAttachShow && (
           <Dialog
