@@ -6,6 +6,11 @@
   overflow: hidden;
   .contentWrapper{
     .content {
+      :global{
+        iframe{
+          max-width: 100%;
+        }
+      }
       @include cursor-on-pc;
       width: 100%;
       position: relative;
@@ -15,6 +20,19 @@
       color: $text-color-primary;
       // margin-top: $padding-1n;
       word-break: break-all;
+
+      .richtext {
+        position: relative;
+        &::after {
+          content: '';
+          position: absolute;
+          top: -10px;
+          left: -10px;
+          right: -10px;
+          bottom: -10px;
+        }
+      }
+
       img {
         &:not(:global(.qq-emotion)) {
           // max-width: 100%;
