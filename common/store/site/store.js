@@ -25,7 +25,7 @@ class SiteStore {
   @observable errPageType = null;
   @observable pluginConfig = null; // 插件配置
   // @observable pluginStore = {};
-  
+
   @computed get isRegister() {
     return !this.isSmsOpen && this.wechatEnv === 'none' && this.registerClose;
   }
@@ -39,8 +39,7 @@ class SiteStore {
   }
 
   @computed get isMiniProgramOpen() {
-    // return Boolean(get(this.webConfig, 'passport.miniprogramOpen', true));
-    return true;
+    return Boolean(get(this.webConfig, 'passport.miniprogramOpen', true));
   }
   // 发布帖子时是否需要绑定手机
   @computed get publishNeedBindPhone() {
