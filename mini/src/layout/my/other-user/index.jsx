@@ -8,7 +8,7 @@ import { inject, observer } from 'mobx-react';
 import UserCenterThreads from '@components/user-center-threads';
 import BaseLayout from '@components/base-layout';
 import Router from '@discuzq/sdk/dist/router';
-import Taro, { getImageInfo, request, getCurrentInstance, eventCenter } from '@tarojs/taro';
+import Taro, { getImageInfo, getCurrentInstance, eventCenter } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 
 import SectionTitle from '@components/section-title';
@@ -202,9 +202,10 @@ class H5OthersPage extends React.Component {
   };
 
   getBackgroundUrl = async () => {
-    if (this.state.previewBackgroundUrl) return;
-    let backgroundPreviewUrl = '';
     const { id = '' } = getCurrentInstance().router.params;
+
+    let backgroundPreviewUrl = '';
+
     if (id && this.props.user?.targetUsers[id]) {
       const targetUsers = this.props.user.targetUsers[id];
       if (targetUsers.originalBackGroundUrl) {
@@ -217,21 +218,28 @@ class H5OthersPage extends React.Component {
           console.log(e);
         }
       }
+
       if (targetUsers.backgroundUrl) {
-        try {
-          await getImageInfo({
-            src: targetUsers.backgroundUrl,
-          });
-          backgroundPreviewUrl = targetUsers.backgroundUrl;
-        } catch (e) {
-          console.log(e);
+        if (!backgroundPreviewUrl) {
+          try {
+            await getImageInfo({
+              src: targetUsers.backgroundUrl,
+            });
+            backgroundPreviewUrl = targetUsers.backgroundUrl;
+          } catch (e) {
+            console.log(e);
+          }
         }
       }
+
     }
 
-    this.setState({
-      previewBackgroundUrl: backgroundPreviewUrl,
-    });
+    if (backgroundPreviewUrl) {
+      this.setState({
+        previewBackgroundUrl: backgroundPreviewUrl,
+      });
+    }
+
   };
 
   showPreviewerRef = () => {
