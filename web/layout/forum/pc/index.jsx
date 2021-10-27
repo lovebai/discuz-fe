@@ -175,32 +175,32 @@ class ForumPCPage extends React.Component {
             {/* 权限板块 start */}
             <div className={layout.my_permission_plate}>
               {/* <div className={layout.plate_left_label}> */}
-              <table className={layout.plate_left_label}>
-                <thead>
-                  <tr className={layout.plate_th}>
-                    <td className={layout.plate_td}>版权模块</td>
+                <table className={layout.plate_left_label}>
+                  <thead>
+                    <tr className={layout.plate_th}>
+                      <td className={layout.plate_td}>版权模块</td>
+                      {
+                        categoriesNames?.map(item => <td className={layout.plate_td} key={item.categoryId}>{item.name}</td>)
+                      }
+                    </tr>
+                  </thead>
+                  <tbody>
                     {
-                      categoriesNames?.map(item => <td className={layout.plate_td} key={item.categoryId}>{item.name}</td>)
+                      PERMISSION_PLATE?.map((item, index) => (
+                          <tr className={layout.plate_tr} key={index}>
+                            <td className={layout.plate_td}>{item.value}</td>
+                            {
+                              categoriesNames?.map(per => (
+                                <td className={layout.plate_td} key={per.categoryId}>
+                                  <Icon size={16} color='#2469F6' name={myPermissons && myPermissons[item.type][per.categoryId] ? 'CheckOutlined' : 'CloseOutlined'}/>
+                                </td>
+                              ))
+                            }
+                          </tr>
+                      ))
                     }
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    PERMISSION_PLATE?.map((item, index) => (
-                        <tr className={layout.plate_tr} key={index}>
-                          <td className={layout.plate_td}>{item.value}</td>
-                          {
-                            categoriesNames?.map(per => (
-                              <td className={layout.plate_td} key={per.categoryId}>
-                                <Icon size={16} color='#2469F6' name={myPermissons && myPermissons[item.type][per.categoryId] ? 'CheckOutlined' : 'CloseOutlined'}/>
-                              </td>
-                            ))
-                          }
-                        </tr>
-                    ))
-                  }
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
               {/* </div> */}
             </div>
             <div className={layout.plate_right_scroll}></div>

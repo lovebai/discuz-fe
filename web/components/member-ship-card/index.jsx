@@ -162,7 +162,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
           onClose={() => setDialogVisible(false)}
         >
           {isPC ? null : <Header allowJump={false} customJum={() => setDialogVisible(false)} />}
-          <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)} className={styles.tabContent}>
+          <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
             {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId, days }) => {
               const data = {
                 groupName,
@@ -170,8 +170,8 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
                 description,
               };
               return (
-                <Tabs.TabPanel key={level} id={level} label={groupName} className={styles.tabContent}>
-                  <div >
+                <Tabs.TabPanel key={level} id={level} label={groupName} >
+                  <div className={styles.tabPanelContent}>
                     <div className={classnames(styles.tabPanel, {
                       [styles.mobileTabPanel]: !isPC
                     })}>
