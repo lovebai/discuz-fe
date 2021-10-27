@@ -27,6 +27,7 @@ const setWalletInfoPageData = (data, obj, {
   if (!obj[type][date][page]) {
     obj[type][date][page] = get(newData, 'pageData', []);
   }
+  obj[type][date][page] = get(newData, 'pageData', []);
 };
 
 const getTypeStr = (code) => {
@@ -225,10 +226,11 @@ class WalletAction extends WalletStore {
 
     // 发起提现
     @action
-    createWalletCash = async ({ money }) => {
+    createWalletCash = async ({ money, receiveAccount }) => {
       const res = await createWalletCash({
         data: {
           cashApplyAmount: money,
+          receiveAccount,
         },
       });
 
