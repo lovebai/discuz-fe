@@ -1,8 +1,0 @@
-{
-  "pluginName": "ReplaceCustomIndexTopping",
-  "version": "1.0.0",
-  "target": "plugin_index",
-  "hookName": "topping_replace_hook",
-  "platform": ["pc", "h5", "mini"],
-  "disables": false
-}
