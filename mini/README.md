@@ -45,6 +45,17 @@ npm run build:weapp
 | | |- images           # 图片资源
 ```
 
+## 图片文件配置
+
+以后请不要使用 CDN，如果要使用找dzq总负责人进行沟通说明原因。如果要使用一些图片资源，请放到 `web/public/assets`  目录。温馨提示：对于使用的图片请务必一定要压缩一下。压缩可以使用：https://tinypng.com/
+
+使用时域名为项目配置`dzq.config.yaml`文件中的`HOST`，例如`test.png`，文件部署后使用方式如下：
+
+```js
+import { IMG_SRC_HOST } from '@common/constants/site';
+const imgUrl = `${IMG_SRC_HOST}/assets/test.png`;
+```
+
 ## 环境配置
 
 通过 `config` 文件夹中的文件中的 `defineConstants`。具体请看：[taro defineConstants](https://taro-docs.jd.com/taro/docs/next/config-detail#defineconstants)。
