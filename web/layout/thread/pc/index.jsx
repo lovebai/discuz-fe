@@ -29,6 +29,8 @@ import RenderCommentList from './comment-list';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import classNames from 'classnames';
 
+
+
 @inject('site')
 @inject('user')
 @inject('thread')
@@ -672,7 +674,7 @@ class ThreadPCPage extends React.Component {
     if (categoryId || typeof categoryId === 'number') {
       this.props.index.refreshHomeData({ categoryIds: [categoryId] });
     }
-    this.props.router.push('/');
+    this.props.router.push(`/?categoryId=${categoryId}&sequence=0`);
   }
 
   // 点击发送私信
@@ -753,7 +755,7 @@ class ThreadPCPage extends React.Component {
             onTagClick={() => this.onTagClick()}
             onPayClick={() => this.onPayClick()}
             onUserClick={() => this.onUserClick(this.props.thread?.threadData?.user?.userId)}
-          ></RenderThreadContent>
+          />
         ) : (
           <LoadingTips type="init"></LoadingTips>
         )}

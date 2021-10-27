@@ -4,6 +4,7 @@ import { readWalletUser, readWalletLog, readWalletCash, createWalletCash } from 
 import time from '@discuzq/sdk/dist/time';
 import { get } from '@common/utils/get';
 import { INCOME_DETAIL_CONSTANTS, EXPAND_DETAIL_CONSTANTS, FREEZE_TYPE } from '@common/constants/wallet';
+import rechargePay from '@common/pay-bussiness/recharge-pay';
 
 const setWalletInfoPageData = (data, obj, {
   type,
@@ -17,7 +18,7 @@ const setWalletInfoPageData = (data, obj, {
     return item
   })
 
-  if (!obj[type]) {
+  if (!obj[type] || page === 1) {
     obj[type] = {};
   }
   if (!obj[type][date]) {
@@ -26,6 +27,8 @@ const setWalletInfoPageData = (data, obj, {
   if (!obj[type][date][page]) {
     obj[type][date][page] = get(newData, 'pageData', []);
   }
+
+  obj = {...obj}
 };
 
 const getTypeStr = (code) => {
@@ -74,7 +77,7 @@ class WalletAction extends WalletStore {
 
     // 获取收入明细
     @action
-    getInconmeDetail = async ({ ...props }) => {
+    getIncomeDetail = async ({ ...props }) => {
       const { page = 1, date = time.formatDate(new Date(), 'YYYY-MM'), type = 'all' } = props;
       const param = {
         walletLogType: 'income',
@@ -239,6 +242,31 @@ class WalletAction extends WalletStore {
         Code: res.code,
         Msg: res.msg,
       };
+    }
+
+    // 充值
+    @action
+    rechargeMoney = async (amount) => {
+      if (!isNaN(Number(amount))) {
+        const params = {
+          amount: Number(amount),
+          title: '自动充值',
+        };
+        const { success, msg } = await rechargePay(params);
+        console.log('充值result', success, msg);
+
+        if (success) {
+          return {
+            success: true,
+            msg: '充值成功',
+          };
+        }
+
+        return {
+          success: false,
+          msg: msg || '充值失败',
+        };
+      }
     }
 }
 

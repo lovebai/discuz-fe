@@ -24,6 +24,8 @@ class SiteStore {
   @observable isUserLoginVisible = null;
   @observable errPageType = null;
   @observable pluginConfig = null; // 插件配置
+  // @observable pluginStore = {};
+  
   @computed get isRegister() {
     return !this.isSmsOpen && this.wechatEnv === 'none' && this.registerClose;
   }
@@ -62,6 +64,11 @@ class SiteStore {
   // 站点名称
   @computed get siteName() {
     return get(this.webConfig, 'setSite.siteName');
+  }
+
+  // 站点版本
+  @computed get version() {
+    return get(this.webConfig, 'setSite.version');
   }
 
   // 站点介绍

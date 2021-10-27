@@ -8,14 +8,14 @@ import UnreadRedDot from '@components/unread-red-dot';
 import { unreadUpdateInterval } from '@common/constants/message';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 import LoginHelper from '@common/utils/login-helper';
-
+import SiteMapLink from '@components/site-map-link';
 /**
  * BottomNavBar组件
  * @prop {boolean} placeholder 固定在底部时，是否在标签位置生成一个等高的占位元素
  * @prop {boolean} curr 常亮icon
  */
 
-const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 'home', onClick = noop, message, canPublish }) => {
+const BottomNavBar = ({ router, index, user, fixed = true, placeholder = false, curr = 'home', onClick = noop, message, canPublish }) => {
   const { totalUnread, readUnreadCount } = message;
   const checkCurrActiveTab = useCallback((curr, target) => {
     return curr === target;
@@ -44,17 +44,29 @@ const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 
     return () => clearTimeout(timeoutRef.current);
   }, []);
 
-  const handleClick = (i, idx) => {
+  const handleClick = (event, i, idx) => {
+    // 满足seo sitemap
+    event.stopPropagation();
+    event.preventDefault();
     if (i.router === '/thread/post') {
       const { permissions } = user;
       if (permissions && permissions.createThread && !permissions.createThread.enable) {
         Toast.info({ content: '您暂无发帖权限' });
         return;
       }
-      if (!canPublish('comment')) return;
+      if (!canPublish('comment')) {
+        return;
+      }
     }
+
+    let url = i.router;
+    const {categoryids = [],sequence=0 } = index.filter;
     if (i.router === '/') {
       LoginHelper.clear();
+
+      if(categoryids?.length || sequence !== 0) {
+        url = `/?categoryId=${categoryids.join('_')}&sequence=${sequence}` ;
+      }
     }
 
     onClick(i, idx)
@@ -65,14 +77,16 @@ const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 
       setTabs(temp);
     }
 
-    router.push(i.router);
+    router.push(url);
   };
 
   return (
     <>
       <div className={styles.footer} style={{ position: fixed ? 'fixed' : '' }}>
         {tabs.map((i, idx) => (i.text ? (
-            <div key={idx} className={styles.item + (i.active ? ` ${styles.active}` : '')} onClick={() => handleClick(i, idx)}>
+          <>
+            <SiteMapLink href={i.router} text={i.text}/>
+            <div key={idx} className={styles.item + (i.active ? ` ${styles.active}` : '')} onClick={(e) => handleClick(e, i, idx)}>
               {
                 i.icon === 'MailOutlined' ? (
                   <UnreadRedDot dotStyle={{top: "-6px"}} unreadCount={totalUnread}>
@@ -84,12 +98,17 @@ const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 
               }
               <div className={styles.text}>{i.text}</div>
             </div>
+          </>
+
         ) : (
-            <div key={idx} style={{ flex: 1, textAlign: 'center' }} onClick={() => handleClick(i, idx)}>
+          <>
+            <SiteMapLink href={i.router} text='发帖'/>
+            <div key={idx} className={styles.addIconWrapper} onClick={(e) => handleClick(e, i, idx)}>
               <div className={styles.addIcon}>
                 <Icon name={i.icon} size={28} color="#fff" />
               </div>
             </div>
+          </>
         )))}
       </div>
       {
@@ -101,4 +120,4 @@ const BottomNavBar = ({ router, user, fixed = true, placeholder = false, curr = 
   );
 };
 
-export default HOCFetchSiteData(withRouter(inject('user', 'message')(observer(BottomNavBar))));
+export default HOCFetchSiteData(withRouter(inject('index', 'user', 'message')(observer(BottomNavBar))));

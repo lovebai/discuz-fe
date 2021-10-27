@@ -18,9 +18,8 @@ import { minus } from '@common/utils/calculate';
 import classnames from 'classnames';
 import UserInfo from '@components/thread/user-info';
 import Packet from '@components/thread/packet'
-import PacketOpen from '@components/red-packet-animation';
 import Avatar from '@components/avatar';
-
+import DZQPluginCenterInjection from '@discuzq/plugin-center/dist/components/DZQPluginCenterInjection';
 import { setClipboardData } from '@tarojs/taro';
 import { parseContentData } from '../../utils';
 import styles from './index.module.scss';
@@ -29,12 +28,11 @@ import styles from './index.module.scss';
 /**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
-const RenderThreadContent = inject('site', 'user')(
+const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread')(
   observer((props) => {
-    const { store: threadStore, site } = props;
+    const { store: threadStore, site, index, thread, user } = props;
     const { text, indexes } = threadStore?.threadData?.content || {};
     const { parentCategoryName, categoryName } = threadStore?.threadData;
-    const { hasRedPacket } = threadStore; // 是否有红包领取的数据
     const { webConfig: { other: { threadOptimize } } } = site;
 
     const tipData = {
@@ -297,19 +295,15 @@ const RenderThreadContent = inject('site', 'user')(
               </Button>
             </View>
           )}
-
-          {
-            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({ render, pluginInfo }) => {
-              return (
-                <View key={pluginInfo.name}>
-                  {render({
-                    site: { ...site, isDetailPage: true  },
-                    renderData: parseContent.plugin
-                  })}
-                </View>
-              )
-            })
-          }
+          <DZQPluginCenterInjection
+            target='plugin_detail'
+            hookName='thread_extension_display_hook'
+            pluginProps={{
+              threadData: threadStore?.threadData,
+              renderData: parseContent.plugin,
+              updateListThreadIndexes: index.updateListThreadIndexes.bind(index),
+              updateThread: thread.updateThread.bind(thread),
+          }}/>
 
           {/* 标签 */}
           {(parentCategoryName || categoryName) && (
@@ -357,7 +351,7 @@ const RenderThreadContent = inject('site', 'user')(
               </View>
             )
           }
-          
+
         </View>
 
         {isApproved && (
@@ -405,10 +399,7 @@ const RenderThreadContent = inject('site', 'user')(
           </View>
         )}
 
-        {
-          hasRedPacket > 0
-          && <PacketOpen onClose={() => threadStore.setRedPacket(0)} money={hasRedPacket} />
-        }
+     
       </View>
     );
   }),

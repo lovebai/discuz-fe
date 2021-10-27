@@ -113,12 +113,14 @@
         .dzq-input {
           margin-right: $margin-1n;
           margin-left: $margin-1n;
-          width: 30px;
+          width: 50px;
         }
 
         .dzq-input__inner {
           height: 30px;
+          line-height: 30px;
           border: 1px solid $text-color-placeholder;
+          text-align: center;
         }
       }
     }
@@ -210,15 +212,17 @@
       display: none;
     }
     .dzq-modal__body {
-      height: calc(100vh - 130px - constant(safe-area-inset-bottom));
-      height: calc(100vh - 130px - env(safe-area-inset-bottom));
+      height: calc(100vh - 150px - constant(safe-area-inset-bottom));
+      height: calc(100vh - 150px - env(safe-area-inset-bottom));
     }
   }
 }
-.text-center {
+
+.dzqp-act__limit_input {
   :global {
     .dzq-input__inner {
       text-align: center;
+      padding: 0;
     }
   }
 }

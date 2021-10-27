@@ -4,9 +4,15 @@
 .container {
   width: 100%;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
   .contentWrapper{
     .content {
+
+      :global{
+        iframe{
+          max-width: 100%;
+        }
+      }
       //@include cursor-on-pc;
       cursor: text;
       width: 100%;
@@ -33,7 +39,7 @@
     }
 
     :global(.dzq-richText) {
-      overflow: hidden;
+      overflow: visible;
     }
     :global(.dzq-richText .dzq-p) {
       text-align: justify;

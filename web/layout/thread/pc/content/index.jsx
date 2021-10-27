@@ -22,15 +22,17 @@ import Avatar from '@components/avatar';
 
 import Packet from '@components/thread/packet';
 import PacketOpen from '@components/red-packet-animation/web';
-import { withRouter } from 'next/router';
-
+import Router from '@discuzq/sdk/dist/router';
+import DZQPluginCenterInjectionPolyfill from '../../../../utils/DZQPluginCenterInjectionPolyfill';
+// import DZQPluginCenterInjection from '../../../../utils/DZQPluginCenterInjection';
+import isServer from '@common/utils/is-server';
 
 // 插件引入
 /**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
-export default withRouter(inject('site', 'user')(observer((props) => {
-  const { store: threadStore, site } = props;
+const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')(observer((props) => {
+  const { store: threadStore, site, index, thread, user } = props;
   const { text, indexes } = threadStore?.threadData?.content || {};
   const { parentCategoryName, categoryName } = threadStore?.threadData;
   const { hasRedPacket } = threadStore; // 是否有红包领取的数据
@@ -324,6 +326,16 @@ export default withRouter(inject('site', 'user')(observer((props) => {
         {parseContent.VOTE_THREAD
           && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
 
+        <DZQPluginCenterInjectionPolyfill
+          target='plugin_detail' 
+          hookName='thread_extension_display_hook' 
+          pluginProps={{
+            threadData: threadStore?.threadData,
+            renderData: parseContent.plugin,
+            updateListThreadIndexes: index.updateListThreadIndexes.bind(index),
+            updateThread: thread.updateThread.bind(thread),
+        }}/>
+
         {/* 付费附件：不能免费查看付费帖 && 需要付费 && 不是作者 && 没有付费 */}
         {needAttachmentPay && (
           <div style={{ textAlign: 'center' }} onClick={onContentClick}>
@@ -335,19 +347,6 @@ export default withRouter(inject('site', 'user')(observer((props) => {
             </Button>
           </div>
         )}
-
-        {
-          DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({ render, pluginInfo }) => {
-            return (
-              <div key={pluginInfo.name}>
-                {render({
-                  site: { ...site, isDetailPage: true },
-                  renderData: parseContent.plugin
-                })}
-              </div>
-            )
-          })
-        }
 
         {/* 标签 */}
         {(parentCategoryName || categoryName) && (
@@ -383,7 +382,7 @@ export default withRouter(inject('site', 'user')(observer((props) => {
               <div className={topic.top}>{tipList.length}人打赏</div>
               <div className={topic.itemList}>
                   {tipList.map(i=>(
-                    <div key={i.userId} onClick={()=>props.router.push(`/user/${i.userId}`)} className={topic.itemAvatar}>
+                    <div key={i.userId} onClick={()=>Router.push({ url: `/user/${i.userId}` })} className={topic.itemAvatar}>
                       <Avatar
                         image={i.avatar}
                         name={i.nickname}
@@ -447,3 +446,5 @@ export default withRouter(inject('site', 'user')(observer((props) => {
     </div>
   );
 })));
+
+export default RenderThreadContent;

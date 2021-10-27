@@ -20,15 +20,17 @@ import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
 import Avatar from '@components/avatar';
 import Packet from '@components/thread/packet';
 import PacketOpen from '@components/red-packet-animation/h5';
-import { withRouter } from 'next/router';
+import Router from '@discuzq/sdk/dist/router';
+import DZQPluginCenterInjectionPolyfill from '../../../../utils/DZQPluginCenterInjectionPolyfill';
+import isServer from '@common/utils/is-server';
 
 
 // 插件引入
 /**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
-const RenderThreadContent = withRouter(inject('site', 'user')(observer((props) => {
-  const { store: threadStore, site } = props;
+const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')(observer((props) => {
+  const { store: threadStore, site, index, thread, user } = props;
   const { text, indexes } = threadStore?.threadData?.content || {};
   const { parentCategoryName, categoryName } = threadStore?.threadData;
   const { hasRedPacket } = threadStore; // 是否有红包领取的数据
@@ -49,6 +51,10 @@ const RenderThreadContent = withRouter(inject('site', 'user')(observer((props) =
   // 是否附件付费帖
   const isAttachmentPay = threadStore?.threadData?.payType === 2 && threadStore?.threadData?.paid === false;
   const attachmentPrice = threadStore?.threadData?.attachmentPrice || 0;
+
+   // 是否可以免费查看付费帖子
+   const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
+
   // 是否需要附加付费
   const needAttachmentPay = !canFreeViewPost && isAttachmentPay && !isSelf && !isPayed;
   // 是否付费帖子
@@ -72,9 +78,6 @@ const RenderThreadContent = withRouter(inject('site', 'user')(observer((props) =
   // const canBeReward = isFree && !isRedPack && !isReward;
   // 是否已打赏
   const isRewarded = threadStore?.threadData?.isReward;
-
-  // 是否可以免费查看付费帖子
-  const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
 
   const parseContent = parseContentData(indexes);
 
@@ -272,6 +275,16 @@ const RenderThreadContent = withRouter(inject('site', 'user')(observer((props) =
         {/* 投票 */}
         {parseContent.VOTE_THREAD
           && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
+    
+        <DZQPluginCenterInjectionPolyfill
+          target='plugin_detail' 
+          hookName='thread_extension_display_hook' 
+          pluginProps={{
+            threadData: threadStore?.threadData,
+            renderData: parseContent.plugin,
+            updateListThreadIndexes: index.updateListThreadIndexes.bind(index),
+            updateThread: thread.updateThread.bind(thread),
+        }}/>
 
         {/* 付费附件 */}
         {needAttachmentPay && (
@@ -282,19 +295,8 @@ const RenderThreadContent = withRouter(inject('site', 'user')(observer((props) =
             </Button>
           </div>
         )}
-
-          {
-            DZQPluginCenter.injection('plugin_detail', 'thread_extension_display_hook').map(({render, pluginInfo}) => {
-              return (
-                <div key={pluginInfo.name}>
-                  {render({
-                    site: { ...site, isDetailPage: true  },
-                    renderData: parseContent.plugin
-                  })}
-                </div>
-              )
-            })
-          }
+        
+          
 
           {/* 标签 */}
           {(parentCategoryName || categoryName) && (
@@ -328,7 +330,7 @@ const RenderThreadContent = withRouter(inject('site', 'user')(observer((props) =
               <div className={styles.top}>{tipList.length}人打赏</div>
               <div className={styles.itemList}>
                 {tipList.map(i=>(
-                  <div key={i.userId} onClick={()=>props.router.push(`/user/${i.userId}`)} className={styles.itemAvatar}>
+                  <div key={i.userId} onClick={()=>Router.push({ url: `/user/${i.userId}` })} className={styles.itemAvatar}>
                       <Avatar
                         image={i.avatar}
                         name={i.nickname}

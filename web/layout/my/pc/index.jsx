@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import classnames from 'classnames';
 import styles from './index.module.scss';
 import clearLoginStatus from '@common/utils/clear-login-status';
-import UserCenterPost from '@components/user-center-post-pc';
+import UserCenterPost from '@components/user-center-post';
 import UserCenterAction from '@components/user-center-action-pc';
 import SidebarPanel from '@components/sidebar-panel';
 import Avatar from '@components/avatar';
@@ -128,7 +128,7 @@ class PCMyPage extends React.Component {
   };
 
   // 是否显示续费卡片
-  whetherIsShowRenewalCard = () => this.props.site?.siteMode === 'pay' && !this.props.user?.isAdmini;
+  whetherIsShowRenewalCard = () => !this.props.user?.isAdmini;
 
   renderRight = () => {
     // 条件都满足时才显示微信
@@ -276,6 +276,7 @@ class PCMyPage extends React.Component {
           onRefresh={this.fetchUserThreads}
           isShowLayoutRefresh={!isLoading && !!myThreadsList?.length}
           showHeaderLoading={IS_USER_INFO_LOADING}
+          bottomViewStyle={{ width: '68%' }}
         >
           <div>
             <div>

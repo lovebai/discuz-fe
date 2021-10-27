@@ -64,7 +64,7 @@ const Index = forwardRef((props, ref) => {
         const { index, onClickTab, searchClick } = props;
 
         const { categories = [], activeCategoryId, currentCategories } = index;
-    
+
         return (
           <>
             {categories?.length > 0 && (
@@ -95,7 +95,7 @@ const Index = forwardRef((props, ref) => {
           </>
         );
       };
-    
+
       const renderFixedTabs = () => {
         const { index, site, searchClick } = props;
         const { categories = [], activeCategoryId, currentCategories } = index;

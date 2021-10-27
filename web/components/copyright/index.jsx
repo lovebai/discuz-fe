@@ -38,14 +38,17 @@ class CopyRight extends React.Component {
     return (
       <div className={clsName} style={style}>
         <div className={styles.text}>
-          <a href="https://discuz.chat" target="_blank">
-            Powered By Discuz! Q Copyright &copy; {curYear} {setSite.siteName}
+          <a href='/' target="_blank">
+            &copy; {curYear} {setSite.siteName}
           </a>
+        </div>
+        <div className={styles.text}>
+          <a href="https://discuz.chat" title="Discuz! Q">{`Powered By Discuz! Q (${setSite.version})`}</a>
         </div>
         {
           setSite.siteRecord && (
             <div className={styles.text}>
-              <a href="https://beian.miit.gov.cn/" target="_blank">
+              <a href="https://beian.miit.gov.cn/" rel='nofollow noopener noreferrer' target="_blank">
                 {setSite.siteRecord}
               </a>
             </div>
@@ -55,7 +58,7 @@ class CopyRight extends React.Component {
           setSite.siteRecordCode && (
             <div className={`${styles.text} ${styles.beian}`}>
               <a href='http://www.beian.gov.cn/portal/registerSystemInfo' target="_blank" rel='nofollow noopener noreferrer'>
-                <img src="/dzq-img/beian.png" alt="" />
+                <img src="/dzq-img/beian.png" alt="公安备案号" />
                 {setSite.siteRecordCode}
               </a>
             </div>

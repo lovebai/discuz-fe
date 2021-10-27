@@ -10,7 +10,6 @@ import Router from '@discuzq/sdk/dist/router';
 import Taro from '@tarojs/taro';
 
 import Page from '@components/page';
-import List from '@components/list';
 import DatePickers from '@components/thread-post/date-time-picker';
 import { formatDate } from '@common/utils/format-date.js';
 import { INCOME_DETAIL_CONSTANTS, EXPAND_DETAIL_CONSTANTS, CASH_DETAIL_CONSTANTS } from '@common/constants/wallet';
@@ -25,6 +24,7 @@ import layout from './layout.module.scss';
 import BaseLayout from '@components/base-layout';
 
 @inject('wallet')
+@inject('site')
 @observer
 class WalletH5Page extends React.Component {
   static options = {
@@ -59,12 +59,20 @@ class WalletH5Page extends React.Component {
   }
 
   // 点击提现
-  toWithrawal = () => {
+  toWithdrawal = () => {
     Router.push({ url: '/subPages/wallet/withdrawal/index' });
+  };
+
+  // 点击充值
+  toRecharge = () => {
+    Taro.navigateTo({ url: '/subPages/wallet/recharge/index' });
   };
 
   // 切换选项卡
   onTabActive = (val) => {
+    this.props.wallet.resetInfo()
+    this.props.wallet.getUserWalletInfo();
+
     this.setState({
       tabsType: val,
     });
@@ -205,7 +213,7 @@ class WalletH5Page extends React.Component {
 
   fetchIncomeDetail = async () => {
     try {
-      const detailRes = await this.props.wallet.getInconmeDetail({
+      const detailRes = await this.props.wallet.getIncomeDetail({
         page: this.state.page,
         type: this.state.selectType,
         date: this.state.consumptionTime,
@@ -362,6 +370,10 @@ class WalletH5Page extends React.Component {
   );
 
   render() {
+    // 判断是否显示充值按钮，微信支付打开 && 充值权限打开
+    const { isWechatPayOpen, webConfig } = this.props.site || {};
+    const { siteCharge } = webConfig.setSite || {};
+    const isShowRecharge = isWechatPayOpen && siteCharge === 1;
     const tabList = [
       [
         'income',
@@ -409,7 +421,9 @@ class WalletH5Page extends React.Component {
         <BaseLayout
           noMore={this.state.page > this.state.totalPage}
           onRefresh={this.loadMore}
-          listClassName={layout.walletWrapper}
+          listClassName={classNames(layout.walletWrapper, {
+            [layout.walletWrapperRecharge]: isShowRecharge,
+          })}
           immediateCheck
           showHeader={false}
           showLoadingInCenter={!this.getWalletList().length}
@@ -461,9 +475,14 @@ class WalletH5Page extends React.Component {
           </View>
         </BaseLayout>
         <View className={layout.footer}>
-          <Button className={layout.button} onClick={this.toWithrawal} type="primary">
+          <Button className={layout.button} onClick={this.toWithdrawal} type="primary">
             提现
           </Button>
+          {isShowRecharge && (
+            <Button className={layout.button} onClick={this.toRecharge} type="primary">
+              充值
+            </Button>
+          )}
         </View>
         {/* 条件过滤 */}
         <FilterView

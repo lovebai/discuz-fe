@@ -8,8 +8,9 @@ import { inject, observer } from 'mobx-react';
 import UserCenterThreads from '@components/user-center-threads';
 import BaseLayout from '@components/base-layout';
 import Router from '@discuzq/sdk/dist/router';
+import Taro, { getImageInfo, getCurrentInstance, eventCenter } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import Taro, { getCurrentInstance, eventCenter } from '@tarojs/taro';
+
 import SectionTitle from '@components/section-title';
 import BottomView from '@components/list/BottomView';
 import ImagePreviewer from '@discuzq/design/dist/components/image-previewer/index';
@@ -23,7 +24,10 @@ class H5OthersPage extends React.Component {
     super(props);
     this.state = {
       fetchUserInfoLoading: true,
+      previewBackgroundUrl: null, // 预览背景图片链接
     };
+
+    this.previewBackgroundLoading = false; // 预览背景图片是否在预加载
 
     const { id = '' } = getCurrentInstance().router.params;
 
@@ -88,6 +92,8 @@ class H5OthersPage extends React.Component {
 
       await this.props.user.getTargetUserInfo({ userId: this.targetUserId });
 
+      await this.getBackgroundUrl();
+
       this.setState({
         fetchUserInfoLoading: false,
       });
@@ -108,6 +114,7 @@ class H5OthersPage extends React.Component {
     this.setNavigationBarStyle();
     const { id = '' } = getCurrentInstance().router.params;
     const myId = this.props.user?.id;
+
     if (String(myId) === id) {
       Router.replace({ url: '/userPages/my/index' });
       return;
@@ -194,16 +201,45 @@ class H5OthersPage extends React.Component {
     );
   };
 
-  getBackgroundUrl = () => {
+  getBackgroundUrl = async () => {
     const { id = '' } = getCurrentInstance().router.params;
 
-    let backgroundUrl = null;
+    let backgroundPreviewUrl = '';
+
     if (id && this.props.user?.targetUsers[id]) {
-      backgroundUrl = this.props.user.targetUsers[id].originalBackGroundUrl;
+      const targetUsers = this.props.user.targetUsers[id];
+      if (targetUsers.originalBackGroundUrl) {
+        try {
+          await getImageInfo({
+            src: targetUsers.originalBackGroundUrl,
+          });
+          backgroundPreviewUrl = targetUsers.originalBackGroundUrl;
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+      if (targetUsers.backgroundUrl) {
+        if (!backgroundPreviewUrl) {
+          try {
+            await getImageInfo({
+              src: targetUsers.backgroundUrl,
+            });
+            backgroundPreviewUrl = targetUsers.backgroundUrl;
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      }
+
     }
 
-    if (!backgroundUrl) return false;
-    return backgroundUrl;
+    if (backgroundPreviewUrl) {
+      this.setState({
+        previewBackgroundUrl: backgroundPreviewUrl,
+      });
+    }
+
   };
 
   showPreviewerRef = () => {
@@ -214,7 +250,7 @@ class H5OthersPage extends React.Component {
 
   handlePreviewBgImage = (e) => {
     e && e.stopPropagation();
-    if (!this.getBackgroundUrl()) return;
+    if (!this.state.previewBackgroundUrl) return;
     this.isPreivewImage = true;
     this.showPreviewerRef();
   };
@@ -225,6 +261,7 @@ class H5OthersPage extends React.Component {
     const { targetUserId } = this;
     const { threadList } = this.props;
     const { lists } = threadList;
+    const { previewBackgroundUrl } = this.state;
 
     const userThreadsList = threadList.getList({
       namespace: `user/${targetUserId}`,
@@ -261,7 +298,7 @@ class H5OthersPage extends React.Component {
           )}
           <View
             style={{
-              display: !this.state.fetchUserInfoLoading ? 'block' : 'none'
+              display: !this.state.fetchUserInfoLoading ? 'block' : 'none',
             }}
           >
             <View onClick={this.handlePreviewBgImage}>
@@ -293,12 +330,8 @@ class H5OthersPage extends React.Component {
             </View>
           </View>
         </View>
-        {this.getBackgroundUrl() && (
-          <ImagePreviewer
-            ref={this.previewerRef}
-            imgUrls={[this.getBackgroundUrl()]}
-            currentUrl={this.getBackgroundUrl()}
-          />
+        {previewBackgroundUrl && (
+          <ImagePreviewer ref={this.previewerRef} imgUrls={[previewBackgroundUrl]} currentUrl={previewBackgroundUrl} />
         )}
       </BaseLayout>
     );

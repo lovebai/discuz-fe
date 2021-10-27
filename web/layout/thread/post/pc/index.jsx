@@ -29,6 +29,7 @@ import TagLocalData from '@components/thread-post/tag-localdata';
 import VoteWidget from '@components/thread-post/vote-widget';
 import IframeVideo from '@components/thread-post/iframe-video';
 import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
+import DZQPluginCenterInjectionPolyfill from '../../../../utils/DZQPluginCenterInjectionPolyfill';
 
 // 插件引入
 /**DZQ->plugin->register<plugin_post@post_extension_content_hook>**/
@@ -60,14 +61,16 @@ class ThreadPCPage extends React.Component {
     // 监听插件区域的高度变化调整编辑器的min-height style，使编辑器初始化时占满编辑框，更容易监测到图片拖拽上传
     const resizeObserver = new ResizeObserver(() => {
       const el = this.pluginContainer.current;
+      const vditorContent = document.querySelector('#dzq-vditor');
+      if (!vditorContent) return;
       if (el && el.offsetHeight) {
-        document.querySelector('#dzq-vditor').style.minHeight = '44px';
+        vditorContent.style.minHeight = '44px';
       } else {
-        document.querySelector('#dzq-vditor').style.minHeight = '450px';
+        vditorContent.style.minHeight = '450px';
       }
     });
-    resizeObserver.observe(this.pluginContainer.current);
 
+    resizeObserver.observe(this.pluginContainer.current);
 
   }
 
@@ -117,7 +120,6 @@ class ThreadPCPage extends React.Component {
     const { setAttach, qcloud } = webConfig;
     const { supportImgExt, supportMaxSize } = setAttach;
     const { qcloudCosBucketName, qcloudCosBucketArea, qcloudCosSignUrl, qcloudCos } = qcloud;
-
     return (
       <div className={styles.container}>
         <Header />
@@ -264,26 +266,20 @@ class ThreadPCPage extends React.Component {
                       onDelete={() => this.props.setPostData({ product: {} })}
                     />
                   )}
-
-                  {
-                    DZQPluginCenter.injection('plugin_post', 'post_extension_content_hook').map(({render, pluginInfo}) => {
-                      return (
-                        <div key={pluginInfo.pluginName}>
-                          {render({
-                            site: this.props.site,
-                            renderData: postData.plugin,
-                            deletePlugin: this.props.threadPost.deletePluginPostData,
-                            updatePlugin: this.props.threadPost.setPluginPostData
-                          })}
-                        </div>
-                      )
-                    })
-                  }
+                  <DZQPluginCenterInjectionPolyfill
+                    target='plugin_post' 
+                    hookName='post_extension_content_hook' 
+                    pluginProps={{
+                      renderData: postData.plugin,
+                      deletePlugin: this.props.threadPost.deletePluginPostData,
+                      updatePlugin: this.props.threadPost.setPluginPostData
+                  }}/>
+                  
                 </div>
 
               </div>
               {/* 设置的金额相关展示 + 本地缓存设置 */}
-              <div className={styles.['editor-footer']}>
+              <div className={styles['editor-footer']}>
                 <div className={styles['editor-footer--left']}>
                   {threadPost.isHaveLocalData && <TagLocalData pc />}
                   <MoneyDisplay

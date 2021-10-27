@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import IndexH5Page from '@layout/index/h5';
 import IndexPCPage from '@layout/index/pc';
-import { readCategories, readStickList, readThreadList } from '@server';
+import { readCategories, readStickList, readThreadList, readRecommends } from '@server';
 import { handleString2Arr } from '@common/utils/handleCategory';
 import HOCFetchSiteData from '../middleware/HOCFetchSiteData';
 import ViewAdapter from '@components/view-adapter';
@@ -27,6 +27,8 @@ class Index extends React.Component {
   page = 1;
   prePage = 10;
   static async getInitialProps(ctx, { user, site }) {
+
+    const { platform } = site;
     const result = getRouterCategory(ctx, site);
     const { essence = 0, sequence = 0, attention = 0, sort = 1 } = result;
     const newTypes = handleString2Arr(result, 'types');
@@ -37,18 +39,27 @@ class Index extends React.Component {
     const sticks = await readStickList({ params: { categoryIds } }, ctx);
     const threads = await readThreadList({
       params: {
-        perPage: 10,
+        // 为优化seo，对ssr部署时，获取50条数据，普通用户10条
+        perPage: process.env.NODE_ENV !== 'development' && process.env.DISCUZ_RUN === 'ssr' ? 50 : 10,
         page: 1,
         sequence,
         filter: { categoryids: categoryIds, types: newTypes, essence, attention, sort },
       },
     }, ctx);
+    
+
+    // 只有pc下才去加载推荐内容
+    let recommend = null;
+    if (platform === 'pc') {
+      recommend = await readRecommends({ params: { categoryIds } })
+    }
 
     return {
       serverIndex: {
         categories: categories && categories.code === 0 ? categories.data : null,
         sticks: sticks && sticks.code === 0 ? sticks.data : null,
         threads: threads && threads.code === 0 ? threads.data : null,
+        recommend: recommend && recommend.code === 0 ? recommend.data : null,
       },
     };
   }
@@ -65,6 +76,7 @@ class Index extends React.Component {
     serverIndex && serverIndex.categories && index.setCategories(serverIndex.categories);
     serverIndex && serverIndex.sticks && index.setSticks(serverIndex.sticks);
     serverIndex && serverIndex.threads && index.setThreads(serverIndex.threads);
+    serverIndex && serverIndex.threads && index.setRecommends(serverIndex.recommend);
   }
 
   componentDidMount() {
@@ -90,8 +102,8 @@ class Index extends React.Component {
 
     if (!index.hasThreadsData) {
       this.props.index.getReadThreadList({
-        sequence, 
-        filter: { categoryids: categoryIds, types: newTypes, essence, attention, sort } 
+        sequence,
+        filter: { categoryids: categoryIds, types: newTypes, essence, attention, sort }
       });
     } else {
       // 如果store中有值，则需要获取之前的分页数
@@ -104,17 +116,22 @@ class Index extends React.Component {
     // 识别通过分享过来的url
     // 若包含categoryId参数，则定位到具体的categoryId数据
     const { router, index, site } = this.props;
+    // 是否显示了推荐tab
+    const isShowRecommend = site.checkSiteIsOpenDefautlThreadListData();
 
     const result = getRouterCategory(router, site);
-    const { categoryids, sequence } = result;
-    index.topMenuIndex = `${sequence}`
+    const { categoryids, sequence, attention, essence } = result;
+    // pc端topmenu的选中
+    if (sequence === '1') index.topMenuIndex = `${sequence}`;
+    else if (essence === 1) index.topMenuIndex = isShowRecommend ? '2' : '1';
+    else if (attention === 1) index.topMenuIndex = isShowRecommend ? '3' : '2';
     index.setFilter(result);
 
     !isServer() && this.setUrl(categoryids, sequence);
 
   }
 
-  // 根据选中的筛选项，设置地址栏 
+  // 根据选中的筛选项，设置地址栏
   setUrl = (categoryIds = [], sequence = 0) => {
     const url = (categoryIds?.length || sequence !== 0)  ? `/?categoryId=${categoryIds.join('_')}&sequence=${sequence}` : '/'
     this.props.router.replace(url)
@@ -171,10 +188,11 @@ class Index extends React.Component {
 
   render() {
     const { categoryName = '' } = this.props.index || {}
+    const { canPublish } = this.props;
     const { setSite: { siteTitle } = {} } = this.props.site.webConfig || {}
     return <ViewAdapter
-            h5={<IndexH5Page dispatch={this.dispatch} />}
-            pc={<IndexPCPage dispatch={this.dispatch} />}
+            h5={<IndexH5Page dispatch={this.dispatch} canPublish={canPublish}/>}
+            pc={<IndexPCPage dispatch={this.dispatch} canPublish={canPublish}/>}
             title={categoryName || siteTitle || ""}
           />;
   }

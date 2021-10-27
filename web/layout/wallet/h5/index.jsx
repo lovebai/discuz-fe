@@ -2,7 +2,6 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import { Tabs, Icon, Button, Toast } from '@discuzq/design';
-import Header from '@components/header';
 import WalletInfo from './components/wallet-info/index';
 import IncomeList from './components/income-list/index';
 import PayList from './components/pay-list/index';
@@ -12,7 +11,6 @@ import FilterView from './components/all-state-popup';
 import DatePickers from '@components/thread/date-picker';
 import { formatDate } from '@common/utils/format-date.js';
 import { INCOME_DETAIL_CONSTANTS, EXPAND_DETAIL_CONSTANTS, CASH_DETAIL_CONSTANTS } from '@common/constants/wallet';
-import List from '@components/list';
 import { typeFilter } from './adapter';
 import BaseLayout from '@components/base-layout'
 
@@ -32,6 +30,7 @@ const DATE_PICKER_CONFIG = {
 };
 
 @inject('wallet')
+@inject('site')
 @observer
 class WalletH5Page extends React.Component {
   constructor(props) {
@@ -58,7 +57,8 @@ class WalletH5Page extends React.Component {
 
   // 切换选项卡
   onTabActive = (val) => {
-    this.props.wallet.resetInfo()
+    this.props.wallet.resetInfo();
+    this.props.wallet.getUserWalletInfo();
     this.setState({
       tabsType: val,
     });
@@ -101,6 +101,11 @@ class WalletH5Page extends React.Component {
   // 点击提现
   toWithrawal = () => {
     this.props.router.push('/wallet/withdrawal');
+  };
+
+  // 点击提现
+  toRecharge = () => {
+    this.props.router.push('/wallet/recharge');
   };
 
   handleTimeSelectorClick = () => {
@@ -185,7 +190,7 @@ class WalletH5Page extends React.Component {
 
   fetchIncomeDetail = async () => {
     try {
-      const detailRes = await this.props.wallet.getInconmeDetail({
+      const detailRes = await this.props.wallet.getIncomeDetail({
         page: this.state.page,
         type: this.state.selectType,
         date: this.state.consumptionTime,
@@ -286,11 +291,26 @@ class WalletH5Page extends React.Component {
   }
 
   renderFooter = () => {
+    // 判断是否显示充值按钮，微信支付打开 && 充值权限打开
+    const { isWechatPayOpen, webConfig } = this.props.site || {};
+    const { siteCharge } = webConfig.setSite || {};
+    const isShowRecharge = isWechatPayOpen && siteCharge === 1;
+
     return (
-      <div className={layout.footer}>
-        <Button className={layout.button} onClick={this.toWithrawal} >
-          提现
-        </Button>
+      <div className={classNames(layout.footer, {
+        [layout['footer-recharge']]: isShowRecharge
+      })}>
+        <div className={layout.footerInner}>
+          <Button className={layout.button} onClick={this.toWithrawal} >
+            提现
+          </Button>
+          {
+            isShowRecharge && (
+              <Button className={layout.button} onClick={this.toRecharge} >
+              充值
+            </Button>)
+          }
+        </div>
       </div>
     )
   }
@@ -371,7 +391,7 @@ class WalletH5Page extends React.Component {
             onFrozenAmountClick={() => this.onFrozenAmountClick()}
           ></WalletInfo>
         </div>
-      
+
         <div className={layout.choiceTime}>
           <div className={layout.status} onClick={this.handleTypeSelectorClick}>
             <span className={layout.text}>
@@ -394,15 +414,15 @@ class WalletH5Page extends React.Component {
             ))}
           </Tabs>
 
-          {this.state.tabsType === 'income' && 
+          {this.state.tabsType === 'income' &&
             incomeData.map((value, index) => (
               <IncomeList key={value.id} incomeVal={value} itemKey={index} dataLength={incomeData.length} />
             ))
           }
 
-          {this.state.tabsType === 'pay' && 
+          {this.state.tabsType === 'pay' &&
             expandData.map((value, index) => (
-              <PayList key={value.id} payVal={value} itemKey={index} dataLength={expandData.length}  />
+              <PayList key={value.id} payVal={value} itemKey={index} dataLength={expandData.length} />
             ))
           }
 
@@ -412,7 +432,7 @@ class WalletH5Page extends React.Component {
             ))
           }
         </div>
-  
+
         <FilterView
           value={this.state.selectType}
           data={this.renderSelectContent()}

@@ -31,10 +31,15 @@ import {
 import LoginHelper from '@common/utils/login-helper';
 import { setStatisticParams } from '@common/utils/api-statistic-params';
 
+let baseURL = ENV_CONFIG.COMMON_BASE_URL && ENV_CONFIG.COMMON_BASE_URL !== '' ? ENV_CONFIG.COMMON_BASE_URL : isServer() ? '' : window.location.origin;
+if ( process.env.NODE_ENV === 'development' ) {
+  baseURL = ENV_CONFIG.COMMON_BASE_URL && ENV_CONFIG.COMMON_BASE_URL !== '' ? ENV_CONFIG.COMMON_BASE_URL : window.location.origin;
+}
+
 let globalToast = null;
 const api = apiIns({
-  baseURL: ENV_CONFIG.COMMON_BASE_URL && ENV_CONFIG.COMMON_BASE_URL !== '' ? ENV_CONFIG.COMMON_BASE_URL : isServer() ? '' : window.location.origin,
-  timeout: isServer() ? 2000 : 0,
+  baseURL: baseURL,
+  timeout: isServer() ? 10000 : 0,
   // 200 到 504 状态码全都进入成功的回调中
   validateStatus(status) {
     return status >= 200 && status <= 504;
@@ -59,28 +64,20 @@ function reasetData(data) {
 
 // 请求拦截
 http.interceptors.request.use(
-  // 设置userAgent
-  // 设置请求头
-
-
+  
   (config) => {
-    if (isServer()) {
+    if (process.env.NODE_ENV !== 'development' && isServer()) {
 
       const { url, baseURL, __context } = config;
       const reg = /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?$/;
       // ssr的情况下，如果没有baseURL，或者请求的url并非一个完整的url，那么需要获取上下文中的host做拼接
       if ( config.baseURL === '' || !reg.test(url) ) {
-        if ( __context && __context.req && __context.req.headers && __context.req.headers.host ) {
-          const proto = __context.req.connection.encrypted ? 'https://' : 'http://';
-          const host = `${proto}${__context.req.headers.host}`;
-          config.url = `${host}${url}`;
-        } else {
-          const proto = global.ctx.req.connection.encrypted ? 'https://' : 'http://';
-          const host = `${proto}${global.ctx.req.headers.host}`;
-          config.url = `${host}${url}`;
-        }
+          const host = global.ssr_host;
+          config.url = `${host}${url[0] !== '/' ? `/${url}` : url}`;
       }
     }
+    // 设置userAgent
+    // 设置请求头
 
     // eslint-disable-next-line no-param-reassign
     config = setUserAgent(config);
@@ -110,11 +107,39 @@ http.interceptors.request.use(
 // 响应结果进行设置
 http.interceptors.response.use((res) => {
   const { data, status, statusText } = res;
+
+  // ssr服务日志
+  if (process.env.NODE_ENV !== 'development' && isServer()) {
+    if ( global.clsLog ) {
+      const pathName = res.request.path.split('?')[0];
+      clsLog.console({
+        LOG_TYPE: 'api',
+        API_METHOD: res.request.method,
+        API_HOST: res.request.host,
+        API_HEADER: res.headers,
+        API_PATHNAME: pathName,
+        API_URl: res.request.path,
+        API_STATUS: res.request.res.statusCode,
+        API_MESSAGE: res.request.res.statusMessage,
+        API_RES_BODY_LENGTH: data ? JSON.stringify(data).length : 0
+      });
+    }
+  }
+
   // 如果4002将重定向到登录
   // if (data.Code === -4002) {
   //   LoginHelper.saveAndLogin();
   // }
   let url = null;
+  // 如果当前是SSR状态，Code非0的情况，全部不处理重定向
+  if (isServer()) {
+    return Promise.resolve({
+      code: data.Code,
+      data: reasetData(data.Data),
+      msg: data.Message
+    });
+  }
+
   switch (data.Code) {
     case INVALID_TOKEN: {
       // @TODO 未登陆且无权限时，直接跳转加入页面。可能影响其它逻辑
@@ -281,10 +306,13 @@ http.interceptors.response.use((res) => {
     msg: statusText,
   });
 }, (err) => {
+  console.error('response', err.stack);
+  console.error('response', err.message);
+
   const { isShowToast = true } = err?.config;
+ 
   if (window) {
-    console.error('response', err.stack);
-    console.error('response', err.message);
+    
     if ( globalToast ) {
       globalToast.hide();
       globalToast = null;

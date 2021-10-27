@@ -9,6 +9,9 @@ import InputPopup from '../components/input-popup';
 import DeletePopup from '@components/thread-detail-pc/delete-popup';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import { debounce } from '@common/utils/throttle-debounce';
+import Router from '@discuzq/sdk/dist/router';
+
+
 // 评论列表
 @inject('thread')
 @inject('comment')
@@ -327,7 +330,7 @@ class RenderCommentList extends React.Component {
   // 跳转评论详情
   onCommentClick(data) {
     if (data.id && this.props.thread?.threadData?.id) {
-      this.props.router.push(`/thread/comment/${data.id}?threadId=${this.props.thread?.threadData?.id}`);
+      Router.push({url: `/thread/comment/${data.id}?threadId=${this.props.thread?.threadData?.id}`});
     }
   }
 
@@ -384,7 +387,7 @@ class RenderCommentList extends React.Component {
   avatarClick(data) {
     const { userId } = data;
     if (!userId) return;
-    this.props.router.push(`/user/${userId}`);
+    Router.push({url: `/user/${userId}`});
   }
 
   // 点击回复头像
@@ -445,9 +448,11 @@ class RenderCommentList extends React.Component {
                   // 是帖子作者 && 是悬赏帖 && 评论人不是作者本人
                   isSelf && isReward && this.props.thread?.threadData?.userId !== val.userId
                 }
+                thread={this.props.thread}
                 threadId={this.props.thread?.threadData?.userId}
                 active={val.id === postId}
                 isAnonymous={isAnonymous}
+                redPacketData = {parseContent?.RED_PACKET}
                 ></CommentList>
             </div>
           ))}
