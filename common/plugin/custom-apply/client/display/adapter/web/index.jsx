@@ -123,22 +123,13 @@ class CustomApplyDisplay extends React.Component {
     if (isApplyEnd) return '报名已结束';
   };
 
-  handleActOperate = async () => {
-    const { renderData, userInfo, isLogin, threadData, updateThread, updateListThreadIndexes, recomputeRowHeights } = this.props;
-    if (!isLogin()) {
-      LoginHelper.saveAndLogin();
-      return;
-    }
+  submit = async () => {
+    const { renderData, userInfo, threadData,
+      updateThread, updateListThreadIndexes, recomputeRowHeights } = this.props;
     const { tomId, body, _plugin } = renderData || {};
-    const { isRegistered, activityId, registerUsers, totalNumber, additionalInfoType = [] } = body;
-    // 报名 + 并且有额外需要添加的字段
-    if (!isRegistered && additionalInfoType && additionalInfoType.length) {
-      this.setState({ isAttachShow: true });
-      return;
-    }
-
+    const { isRegistered, activityId, registerUsers, totalNumber } = body;
     const action = isRegistered ? this.deleteRegister : this.createRegister;
-    this.setState({ loading: true });
+    this.setState({ loading: true, isAttachShow: false });
     const params = { activityId };
     if (Object.keys(this.state.additionalInfo)) params.additionalInfo = this.state.additionalInfo;
     const res = await action({ data: params });
@@ -178,6 +169,24 @@ class CustomApplyDisplay extends React.Component {
       if (newThreadData && recomputeRowHeights) recomputeRowHeights(newThreadData);
       Toast.info({ content: isRegistered ? '取消报名成功' : '报名成功' });
     } else Toast.error({ content: res.msg || '报名失败' });
+    return res;
+  };
+
+  handleActOperate = async () => {
+    const { renderData, isLogin } = this.props;
+    if (!isLogin()) {
+      LoginHelper.saveAndLogin();
+      return;
+    }
+    const { body } = renderData || {};
+    const { isRegistered, additionalInfoType = [] } = body;
+    // 报名 + 并且有额外需要添加的字段
+    if (!this.state.isAttachShow && !isRegistered && additionalInfoType && additionalInfoType.length) {
+      this.setState({ isAttachShow: true });
+      return;
+    }
+
+    const res = await this.submit();
     return res;
   };
 
