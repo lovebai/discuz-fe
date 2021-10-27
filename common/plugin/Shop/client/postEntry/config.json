@@ -1,5 +1,5 @@
 {
-  "pluginName": "ShopCreate",
+  "pluginName": "shop",
   "version": "1.0.0",
   "target": "plugin_post",
   "hookName": "post_extension_entry_hook",

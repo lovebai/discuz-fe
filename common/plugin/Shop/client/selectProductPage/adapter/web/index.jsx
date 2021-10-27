@@ -1,6 +1,5 @@
 import React from 'react';
 import { Icon, Button, Input, Tabs, Toast, Spin, Divider } from '@discuzq/design';
-import { readProcutAnalysis } from '@common/server';
 import { goodImages } from '@common/constants/const';
 import styles from '../index.module.scss';
 import Header from '@components/header';
@@ -145,7 +144,24 @@ export default class SelectProduct extends React.PureComponent {
     const { dzqRouter } = this.props;
     const { router } = dzqRouter;
 
-    router.back();
+    if (typeof window !== 'undefined') {
+      if (window.history.length <= 1) {
+        router.replace('/thread/post');
+        return;
+      }
+
+      router.back();
+    }
+  };
+
+  readProductAnalysis = async ({ data }) => {
+    const { dzqRequest } = this.props;
+    const ret = await dzqRequest.request.http({
+      url: '/plugin/shop/api/goods/analysis',
+      method: 'POST',
+      data,
+    });
+    return ret;
   };
 
   /**
@@ -153,7 +169,7 @@ export default class SelectProduct extends React.PureComponent {
    * @param {*} options
    */
   fetchProductAnalysis = async (options = {}) => {
-    const ret = await readProcutAnalysis({ data: options });
+    const ret = await this.readProductAnalysis({ data: options });
     const { code, data = {}, msg } = ret;
     if (code === 0) {
       return data;
@@ -312,10 +328,7 @@ export default class SelectProduct extends React.PureComponent {
               <div className={styles['parse-goods-image']}>
                 {goodImages.map(item => (
                   <div className={styles['image-item']} key={item.name}>
-                    <img
-                      src={`${envConfig.COMMON_BASE_URL}/${item.src}`}
-                      style={{ width: `${item.width}px`, height: `${item.height}px` }}
-                    />
+                    <img src={item.src} style={{ width: `${item.width}px`, height: `${item.height}px` }} />
                     <div className={styles['image-text']}>{item.name}</div>
                   </div>
                 ))}
@@ -355,8 +368,8 @@ export default class SelectProduct extends React.PureComponent {
           {this.renderMiniShopTab()}
           {this.renderPlatformShopTab()}
         </Tabs>
-        <div className={styles.footer}>
-          <Button type="primary" full onClick={this.handleConfirm}>
+        <div className={styles.footerH5}>
+          <Button type="primary" onClick={this.handleConfirm}>
             确定
           </Button>
         </div>

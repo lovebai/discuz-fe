@@ -382,8 +382,6 @@ export default class ShopPostEntry extends React.Component {
   render() {
     const { visible } = this.state;
 
-    console.log(this.props);
-
     if (!this.isShowShopIcon()) return null;
 
     return (
