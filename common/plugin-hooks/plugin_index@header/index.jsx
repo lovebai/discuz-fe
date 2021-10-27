@@ -5,7 +5,7 @@ import generateHooks from '../generate-hooks';
 export default generateHooks({
   target: 'plugin_index',
   hookNames: {
-    beofro: 'header_insert_before_hook',
+    before: 'header_insert_before_hook',
     replace: 'header_replace_hook',
     after: 'header_insert_after_hook',
   },

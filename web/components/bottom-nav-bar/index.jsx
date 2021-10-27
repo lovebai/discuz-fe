@@ -28,6 +28,7 @@ const BottomNavBar = ({
   message,
   canPublish,
   site,
+  index,
 }) => {
   const { totalUnread, readUnreadCount } = message;
   const checkCurrActiveTab = useCallback(

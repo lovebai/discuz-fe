@@ -1,8 +1,0 @@
-{
-  "pluginName": "BeforeCustomIndexHeader",
-  "version": "1.0.0",
-  "target": "plugin_index",
-  "hookName": "header_insert_before_hook",
-  "platform": ["h5", "mini"],
-  "disables": false
-}
