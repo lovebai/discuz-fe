@@ -1,15 +1,77 @@
 import React from 'react';
-
-export default class UserCenterEntry extends React.Component {
+import { Icon, Dialog } from '@discuzq/design';
+import styles from '../index.module.scss';
+import Qrcode from '../../../components/qrcode';
+import Router from '@discuzq/sdk/dist/router';
+export default class UserCenterEntry extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      showPcMiniShop: false,
+      miniShopConfig: {},
+      visible: false,
+    };
+  }
+  componentDidMount() {
+    this.getMiniShopPluginConfig();
   }
 
+  async getMiniShopPluginConfig() {
+    const { _pluginInfo, siteData } = this.props;
+    let pluginConfig = siteData?.pluginConfig || [];
+    const miniShopConfig = pluginConfig.find((config) => config.app_id === _pluginInfo.options.tomId);
+
+    // 后台配置并且开启了微信商店，才显示商城
+    if (miniShopConfig?.setting?.isOpen && miniShopConfig?.setting.wxAppId) {
+      this.setState({
+        visible: true,
+        miniShopConfig,
+      });
+    }
+  }
+
+  handleMiniShopOpen = () => {
+    if (this.props.siteData.platform === 'pc') {
+      this.setState({
+        showPcMiniShop: true,
+      });
+    } else {
+      Router.push({ url: '/plugin/minishop/qrcode' });
+    }
+  };
+
+  handleOpenDialog = () => {
+    this.setState({ showPcMiniShop: false });
+  };
+
+  handleDialogClose = () => {
+    this.setState({ showPcMiniShop: false });
+  };
 
   render() {
+    const { dzqRequest, _pluginInfo, siteData } = this.props;
+    const { visible, showPcMiniShop } = this.state;
     return (
       <>
-        null
+        {visible && (
+          <div onClick={this.handleMiniShopOpen} className={styles.userCenterActionItem}>
+            <div className={styles.userCenterActionItemIcon}>
+              <Icon name="ShopOutlined" size={20} />
+            </div>
+            <div className={styles.userCenterActionItemDesc}>商城</div>
+          </div>
+        )}
+        <Dialog visible={showPcMiniShop} width={409}>
+          <div className={styles['qrcode-title']}>
+            <Icon
+              onClick={this.handleDialogClose}
+              name="CloseOutlined"
+              size={12}
+              className={styles['dzq-qrcode-close']}
+            />
+          </div>
+          <Qrcode dzqRequest={dzqRequest} _pluginInfo={_pluginInfo} siteData={siteData} />
+        </Dialog>
       </>
     );
   }
