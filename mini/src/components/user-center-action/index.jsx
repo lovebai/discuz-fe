@@ -77,13 +77,6 @@ class UserCenterAction extends React.Component {
           iconName: 'NotbookOutlined',
           visible: !this.props.user.isAdmini,
         },
-        {
-          cid: 'shopOutlined',
-          name: '商城',
-          url: '',
-          iconName: 'ShopOutlined',
-          visible: true,
-        },
       ],
       rowActionCount: this.props.site.platform === 'pc' ? 9 : 4,
     };
@@ -115,9 +108,7 @@ class UserCenterAction extends React.Component {
             <Icon name={item.iconName} color="#4F5A70" size={20} />
           </UnreadRedDot>
         ) : (
-          <Badge>
-            <Icon name={item.iconName} color="#4F5A70" size={20} />
-          </Badge>
+          <Icon name={item.iconName} color="#4F5A70" size={20} />
         )}
       </View>
       <View className={styles.userCenterActionItemDesc}>{item.name}</View>
@@ -141,7 +132,11 @@ class UserCenterAction extends React.Component {
     return (
       <View className={`${styles.userCenterAction} ${actions.length < rowActionCount && styles.userCenterColumnStyle}`}>
         {this.renderActionItems()}
-        <DZQPluginCenterInjection target="plugin_user" hookName="user_extension_action_hook" />
+        <DZQPluginCenterInjection
+          className={styles.userCenterActionItem}
+          target="plugin_user"
+          hookName="user_extension_action_hook"
+        />
       </View>
     );
   }

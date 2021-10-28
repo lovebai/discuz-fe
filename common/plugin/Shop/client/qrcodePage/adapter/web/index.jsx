@@ -1,15 +1,27 @@
 import React from 'react';
-import { Icon, Dialog, Button, Input } from '@discuzq/design';
-
-export default class CustomIfram extends React.PureComponent {
+import Header from '@components/header';
+import styles from '../index.module.scss';
+import Qrcode from '../../../components/qrcode';
+export default class QrcodePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false,
     };
   }
 
+  componentDidMount() {
+  }
+
   render() {
-    return <>小商店二维码</>;
+    const { dzqRequest, _pluginInfo, siteData } = this.props;
+
+    return (
+      <div className={styles['qrcode-page']}>
+        <Header />
+        <div className={styles['qrcode-content']}>
+          <Qrcode dzqRequest={dzqRequest} _pluginInfo={_pluginInfo} siteData={siteData} />
+        </div>
+      </div>
+    );
   }
 }
