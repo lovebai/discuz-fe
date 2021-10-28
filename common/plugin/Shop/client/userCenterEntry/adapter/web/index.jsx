@@ -32,16 +32,14 @@ export default class UserCenterEntry extends React.PureComponent {
 
   handleMiniShopOpen = () => {
     if (this.props.siteData.platform === 'pc') {
-      this.setState({
-        showPcMiniShop: true,
-      });
+      this.handleDialogOpen()
     } else {
       Router.push({ url: '/plugin/minishop/qrcode' });
     }
   };
 
-  handleOpenDialog = () => {
-    this.setState({ showPcMiniShop: false });
+  handleDialogOpen = () => {
+    this.setState({ showPcMiniShop: true });
   };
 
   handleDialogClose = () => {
