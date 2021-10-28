@@ -1,11 +1,11 @@
 @import '@common/styles/index.scss';
 
-.placeholderH5{
+.placeholderH5{// 样式未使用，cdn暂时不做处理
   width: 100%;
   height: rem(258);background-repeat: no-repeat;
   background-size: 100%;
   background-position: center;
-  background-image: url("https://imgcache.qq.com/operation/dianshi/other/test.b1d9db4f0dd70933eddb3f0411f24291439ea287.png");
+  background-image: url("https://cloudcache.tencentcs.com/operation/dianshi/other/test.b1d9db4f0dd70933eddb3f0411f24291439ea287.png");
 }
 
 .container {
