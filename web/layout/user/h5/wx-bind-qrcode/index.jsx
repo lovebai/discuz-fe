@@ -135,13 +135,14 @@ class WeixinBindQrCodePage extends React.Component {
 
   handleSkipWechatButtonClick = async () => {
     const loginToken = this.props.commonLogin.getLoginToken();
+    this.props.commonLogin.needToBindWechat = false;
     if (loginToken) {
       const dzqUserId = locals.get('dzq_user_id');
       dzqUserId && await this.props.user.updateUserInfo(dzqUserId);
       setAccessToken({
         accessToken: loginToken,
       });
-      loginHelper.restore();
+      window.location.href = '/';
     }
   };
 

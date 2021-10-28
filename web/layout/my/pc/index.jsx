@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import classnames from 'classnames';
 import styles from './index.module.scss';
 import clearLoginStatus from '@common/utils/clear-login-status';
-import UserCenterPost from '@components/user-center-post-pc';
+import UserCenterPost from '@components/user-center-post';
 import UserCenterAction from '@components/user-center-action';
 import SidebarPanel from '@components/sidebar-panel';
 import Avatar from '@components/avatar';
