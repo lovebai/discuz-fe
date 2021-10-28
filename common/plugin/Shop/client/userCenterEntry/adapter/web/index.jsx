@@ -18,8 +18,8 @@ export default class UserCenterEntry extends React.PureComponent {
 
   async getMiniShopPluginConfig() {
     const { _pluginInfo, siteData } = this.props;
-    let pluginConfig = siteData?.pluginConfig || [];
-    const miniShopConfig = pluginConfig.find((config) => config.app_id === _pluginInfo.options.tomId);
+    const pluginConfig = siteData?.pluginConfig || [];
+    const miniShopConfig = pluginConfig.find(config => config.app_id === _pluginInfo.options.tomId);
 
     // 后台配置并且开启了微信商店，才显示商城
     if (miniShopConfig?.setting?.isOpen && miniShopConfig?.setting.wxAppId) {

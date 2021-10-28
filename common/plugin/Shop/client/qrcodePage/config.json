@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "target": "plugin_system",
   "hookName": "add_page_hook",
-  "platform": ["h5"],
+  "platform": ["pc", "h5"],
   "path": "/minishop/qrcode",
   "miniPageConfig": {
     "navigationBarTitleText": "二维码"

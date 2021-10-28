@@ -81,7 +81,7 @@ class UserCenterAction extends React.Component {
           url: '/invite',
           iconName: 'NotbookOutlined',
           visible: !this.props.user.isAdmini,
-        }
+        },
       ],
       rowActionCount: this.props.site.platform === 'pc' ? 9 : 4,
     };
