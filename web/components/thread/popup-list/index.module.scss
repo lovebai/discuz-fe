@@ -3,7 +3,7 @@
 $tabs-list-min-height: 70vh;
 $overlay-container-max-width: 572;
 .export {
-  color: $primary-color;
+  color: $primary-color !important;
 }
 .list {
   overflow-y: auto;

@@ -1,5 +1,7 @@
 @import '@common/styles/index.scss';
-
+.export {
+  color: $primary-color !important;
+}
 .list {
   overflow-y: auto;
   height: 70vh;

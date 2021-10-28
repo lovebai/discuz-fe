@@ -1,6 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import { Button, Icon, Avatar, Toast, Dialog } from '@discuzq/design';
 import PopupList from '@components/thread/popup-list';
 import CountDown from '@common/utils/count-down';
@@ -71,7 +72,7 @@ class CustomApplyDisplay extends React.Component {
         method: 'POST',
         params,
         data,
-        ...others
+        ...others,
       };
       const result = await this.props.dzqRequest.dispatcher(options);
       return result;
@@ -88,7 +89,7 @@ class CustomApplyDisplay extends React.Component {
         method: 'POST',
         params,
         data,
-        ...others
+        ...others,
       };
       const result = await this.props.dzqRequest.dispatcher(options);
       return result;
@@ -233,6 +234,36 @@ class CustomApplyDisplay extends React.Component {
     return false;
   };
 
+  exportInfo() {
+    const { renderData, siteData } = this.props;
+    const { body } = renderData || {};
+    const { activityId } = body;
+    const url = `${siteData?.envConfig?.COMMON_BASE_URL}/plugin/activity/api/register/export?activityId=${activityId}`;
+    Toast.info({ content: '导出中...' });
+    Taro.downloadFile({
+      url,
+      success: () => {
+        Toast.info({ content: '下载成功' });
+        // 这里是打开文档
+        // Taro.openDocument({
+        //   filePath: res.tempFilePath,
+        //   success() {
+        //     Toast.info({ content: '下载成功' });
+        //   },
+        // });
+      },
+      fail: (error) => {
+        if (error?.errMsg.indexOf('domain list') !== -1) {
+          Toast.info({ content: '下载链接不在域名列表中' });
+        } else if (error?.errMsg.indexOf('invalid url') !== -1) {
+          Toast.info({ content: '下载链接无效' });
+        } else {
+          Toast.info({ content: error.errMsg });
+        }
+      },
+    });
+  }
+
   render() {
     const { siteData, renderData } = this.props;
     const { isApplyEnd, minutes, seconds, days, hours, isApplyStart } = this.state;
@@ -343,6 +374,7 @@ class CustomApplyDisplay extends React.Component {
           visible={popupShow}
           onHidden={() => this.setState({ popupShow: false })}
           tipData={{ platform: siteData.platform }}
+          exportFn={this.exportInfo.bind(this)}
         />}
       </>
     );

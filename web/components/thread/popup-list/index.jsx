@@ -189,6 +189,12 @@ const Index = ({ visible = false, onHidden = () => { }, tipData = {}, router,
 
   if (isCustom) tabItems = [tabItems[0]];
 
+  const data = tabItems[0] || {};
+  const oneData = data?.data?.pageData?.list[0] || {};
+  const isHavaAdditionalInfo = isCustom
+    && typeofFn.isObject(oneData?.additionalInfo)
+    && Object.keys(oneData?.additionalInfo).length > 0;
+
   const renderTabPanel = platform => (
     tabItems.map((dataSource, index) => {
       const arr = dataSource?.data?.pageData?.list;
@@ -243,10 +249,7 @@ const Index = ({ visible = false, onHidden = () => { }, tipData = {}, router,
       );
     }).filter(item => item !== null)
   );
-  const data = tabItems[0] || {};
-  const oneData = data?.data?.pageData?.list[0] || {};
-  const isHavaAdditionalInfo = typeofFn.isObject(oneData?.additionalInfo) &&
-    Object.keys(oneData?.additionalInfo).length > 0;
+
   const renderPopup = (
     <Popup position={tipData?.platform === 'h5' ? 'bottom' : 'center'} visible={visible} onClose={onClose}>
       {!all ? (

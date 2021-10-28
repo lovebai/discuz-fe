@@ -5,10 +5,11 @@ import Tabs from '@discuzq/design/dist/components/tabs/index';
 import Popup from '@discuzq/design/dist/components/popup/index';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import Spin from '@discuzq/design/dist/components/spin/index';
+import Button from '@discuzq/design/dist/components/button/index';
 import UserItem from '../user-item';
 import styles from './index.module.scss';
 import Router from '@discuzq/sdk/dist/router';
-
+import typeofFn from '@common/utils/typeof';
 import { readLikedUsers } from '@server';
 import List from '../../list';
 import { View, Text } from '@tarojs/components'
@@ -19,7 +20,7 @@ import { View, Text } from '@tarojs/components'
  * @prop {string}  onHidden 关闭视图的回调
  */
 
- const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, index, isCustom = false, activityId }) => {
+ const Index = ({ visible = false, onHidden = () => {}, tipData = {}, router, index, isCustom = false, activityId, exportFn }) => {
 
   const allPageNum = useRef(1);
   const likePageNum = useRef(1);
@@ -187,6 +188,12 @@ import { View, Text } from '@tarojs/components'
 
   if (isCustom) tabItems = [tabItems[0]];
 
+  const data = tabItems[0] || {};
+  const oneData = data?.data?.pageData?.list[0] || {};
+  const isHavaAdditionalInfo = isCustom
+    && typeofFn.isObject(oneData?.additionalInfo)
+    && Object.keys(oneData?.additionalInfo).length > 0;
+
   const renderTabPanel = platform => (
     tabItems.map((dataSource, index) => {
       const arr = dataSource?.data?.pageData?.list;
@@ -220,6 +227,7 @@ import { View, Text } from '@tarojs/components'
                           title={item.nickname || item.username}
                           subTitle={item.passedAt}
                           userId={item.userId}
+                          additionalInfo={item.additionalInfo}
                           platform={platform}
                           onClick={onUserClick}
                           type={item.type}
@@ -259,11 +267,14 @@ import { View, Text } from '@tarojs/components'
           activeId={current}
           className={styles.tabs}
           tabBarExtraContent={
-            tipData?.platform === 'pc' && (
+            <>
+            {isCustom && isHavaAdditionalInfo && <Button type="text" onClick={exportFn} className={styles.export}>导出</Button>}
+            {tipData?.platform === 'pc' && (
               <View onClick={onClose} className={styles.tabIcon}>
                 <Icon name="CloseOutlined" size={12} />
               </View>
-            )
+            )}
+          </>
           }
         >
           {
