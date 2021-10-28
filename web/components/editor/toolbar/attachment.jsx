@@ -222,8 +222,6 @@ function AttachmentToolbar(props) {
     return defaultEntryList;
   };
 
-  console.log(props);
-
   if (props.pc) return (
     <>
       {icons()}
