@@ -31,11 +31,11 @@ export default class UserCenterEntry extends React.Component {
   }
 
   handleMiniShopOpen = () => {
-    const miniShopAppid = this.state.miniShopConfig?.setting?.wxAppId;
-    if (!miniShopAppid) {
+    const appId = this.state.miniShopConfig?.setting?.wxAppId;
+    if (!appId) {
       return;
     }
-    navigateToMiniProgram({ miniShopAppid });
+    navigateToMiniProgram({ appId });
   };
 
   render() {
