@@ -61,7 +61,7 @@ export default class UserCenterEntry extends React.PureComponent {
             <div className={styles.userCenterActionItemDesc}>商城</div>
           </div>
         )}
-        <Dialog visible={showPcMiniShop} width={409}>
+        <Dialog visible={showPcMiniShop} width={409} maskClosable onClose={this.handleDialogClose}>
           <div className={styles['qrcode-title']}>
             <Icon
               onClick={this.handleDialogClose}
