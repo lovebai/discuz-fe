@@ -1,12 +1,30 @@
 import React from 'react';
-import { Icon } from '@discuzq/design';
+import { Icon, Dialog } from '@discuzq/design';
 import { MINI_SHOP_TYPE, PLATFORM_SHOP_TYPE } from '@common/plugin/Shop/client/common';
-import classNames from 'classnames';
 import styles from '../index.module.scss';
 
 export default class ShopDisplay extends React.Component {
-  handleBuy = (url) => {
-    url && window.open(url);
+  handleBuy = (data, type) => {
+    const { detailContent, detailQrcode, title } = data || {};
+    const { siteData } = this.props;
+    if (type === PLATFORM_SHOP_TYPE) window.open(detailContent);
+    if (type === MINI_SHOP_TYPE) {
+      const imgRender = (
+        <>
+          <div className={styles['dialog-subtitle']}>扫码查看商品详情</div>
+          <div className={styles['dialog-image-wrapper']}>
+            <img className={styles['dialog-image']} src={detailQrcode} title={title} alt={title} />
+          </div>
+        </>
+      );
+      Dialog.info({
+        className: styles.dialog,
+        isNew: true,
+        title: '购买商品',
+        content: imgRender,
+        width: siteData.platform === 'h5' ? 285 : 400,
+      });
+    }
   };
 
   render() {
@@ -17,7 +35,7 @@ export default class ShopDisplay extends React.Component {
     return (products || []).map((item) => {
       const { data, type } = item;
       return (
-        <div className={styles.wrapper} key={data?.id}>
+        <div className={styles.wrapper} key={data?.id} onClick={() => this.handleBuy(data, type)}>
           <div className={styles['wrapper-left']}>
             <img
               className={styles['wrapper-left_left']}
@@ -34,30 +52,6 @@ export default class ShopDisplay extends React.Component {
               </div>
             </div>
           </div>
-          {type === MINI_SHOP_TYPE && (
-            <div className={styles['wrapper-right']}>
-              <img
-                className={styles['wrapper-right_header']}
-                src={data?.detailQrcode}
-                title={data?.title}
-                alt={data?.alt}
-              />
-              <div className={styles['wrapper-right_footer']}>
-                扫描二维码查看详情
-              </div>
-            </div>
-          )}
-          {type === PLATFORM_SHOP_TYPE && (
-            <div
-              className={classNames(styles['wrapper-right'], styles['wrapper-platform'])}
-              onClick={() => this.handleBuy(data?.detailContent)}
-            >
-              <Icon size="20" name="ShoppingCartOutlined" />
-              <div className={styles['wrapper-right_footer']}>
-                购买商品
-              </div>
-            </div>
-          )}
         </div>
       );
     });

@@ -34,7 +34,7 @@ export default class ShopDisplay extends React.Component {
     return (products || []).map((item) => {
       const { data, type } = item;
       return (
-        <View className={styles.wrapper} key={data?.id}>
+        <View className={styles.wrapper} key={data?.id} onClick={() => this.handleBuy(data, type)}>
           <View className={styles['wrapper-left']}>
             <Image
               className={styles['wrapper-left_left']}
@@ -49,15 +49,6 @@ export default class ShopDisplay extends React.Component {
               <View className={styles['wrapper-left_right_price']}>
                 {data?.price}
               </View>
-            </View>
-          </View>
-          <View
-            className={classNames(styles['wrapper-right'], styles['wrapper-platform'])}
-            onClick={() => this.handleBuy(data, type)}
-          >
-            <Icon size="20" name="ShoppingCartOutlined" />
-            <View className={styles['wrapper-right_footer']}>
-              购买商品
             </View>
           </View>
         </View>
