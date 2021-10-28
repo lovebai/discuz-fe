@@ -32,16 +32,14 @@ export default class UserCenterEntry extends React.PureComponent {
 
   handleMiniShopOpen = () => {
     if (this.props.siteData.platform === 'pc') {
-      this.setState({
-        showPcMiniShop: true,
-      });
+      this.handleDialogOpen()
     } else {
       Router.push({ url: '/plugin/minishop/qrcode' });
     }
   };
 
-  handleOpenDialog = () => {
-    this.setState({ showPcMiniShop: false });
+  handleDialogOpen = () => {
+    this.setState({ showPcMiniShop: true });
   };
 
   handleDialogClose = () => {
@@ -61,7 +59,7 @@ export default class UserCenterEntry extends React.PureComponent {
             <div className={styles.userCenterActionItemDesc}>商城</div>
           </div>
         )}
-        <Dialog visible={showPcMiniShop} width={409}>
+        <Dialog visible={showPcMiniShop} width={409} maskClosable onClose={this.handleDialogClose}>
           <div className={styles['qrcode-title']}>
             <Icon
               onClick={this.handleDialogClose}
