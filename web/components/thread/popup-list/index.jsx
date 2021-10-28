@@ -9,6 +9,7 @@ import { readLikedUsers } from '@server';
 import List from '@components/list';
 import BottomView from '@components/list/BottomView';
 import { withRouter } from 'next/router';
+import typeofFn from '@common/utils/typeof';
 
 /**
  * 帖子点赞、打赏点击之后的弹出视图
@@ -221,10 +222,12 @@ const Index = ({ visible = false, onHidden = () => { }, tipData = {}, router,
                     arr.map((item, index) => (
                         <UserItem
                           key={index}
+                          index={index}
                           imgSrc={item.avatar}
                           title={item.nickname || item.username}
                           subTitle={item.passedAt}
                           userId={item.userId}
+                          additionalInfo={item.additionalInfo}
                           platform={platform}
                           onClick={onUserClick}
                           type={item.type}
@@ -240,7 +243,10 @@ const Index = ({ visible = false, onHidden = () => { }, tipData = {}, router,
       );
     }).filter(item => item !== null)
   );
-
+  const data = tabItems[0] || {};
+  const oneData = data?.data?.pageData?.list[0] || {};
+  const isHavaAdditionalInfo = typeofFn.isObject(oneData?.additionalInfo) &&
+    Object.keys(oneData?.additionalInfo).length > 0;
   const renderPopup = (
     <Popup position={tipData?.platform === 'h5' ? 'bottom' : 'center'} visible={visible} onClose={onClose}>
       {!all ? (
@@ -260,7 +266,7 @@ const Index = ({ visible = false, onHidden = () => { }, tipData = {}, router,
           className={`${styles.tabs} ${tipData?.platform === 'pc' && styles.tabsPC}`}
           tabBarExtraContent={
             <>
-              {isCustom && <Button type="text" onClick={exportFn} className={styles.export}>导出</Button>}
+              {isCustom && isHavaAdditionalInfo && <Button type="text" onClick={exportFn} className={styles.export}>导出</Button>}
               {tipData?.platform === 'pc' && (
                 <div onClick={onClose} className={styles.tabIcon}>
                   <Icon name="CloseOutlined" size={12} />
