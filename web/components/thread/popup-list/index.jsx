@@ -177,7 +177,7 @@ const Index = ({ visible = false, onHidden = () => { }, tipData = {}, router,
       icon: 'HeartOutlined',
       title: '付费',
       data: tips,
-      number: all?.pageData?.raidCount || 0,
+      number: ( all?.pageData?.raidCount + all?.pageData?.rewardCount )|| 0,
     },
     {
       icon: 'HeartOutlined',
