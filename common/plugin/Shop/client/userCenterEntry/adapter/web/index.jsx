@@ -3,6 +3,7 @@ import { Icon, Dialog } from '@discuzq/design';
 import styles from '../index.module.scss';
 import Qrcode from '../../../components/qrcode';
 import Router from '@discuzq/sdk/dist/router';
+
 export default class UserCenterEntry extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -22,7 +23,7 @@ export default class UserCenterEntry extends React.PureComponent {
     const miniShopConfig = pluginConfig.find(config => config.app_id === _pluginInfo.options.tomId);
 
     // 后台配置并且开启了微信商店，才显示商城
-    if (miniShopConfig?.setting?.isOpen && miniShopConfig?.setting.wxAppId) {
+    if (miniShopConfig?.setting?.publicValue?.isOpen && miniShopConfig?.setting?.publidValue?.wxAppId) {
       this.setState({
         visible: true,
         miniShopConfig,
@@ -32,7 +33,7 @@ export default class UserCenterEntry extends React.PureComponent {
 
   handleMiniShopOpen = () => {
     if (this.props.siteData.platform === 'pc') {
-      this.handleDialogOpen()
+      this.handleDialogOpen();
     } else {
       Router.push({ url: '/plugin/minishop/qrcode' });
     }
