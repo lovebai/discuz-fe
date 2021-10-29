@@ -28,6 +28,7 @@ class CustomApplyDisplay extends React.Component {
       isApplyEnd: false, // 报名时间是否已结束
       isApplyStart: false, // 报名时间是否已开始
       additionalInfo: {}, // 报名字段详细信息
+      isAttachShow: false,
     };
     this.handleActOperate = this.handleActOperate.bind(this);
     this.createRegister = this.createRegister.bind(this);
@@ -124,23 +125,13 @@ class CustomApplyDisplay extends React.Component {
     if (isApplyEnd) return '报名已结束';
   };
 
-  handleActOperate = async () => {
-    const { renderData, userInfo, isLogin, threadData, updateThread, updateListThreadIndexes, recomputeRowHeights } = this.props;
-    if (!isLogin()) {
-      LoginHelper.saveAndLogin();
-      return;
-    }
+  submit = async () => {
+    const { renderData, userInfo, threadData,
+      updateThread, updateListThreadIndexes, recomputeRowHeights } = this.props;
     const { tomId, body, _plugin } = renderData || {};
-    const { isRegistered, activityId, registerUsers, totalNumber, additionalInfoType = [] } = body;
-
-    // 报名 + 并且有额外需要添加的字段
-    if (!isRegistered && additionalInfoType && additionalInfoType.length) {
-      this.handleAttachDialogOpen();
-      return;
-    }
-
+    const { isRegistered, activityId, registerUsers, totalNumber } = body;
     const action = isRegistered ? this.deleteRegister : this.createRegister;
-    this.setState({ loading: true });
+    this.setState({ loading: true, isAttachShow: false });
     const params = { activityId };
     if (Object.keys(this.state.additionalInfo)) params.additionalInfo = this.state.additionalInfo;
     const res = await action({ data: params });
@@ -183,6 +174,25 @@ class CustomApplyDisplay extends React.Component {
     return res;
   };
 
+  handleActOperate = async () => {
+    const { renderData, isLogin } = this.props;
+    if (!isLogin()) {
+      LoginHelper.saveAndLogin();
+      return;
+    }
+    const { body } = renderData || {};
+    const { isRegistered, additionalInfoType = [] } = body;
+    // 报名 + 并且有额外需要添加的字段
+    if (!this.state.isAttachShow && !isRegistered && additionalInfoType && additionalInfoType.length) {
+      this.setState({ isAttachShow: true }, () => {
+        this.handleAttachDialogOpen();
+      });
+      return;
+    }
+    const res = await this.submit();
+    return res;
+  };
+
   handleMoreClick = () => {
     const { dzqRouter, threadData } = this.props;
     const tid = this.state.isDetailPage ? threadData?.id : threadData?.threadId;
@@ -212,7 +222,7 @@ class CustomApplyDisplay extends React.Component {
     });
   };
 
-  handleAttachConfirm = async () => {
+  handleAttachConfirm = () => {
     const { body } = this.props.renderData || {};
     const { additionalInfo = {} } = this.state;
     const { additionalInfoType = [] } = body || {};
