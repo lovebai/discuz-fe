@@ -14,7 +14,7 @@ import { View, Text } from '@tarojs/components';
 import SectionTitle from '@components/section-title';
 import BottomView from '@components/list/BottomView';
 import ImagePreviewer from '@discuzq/design/dist/components/image-previewer/index';
-
+import LoginHelper from '@common/utils/login-helper';
 @inject('site')
 @inject('user')
 @inject('threadList')
@@ -113,6 +113,7 @@ class H5OthersPage extends React.Component {
   componentDidMount = async () => {
     this.setNavigationBarStyle();
     const { id = '' } = getCurrentInstance().router.params;
+    console.log('>>>  getCurrentInstance().router.params',  getCurrentInstance().router.params);
     const myId = this.props.user?.id;
 
     if (String(myId) === id) {
@@ -171,19 +172,24 @@ class H5OthersPage extends React.Component {
   }
 
   handleBack = () => {
-    Taro.navigateBack();
+    const { share = '' } = getCurrentInstance().router.params;
+    if (share === 'true') {
+      LoginHelper.gotoIndex();
+    } else {
+      Taro.navigateBack();
+    }
   };
 
   // 渲染顶部title
   renderTitleContent = () => {
-    const { id = '' } = getCurrentInstance().router.params;
+    const { id = '', share = '' } = getCurrentInstance().router.params;
     const { user } = this.props;
 
     if (user.targetUsers[id]) {
       return (
         <View className={styles.topBar}>
           <View onClick={this.handleBack} className={styles.customCapsule} style={this.getTopBarBtnStyle()}>
-            <Icon size={18} name="LeftOutlined" />
+            <Icon size={18} name={share === 'true' ? 'HomeOutlined' : 'LeftOutlined'} />
           </View>
           <View style={this.getTopBarTitleStyle()} className={styles.fullScreenTitle}>
             {user.targetUsers[id]?.nickname}的主页
@@ -195,7 +201,7 @@ class H5OthersPage extends React.Component {
     return (
       <View className={styles.topBar}>
         <View onClick={this.handleBack} className={styles.customCapsule} style={this.getTopBarBtnStyle()}>
-          <Icon size={18} name="LeftOutlined" />
+          <Icon size={18} name={share === 'true' ? 'HomeOutlined' : 'LeftOutlined'} />
         </View>
       </View>
     );
