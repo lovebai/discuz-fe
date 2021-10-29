@@ -7,7 +7,7 @@ import PopupList from '@components/thread/popup-list';
 import CountDown from '@common/utils/count-down';
 import LoginHelper from '@common/utils/login-helper';
 import CustomApplyAttach from './attach';
-import { ATTACH_INFO_NAME } from '@common/plugin/custom-apply/client/common';
+import { ATTACH_INFO_NAME } from '@common/plugin/custom-apply/View/src/common';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
 import actEntryStyles from '../../../entry/adapter/index.module.scss';
