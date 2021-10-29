@@ -178,12 +178,12 @@ export default function HOCFetchSiteData(Component, _isPass) {
       
        // 获取插件信息
        if ( site && site.pluginConfig ) {
-        // pluginRequest(site.pluginConfig, this.props.plugin.setPluginComponent.bind(this.props.plugin));
+        pluginRequest(site.pluginConfig, this.props.plugin.setPluginComponent.bind(this.props.plugin));
        } else {
         const pluginConfig = await readPluginList();
         if (pluginConfig.code === 0) {
           site.setPluginConfig(pluginConfig.data);
-          // pluginRequest(pluginConfig.data, this.props.plugin.setPluginComponent.bind(this.props.plugin));
+          pluginRequest(pluginConfig.data, this.props.plugin.setPluginComponent.bind(this.props.plugin));
         }
        }
       
