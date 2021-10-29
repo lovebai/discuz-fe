@@ -22,7 +22,8 @@ export default class UserCenterEntry extends React.Component {
     const miniShopConfig = pluginConfig.find((config) => config.app_id === _pluginInfo.options.tomId);
 
     // 后台配置并且开启了微信商店，才显示商城
-    if (miniShopConfig?.setting?.publicValue?.isOpen && miniShopConfig?.setting?.publidValue?.wxAppId) {
+    if (miniShopConfig?.setting?.publicValue?.isOpen && miniShopConfig?.setting?.publicValue?.wxAppId) {
+
       this.setState({
         visible: true,
         miniShopConfig,
@@ -31,7 +32,7 @@ export default class UserCenterEntry extends React.Component {
   }
 
   handleMiniShopOpen = () => {
-    const appId = this.state.miniShopConfig?.setting?.wxAppId;
+    const appId = this.state.miniShopConfig?.setting?.publicValue?.wxAppId;
     if (!appId) {
       return;
     }
