@@ -223,6 +223,7 @@ import { View, Text } from '@tarojs/components'
                     arr.map((item, index) => (
                         <UserItem
                           key={index}
+                          index={index}
                           imgSrc={item.avatar}
                           title={item.nickname || item.username}
                           subTitle={item.passedAt}
@@ -266,7 +267,7 @@ import { View, Text } from '@tarojs/components'
           onActive={onClickTab}
           activeId={current}
           className={styles.tabs}
-          tabBarExtraContent={
+          external={
             <>
             {isCustom && isHavaAdditionalInfo && <Button type="text" onClick={exportFn} className={styles.export}>导出</Button>}
             {tipData?.platform === 'pc' && (

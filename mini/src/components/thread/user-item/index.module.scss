@@ -100,7 +100,9 @@
     &:last-child {
       border-bottom: 0;
     }
-
+    .img-wrapper{
+      justify-content: flex-start;
+    }
     .img {
       display: inline-block;
     }

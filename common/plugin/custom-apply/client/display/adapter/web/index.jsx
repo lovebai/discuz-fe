@@ -102,7 +102,7 @@ class CustomApplyDisplay extends React.Component {
       const { body } = renderData || {};
       const { activityId } = body;
       Toast.info({ content: '导出中...' });
-      window.location.href = `${siteData?.envConfig?.COMMON_BASE_URL}/plugin/activity/api/register/export?activityId=${activityId}`;
+      window.open(`${siteData?.envConfig?.COMMON_BASE_URL}/plugin/activity/api/register/export?activityId=${activityId}`);
     } catch (error) {
       return this.props.dzqRequestHandleError(error);
     }

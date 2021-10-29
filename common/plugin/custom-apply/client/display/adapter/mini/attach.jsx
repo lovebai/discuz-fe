@@ -14,6 +14,12 @@ export default class CustomApplyAttach extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.activityId !== prevProps.activityId) {
+      this.setState({ additionalInfo: {} });
+    }
+  }
+
   handleAttachInfoChange = (e, item) => {
     const { key } = ATTACH_INFO_NAME[item?.toString()] || {};
     if (!key) return;

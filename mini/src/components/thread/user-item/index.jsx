@@ -75,6 +75,7 @@ const Index = ({
         <View className={styles['additional-wrapper']}>
           <View className={styles['additional-user']} onClick={handleClick}>
             <Avatar
+              wrapperClass={styles['img-wrapper']}
               className={styles.img}
               image={imgSrc}
               name={title}

@@ -11,6 +11,7 @@ import { ATTACH_INFO_NAME } from '@common/plugin/custom-apply/client/common';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
 import actEntryStyles from '../../../entry/adapter/index.module.scss';
+import setAuthorization from '@common/utils/set-authorization';
 
 let countDownIns = null;
 
@@ -166,6 +167,7 @@ class CustomApplyDisplay extends React.Component {
         threadId: tid,
         _plugin,
       };
+      this.setState({ additionalInfo: {} });
       updateThread(tomId, tomValue);
       const newThreadData = updateListThreadIndexes(tid, tomId, tomValue);
       if (newThreadData && recomputeRowHeights) recomputeRowHeights(newThreadData);
@@ -207,6 +209,7 @@ class CustomApplyDisplay extends React.Component {
 
   handleAttachDialogOpen = () => {
     const { siteData } = this.props;
+    const { activityId } = this.props?.renderData?.body;
     const { navInfo = {} } = siteData || {};
     const navStyle = !this.state.isDetailPage ? {
       marginTop: `${navInfo.statusBarHeight}px`,
@@ -217,8 +220,12 @@ class CustomApplyDisplay extends React.Component {
       className: classNames(actEntryStyles['dzqp-act'], actEntryStyles.h5, actEntryStyles.mini),
       headerStyle: navStyle,
       title: '填写信息',
-      content: <CustomApplyAttach {...this.props} onChange={this.change} />,
+      content: <CustomApplyAttach {...this.props}
+          activityId={activityId} additionalInfo={this.state.additionalInfo} onChange={this.change} />,
       onConfirm: this.handleAttachConfirm,
+      onCancel: () => {
+        this.setState({ isAttachShow: false });
+      },
     });
   };
 
@@ -245,22 +252,33 @@ class CustomApplyDisplay extends React.Component {
   };
 
   exportInfo() {
-    const { renderData, siteData } = this.props;
+    const { renderData, siteData, isLogin } = this.props;
+    if (!isLogin()) {
+      LoginHelper.saveAndLogin();
+      return;
+    }
     const { body } = renderData || {};
     const { activityId } = body;
     const url = `${siteData?.envConfig?.COMMON_BASE_URL}/plugin/activity/api/register/export?activityId=${activityId}`;
     Toast.info({ content: '导出中...' });
+    const config = setAuthorization({});
     Taro.downloadFile({
       url,
-      success: () => {
-        Toast.info({ content: '下载成功' });
+      header: {
+        ...config,
+      },
+      success: (res) => {
+        // Toast.info({ content: '下载成功' });
         // 这里是打开文档
-        // Taro.openDocument({
-        //   filePath: res.tempFilePath,
-        //   success() {
-        //     Toast.info({ content: '下载成功' });
-        //   },
-        // });
+        Taro.openDocument({
+          filePath: res.tempFilePath,
+          success() {
+            Toast.info({ content: '下载成功' });
+          },
+          fail: () => {
+            Toast.info({ content: '下载失败，可以到Web端试试' });
+          },
+        });
       },
       fail: (error) => {
         if (error?.errMsg.indexOf('domain list') !== -1) {
