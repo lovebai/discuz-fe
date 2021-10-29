@@ -188,11 +188,15 @@ export default class CustomApplyEntryContent extends React.Component {
 
   handleCheckAll = (val) => {
     const additionalInfoType = val ? Object.values(ATTACH_INFO_TYPE) : [];
-    this.setState({ body: { ...this.state.body, additionalInfoType } });
+    this.setState({ body: { ...this.state.body, additionalInfoType } }, () => {
+      this.props.onChange(this.state.body);
+    });
   };
 
   handleCheck = (list) => {
-    this.setState({ body: { ...this.state.body, additionalInfoType: list } });
+    this.setState({ body: { ...this.state.body, additionalInfoType: list } }, () => {
+      this.props.onChange(this.state.body);
+    });
   };
 
   render() {
