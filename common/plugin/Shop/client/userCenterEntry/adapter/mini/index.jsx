@@ -43,8 +43,8 @@ export default class UserCenterEntry extends React.Component {
     const { visible } = this.state;
     return (
       <>
-        {visible && (
-          <View onClick={this.handleMiniShopOpen} className={styles.userCenterActionItem}>
+        { visible && (
+          <View onClick={this.handleMiniShopOpen} className={`${styles.userCenterActionItem} ${styles.mini}`}>
             <View className={styles.userCenterActionItemIcon}>
               <Icon name="ShopOutlined" color="#4F5A70" size={20} />
             </View>
