@@ -25,6 +25,7 @@ import IndexQrcodeHook from '@common/plugin-hooks/plugin_index@qrcode';
 import IndexCopyrightHook from '@common/plugin-hooks/plugin_index@copyright';
 import IndexLeftHook from '@common/plugin-hooks/plugin_index@left';
 import IndexRightHook from '@common/plugin-hooks/plugin_index@right';
+import ssrTextContent from '../ssr-test';
 
 const DynamicVListLoading = dynamic(() => import('./components/dynamic-vlist'), {
   loading: (res) => {
@@ -280,6 +281,7 @@ class IndexPCPage extends React.Component {
                 );
               })}
           </div>
+          <div className='ssr-box-list-end' dangerouslySetInnerHTML={{__html: ssrTextContent}}/>
         </div>
       );
     }
