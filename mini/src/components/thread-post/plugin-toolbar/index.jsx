@@ -94,7 +94,7 @@ const Index = inject('site', 'user', 'plugin', 'threadPost')(observer((props) =>
         <View className={styles['plugin-icon']}>
           {plugs}
           <DZQPluginCenterInjection
-            className={pluginInfo => getIconCls({ type: pluginInfo.pluginName })}
+            className={pluginInfo => getIconCls({ type: pluginInfo?.pluginName })}
             target='plugin_post'
             hookName='post_extension_entry_hook'
             pluginProps={{
