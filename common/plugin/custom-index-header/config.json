@@ -17,7 +17,7 @@
         "target": "plugin_index",
         "hookName": "header_replace_hook",
         "platform": ["h5", "mini"],
-        "disables": false
+        "disables": true
       }
   }
 }
