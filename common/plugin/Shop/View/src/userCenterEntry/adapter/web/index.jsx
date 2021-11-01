@@ -48,7 +48,7 @@ export default class UserCenterEntry extends React.PureComponent {
   };
 
   render() {
-    const { dzqRequest, _pluginInfo, siteData } = this.props;
+    const { dzqRequest, _pluginInfo, siteData, dzqRequestHandleError } = this.props;
     const { visible, showPcMiniShop } = this.state;
     return (
       <>
@@ -69,7 +69,7 @@ export default class UserCenterEntry extends React.PureComponent {
               className={styles['dzq-qrcode-close']}
             />
           </div>
-          <Qrcode dzqRequest={dzqRequest} _pluginInfo={_pluginInfo} siteData={siteData} />
+          <Qrcode dzqRequest={dzqRequest} _pluginInfo={_pluginInfo} siteData={siteData} dzqRequestHandleError={dzqRequestHandleError}/>
         </Dialog>
       </>
     );
