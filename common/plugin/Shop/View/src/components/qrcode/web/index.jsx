@@ -33,27 +33,28 @@ export default class Qrcode extends React.PureComponent {
   render() {
     const { miniShopConfig } = this.state;
     const { siteData } = this.props;
-    const wxQrcode = miniShopConfig?.setting?.publicValue?.wxQrcode
+    // const wxQrcode = miniShopConfig?.setting?.publicValue?.wxQrcode
+    const wxQrcode = ''
     return (
       <div className={styles['dzq-qrcode-box']}>
         {
           wxQrcode ?
           <>
-            <img className={styles['dzq-qrcode-img']} src={wxQrcode + "33"} alt="商城二维码加载失败"/>
+            <img className={styles['dzq-qrcode-img']} src={wxQrcode} alt="商城二维码加载失败"/>
             {siteData.platform === 'pc' ? (
               <span className={`${styles['dzq-qrcode-msg']} ${styles.pc}`}>
                 <Icon name="ScanOutlined" size={16} className={styles['dzq-qrcode-scan-icon']} />
                 扫码访问商城
               </span>
             ) : (
-              <span className={`${styles['dzq-qrcode-img-error']} ${styles.h5}`}>
+              <span className={`${styles['dzq-qrcode-img-msg']} ${styles.h5}`}>
                 <span>长按保存二维码</span>
                 <span>使用微信扫码访问</span>
               </span>
             )}
           </>
           :
-          <span className={styles['dzq-qrcode-img']}>未配置商城二维码</span>
+          <span className={styles['dzq-qrcode-img-error']}>未配置商城二维码</span>
         }
     </div>    
     );
