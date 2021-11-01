@@ -19,14 +19,12 @@ export default class CustomApplyEntryContent extends React.Component {
   constructor(props) {
     super(props);
 
-    const nowTime = new Date();
-    const time = nowTime.getTime() + ONE_DAY;
     this.state = {
       showMore: false,
       showMobileDatePicker: false,
       body: {
-        activityStartTime: nowTime, // 活动开始时间
-        activityEndTime: time, // 活动结束时间
+        activityStartTime: new Date(), // 活动开始时间
+        activityEndTime: new Date().getTime() + ONE_DAY, // 活动结束时间
         title: '', // 活动名称
         content: '', // 活动详情
         registerStartTime: '', // 报名开始时间
