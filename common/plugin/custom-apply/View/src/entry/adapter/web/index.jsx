@@ -391,8 +391,8 @@ export default class CustomApplyEntry extends React.Component {
                         selected={body.registerEndTime}
                         minDate={body.registerStartTime || body.activityStartTime}
                         maxDate={body.activityEndTime}
-                        minTime={minTime}
-                        maxTime={maxTime}
+                        // minTime={minTime}
+                        // maxTime={maxTime}
                         onChange={date => this.handleTimeChange(date, TimeType.applyEnd)}
                         showTimeSelect
                         dateFormat="yyyy/MM/dd HH:mm:ss"
