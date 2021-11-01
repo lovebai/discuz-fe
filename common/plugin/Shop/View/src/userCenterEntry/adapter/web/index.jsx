@@ -11,7 +11,6 @@ export default class UserCenterEntry extends React.PureComponent {
       showPcMiniShop: false,
       miniShopConfig: {},
       visible: false,
-      loading: false,
     };
   }
   componentDidMount() {

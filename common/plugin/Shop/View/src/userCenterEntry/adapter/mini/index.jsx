@@ -21,7 +21,6 @@ export default class UserCenterEntry extends React.Component {
     let pluginConfig = siteData?.pluginConfig || [];
     const miniShopConfig = pluginConfig.find((config) => config.app_id === _pluginInfo.options.tomId);
     const { webConfig: { other: { threadOptimize } } } = siteData;
-    console.log('>>> siteData', siteData)
 
     // 后台开启了商店并且配置了商城相关配置，才显示商城
     if (threadOptimize && miniShopConfig?.setting?.publicValue?.wxAppId) {
