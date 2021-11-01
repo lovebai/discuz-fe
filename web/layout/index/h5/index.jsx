@@ -19,7 +19,7 @@ import Autoplay from '@common/utils/autoplay';
 import PacketOpen from '@components/red-packet-animation/web';
 import ThreadContent from '@components/thread/SSRAdapter';
 import SiteMapLink from '@components/site-map-link';
-
+import ssrTextContent from '../ssr-test';
 
 @inject('site')
 @inject('user')
@@ -228,13 +228,13 @@ class IndexH5Page extends React.Component {
   renderSSRContent(thread, sticks) {
     if (  process.env.DISCUZ_RUN === 'ssr' && ThreadContent ) {
       const { pageData } = thread
-      
+
       return (
         <div className='ssr-box' style={{display: 'none'}}>
           <HomeHeader />
           {this.renderTabs()}
           {this.renderHeaderContent()}
-          <div>
+          <div className='ssr-box-list'>
             {
               pageData && pageData.length != 0 && pageData.map((item, index) => {
                 return (
@@ -250,7 +250,7 @@ class IndexH5Page extends React.Component {
               })
             }
           </div>
-          
+          <div className='ssr-box-list-end' dangerouslySetInnerHTML={{__html: ssrTextContent}}/>
         </div>
       );
     }
@@ -268,7 +268,7 @@ class IndexH5Page extends React.Component {
     return (
       <BaseLayout
         showHeader={false}
-        showTabBar
+        showTabBar={!hasRedPacket}
         onRefresh={this.onRefresh}
         noMore={currentPage >= totalPage}
         isFinished={isFinished}

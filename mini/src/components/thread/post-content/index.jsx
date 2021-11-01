@@ -250,13 +250,14 @@ const PostContent = ({
       >
         <View className={styles.content}>
           <RichText
-            content={(openedMore && cutContentForDisplay) ? cutContentForDisplay : urlToLink(filterContent)}
+            content={openedMore && cutContentForDisplay ? cutContentForDisplay : urlToLink(filterContent)}
             onClick={handleClick}
             onImgClick={handleImgClick}
             onLinkClick={handleLinkClick}
             transformer={transformer}
             iframeWhiteList={['bilibili', 'youku', 'iqiyi', 'music.163.com', 'ixigua', 'qq.com', 'myqcloud.com']}
           />
+
           {imageVisible && (
             <ImagePreviewer
               ref={ImagePreviewerRef}
