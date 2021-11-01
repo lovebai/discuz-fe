@@ -11,6 +11,7 @@ export default class UserCenterEntry extends React.PureComponent {
       showPcMiniShop: false,
       miniShopConfig: {},
       visible: false,
+      loading: false,
     };
   }
   componentDidMount() {
@@ -20,10 +21,11 @@ export default class UserCenterEntry extends React.PureComponent {
   async getMiniShopPluginConfig() {
     const { _pluginInfo, siteData } = this.props;
     const pluginConfig = siteData?.pluginConfig || [];
-    const miniShopConfig = pluginConfig.find(config => config.app_id === _pluginInfo.options.tomId);
+    const miniShopConfig = pluginConfig.find((config) => config.app_id === _pluginInfo.options.tomId);
+    const { webConfig: { other: { threadOptimize } } } = siteData;
 
-    // 后台配置并且开启了微信商店，才显示商城
-    if (miniShopConfig?.setting?.publicValue?.isOpen && miniShopConfig?.setting?.publicValue?.wxAppId) {
+    // 后台开启了商店并且配置了商城相关配置，才显示商城
+    if (threadOptimize && miniShopConfig?.setting?.publicValue?.wxAppId) {
       this.setState({
         visible: true,
         miniShopConfig,
@@ -52,8 +54,11 @@ export default class UserCenterEntry extends React.PureComponent {
     const { visible, showPcMiniShop } = this.state;
     return (
       <>
-        {  visible && (
-          <div onClick={this.handleMiniShopOpen} className={`${styles.userCenterActionItem} ${siteData.platform === 'pc' ? styles.pc : styles.h5}`}>
+        {visible && (
+          <div
+            onClick={this.handleMiniShopOpen}
+            className={`${styles.userCenterActionItem} ${siteData.platform === 'pc' ? styles.pc : styles.h5}`}
+          >
             <div className={styles.userCenterActionItemIcon}>
               <Icon name="ShopOutlined" size={20} />
             </div>
@@ -69,7 +74,12 @@ export default class UserCenterEntry extends React.PureComponent {
               className={styles['dzq-qrcode-close']}
             />
           </div>
-          <Qrcode dzqRequest={dzqRequest} _pluginInfo={_pluginInfo} siteData={siteData} dzqRequestHandleError={dzqRequestHandleError}/>
+          <Qrcode
+            dzqRequest={dzqRequest}
+            _pluginInfo={_pluginInfo}
+            siteData={siteData}
+            dzqRequestHandleError={dzqRequestHandleError}
+          />
         </Dialog>
       </>
     );

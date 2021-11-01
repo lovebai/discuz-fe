@@ -149,9 +149,9 @@ export default class Qrcode extends React.PureComponent {
     const wxQrcode = miniShopConfig?.setting?.publicValue?.wxQrcode;
     return (
       <div className={styles['dzq-qrcode-box']}>
-        {/* {wxQrcode && !isQrcodeError && this.renderQrcode(wxQrcode)}
-        {wxQrcode && isQrcodeError && this.renderQrcodeError()} */}
-        {wxQrcode && this.renderNoQrcode()}
+        { wxQrcode && !isQrcodeError && this.renderQrcode(wxQrcode) }
+        { wxQrcode && isQrcodeError && this.renderQrcodeError() }
+        { !wxQrcode && this.renderNoQrcode() }
       </div>
     );
   }
