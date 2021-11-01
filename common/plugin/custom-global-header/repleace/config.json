@@ -1,8 +1,0 @@
-{
-  "pluginName": "ReplaceCustomGlobalHeader",
-  "version": "1.0.0",
-  "target": "plugin_global",
-  "hookName": "header_replace_hook",
-  "platform": ["pc"],
-  "disables": false
-}

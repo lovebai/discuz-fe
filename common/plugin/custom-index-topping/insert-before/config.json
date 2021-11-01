@@ -1,8 +1,0 @@
-{
-  "pluginName": "BeforeCustomIndexTopping",
-  "version": "1.0.0",
-  "target": "plugin_index",
-  "hookName": "topping_insert_before_hook",
-  "platform": ["pc", "h5", "mini"],
-  "disables": true
-}

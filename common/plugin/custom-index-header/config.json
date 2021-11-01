@@ -1,7 +1,7 @@
 {
-  "name_cn":"pc首页广告栏插件",
-  "name_en":"AdBanner",
-  "description":"pc首页广告栏插件",
+  "name_cn":"首页头部替换",
+  "name_en":"ReplaceCustomIndexHeader",
+  "description":"首页头部替换为搜索+banner广告",
   "type":9,
   "app_id":"asdasdasd",
   "version": "1.0.0",
@@ -15,8 +15,8 @@
   "view": {
       "replace": {
         "target": "plugin_index",
-        "hookName": "qrcode_replace_hook",
-        "platform": ["pc"],
+        "hookName": "header_replace_hook",
+        "platform": ["h5", "mini"],
         "disables": false
       }
   }

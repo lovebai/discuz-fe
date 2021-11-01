@@ -1,7 +1,7 @@
 {
-  "name_cn":"pc首页广告栏插件",
-  "name_en":"AdBanner",
-  "description":"pc首页广告栏插件",
+  "name_cn":"pc头部全局替换插件",
+  "name_en":"ReplaceCustomGlobalHeader",
+  "description":"pc头部全局替换插件",
   "type":9,
   "app_id":"asdasdasd",
   "version": "1.0.0",
@@ -14,10 +14,10 @@
   },
   "view": {
       "replace": {
-        "target": "plugin_index",
-        "hookName": "qrcode_replace_hook",
-        "platform": ["pc"],
-        "disables": false
+          "target": "plugin_global",
+          "hookName": "header_replace_hook",
+          "platform": ["pc"],
+          "disables": false
       }
   }
 }
