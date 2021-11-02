@@ -114,7 +114,6 @@ class H5OthersPage extends React.Component {
   componentDidMount = async () => {
     this.setNavigationBarStyle();
     const { id = '' } = getCurrentInstance().router.params;
-    console.log('>>>  getCurrentInstance().router.params',  getCurrentInstance().router.params);
     const myId = this.props.user?.id;
 
     if (String(myId) === id) {
