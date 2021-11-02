@@ -231,7 +231,7 @@ class IndexH5Page extends React.Component {
       </>
     );
 
-    return <IndexToppingHooks component={component} site={this.props.site} sticks={sticks}></IndexToppingHooks>;
+    return <IndexToppingHooks component={component} renderData={{ sticks }}></IndexToppingHooks>;
   };
 
   renderSSRContent(thread, sticks) {

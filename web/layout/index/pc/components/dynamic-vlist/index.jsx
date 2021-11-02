@@ -180,7 +180,7 @@ export default class DynamicVList extends React.Component {
             site={this.props.siteStore}
           />
 
-          <IndexToppingHooks component={toppingComponent} site={this.props.siteStore}></IndexToppingHooks>
+          <IndexToppingHooks component={toppingComponent} renderData={{ sticks }}></IndexToppingHooks>
         </div>
       </WindowVList>
     );
