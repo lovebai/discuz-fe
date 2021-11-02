@@ -153,24 +153,48 @@ class H5OthersPage extends React.Component {
     return wx?.getSystemInfoSync()?.statusBarHeight || 44;
   }
 
+  getTopBarStyle() {
+    if (this.state.isNormalTitle) {
+      return {
+        position: 'fixed',
+        top: 0,
+        height: `${this.getStatusBarHeight() + 50}px`,
+        zIndex: 1000,
+        width: '100%',
+        maxWidth: '100%',
+        backgroundColor: 'white',
+      };
+    }
+  }
+
   // 全屏状态下自定义左上角返回按钮位置
   getTopBarBtnStyle() {
-    return {
+    const style = {
       position: 'fixed',
       top: `${this.getStatusBarHeight()}px`,
       left: '12px',
-      transform: 'translate(0, 10px)',
-    };
+      transform: 'translate(0, 10px)'
+    }
+    if (this.state.isNormalTitle) {
+      style.backgroundColor = 'white';
+      style.color = 'black';
+    }
+    return style;
   }
 
-  // getTopBarTitleStyle() {
-  //   return {
-  //     position: 'fixed',
-  //     top: `${this.getStatusBarHeight()}px`,
-  //     left: '50%',
-  //     transform: 'translate(-50%, 8px)',
-  //   };
-  // }
+  getTopBarTitleStyle() {
+    const style = {
+      position: 'fixed',
+      top: `${this.getStatusBarHeight()}px`,
+      left: '50%',
+      transform: 'translate(-50%, 8px)'
+    }
+    if (this.state.isNormalTitle) {
+      style.backgroundColor = 'white';
+      style.color = 'black';
+    }
+    return style;
+  }
 
   handleBack = () => {
     const { share = '' } = getCurrentInstance().router.params;
@@ -181,44 +205,17 @@ class H5OthersPage extends React.Component {
     }
   };
 
-  getTopBarTitleStyle() {
-    if (this.state.isNormalTitle) {
-      return {
-        position: 'fixed',
-        top: 0,
-        height: `${this.getStatusBarHeight() + 50}px`,
-        left: '50%',
-        transform: 'translate(-50%)',
-        color: 'black',
-        zIndex: 1000,
-        width: '100%',
-        backgroundColor: 'white',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: `${this.getStatusBarHeight() - 8}px`,
-      };
-    }
-
-    return {
-      position: 'fixed',
-      top: `${this.getStatusBarHeight()}px`,
-      left: '50%',
-      transform: 'translate(-50%, 8px)',
-      zIndex: 1000
-    };
-  }
-
   // 渲染顶部title
   renderTitleContent = () => {
-    const { id = '', share = '' } = getCurrentInstance().router.params;
+    const { id = ''} = getCurrentInstance().router.params;
     const { user } = this.props;
+    const { isNormalTitle } = this.state;
 
     if (user.targetUsers[id]) {
       return (
-        <View className={styles.topBar}>
+        <View className={styles.topBar} style={this.getTopBarStyle()}>
           <View onClick={this.handleBack} className={styles.customCapsule} style={this.getTopBarBtnStyle()}>
-            <Icon size={20} name='LeftOutlined' />
+            <Icon size={20} name='LeftOutlined' color={ isNormalTitle && 'black'}/>
           </View>
           <View style={this.getTopBarTitleStyle()} className={styles.fullScreenTitle}>
             {user.targetUsers[id]?.nickname}的主页
@@ -228,9 +225,9 @@ class H5OthersPage extends React.Component {
     }
 
     return (
-      <View className={styles.topBar}>
+      <View className={styles.topBar} style={this.getTopBarStyle()}>
         <View onClick={this.handleBack} className={styles.customCapsule} style={this.getTopBarBtnStyle()}>
-          <Icon size={20} name='LeftOutlined' />
+          <Icon size={20} name='LeftOutlined' color={ isNormalTitle && 'black'}/>
         </View>
       </View>
     );

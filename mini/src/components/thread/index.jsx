@@ -188,7 +188,7 @@ class Index extends React.Component {
     if (!!isAnonymous) {
       this.onClick()
     } else {
-      Router.push({ url: `/userPages/user/index?id=${user?.userId}&share=true` });
+      Router.push({ url: `/userPages/user/index?id=${user?.userId}` });
     }
   }
 
