@@ -14,6 +14,7 @@ import { throttle } from '@common/utils/throttle-debounce';
 import { debounce, handleAttachmentData } from './utils';
 import { noop } from '@components/thread/utils';
 import { updateViewCountInStorage } from '@common/utils/viewcount-in-storage';
+import canPublish from '@common/utils/can-publish';
 import Comment from './comment';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 import { updateThreadAssignInfoInLists, updatePayThreadInfo, getThreadCommentList } from '@common/store/thread-list/list-business';
@@ -408,7 +409,7 @@ class Index extends React.Component {
             }}
             threadStore={threadStore}
             userInfo={this.props.user.userInfo}
-            canPublish={this.props.canPublish}
+            canPublish={(type) => canPublish(users, site, type, data.threadId)}
             commentList={commentList}
             deleteComment={this.deleteComment}
             createComment={this.createComment}
