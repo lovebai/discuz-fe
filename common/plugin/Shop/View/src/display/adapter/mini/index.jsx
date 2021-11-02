@@ -19,8 +19,12 @@ export default class ShopDisplay extends React.Component {
       navigateToMiniProgram({
         appId,
         path,
-        fail: () => {
-          Toast.info({ content: '跳转失败' });
+        fail: (error) => {
+          if (error && error.errMsg && error.errMsg === 'navigateToMiniProgram:fail cancel') {
+            // 用户点击了取消跳转按钮
+          } else {
+            Toast.info({ content: '跳转失败' });
+          }
         },
       });
     }
