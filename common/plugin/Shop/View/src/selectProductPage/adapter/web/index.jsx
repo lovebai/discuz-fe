@@ -375,7 +375,7 @@ export default class SelectProduct extends React.PureComponent {
       <div className={styles.shopPageWrapper}>
         <Header />
         <Tabs
-          scrollable={true}
+          scrollable={false}
           type={'primary'}
           activeId={this.state.activeTab}
           onActive={(activeId) => {

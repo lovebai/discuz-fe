@@ -186,13 +186,13 @@ export default class SelectProduct extends React.PureComponent {
     const nextSelectedStatus = Object.assign({}, this.state.selectedMiniShopProducts);
 
     if (checkedStatus) {
-      if (Object.keys(this.state.selectedMiniShopProducts).length > 10) {
+      if (Object.keys(this.state.selectedMiniShopProducts).length >= 10) {
         Toast.error({
           content: '最多只能同时选择十条小商店商品'
         })
         return;
       }
-      
+
       nextSelectedStatus[productId] = productInfo;
     } else {
       delete nextSelectedStatus[productId];
@@ -361,7 +361,7 @@ export default class SelectProduct extends React.PureComponent {
     return (
       <View className={styles.shopPageWrapper}>
         <Tabs
-          scrollable={true}
+          scrollable={false}
           type={'primary'}
           activeId={this.state.activeTab}
           onActive={(activeId) => {
