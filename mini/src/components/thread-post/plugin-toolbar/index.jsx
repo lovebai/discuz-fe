@@ -55,6 +55,8 @@ const Index = inject(
       if (item.type === THREAD_TYPE.image && Object.keys(postData?.images || []).length > 0) return activeCls;
       if (item.type === THREAD_TYPE.vote && postData?.vote?.voteTitle) return activeCls;
       if (item.type === THREAD_TYPE.anonymity && postData?.anonymous) return activeCls;
+      const plugin = (postData?.plugin && postData?.plugin[item.type]) || {};
+      if (plugin?.tomId) return activeCls;
       return cls;
     };
 
@@ -101,7 +103,7 @@ const Index = inject(
           <View className={styles['plugin-icon']}>
             {plugs}
             <DZQPluginCenterInjection
-              className={getIconCls(null)}
+              className={pluginInfo => getIconCls({ type: pluginInfo?.pluginName })}
               target="plugin_post"
               hookName="post_extension_entry_hook"
               pluginProps={{
