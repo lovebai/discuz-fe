@@ -41,7 +41,7 @@ export default class Qrcode extends React.PureComponent {
     return miniShopConfig;
   }
 
-  renderQrcodeOnError = () => {
+  handleQrcodeOnError = () => {
     this.setState({
       isQrcodeError: true,
     });
@@ -126,7 +126,7 @@ export default class Qrcode extends React.PureComponent {
           className={styles['dzq-qrcode-img']}
           src={wxQrcode}
           onLoad={this.handleQrcodeOnLoad}
-          onError={this.renderQrcodeOnError}
+          onError={this.handleQrcodeOnError}
           alt="二维码"
         />
         {siteData.platform === 'pc' ? (
