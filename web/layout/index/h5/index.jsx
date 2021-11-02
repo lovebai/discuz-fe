@@ -207,7 +207,15 @@ class IndexH5Page extends React.Component {
       </>
     );
 
-    return <IndexTabsHook component={component} site={this.props.site} categories={categories}></IndexTabsHook>;
+    return (
+      <IndexTabsHook
+        component={component}
+        changeFilter={params => this.changeFilter(params)}
+        renderData={{
+          categories,
+        }}
+      ></IndexTabsHook>
+    );
   };
 
   renderHeaderContent = () => {

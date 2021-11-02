@@ -166,7 +166,10 @@ class IndexH5Page extends React.Component {
 
         <IndexTabsHook
           component={<IndexTabs onClickTab={this.onClickTab} searchClick={this.searchClick} ref={this.tabsRef} />}
-          site={this.props.site}
+          changeFilter={(params) => this.changeFilter(params)}
+          renderData={{
+            categories: index.categories,
+          }}
         ></IndexTabsHook>
 
         <View style={{ display: isClickTab ? 'none' : 'block' }}>
@@ -194,11 +197,15 @@ class IndexH5Page extends React.Component {
           onSubmit={this.changeFilter}
           permissions={user.threadExtendPermissions}
         />
-        { hasRedPacket > 0 && <PacketOpen money={hasRedPacket} onClose={() => {
-              thread.setRedPacket(0)
-              index.setHiddenTabBar(false)
+        {hasRedPacket > 0 && (
+          <PacketOpen
+            money={hasRedPacket}
+            onClose={() => {
+              thread.setRedPacket(0);
+              index.setHiddenTabBar(false);
             }}
-          />}
+          />
+        )}
       </BaseLayout>
     );
   }
