@@ -17,7 +17,6 @@ import { updateThreadAssignInfoInLists } from '@common/store/thread-list/list-bu
 @withShare({})
 class Index extends React.Component {
   getShareData(data) {
-    console.log(666, data)
     const { site } = this.props;
     const { id = '' } = getCurrentInstance().router.params;
     const defalutTitle = `${this.props.user?.targetUsers?.[id]?.nickname || this.props.user?.targetUsers?.[id]?.username}的主页`;
