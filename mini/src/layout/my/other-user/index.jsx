@@ -25,6 +25,7 @@ class H5OthersPage extends React.Component {
     this.state = {
       fetchUserInfoLoading: true,
       previewBackgroundUrl: null, // 预览背景图片链接
+      isNormalTitle: false
     };
 
     this.previewBackgroundLoading = false; // 预览背景图片是否在预加载
@@ -162,14 +163,14 @@ class H5OthersPage extends React.Component {
     };
   }
 
-  getTopBarTitleStyle() {
-    return {
-      position: 'fixed',
-      top: `${this.getStatusBarHeight()}px`,
-      left: '50%',
-      transform: 'translate(-50%, 8px)',
-    };
-  }
+  // getTopBarTitleStyle() {
+  //   return {
+  //     position: 'fixed',
+  //     top: `${this.getStatusBarHeight()}px`,
+  //     left: '50%',
+  //     transform: 'translate(-50%, 8px)',
+  //   };
+  // }
 
   handleBack = () => {
     const { share = '' } = getCurrentInstance().router.params;
@@ -180,6 +181,34 @@ class H5OthersPage extends React.Component {
     }
   };
 
+  getTopBarTitleStyle() {
+    if (this.state.isNormalTitle) {
+      return {
+        position: 'fixed',
+        top: 0,
+        height: `${this.getStatusBarHeight() + 50}px`,
+        left: '50%',
+        transform: 'translate(-50%)',
+        color: 'black',
+        zIndex: 1000,
+        width: '100%',
+        backgroundColor: 'white',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: `${this.getStatusBarHeight() - 8}px`,
+      };
+    }
+
+    return {
+      position: 'fixed',
+      top: `${this.getStatusBarHeight()}px`,
+      left: '50%',
+      transform: 'translate(-50%, 8px)',
+      zIndex: 1000
+    };
+  }
+
   // 渲染顶部title
   renderTitleContent = () => {
     const { id = '', share = '' } = getCurrentInstance().router.params;
@@ -189,7 +218,7 @@ class H5OthersPage extends React.Component {
       return (
         <View className={styles.topBar}>
           <View onClick={this.handleBack} className={styles.customCapsule} style={this.getTopBarBtnStyle()}>
-            <Icon size={18} name={share === 'true' ? 'HomeOutlined' : 'LeftOutlined'} />
+            <Icon size={20} name='LeftOutlined' />
           </View>
           <View style={this.getTopBarTitleStyle()} className={styles.fullScreenTitle}>
             {user.targetUsers[id]?.nickname}的主页
@@ -201,7 +230,7 @@ class H5OthersPage extends React.Component {
     return (
       <View className={styles.topBar}>
         <View onClick={this.handleBack} className={styles.customCapsule} style={this.getTopBarBtnStyle()}>
-          <Icon size={18} name={share === 'true' ? 'HomeOutlined' : 'LeftOutlined'} />
+          <Icon size={20} name='LeftOutlined' />
         </View>
       </View>
     );
@@ -296,6 +325,18 @@ class H5OthersPage extends React.Component {
         onRefresh={this.fetchTargetUserThreads}
         noMore={totalPage < currentPage}
         showLoadingInCenter={!userThreadsList.length}
+        onScroll={(e) => {
+          const currentScrollTop = e.detail.scrollTop;
+          if (currentScrollTop > 170) {
+            this.setState({
+              isNormalTitle: true,
+            });
+          } else {
+            this.setState({
+              isNormalTitle: false,
+            });
+          }
+        }}
       >
         <View className={styles.mobileLayout}>
           {this.renderTitleContent()}
