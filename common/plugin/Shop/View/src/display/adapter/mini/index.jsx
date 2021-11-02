@@ -55,6 +55,16 @@ export default class ShopDisplay extends React.Component {
               </View>
             </View>
           </View>
+          {type === MINI_SHOP_TYPE && (
+            <View
+              className={classNames(styles['wrapper-right'], styles['wrapper-platform'])}
+            >
+              <Icon size="20" name="ShoppingCartOutlined" />
+              <View className={styles['wrapper-right_footer']}>
+                购买商品
+              </View>
+            </View>
+          )}
         </View>
       );
     });
