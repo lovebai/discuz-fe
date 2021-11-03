@@ -1,9 +1,11 @@
 import { Input, Radio } from '@discuzq/design';
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import styles from './index.module.scss';
 import locals from '@common/utils/local-bridge';
 
 const Payment = (props, ref) => {
+  const { onChange = () => {} } = props;
+
   // 获取缓存
   let info = locals.get('USER_PAYMENT_INFO');
   if (info) {
@@ -20,6 +22,10 @@ const Payment = (props, ref) => {
   const [no, setNo] = useState(info?.no || '');
 
   const [defaultValue, setdefaultValue] = useState(info?.type || 'wx');
+
+  useEffect(() => {
+    onChange(getInfoStr());
+  }, [wxValue, telValue, name, no, defaultValue]);
 
   useImperativeHandle(ref, () => ({
     getData: () => {
@@ -40,13 +46,13 @@ const Payment = (props, ref) => {
     let str = '';
     switch (defaultValue) {
       case 'wx':
-        str = `微信：${wxValue || ''}`;
+        str = wxValue ? `微信：${wxValue || ''}` : '';
         break;
       case 'tel':
-        str = `手机号：${telValue || ''}`;
+        str = telValue ? `手机号：${telValue || ''}` : '';
         break;
       default:
-        str = `银行卡：${name || ''}；\n 银行卡号：${no || ''}`;
+        str = name && no ? `银行卡：${name || ''}；\n 银行卡号：${no || ''}` : '';
         break;
     }
     return str;

@@ -138,9 +138,9 @@ class Withdrawal extends React.Component {
 
   // 获取禁用逻辑
   getDisabeledButton = () => {
-    const { inputValue } = this.state;
+    const { inputValue, receiveAccount } = this.state;
     const btnDisabled =
-      !inputValue ||
+      !inputValue || !receiveAccount ||
       parseFloat(inputValue) > parseFloat(this.props.wallet?.walletAvaAmount) ||
       parseFloat(inputValue) < parseFloat(this.props.site?.cashMinSum);
     return btnDisabled;
@@ -174,7 +174,7 @@ class Withdrawal extends React.Component {
               />
             </View>
             <View className={styles.payment}>
-              <Payment ref={this.paymentRef}></Payment>
+              <Payment ref={this.paymentRef} onChange={desc => this.setState({ receiveAccount: desc })}></Payment>
             </View>
           </View>
           <View
