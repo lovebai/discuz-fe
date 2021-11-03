@@ -26,6 +26,14 @@ class SiteStore {
   @observable pluginConfig = null; // 插件配置
   // @observable pluginStore = {};
 
+  // TODO: 目前报名帖占用，待调整成页面级的
+  @observable
+  navInfo = {
+    statusBarHeight: 44, // 默认的状态栏高度
+    navHeight: 40, // 默认的导航栏高度
+    menubtnWidth: 80, // 胶囊按钮的宽度
+  }
+
   @computed get isRegister() {
     return !this.isSmsOpen && this.wechatEnv === 'none' && this.registerClose;
   }
@@ -165,6 +173,11 @@ class SiteStore {
   // 站点有效期
   @computed get siteExpire() {
     return get(this.webConfig, 'setSite.siteExpire');
+  }
+
+  // 附件上传限制数
+  @computed get attachmentLimit() {
+    return Number(get(this.webConfig, 'setAttach.supportMaxUploadAttachmentNum', 9));
   }
 }
 

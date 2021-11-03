@@ -22,9 +22,18 @@ const TopFilterView = ({ onFilterClick, isShowDefault, onPostThread, ishide, sit
     </div>
   );
 
+  const changeFilter = (params) => {
+    const { types, sort, essence, attention, sequence } = params;
+    const result = {
+      sequence,
+      filter: { types, sort, essence, attention },
+    };
+    onFilterClick(result);
+  };
+
   return (
     <div className={styles.topWrapper} style={{ visibility: ishide ? 'hidden' : 'visible' }}>
-      <IndexTabsHook component={component} site={site}></IndexTabsHook>
+      <IndexTabsHook changeFilter={(params) => changeFilter(params)} component={component}></IndexTabsHook>
     </div>
   );
 };
@@ -36,7 +45,15 @@ export default class DynamicVList extends React.Component {
 
   // 中间 -- 筛选 置顶信息 是否新内容发布 主题内容
   renderContent = (data) => {
-    const { visible, conNum, isShowDefault, onFilterClick, onPostThread, goRefresh, canPublish = () => {} } = this.props;
+    const {
+      visible,
+      conNum,
+      isShowDefault,
+      onFilterClick,
+      onPostThread,
+      goRefresh,
+      canPublish = () => {},
+    } = this.props;
     const { sticks, threads } = data;
     const { pageData } = threads || {};
 
@@ -101,8 +118,8 @@ export default class DynamicVList extends React.Component {
       requestError,
       noMore,
       errorText,
-      onScroll = () => { },
-      canPublish = () => { }
+      onScroll = () => {},
+      canPublish = () => {},
     } = this.props;
     const { sticks, threads } = data;
     const { pageData } = threads || {};
@@ -163,7 +180,7 @@ export default class DynamicVList extends React.Component {
             site={this.props.siteStore}
           />
 
-          <IndexToppingHooks component={toppingComponent} site={this.props.siteStore}></IndexToppingHooks>
+          <IndexToppingHooks component={toppingComponent} renderData={{ sticks }}></IndexToppingHooks>
         </div>
       </WindowVList>
     );

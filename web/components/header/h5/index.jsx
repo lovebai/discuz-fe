@@ -74,9 +74,9 @@ const H5Header = (props) => {
   return (
     <GlobalHeaderHooks
       component={component}
-      site={props.site}
-      user={{ userInfo: user.userInfo }}
-      message={{ totalUnread }}
+      renderData={{
+        totalUnread,
+      }}
     ></GlobalHeaderHooks>
   );
 };

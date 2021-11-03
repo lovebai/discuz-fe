@@ -59,7 +59,7 @@ class IndexH5Page extends React.Component {
       <div>
         {/* 顶部插件hooks */}
         <div ref={this.headerRef}>
-          <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
+          <IndexHeaderHooks  component={<HomeHeader />}></IndexHeaderHooks>
         </div>
         <DynamicLoading
           data={res}
@@ -207,7 +207,15 @@ class IndexH5Page extends React.Component {
       </>
     );
 
-    return <IndexTabsHook component={component} site={this.props.site} categories={categories}></IndexTabsHook>;
+    return (
+      <IndexTabsHook
+        component={component}
+        changeFilter={params => this.changeFilter(params)}
+        renderData={{
+          categories,
+        }}
+      ></IndexTabsHook>
+    );
   };
 
   renderHeaderContent = () => {
@@ -223,7 +231,7 @@ class IndexH5Page extends React.Component {
       </>
     );
 
-    return <IndexToppingHooks component={component} site={this.props.site} sticks={sticks}></IndexToppingHooks>;
+    return <IndexToppingHooks component={component} renderData={{ sticks }}></IndexToppingHooks>;
   };
 
   renderSSRContent(thread, sticks) {
@@ -299,7 +307,7 @@ class IndexH5Page extends React.Component {
           >
             {/* 头部插件hooks */}
             <div ref={this.headerRef}>
-              <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
+              <IndexHeaderHooks component={<HomeHeader />}></IndexHeaderHooks>
             </div>
 
             <Observer>{() => this.renderTabs()}</Observer>
