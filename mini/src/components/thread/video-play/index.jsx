@@ -85,7 +85,6 @@ const Index = ({
   }
 
   useEffect(() => {
-    console.log('relativeToViewport----', relativeToViewport)
     if (relativeToViewport) {
       getElementRect(videoId.current).then(res => {
         const info = Taro.getSystemInfoSync();
@@ -103,7 +102,6 @@ const Index = ({
       })
     }
   }, [relativeToViewport]);
-  console.log('----------', width, height, url);
   return (
     <View id={videoId.current} className={styles.container} style={{
       width: `${width}px`,
