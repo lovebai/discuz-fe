@@ -59,7 +59,7 @@ class IndexH5Page extends React.Component {
       <div>
         {/* 顶部插件hooks */}
         <div ref={this.headerRef}>
-          <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
+          <IndexHeaderHooks  component={<HomeHeader />}></IndexHeaderHooks>
         </div>
         <DynamicLoading
           data={res}

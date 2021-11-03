@@ -300,8 +300,10 @@ class Header extends React.Component {
     return (
       <GlobalHeaderHooks
         component={component}
-        message={{ totalUnread }}
-        onSearch={(value) => this.handlePluginSearch(value)}
+        renderData={{
+          totalUnread,
+        }}
+        onSearch={value => this.handlePluginSearch(value)}
       ></GlobalHeaderHooks>
     );
   }

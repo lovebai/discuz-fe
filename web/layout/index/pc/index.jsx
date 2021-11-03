@@ -208,35 +208,39 @@ class IndexPCPage extends React.Component {
     return (
       <IndexLeftHook
         component={component}
-        site={this.props.site}
-        categories={currentCategories}
-        activeCategoryId={activeCategoryId}
-        activeChildCategoryId={activeChildCategoryId}
-        totalThreads={countThreads}
+        renderData={{
+          categories: currentCategories,
+          activeCategoryId,
+          activeChildCategoryId,
+          totalThreads: countThreads,
+          isError: categoryError.isError,
+          errorText: categoryError.errorText,
+        }}
         onNavigationClick={this.onNavigationClick}
-        isError={categoryError.isError}
-        errorText={categoryError.errorText}
       ></IndexLeftHook>
     );
   };
   // 右侧 -- 二维码 推荐内容
   renderRight = (data) => {
+    const { recommends } = this.props.index || {};
+    const url = this.props.site?.webConfig?.setSite?.siteUrl;
+
     const component = (
       <div className={styles.indexRight}>
-        <IndexRecommendHook component={<Recommend />} site={this.props.site}></IndexRecommendHook>
+        <IndexRecommendHook component={<Recommend />} renderData={{ recommends }}></IndexRecommendHook>
         <IndexQrcodeHook
           component={
             <div className={styles.indexRightCon}>
               <QcCode />
             </div>
           }
-          site={this.props.site}
+          renderData={{ url }}
         ></IndexQrcodeHook>
-        <IndexCopyrightHook component={<Copyright />} site={this.props.site}></IndexCopyrightHook>
+        <IndexCopyrightHook component={<Copyright />}></IndexCopyrightHook>
       </div>
     );
 
-    return <IndexRightHook component={component} site={this.props.site}></IndexRightHook>;
+    return <IndexRightHook component={component} renderData={{ recommends, url }}></IndexRightHook>;
   };
 
   checkIsOpenDefaultTab() {
