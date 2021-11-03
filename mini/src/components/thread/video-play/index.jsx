@@ -85,10 +85,11 @@ const Index = ({
   }
 
   useEffect(() => {
+    console.log('relativeToViewport----', relativeToViewport)
     if (relativeToViewport) {
       getElementRect(videoId.current).then(res => {
         const info = Taro.getSystemInfoSync();
-  
+
         const { width, height } = calcVideoSize({
           parentWidth: res?.width || 343,
           v_width,
@@ -97,25 +98,26 @@ const Index = ({
         });
         setWidth(width);
         setHeight(height);
-  
+
         changeHeight({ type: 'video', height })
       })
     }
   }, [relativeToViewport]);
-
+  console.log('----------', width, height, url);
   return (
-    <View id={videoId.current} className={styles.container} style={{ 
-      width: `${width}px`, 
-      height: `${height}px` 
+    <View id={videoId.current} className={styles.container} style={{
+      width: `${width}px`,
+      height: `${height}px`
     }}>
       {
-        width && ( 
+        width && url && (
           <Video
             className={styles.videoBox}
             onReady={onReady}
             onPlay={onPlay}
             onFullscreenChange={onFullscreenChange}
-            src={url}
+            // 列表页已经加载的视频，详情页载入的时候无法正常播放，这里还需要进一步的了解原因以及优化，目前只是加了随机数
+            src={url.indexOf('?') > -1 ? `${url}&rd=${randomStr()}` : `${url}?rd=${randomStr()}`}
             width={`${width}px`}
             height={`${height}px`}
             poster={coverUrl}
