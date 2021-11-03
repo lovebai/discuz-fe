@@ -15,15 +15,9 @@ const setCookie = (name, value, exdays) => {
 };
 
 export default function (props) {
-  console.log('props', props);
-  const {
-    dzqRouter,
-    isLogin,
-    userInfo,
-    message: { totalUnread },
-    onSearch,
-    pluginStore,
-  } = props;
+  const { dzqRouter, isLogin, userInfo, renderData, onSearch, pluginStore } = props;
+  const { totalUnread } = renderData || {};
+
   const [value, setValue] = useState(pluginStore?.searchValue || '');
 
   const handleRouter = (path) => {
