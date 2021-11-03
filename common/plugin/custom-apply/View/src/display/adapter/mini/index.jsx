@@ -14,6 +14,7 @@ import actEntryStyles from '../../../entry/adapter/index.module.scss';
 import setAuthorization from '@common/utils/set-authorization';
 
 let countDownIns = null;
+let submitFlag = false;
 
 class CustomApplyDisplay extends React.Component {
   constructor(props) {
@@ -189,9 +190,12 @@ class CustomApplyDisplay extends React.Component {
       this.setState({ isAttachShow: true }, () => {
         this.handleAttachDialogOpen();
       });
-      return;
+      return false;
     }
+    if (submitFlag) return false;
+    submitFlag = true;
     const res = await this.submit();
+    submitFlag = false;
     return res;
   };
 
@@ -229,7 +233,7 @@ class CustomApplyDisplay extends React.Component {
     });
   };
 
-  handleAttachConfirm = () => {
+  handleAttachConfirm = async () => {
     const { body } = this.props.renderData || {};
     const { additionalInfo = {} } = this.state;
     const { additionalInfoType = [] } = body || {};
