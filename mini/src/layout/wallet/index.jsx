@@ -373,7 +373,8 @@ class WalletH5Page extends React.Component {
     // 判断是否显示充值按钮，微信支付打开 && 充值权限打开
     const { isWechatPayOpen, webConfig } = this.props.site || {};
     const { siteCharge } = webConfig.setSite || {};
-    const isShowRecharge = isWechatPayOpen && siteCharge === 1;
+    const { threadOptimize } = webConfig.other || {};
+    const isShowRecharge = isWechatPayOpen && siteCharge === 1 && threadOptimize;
     const tabList = [
       [
         'income',
