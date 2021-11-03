@@ -36,6 +36,7 @@ import Copyright from '@components/copyright';
 
 import MorePopop from '@components/more-popop';
 
+import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 
 import { parseContentData } from '../utils';
 const hongbaoMini = 'https://cloudcache.tencentcs.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
@@ -426,6 +427,23 @@ class ThreadH5Page extends React.Component {
       Toast.info({ content: '请输入内容' });
       return;
     }
+
+    // 验证码
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      // 开启了腾讯云验证码验证时，进行验证，通过后再进行实际的发布请求
+
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        // 验证码票据，验证码字符串不全时，弹出滑块验证码
+        const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
+        if (!captchaTicket && !captchaRandStr) {
+          return false ;
+        }
+      }
+    }
+
     return this.comment ? await this.updateComment(val, imageList) : await this.createComment(val, imageList);
   }
 
@@ -692,7 +710,7 @@ class ThreadH5Page extends React.Component {
       this.props.index.refreshHomeData({ categoryIds: [categoryId] });
     }
     this.props.vlist.resetPosition();
-    Router.push({ url: '/' });
+    Router.push({ url: `/?categoryId=${categoryId}&sequence=0` });
   }
 
   replyAvatarClick(reply, comment, floor) {
@@ -1009,4 +1027,4 @@ class ThreadH5Page extends React.Component {
   }
 }
 
-export default ThreadH5Page;
+export default HOCTencentCaptcha(ThreadH5Page);

@@ -138,9 +138,7 @@ const BottomNavBar = ({
   return (
     <GlobalFooterHook
       component={component}
-      site={site}
-      user={{ permissions: user.permissions }}
-      message={{ totalUnread }}
+      renderData={{ totalUnread }}
     ></GlobalFooterHook>
   );
 };

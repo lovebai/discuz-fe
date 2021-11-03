@@ -132,7 +132,7 @@ class IndexH5Page extends React.Component {
       </>
     );
 
-    return <IndexToppingHooks component={component} site={this.props.site}></IndexToppingHooks>;
+    return <IndexToppingHooks component={component} renderData={{ sticks }}></IndexToppingHooks>;
   };
 
   render() {
@@ -142,10 +142,13 @@ class IndexH5Page extends React.Component {
     const { isFinished, isClickTab } = this.state;
     const { threads = {}, TwoDThreads, currentCategories, filter, threadError } = index;
     const { currentPage = 1, totalPage, pageData } = threads || {};
+
+    hasRedPacket && index.setHiddenTabBar(true);
+
     return (
       <BaseLayout
         showHeader={false}
-        showTabBar={!hasRedPacket}
+        showTabBar
         onRefresh={this.onRefresh}
         noMore={!isClickTab && currentPage >= totalPage}
         isFinished={isFinished}
@@ -163,7 +166,10 @@ class IndexH5Page extends React.Component {
 
         <IndexTabsHook
           component={<IndexTabs onClickTab={this.onClickTab} searchClick={this.searchClick} ref={this.tabsRef} />}
-          site={this.props.site}
+          changeFilter={(params) => this.changeFilter(params)}
+          renderData={{
+            categories: index.categories,
+          }}
         ></IndexTabsHook>
 
         <View style={{ display: isClickTab ? 'none' : 'block' }}>
@@ -191,7 +197,15 @@ class IndexH5Page extends React.Component {
           onSubmit={this.changeFilter}
           permissions={user.threadExtendPermissions}
         />
-        {hasRedPacket > 0 && <PacketOpen onClose={() => thread.setRedPacket(0)} money={hasRedPacket} />}
+        {hasRedPacket > 0 && (
+          <PacketOpen
+            money={hasRedPacket}
+            onClose={() => {
+              thread.setRedPacket(0);
+              index.setHiddenTabBar(false);
+            }}
+          />
+        )}
       </BaseLayout>
     );
   }

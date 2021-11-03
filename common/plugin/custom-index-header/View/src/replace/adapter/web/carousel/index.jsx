@@ -16,7 +16,7 @@ export default class extends React.Component {
           initialSlideHeight={150}
           withoutControls={false}
           renderCenterLeftControls={({ previousSlide }) => (
-            <Icon color="#fff" name="LeftOutlined" onClick={previousSlide} size={18}></Icon>
+            <Icon color="#fff" name="LeftOutlined" onClick={previousSlide} size={20}></Icon>
           )}
           renderCenterRightControls={({ nextSlide }) => (
             <Icon color="#fff" name="RightOutlined" onClick={nextSlide}></Icon>
