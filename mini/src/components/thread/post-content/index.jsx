@@ -240,7 +240,6 @@ const PostContent = ({
     generateAppRelativePageLinks();
 
   }, [filterContent]);
-
   return (
     <View className={styles.container} {...props}>
       <View
@@ -250,7 +249,6 @@ const PostContent = ({
       >
         <View className={styles.content}>
           <RichText
-            className={styles.richtext} 
             content={openedMore && cutContentForDisplay ? cutContentForDisplay : urlToLink(filterContent)}
             onClick={handleClick}
             onImgClick={handleImgClick}
