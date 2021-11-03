@@ -10,6 +10,7 @@ import DeletePopup from '@components/thread-detail-pc/delete-popup';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import { debounce } from '@common/utils/throttle-debounce';
 import Router from '@discuzq/sdk/dist/router';
+import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 
 
 // 评论列表
@@ -295,6 +296,22 @@ class RenderCommentList extends React.Component {
         });
     }
 
+    //  验证码
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      // 开启了腾讯云验证码验证时，进行验证，通过后再进行实际的发布请求
+
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        // 验证码票据，验证码字符串不全时，弹出滑块验证码
+        const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
+        if (!captchaTicket && !captchaRandStr) {
+          return false ;
+        }
+      }
+    }
+
     const { success, msg, isApproved } = await this.props.comment.createReply(
       params,
       this.props.isPositionComment ? this.props.commentPosition : this.props.thread,
@@ -499,4 +516,4 @@ RenderCommentList.defaultProps = {
   showHeader: true, // 是否显示排序头部
 };
 
-export default RenderCommentList;
+export default HOCTencentCaptcha(RenderCommentList);

@@ -46,6 +46,8 @@ export default function HOCTencentCaptcha(Component) {
             captchaRandStr: res.randstr,
             captchaTicket: res.ticket,
           });
+        } else {
+          return reject(false);
         }
       });
       // 显示验证码

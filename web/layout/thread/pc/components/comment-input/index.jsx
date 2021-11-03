@@ -70,6 +70,7 @@ const CommentInput = inject('site')((props) => {
           setShowPicture(false);
           setImageList([]);
         }
+        setLoading(false);
       } catch (error) {
         console.log(error);
       } finally {

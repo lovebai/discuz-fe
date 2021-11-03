@@ -6,6 +6,8 @@ import classNames from 'classnames';
 import Avatar from '@components/avatar';
 import throttle from '@common/utils/thottle.js';
 import xss from '@common/utils/xss';
+import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
+
 
 // 用户中心发帖模块
 @inject('site')
@@ -58,6 +60,23 @@ class UserCenterPost extends React.Component {
     const { createThread, setPostData, postData } = this.props.threadPost;
     if (this.state.isPostDisabled) return;
     if (!postData.contentText) return Toast.info({ content: '请输入发帖内容' });
+
+    //  验证码
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      // 开启了腾讯云验证码验证时，进行验证，通过后再进行实际的发布请求
+
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        // 验证码票据，验证码字符串不全时，弹出滑块验证码
+        const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
+        if (!captchaTicket && !captchaRandStr) {
+          return false ;
+        }
+      }
+    }
+
     Toast.loading({
       content: '发布中...',
     });
@@ -129,4 +148,4 @@ class UserCenterPost extends React.Component {
 
 UserCenterPost.displayName = 'UserCenterPost';
 
-export default UserCenterPost;
+export default HOCTencentCaptcha(UserCenterPost);
