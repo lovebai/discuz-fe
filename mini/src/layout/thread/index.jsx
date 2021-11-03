@@ -535,6 +535,11 @@ class ThreadH5Page extends React.Component {
       setTimeout(() => {
         Taro.navigateBack({
           delta: 1,
+          fail:()=>{
+            Taro.navigateTo({
+              url: '/indexPages/home/index',
+            });
+          }
         });
       }, 1000);
 
