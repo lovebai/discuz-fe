@@ -222,20 +222,17 @@ function AttachmentToolbar(props) {
     return defaultEntryList;
   };
 
-
   if (props.pc) return (
     <>
       {icons()}
       <DZQPluginCenterInjectionPolyfill
-        className={getIconCls()}
+        className={pluginInfo => getIconCls({ type: pluginInfo?.pluginName })}
         target='plugin_post'
         hookName='post_extension_entry_hook'
         pluginProps={{
           onConfirm: props.onPluginSetPostData,
-          renderData: props.postData.plugin,
-          postData: {
-            navInfo: props.threadPost.navInfo,
-          },
+          renderData: props.threadPost.postData.plugin,
+          postData: props.threadPost.postData,
         }}/>
     </>
   );
@@ -261,15 +258,13 @@ function AttachmentToolbar(props) {
         <div className={styles['dvditor-attachment-toolbar__left']}>
           {icons()}
           <DZQPluginCenterInjectionPolyfill
-            className={getIconCls()}
+            className={pluginInfo => getIconCls({ type: pluginInfo?.pluginName })}
             target='plugin_post'
             hookName='post_extension_entry_hook'
             pluginProps={{
               onConfirm: props.onPluginSetPostData,
-              renderData: props.postData.plugin,
-              postData: {
-                navInfo: props.threadPost.navInfo,
-              },
+              renderData: props.threadPost.postData.plugin,
+              postData: props.threadPost.postData,
             }}/>
         </div>
         <div

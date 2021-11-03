@@ -4,7 +4,6 @@ import { plus } from '@common/utils/calculate';
 
 class CommentAction {
   constructor(props) {
-    console.log(props.threadData, 3);
     this.list = props.list;
     this.threadData = props.threadData;
   }
