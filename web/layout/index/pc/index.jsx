@@ -222,12 +222,16 @@ class IndexPCPage extends React.Component {
   };
   // 右侧 -- 二维码 推荐内容
   renderRight = (data) => {
-    const { recommends } = this.props.index || {};
+    const { recommends, getRecommends } = this.props.index || {};
     const url = this.props.site?.webConfig?.setSite?.siteUrl;
 
     const component = (
       <div className={styles.indexRight}>
-        <IndexRecommendHook component={<Recommend />} renderData={{ recommends }}></IndexRecommendHook>
+        <IndexRecommendHook
+          component={<Recommend />}
+          onGetRecommends={getRecommends}
+          renderData={{ recommends }}
+        ></IndexRecommendHook>
         <IndexQrcodeHook
           component={
             <div className={styles.indexRightCon}>
@@ -240,7 +244,13 @@ class IndexPCPage extends React.Component {
       </div>
     );
 
-    return <IndexRightHook component={component} renderData={{ recommends, url }}></IndexRightHook>;
+    return (
+      <IndexRightHook
+        component={component}
+        onGetRecommends={getRecommends}
+        renderData={{ recommends, url }}
+      ></IndexRightHook>
+    );
   };
 
   checkIsOpenDefaultTab() {

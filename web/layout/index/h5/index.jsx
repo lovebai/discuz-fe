@@ -307,7 +307,7 @@ class IndexH5Page extends React.Component {
           >
             {/* 头部插件hooks */}
             <div ref={this.headerRef}>
-              <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
+              <IndexHeaderHooks component={<HomeHeader />}></IndexHeaderHooks>
             </div>
 
             <Observer>{() => this.renderTabs()}</Observer>
