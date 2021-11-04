@@ -259,7 +259,7 @@ class IndexH5Page extends React.Component {
                 );
               })}
           </div>
-          <div className='ssr-box-list-end' dangerouslySetInnerHTML={{__html: ssrTextContent}}/>
+          {false && <div className='ssr-box-list-end' dangerouslySetInnerHTML={{__html: ssrTextContent}}/>}
         </div>
       );
     }
