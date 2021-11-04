@@ -113,7 +113,10 @@ export default class ShopPostEntry extends React.Component {
     if (isPc) {
       this.setState({ visible: true });
 
-      await this.fetchMiniShopProductList();
+      if (isShowMiniShopTab(this.props)) {
+        await this.fetchMiniShopProductList();
+      }
+
     } else {
       const { dzqRouter } = this.props;
       const { router } = dzqRouter;

@@ -264,7 +264,9 @@ export default class SelectProduct extends React.PureComponent {
 
   // on show 生命周期
   onShow = async () => {
-    await this.fetchMiniShopProductList();
+    if (isShowMiniShopTab(this.props)) {
+      await this.fetchMiniShopProductList();
+    }
     this.init();
   };
 
