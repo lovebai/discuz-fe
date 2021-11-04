@@ -16,11 +16,11 @@
     "sls:publish": "cd ./.sls && sls deploy"
   },
   "dependencies": {
-    "@discuzq/design": "1.0.97",
+    "@discuzq/design": "1.0.98",
     "@discuzq/discuz-babel-plugin-import": "0.0.1",
     "@discuzq/discuz-plugin-loader": "2.0.7",
-    "@discuzq/plugin": "1.1.45",
-    "@discuzq/plugin-center": "2.0.8",
+    "@discuzq/plugin": "1.1.46",
+    "@discuzq/plugin-center": "2.0.9",
     "@discuzq/sdk": "1.0.51",
     "@discuzq/theme": "1.0.29",
     "@discuzq/vditor": "1.0.26",
@@ -62,7 +62,7 @@
     "@babel/core": "7.11.1",
     "@babel/plugin-proposal-class-properties": "7.12.13",
     "@babel/plugin-proposal-decorators": "7.12.13",
-    "@discuzq/cli": "1.2.45",
+    "@discuzq/cli": "1.2.46",
     "@types/react": "17.0.3",
     "autoprefixer": "9.7.4",
     "babel-loader": "8.2.2",
