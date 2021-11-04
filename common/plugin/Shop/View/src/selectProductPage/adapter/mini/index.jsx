@@ -123,8 +123,6 @@ export default class SelectProduct extends React.PureComponent {
       miniShopProducts,
     });
 
-    const currentPluginStore = this.props.pluginAction.get('shop');
-
     this.props.pluginAction.set('shop', {
       shopPluginData: {
         postData: {
@@ -134,7 +132,6 @@ export default class SelectProduct extends React.PureComponent {
           },
         },
       },
-      ...currentPluginStore,
     });
 
     Taro.navigateBack();
