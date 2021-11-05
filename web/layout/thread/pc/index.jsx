@@ -29,7 +29,7 @@ import RenderCommentList from './comment-list';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import classNames from 'classnames';
 
-
+import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 
 @inject('site')
 @inject('user')
@@ -382,6 +382,22 @@ class ThreadPCPage extends React.Component {
       Toast.info({ content: '请输入内容' });
       return;
     }
+
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      // 开启了腾讯云验证码验证时，进行验证，通过后再进行实际的发布请求
+
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        // 验证码票据，验证码字符串不全时，弹出滑块验证码
+        const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
+        if (!captchaTicket && !captchaRandStr) {
+          return false ;
+        }
+      }
+    }
+
     return this.comment ? await this.updateComment(val, imageList) : await this.createComment(val, imageList);
   }
 
@@ -948,4 +964,4 @@ class ThreadPCPage extends React.Component {
   }
 }
 
-export default withRouter(ThreadPCPage);
+export default withRouter(HOCTencentCaptcha(ThreadPCPage));

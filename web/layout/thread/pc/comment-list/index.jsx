@@ -9,6 +9,8 @@ import { Icon, Toast } from '@discuzq/design';
 import classnames from 'classnames';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import Router from '@discuzq/sdk/dist/router';
+import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
+
 
 import { parseContentData } from '../../utils';
 
@@ -32,6 +34,7 @@ const typeMap = {
 @inject('comment')
 @inject('commentPosition')
 @inject('user')
+@inject('site')
 @observer
 class RenderCommentList extends React.Component {
   constructor(props) {
@@ -290,6 +293,22 @@ class RenderCommentList extends React.Component {
         });
     }
 
+    //  验证码
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      // 开启了腾讯云验证码验证时，进行验证，通过后再进行实际的发布请求
+
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        // 验证码票据，验证码字符串不全时，弹出滑块验证码
+        const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
+        if (!captchaTicket && !captchaRandStr) {
+          return false ;
+        }
+      }
+    }
+
     const { success, msg, isApproved } = await this.props.comment.createReply(
       params,
       this.props.isPositionComment ? this.props.commentPosition : this.props.thread,
@@ -416,14 +435,13 @@ class RenderCommentList extends React.Component {
   render() {
     let { totalCount, commentList } = this.props.thread;
 
-  
     const { commentList: commentPositionList, postId } = this.props.commentPosition;
     if (this.props.isPositionComment) {
       commentList = commentPositionList || [];
     }
 
     // 是否作者自己
-    const isSelf =      this.props.user?.userInfo?.id && this.props.user?.userInfo?.id === this.props.thread?.threadData?.userId;
+    const isSelf = this.props.user?.userInfo?.id && this.props.user?.userInfo?.id === this.props.thread?.threadData?.userId;
 
     const isReward = this.props.thread?.threadData?.displayTag?.isReward;
     const { isAnonymous } = this.props.thread?.threadData || '';
@@ -558,4 +576,4 @@ RenderCommentList.defaultProps = {
   showHeader: true, // 是否显示排序头部
 };
 
-export default RenderCommentList;
+export default  HOCTencentCaptcha(RenderCommentList);

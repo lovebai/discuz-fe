@@ -118,6 +118,7 @@ class ThreadH5Page extends React.Component {
       // this.position = this.commentDataRef?.current?.offsetTop - 50;
 
       const { id, title } = this.props?.thread?.threadData;
+
       if (id) {
         // 分享相关数据
         this.shareData = {
@@ -535,6 +536,11 @@ class ThreadH5Page extends React.Component {
       setTimeout(() => {
         Taro.navigateBack({
           delta: 1,
+          fail:()=>{
+            Taro.navigateTo({
+              url: '/indexPages/home/index',
+            });
+          }
         });
       }, 1000);
 
