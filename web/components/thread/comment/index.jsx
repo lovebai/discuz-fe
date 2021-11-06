@@ -10,9 +10,12 @@ import CommentInput from './comment-input';
 import CommentList from './comment-list';
 import Operate from './operate';
 import typeofFn from '@utils/typeof';
+import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
+
 
 // 评论
 @inject('user')
+@inject('site')
 @observer
 class Comment extends React.Component {
   constructor(props) {
@@ -37,6 +40,24 @@ class Comment extends React.Component {
       Toast.info({ content: '请输入内容' });
       return;
     }
+
+
+    //  验证码
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      // 开启了腾讯云验证码验证时，进行验证，通过后再进行实际的发布请求
+
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        // 验证码票据，验证码字符串不全时，弹出滑块验证码
+        const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
+        if (!captchaTicket && !captchaRandStr) {
+          return false ;
+        }
+      }
+    }
+
     return await this.createComment(val, imageList);
   }
 
@@ -140,4 +161,4 @@ class Comment extends React.Component {
   }
 }
 
-export default Comment;
+export default HOCTencentCaptcha(Comment);

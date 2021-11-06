@@ -34,11 +34,11 @@ function withShare(options = {}) {
       onShareTimeline = () => {
         if (this.getShareData && typeof this.getShareData === 'function') {
           const  shareData  = this.getShareData({from: 'timeLine'})
-          console.log(shareData);
-          const { title=defalutTitle, query} = shareData
+          const { title = defalutTitle, query, imageUrl } = shareData;
           return {
             title,
-            query: query
+            query: query,
+            imageUrl,
           }
         }
         return {
@@ -48,7 +48,6 @@ function withShare(options = {}) {
 
       onShareAppMessage = (res) => {
         const data = res.target?.dataset?.shareData || '';
-        console.log('res',res)
         let shareData = '';
         if (this.getShareData && typeof this.getShareData === 'function') {
           shareData = this.getShareData({ ...data, from: res.from });

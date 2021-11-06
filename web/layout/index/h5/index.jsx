@@ -19,7 +19,6 @@ import Autoplay from '@common/utils/autoplay';
 import PacketOpen from '@components/red-packet-animation/web';
 import ThreadContent from '@components/thread/SSRAdapter';
 import SiteMapLink from '@components/site-map-link';
-import ssrTextContent from '../ssr-test';
 
 import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
 import IndexHeaderHooks from '@common/plugin-hooks/plugin_index@header';
@@ -59,7 +58,7 @@ class IndexH5Page extends React.Component {
       <div>
         {/* 顶部插件hooks */}
         <div ref={this.headerRef}>
-          <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
+          <IndexHeaderHooks  component={<HomeHeader />}></IndexHeaderHooks>
         </div>
         <DynamicLoading
           data={res}
@@ -207,7 +206,15 @@ class IndexH5Page extends React.Component {
       </>
     );
 
-    return <IndexTabsHook component={component} site={this.props.site} categories={categories}></IndexTabsHook>;
+    return (
+      <IndexTabsHook
+        component={component}
+        changeFilter={params => this.changeFilter(params)}
+        renderData={{
+          categories,
+        }}
+      ></IndexTabsHook>
+    );
   };
 
   renderHeaderContent = () => {
@@ -223,7 +230,7 @@ class IndexH5Page extends React.Component {
       </>
     );
 
-    return <IndexToppingHooks component={component} site={this.props.site} sticks={sticks}></IndexToppingHooks>;
+    return <IndexToppingHooks component={component} renderData={{ sticks }}></IndexToppingHooks>;
   };
 
   renderSSRContent(thread, sticks) {
@@ -251,7 +258,6 @@ class IndexH5Page extends React.Component {
                 );
               })}
           </div>
-          <div className='ssr-box-list-end' dangerouslySetInnerHTML={{__html: ssrTextContent}}/>
         </div>
       );
     }
@@ -299,7 +305,7 @@ class IndexH5Page extends React.Component {
           >
             {/* 头部插件hooks */}
             <div ref={this.headerRef}>
-              <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
+              <IndexHeaderHooks component={<HomeHeader />}></IndexHeaderHooks>
             </div>
 
             <Observer>{() => this.renderTabs()}</Observer>

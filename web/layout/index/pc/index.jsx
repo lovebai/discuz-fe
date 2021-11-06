@@ -25,7 +25,6 @@ import IndexQrcodeHook from '@common/plugin-hooks/plugin_index@qrcode';
 import IndexCopyrightHook from '@common/plugin-hooks/plugin_index@copyright';
 import IndexLeftHook from '@common/plugin-hooks/plugin_index@left';
 import IndexRightHook from '@common/plugin-hooks/plugin_index@right';
-import ssrTextContent from '../ssr-test';
 
 const DynamicVListLoading = dynamic(() => import('./components/dynamic-vlist'), {
   loading: (res) => {
@@ -208,35 +207,49 @@ class IndexPCPage extends React.Component {
     return (
       <IndexLeftHook
         component={component}
-        site={this.props.site}
-        categories={currentCategories}
-        activeCategoryId={activeCategoryId}
-        activeChildCategoryId={activeChildCategoryId}
-        totalThreads={countThreads}
+        renderData={{
+          categories: currentCategories,
+          activeCategoryId,
+          activeChildCategoryId,
+          totalThreads: countThreads,
+          isError: categoryError.isError,
+          errorText: categoryError.errorText,
+        }}
         onNavigationClick={this.onNavigationClick}
-        isError={categoryError.isError}
-        errorText={categoryError.errorText}
       ></IndexLeftHook>
     );
   };
   // 右侧 -- 二维码 推荐内容
   renderRight = (data) => {
+    const { recommends, getRecommends } = this.props.index || {};
+    const url = this.props.site?.webConfig?.setSite?.siteUrl;
+
     const component = (
       <div className={styles.indexRight}>
-        <IndexRecommendHook component={<Recommend />} site={this.props.site}></IndexRecommendHook>
+        <IndexRecommendHook
+          component={<Recommend />}
+          onGetRecommends={getRecommends}
+          renderData={{ recommends }}
+        ></IndexRecommendHook>
         <IndexQrcodeHook
           component={
             <div className={styles.indexRightCon}>
               <QcCode />
             </div>
           }
-          site={this.props.site}
+          renderData={{ url }}
         ></IndexQrcodeHook>
-        <IndexCopyrightHook component={<Copyright />} site={this.props.site}></IndexCopyrightHook>
+        <IndexCopyrightHook component={<Copyright />}></IndexCopyrightHook>
       </div>
     );
 
-    return <IndexRightHook component={component} site={this.props.site}></IndexRightHook>;
+    return (
+      <IndexRightHook
+        component={component}
+        onGetRecommends={getRecommends}
+        renderData={{ recommends, url }}
+      ></IndexRightHook>
+    );
   };
 
   checkIsOpenDefaultTab() {
@@ -281,7 +294,6 @@ class IndexPCPage extends React.Component {
                 );
               })}
           </div>
-          <div className='ssr-box-list-end' dangerouslySetInnerHTML={{__html: ssrTextContent}}/>
         </div>
       );
     }

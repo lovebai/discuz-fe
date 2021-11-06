@@ -59,9 +59,13 @@ class Detail extends React.Component {
     const defalutTitle = this.props.thread.title;
     const path = `/indexPages/thread/index?id=${threadId}`;
     if (data.from === 'timeLine') {
+
+      const {content} = this.props?.thread?.threadData;
+      const imageUrl = ( content?.indexes[101] )? content?.indexes[101].body[0]?.url : this.props?.user?.userInfo?.avatarUrl ;
       return {
         title: defalutTitle,
-        query: `id=${threadId}`
+        query: `id=${threadId}`,
+        imageUrl,
       };
     }
     if (data.from === 'menu') {
