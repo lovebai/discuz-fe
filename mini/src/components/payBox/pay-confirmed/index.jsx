@@ -169,7 +169,8 @@ export default class PayBox extends React.Component {
         // 钱包余额不足 && 开启微信支付 && 开启充值功能 跳转到充值页
         const { isWechatPayOpen, webConfig } = this.props.site || {};
         const { siteCharge } = webConfig.setSite || {};
-        const isShowRecharge = isWechatPayOpen && siteCharge === 1;
+        const { threadOptimize } = webConfig.other || {};
+        const isShowRecharge = isWechatPayOpen && siteCharge === 1 && threadOptimize;
         if (isShowRecharge) {
           this.toRechargePage();
           return;

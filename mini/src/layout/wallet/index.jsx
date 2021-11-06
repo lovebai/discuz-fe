@@ -370,7 +370,7 @@ class WalletH5Page extends React.Component {
   );
 
   render() {
-    // 判断是否显示充值按钮，微信支付打开 && 充值权限打开
+    // 判断是否显示充值按钮，微信支付打开 && 充值权限打开 && 小程序设置了开启充值
     const { isWechatPayOpen, webConfig } = this.props.site || {};
     const { siteCharge } = webConfig.setSite || {};
     const { threadOptimize } = webConfig.other || {};
