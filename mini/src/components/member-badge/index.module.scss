@@ -1,0 +1,51 @@
+@import '@common/styles/index.scss';
+
+.memberBadgeBox {
+  display: flex;
+  align-items: center;
+
+  .memberBadgeIcon {
+    width: rem(24);
+    height: rem(24);
+    z-index: 1;
+  }
+
+  .memberBadgeName {
+    box-sizing: border-box;
+    position: relative;
+    left: rem(-8);
+    padding: 0 rem(6) 0 rem(10);
+    border-radius: 0;
+    border-radius: 0 rem(10) rem(10) 0;
+    border-width: 0.4px;
+    border-style: solid;
+    font-size: 10px;
+    height: rem(20);
+    line-height: rem(20);
+  }
+  .memberBadgeName_1 {
+    color: #696969;
+    border-color: #f9f9f9;
+    background: linear-gradient(45deg, #fff 0%, #d3d3d3 100%);
+  }
+  .memberBadgeName_2 {
+    color: #8b6a36;
+    border-color: #f9f4ea;
+    background: linear-gradient(45deg, #fff 0%, #e8d2ab 100%);
+  }
+  .memberBadgeName_3 {
+    color: #55618c;
+    border-color: #eceff7;
+    background: linear-gradient(45deg, #fff 0%, #c0c8e4 100%);
+  }
+  .memberBadgeName_4 {
+    color: #683b41;
+    border-color: #f4edee;
+    background: linear-gradient(45deg, #fff 0%, #d7bbbe 100%);
+  }
+  .memberBadgeName_5 {
+    color: #ffe6d1;
+    border-color: #fce3cd;
+    background: linear-gradient(45deg, #fff 0%, #181924 100%);
+  }
+}

@@ -90,6 +90,11 @@
       height: rem(28);
       @include text-ellipsis();
     }
+    .memberBadge {
+      position: relative;
+      top: -4px;
+      flex-shrink: 0;
+    }
     .groupName {
       font-size: rem($font-size-small);
       color: $text-color-regular;
