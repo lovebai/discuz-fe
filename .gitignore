@@ -33,3 +33,5 @@ mini/dist
 sls.config.yaml
 .pluginConfig.js
 pluginPages/
+
+common/plugin/privatePlugin/*
