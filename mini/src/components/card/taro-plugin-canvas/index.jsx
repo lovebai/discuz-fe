@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { Canvas } from '@tarojs/components';
 import { randomString, getHeight, downloadImageAndInfo } from './utils/tools';
-import { drawImage, drawText, drawBlock, drawLine, } from './utils/draw';
+import { drawImage, drawText, drawBlock, drawLine, clearCanvas} from './utils/draw';
 import './index.css';
 
 let count = 1;
@@ -65,9 +65,12 @@ export default class CanvasDrawer extends React.Component {
                     pxWidth: this.toPx(w),
                     pxHeight: this.toPx(h),
                     debug,
-                }, resolve);
+                }, ()=>{
+                    setTimeout(resolve,0)
+                });
             });
         this.onCreate = () => {
+            this.drawArr = [];
             const { onCreateFail, config } = this.props;
             if (config['hide-loading'] === false) {
                 Taro.showLoading({ mask: true, title: '生成中...' });
@@ -88,6 +91,7 @@ export default class CanvasDrawer extends React.Component {
         };
         this.create = (config) => {
             this.ctx = Taro.createCanvasContext(this.canvasId, this.$scope);
+            this.ctx.clearRect(0,0,config.width,config.height);
             const height = getHeight(config);
             this.setState({
                 pixelRatio: config.pixelRatio || 1,
@@ -164,6 +168,7 @@ export default class CanvasDrawer extends React.Component {
             });
         };
         this.getTempFile = (otherOptions) => {
+            console.log(this.$scope);
             const { onCreateSuccess, onCreateFail } = this.props;
             Taro.canvasToTempFilePath({
                 canvasId: this.canvasId,
@@ -202,11 +207,8 @@ export default class CanvasDrawer extends React.Component {
         this.cache = {};
         this.drawArr = [];
     }
-    componentWillMount() {
-        const { config } = this.props;
-        const height = getHeight(config);
-        this.initCanvas(config.width, height, config.debug);
-    }
+
+ 
     componentDidMount() {
         const sysInfo = Taro.getSystemInfoSync();
         const {screenWidth} = sysInfo;
@@ -215,6 +217,22 @@ export default class CanvasDrawer extends React.Component {
         });
         this.onCreate();
     }
+
+    // componentWillUpdate(_props) {
+    //     if(this.props.config !== _props.config){
+    //     const { config } = this.props;
+    //     const height = getHeight(config);
+    //     this.initCanvas(config.width, height, config.debug);
+    //     }
+    // }
+
+    componentDidUpdate(_props){
+        if(this.props.config !== _props.config){
+                this.onCreate();
+        }
+    }
+
+
     componentWillUnmount() { }
     render() {
         const { pxWidth, pxHeight, debug } = this.state;

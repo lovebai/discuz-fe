@@ -55,6 +55,9 @@ class Recharge extends React.Component {
         icon: 'success',
         duration: 2000
       })
+      setTimeout(() => {
+        Taro.hideToast();
+      }, 2000)
       const { getUserWalletInfo, getIncomeDetail} = this.props.wallet;
       await getIncomeDetail();
       await getUserWalletInfo();
@@ -68,6 +71,9 @@ class Recharge extends React.Component {
         icon: 'fail',
         duration: 2000
       })
+      setTimeout(() => {
+        Taro.hideToast();
+      }, 2000)
     }
   }
 

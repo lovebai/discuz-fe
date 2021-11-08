@@ -28,7 +28,7 @@ import styles from './index.module.scss';
 /**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
-const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread')(
+const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread', 'threadPost')(
   observer((props) => {
     const { store: threadStore, site, index, thread, user } = props;
     const { text, indexes } = threadStore?.threadData?.content || {};
@@ -82,7 +82,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread')(
 
     const parseContent = parseContentData(indexes);
 
-    if (parseContent.RED_PACKET?.condition === 1) { // 如果是集赞红包则查询一下红包领取状态
+    if ( user.isLogin() && isApproved && parseContent.RED_PACKET?.condition === 1) { // 如果是集赞红包则查询一下红包领取状态
       threadStore.getRedPacketInfo(parseContent.RED_PACKET.threadId);
     }
 
@@ -399,7 +399,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread')(
           </View>
         )}
 
-     
+
       </View>
     );
   }),
