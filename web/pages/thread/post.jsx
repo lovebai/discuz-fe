@@ -53,7 +53,7 @@ class PostPage extends React.Component {
       // 解析完后显示商品信息
       productShow: false,
       // 语音贴上传成功的语音地址
-      paySelectText: ['帖子付费', '附件付费'],
+      paySelectText: ['全贴付费', '部分付费'],
       curPaySelect: '',
       count: 0,
       draftShow: false,
