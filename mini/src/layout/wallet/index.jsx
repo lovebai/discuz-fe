@@ -52,6 +52,10 @@ class WalletH5Page extends React.Component {
     this.initStateAndFetch();
   }
 
+  componentWillUnmount() {
+    this.props.wallet.setTabsType(); // 重置tab
+  }
+
   // 点击冻结金额
   onFrozenAmountClick() {
     Router.push({ url: '/subPages/wallet/frozen/index' });
