@@ -412,7 +412,7 @@ class WalletH5Page extends React.Component {
         </div>
 
         <div className={layout.tabs}>
-          <Tabs defaultActiveId={tabsType} scrollable={true} className={layout.tabList} onActive={this.onTabActive}>
+          <Tabs activeId={tabsType} scrollable={true} className={layout.tabList} onActive={this.onTabActive}>
             {tabList.map(([id, label, icon]) => (
               <Tabs.TabPanel key={id} id={id} label={label} name={icon.name}></Tabs.TabPanel>
             ))}
