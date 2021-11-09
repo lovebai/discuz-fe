@@ -9,13 +9,13 @@ export default class MemberBadge extends React.Component {
   }
 
   render() {
-    const { groupLevel,  groupName} = this.props;
+    const { groupLevel,  groupName, hasBg} = this.props;
     return (
-      <div className={styles.memberBadgeBox}>
+      <div className={classnames(styles.memberBadgeBox, hasBg ? styles.bg: styles.default)}>
         <img className={styles.memberBadgeIcon} src={`/dzq-img/member-badge_${groupLevel}.png`} />
-        <div className={classnames(styles.memberBadgeName, styles['memberBadgeName_' + groupLevel])}>
+        <span className={classnames(styles.memberBadgeName, styles['memberBadgeName_' + groupLevel])}>
           {groupName}
-        </div>
+        </span>
       </div>
     );
   }

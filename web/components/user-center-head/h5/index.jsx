@@ -266,6 +266,7 @@ class index extends Component {
             { user.group?.level > 0 ? (
               <div className={styles.memberBadge}>
                 <MemberBadge
+                  hasBg
                   groupLevel={user.group?.level}
                   groupName={user.group?.groupName}
                 />
