@@ -313,7 +313,7 @@ class index extends Component {
             { user.group?.level > 0 ? (
               <View className={styles.memberBadge}>
                 <MemberBadge
-                  targetUser={user}
+                  hasBg
                   groupLevel={user.group?.level}
                   groupName={user.group?.groupName}
                 />

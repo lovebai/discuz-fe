@@ -107,8 +107,6 @@
       @include text-ellipsis();
     }
     .memberBadge {
-      position: relative;
-      top: -4px;
       flex-shrink: 0;
     }
     .groupName {

@@ -312,6 +312,7 @@ class Index extends React.Component {
                   location={position.location}
                   view={`${viewCount}`}
                   groupName={group?.groupName}
+                  groupLevel={group?.level}
                   time={diffTime}
                   isEssence={isEssence}
                   isPay={isPrice}
