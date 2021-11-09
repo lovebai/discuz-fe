@@ -78,7 +78,8 @@ const Index = inject('threadPost')(
     const paidConfirm = () => {
       // 确认
       // 1 校验
-      if (!checkState()) return;
+
+      // if (!checkState()) return;
 
       // 2 update store
       const { setPostData, postData } = threadPost;
@@ -86,7 +87,9 @@ const Index = inject('threadPost')(
         setPostData({ price: parseFloat(price), freeWords: freeWords / 100 });
       }
       if (isAttach) {
-        setPostData({ attachmentPrice: parseFloat(price) });
+        console.log(threadPost.partPayInfo);
+        threadPost.setPartPayInfo();
+        // setPostData({ attachmentPrice: parseFloat(price) });
       }
       if (isAudio) {
         setPostData({

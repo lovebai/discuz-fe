@@ -1,7 +1,7 @@
 import { inject, observer } from 'mobx-react';
 import Unit from '@components/thread/all-post-paid/part-paid/units/unit';
 import { Input } from '@discuzq/design';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const PriceUnit = inject('threadPost')(
   observer(({ ...props }) => {
