@@ -13,6 +13,7 @@ import comment from './index.module.scss';
 import Operate from '../operate';
 
 // 评论列表
+@inject('index')
 @inject('comment')
 @inject('user')
 @observer
@@ -44,6 +45,7 @@ class RenderCommentList extends React.Component {
 
     this.operate = new Operate({
       list: this.props.commentList,
+      threadData: this.props.thread?.threadData,
     });
   }
 
@@ -300,6 +302,7 @@ class RenderCommentList extends React.Component {
     }
 
     this.commentData = data;
+    this.props.index.setHiddenTabBar(true);
     this.setState({ showAboptPopup: true });
   }
 
@@ -315,6 +318,7 @@ class RenderCommentList extends React.Component {
       const { success, msg } = await this.operate.reward(params);
       if (success) {
         this.setState({ showAboptPopup: false });
+        this.props.index.setHiddenTabBar(false);
 
         Toast.success({
           content: `悬赏${data}元`,
@@ -336,6 +340,7 @@ class RenderCommentList extends React.Component {
   onAboptCancel() {
     this.commentData = null;
     this.setState({ showAboptPopup: false });
+    this.props.index.setHiddenTabBar(false);
   }
 
   // 点击头像
