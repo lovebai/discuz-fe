@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from '@tarojs/components';
 import { Checkbox, Video } from '@discuzq/design';
 import { inject, observer } from 'mobx-react';
 import styles from '../../index.module.scss';
@@ -30,12 +31,12 @@ const VideoRender = inject('threadPost')(
 
     if (video.thumbUrl) {
       return (
-        <div className={styles.videoWrapper}>
+        <View className={styles.videoWrapper}>
           <Video className={styles.video} src={video.thumbUrl} />
-          <div className={styles.videoCheckBox}>
+          <View className={styles.videoCheckBox}>
             <Checkbox checked={selectedVideo.indexOf(video.id) !== -1} onChange={handleCheckStatusChange} />
-          </div>
-        </div>
+          </View>
+        </View>
       );
     }
 

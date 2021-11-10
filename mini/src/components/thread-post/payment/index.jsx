@@ -9,6 +9,7 @@ import Radio from '@discuzq/design/dist/components/radio/index';
 import Slider from '@discuzq/design/dist/components/slider/index';
 import { THREAD_TYPE } from '@common/constants/thread-post';
 import throttle from '@common/utils/thottle';
+import PartPaid from './part-paid';
 
 import styles from './index.module.scss';
 
@@ -23,15 +24,15 @@ const Paid = inject('threadPost')(observer((props) => {
   const [freeAudio, setFreeAudio] = useState(false); // 默认音频不免费
   const [refresh, setRefresh] = useState(true); // 手动刷新页面
 
+  const { threadPost } = props;
+  const { partPayInfo } = threadPost;
+
   // Hook
   useEffect(() => { // 初始化
     const { postData } = props.threadPost;
     if (isPost) {
       postData.price && setPrice(postData.price);
       setFreeWords(parseInt(Number(postData.freeWords) * 100));
-    }
-    if (isAttach) {
-      postData.attachmentPrice && setPrice(postData.attachmentPrice);
     }
 
     if (isAudio) {
@@ -56,21 +57,39 @@ const Paid = inject('threadPost')(observer((props) => {
   }
 
   const checkState = () => {
-    if (isAudio && freeAudio) return true;
+    if (isAttach) {
+      const partPayPrice = partPayInfo.payPrice;
+      if (!partPayPrice) {
+        Taro.showToast({ title: '请输入付费金额', icon: 'none', duration: 2000 })
+        return false;
+      }
 
-    if (!price) {
-      Taro.showToast({ title: '请输入付费金额', icon: 'none', duration: 2000 })
-      return false;
+      if (parseFloat(partPayPrice) < 0.1) {
+        Taro.showToast({ title: '付费金额最低0.1元', icon: 'none', duration: 2000 })
+        return false;
+      }
+
+      if (parseFloat(partPayPrice) > 100000) {
+        Taro.showToast({ title: '付费金额最高10w元', icon: 'none', duration: 2000 })
+        return false;
+      }
     }
 
-    if (parseFloat(price) < 0.1) {
-      Taro.showToast({ title: '付费金额最低0.1元', icon: 'none', duration: 2000 })
-      return false;
-    }
+    if (isPost) {
+      if (!price) {
+        Taro.showToast({ title: '请输入付费金额', icon: 'none', duration: 2000 })
+        return false;
+      }
 
-    if (parseFloat(price) > 100000) {
-      Taro.showToast({ title: '付费金额最高10w元', icon: 'none', duration: 2000 })
-      return false;
+      if (parseFloat(price) < 0.1) {
+        Taro.showToast({ title: '付费金额最低0.1元', icon: 'none', duration: 2000 })
+        return false;
+      }
+
+      if (parseFloat(price) > 100000) {
+        Taro.showToast({ title: '付费金额最高10w元', icon: 'none', duration: 2000 })
+        return false;
+      }
     }
 
     return true;
@@ -90,15 +109,7 @@ const Paid = inject('threadPost')(observer((props) => {
       setPostData({ price: parseFloat(price), freeWords: freeWords / 100 });
     }
     if (isAttach) {
-      setPostData({ attachmentPrice: parseFloat(price) });
-    }
-    if (isAudio) {
-      setPostData({
-        audio: {
-          ...postData.audio,
-          price: price ? parseFloat(price) : 0,
-        }
-      });
+      props.threadPost.setPartPayInfo();
     }
 
     // 3 go back
@@ -136,45 +147,9 @@ const Paid = inject('threadPost')(observer((props) => {
 
   const attachmentComponent = () => {
     return (
-      <View className={styles['paid-item']}>
-        <View className={styles.left}>附件内容查看价格</View>
-        <View className={styles.right}>
-          <Input
-            mode="number"
-            miniType="digit"
-            value={price}
-            placeholder="金额"
-            maxLength={9}
-            onChange={e => handlePrice(e.target.value)}
-          />&nbsp;元
-        </View>
+      <View className={styles['paid-wrapper']}>
+        <PartPaid />
       </View>
-    )
-  }
-
-  const audioComponent = () => {
-    return (
-      <>
-        <View className={styles['paid-item']}>
-          <View className={styles.left}>免费</View>
-          <View className={styles.right}>
-            <Radio value={freeAudio} onChange={item => handleRadioChange(item)} />
-          </View>
-        </View>
-        <View className={styles['paid-item']}>
-          <View className={styles.left}>支付金额</View>
-          <View className={styles.right}>
-            <Input
-              mode="number"
-              miniType="digit"
-              value={price}
-              placeholder="金额"
-              maxLength={9}
-              onChange={e => handlePrice(e.target.value)}
-            />&nbsp;元
-          </View>
-        </View>
-      </>
     )
   }
 
@@ -183,7 +158,6 @@ const Paid = inject('threadPost')(observer((props) => {
       {/* content */}
       {isPost && postComponent()}
       {isAttach && attachmentComponent()}
-      {isAudio && audioComponent()}
       {/* button */}
       <View className={styles.btn}>
         <Button onClick={paidCancel}>取消</Button>

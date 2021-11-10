@@ -1,7 +1,8 @@
 import React from 'react';
-import { inject, observer } from 'mobx-react';
-import styles from '../../index.module.scss';
 import { Checkbox } from '@discuzq/design';
+import { inject, observer } from 'mobx-react';
+import { View, Image } from '@tarojs/components';
+import styles from '../../index.module.scss';
 
 const ImageRender = inject('threadPost')(
   observer(({ ...props }) => {
@@ -28,23 +29,23 @@ const ImageRender = inject('threadPost')(
     };
 
     return (
-      <div>
+      <View>
         {imagesArray.map((imageInfo) => {
           return (
-            <div key={imageInfo.id} className={styles.imageWrapper}>
-              <img src={imageInfo.url} className={styles.image} />
-              <div className={styles.imageCheckBox}>
+            <View key={imageInfo.id} className={styles.imageWrapper}>
+              <Image src={imageInfo.thumbUrl} className={styles.image} />
+              <View className={styles.imageCheckBox}>
                 <Checkbox
                   checked={selectedImages.indexOf(imageInfo.id) !== -1}
                   onChange={(status) => {
                     handleSelectImage({ status, imageInfo });
                   }}
                 />
-              </div>
-            </div>
+              </View>
+            </View>
           );
         })}
-      </div>
+      </View>
     );
   }),
 );

@@ -1,7 +1,8 @@
+import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Unit from '@components/thread/all-post-paid/part-paid/units/unit';
+import Unit from '@components/thread-post/payment/part-paid/units/unit';
+import { Text } from '@tarojs/components';
 import { Input } from '@discuzq/design';
-import React, { useState, useEffect } from 'react';
 
 const PriceUnit = inject('threadPost')(
   observer(({ ...props }) => {
@@ -24,7 +25,7 @@ const PriceUnit = inject('threadPost')(
                   partPayInfo.payPrice = e.target.value;
                 }}
               />
-              <span>&nbsp;元</span>
+              <Text>&nbsp;元</Text>
             </>
           );
         }}

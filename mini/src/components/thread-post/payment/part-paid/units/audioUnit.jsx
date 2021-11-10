@@ -1,9 +1,8 @@
-import { inject, observer } from 'mobx-react';
-import { useSelectAll } from '@components/thread/all-post-paid/part-paid/hooks';
-import Unit from '@components/thread/all-post-paid/part-paid/units/unit';
-import { Checkbox } from '@discuzq/design';
 import React from 'react';
-import AudioRender from '@components/thread/all-post-paid/part-paid/renders/audioRender';
+import { Checkbox } from '@discuzq/design';
+import { inject, observer } from 'mobx-react';
+import Unit from '@components/thread-post/payment/part-paid/units/unit';
+import AudioRender from '@components/thread-post/payment/part-paid/renders/audioRender';
 
 const AudioUnit = inject('threadPost')(
   observer(({ ...props }) => {

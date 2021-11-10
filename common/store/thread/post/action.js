@@ -1,6 +1,15 @@
 import { action } from 'mobx';
 import ThreadPostStore from './store';
-import { readEmoji, readFollow, readProcutAnalysis, readTopics, createThread, updateThread, createThreadVideoAudio, readPostCategories } from '@common/server';
+import {
+  readEmoji,
+  readFollow,
+  readProcutAnalysis,
+  readTopics,
+  createThread,
+  updateThread,
+  createThreadVideoAudio,
+  readPostCategories,
+} from '@common/server';
 import { LOADING_TOTAL_TYPE, THREAD_TYPE, THREAD_STATUS } from '@common/constants/thread-post';
 import { emojiFromEditFormat, emojiFormatForCommit } from '@common/utils/emoji-regexp';
 import { formatDate } from '@common/utils/format-date';
@@ -59,7 +68,7 @@ class ThreadPostAction extends ThreadPostStore {
     this.setLoadingStatus(LOADING_TOTAL_TYPE.emoji, false);
     const { code, data = [] } = ret;
     let emojis = [];
-    if (code === 0) emojis = data.map(item => ({ code: item.code, url: item.url }));
+    if (code === 0) emojis = data.map((item) => ({ code: item.code, url: item.url }));
     this.setEmoji(emojis);
     return ret;
   }
@@ -195,6 +204,138 @@ class ThreadPostAction extends ThreadPostStore {
     this.postData = { ...initPostData };
     this.currentSelectedToolbar = false;
     this.setCategorySelected();
+    this.resetPartPay();
+  }
+
+  @action
+  resetPartPay() {
+    this.partPayInfo = {
+      textFreeValue: '0',
+      payPrice: '',
+      selectedImages: [],
+      selectedAttachments: [],
+      selectedVideo: [],
+      selectedAudio: [],
+    };
+
+    this.filesPriceList = [];
+    this.videoPriceList = [];
+    this.audioPriceList = [];
+    this.imagesPriceList = [];
+  }
+
+  @action
+  setPartPayFromPostData = () => {
+    this.partPayInfo.selectedImages = this.imagesPriceList;
+    this.partPayInfo.selectedVideo = this.videoPriceList;
+    this.partPayInfo.selectedAudio = this.audioPriceList;
+    this.partPayInfo.selectedAttachments = this.filesPriceList;
+    this.partPayInfo.payPrice = this.postData.attachmentPrice;
+    this.partPayInfo.textFreeValue = this.postData.freeWords * 100;
+  };
+
+  /**
+   * 设置部分付费的信息
+   */
+  @action
+  setPartPayInfo() {
+    const {
+      payPrice,
+      selectedAttachments,
+      selectedVideo,
+      selectedAudio,
+      selectedImages,
+      textFreeValue,
+    } = this.partPayInfo;
+
+    if (selectedAttachments && selectedAttachments.length > 0) {
+      this.filesPriceList = [...selectedAttachments];
+    }
+
+    if (selectedVideo && selectedVideo.length > 0) {
+      this.videoPriceList = [...selectedVideo];
+    }
+
+    if (selectedAudio && selectedAudio.length > 0) {
+      this.audioPriceList = [...selectedAudio];
+    }
+
+    if (selectedImages && selectedImages.length > 0) {
+      this.imagesPriceList = [...selectedImages];
+    }
+
+    this.setPostData({
+      attachmentPrice: payPrice,
+      freeWords: textFreeValue / 100,
+    });
+  }
+
+  /**
+   * 检查部分付费的参数正确性，防止由于删除操作导致的丢失数据id被上传
+   */
+  @action
+  checkPartPayInfo() {
+    if (this.filesPriceList && this.filesPriceList.length > 0) {
+      const actualFilePriceList = this.filesPriceList.filter((id) => {
+        let isInCurrentFiles = false;
+        isInCurrentFiles = Object.values(this.postData.files).find((file) => {
+          return file.id === id;
+        });
+        return isInCurrentFiles;
+      });
+      this.filesPriceList = actualFilePriceList || [];
+    }
+
+    if (this.videoPriceList && this.videoPriceList.length > 0) {
+      const actualVideoPriceList = this.videoPriceList.filter((id) => {
+        if (this.postData.video.id === id) return true;
+        return false;
+      });
+      this.videoPriceList = actualVideoPriceList || [];
+    }
+
+    if (this.audioPriceList && this.audioPriceList.length > 0) {
+      const actualAudioPriceList = this.audioPriceList.filter((id) => {
+        if (this.postData.audio.id === id) return true;
+        return false;
+      });
+      this.audioPriceList = actualAudioPriceList || [];
+    }
+
+    if (this.imagesPriceList && this.imagesPriceList.length > 0) {
+      const actualImagePriceList = this.imagesPriceList.filter((id) => {
+        let isInCurrentFiles = false;
+        isInCurrentFiles = Object.values(this.postData.images).find((image) => {
+          return image.id === id;
+        });
+        return isInCurrentFiles;
+      });
+      this.imagesPriceList = actualImagePriceList || [];
+    }
+
+    this.setPartPayFromPostData();
+  }
+
+  /**
+   * 设置部分付费的数据到 postData 中
+   */
+  @action
+  setPartPayInfoToPostData(contentIndexes) {
+    if (this.imagesPriceList && contentIndexes[THREAD_TYPE.image] && contentIndexes[THREAD_TYPE.image].body) {
+      contentIndexes[THREAD_TYPE.image].body.priceList = this.imagesPriceList;
+    }
+
+    if (this.videoPriceList && contentIndexes[THREAD_TYPE.video] && contentIndexes[THREAD_TYPE.video].body) {
+      contentIndexes[THREAD_TYPE.video].body.priceList = this.videoPriceList;
+    }
+
+    if (this.filesPriceList && contentIndexes[THREAD_TYPE.file] && contentIndexes[THREAD_TYPE.file].body) {
+      contentIndexes[THREAD_TYPE.file].body.priceList = this.filesPriceList;
+    }
+
+    if (this.audioPriceList && contentIndexes[THREAD_TYPE.voice] && contentIndexes[THREAD_TYPE.voice].body) {
+      contentIndexes[THREAD_TYPE.voice].body.priceList = this.audioPriceList;
+    }
   }
 
   /**
@@ -202,11 +343,24 @@ class ThreadPostAction extends ThreadPostStore {
    */
   @action
   gettContentIndexes() {
-    const { images, video, files, product, audio, redpacket,
-      rewardQa, orderInfo = {}, vote = {}, iframe = {}, plugin = {} } = this.postData;
+    const {
+      images,
+      video,
+      files,
+      product,
+      audio,
+      redpacket,
+      rewardQa,
+      orderInfo = {},
+      vote = {},
+      iframe = {},
+      plugin = {},
+    } = this.postData;
 
-    const imageIds = Object.values(images).map(item => item.id);
-    const docIds = Object.values(files).map(item => item.id);
+    this.checkPartPayInfo();
+
+    const imageIds = Object.values(images).map((item) => item.id);
+    const docIds = Object.values(files).map((item) => item.id);
     const contentIndexes = {};
     // 和后端商量之后，还是如果没有数据的插件不传给后端
     if (imageIds.length > 0) {
@@ -241,14 +395,16 @@ class ThreadPostAction extends ThreadPostStore {
     }
     // const draft = this.isThreadPaid ? 0 : 1;
     // 红包和悬赏插件不需要传入草稿字段了，直接使用全局的即可
-    if (redpacket.price) { //  && !orderInfo.status 不管是否支付都传入
+    if (redpacket.price) {
+      //  && !orderInfo.status 不管是否支付都传入
       contentIndexes[THREAD_TYPE.redPacket] = {
         tomId: THREAD_TYPE.redPacket,
         body: { orderSn: orderInfo.orderSn, ...redpacket },
       };
     }
 
-    if (rewardQa.value) { //  && !orderInfo.status
+    if (rewardQa.value) {
+      //  && !orderInfo.status
       contentIndexes[THREAD_TYPE.reward] = {
         tomId: THREAD_TYPE.reward,
         body: { expiredAt: rewardQa.times, price: rewardQa.value, type: 0, orderSn: orderInfo.orderSn },
@@ -269,6 +425,9 @@ class ThreadPostAction extends ThreadPostStore {
         body: { ...iframe },
       };
     }
+
+    this.setPartPayInfoToPostData(contentIndexes);
+
     // 插件扩展
     if (plugin) {
       for (let key in plugin) {
@@ -276,7 +435,7 @@ class ThreadPostAction extends ThreadPostStore {
           ...plugin[key],
         };
         const { body = {} } = contentIndexes[plugin[key].tomId];
-        let {  _plugin } = contentIndexes[plugin[key].tomId];
+        let { _plugin } = contentIndexes[plugin[key].tomId];
         if (!_plugin) _plugin = { name: key };
         if (body) {
           contentIndexes[plugin[key].tomId].body._plugin = _plugin;
@@ -292,8 +451,17 @@ class ThreadPostAction extends ThreadPostStore {
    */
   @action
   getCreateThreadParams(isUpdate, isMini) {
-    const { title, categoryId, contentText, position, price,
-      attachmentPrice, freeWords, redpacket, rewardQa } = this.postData;
+    const {
+      title,
+      categoryId,
+      contentText,
+      position,
+      price,
+      attachmentPrice,
+      freeWords,
+      redpacket,
+      rewardQa,
+    } = this.postData;
     let text = contentText;
     if (isMini) {
       // 目前只是简单的队小程序进行简单的处理
@@ -304,20 +472,23 @@ class ThreadPostAction extends ThreadPostStore {
       .replace(/<code>\s*([^\s]+)\s*<\/code>/g, '<code>$1</code>') // 行内代码块空格问题
       .replace(/<br \/>\n\s?/g, '<br />\n'); // 软换行来回切换到一行再软换行容易多出一个空格，先在业务侧进行处理
     const params = {
-      title, categoryId, content: {
+      title,
+      categoryId,
+      content: {
         text,
       },
     };
     if (position.address) params.position = position;
     else {
       // 主要是编辑时删除位置的情况，暂时区别开编辑和发帖，因为后台没有更新接口避免影响发帖
-      if (isUpdate) params.position = {
-        longitude: 0,
-        latitude: 0,
-        cityname: '',
-        address: '',
-        location: '',
-      };
+      if (isUpdate)
+        params.position = {
+          longitude: 0,
+          latitude: 0,
+          cityname: '',
+          address: '',
+          location: '',
+        };
     }
     params.price = price || 0;
     params.freeWords = freeWords || 0;
@@ -369,30 +540,25 @@ class ThreadPostAction extends ThreadPostStore {
         imageBody.forEach((item) => {
           images[item.id] = { ...item, type: item.fileType, name: item.fileName };
         });
-      }
-      else if (tomId === THREAD_TYPE.file.toString()) {
+      } else if (tomId === THREAD_TYPE.file.toString()) {
         const fileBody = contentindexes[index].body || [];
         fileBody.forEach((item) => {
           files[item.id] = { ...item, type: item.fileType, name: item.fileName };
         });
-      }
-      else if (tomId === THREAD_TYPE.voice.toString()) {
+      } else if (tomId === THREAD_TYPE.voice.toString()) {
         audio = contentindexes[index].body || {};
         const audioId = audio.id || audio.threadVideoId;
         audio.id = audioId;
-      }
-      else if (tomId === THREAD_TYPE.vote.toString()) {
+      } else if (tomId === THREAD_TYPE.vote.toString()) {
         vote = contentindexes[index].body[0] || {};
-      }
-      else if (tomId === THREAD_TYPE.goods.toString()) product = contentindexes[index].body;
+      } else if (tomId === THREAD_TYPE.goods.toString()) product = contentindexes[index].body;
       else if (tomId === THREAD_TYPE.video.toString()) {
         video = contentindexes[index].body || {};
         video.thumbUrl = video.mediaUrl;
         const videoId = video.id || video.threadVideoId;
         video.id = videoId;
-      }
-      else if (tomId === THREAD_TYPE.redPacket.toString()) {
-        const redBody = contentindexes[index]?.body || {}
+      } else if (tomId === THREAD_TYPE.redPacket.toString()) {
+        const redBody = contentindexes[index]?.body || {};
         const { money = 0, number = 0, rule = 1 } = redBody;
         const price = rule === 0 ? money / number : money;
         redpacket = { ...redBody, price };
@@ -401,7 +567,7 @@ class ThreadPostAction extends ThreadPostStore {
       else if (tomId === THREAD_TYPE.reward.toString()) {
         const times = contentindexes[index].body.expiredAt
           ? formatDate(contentindexes[index].body.expiredAt?.replace(/-/g, '/'), 'yyyy/MM/dd hh:mm')
-          : formatDate(new Date().getTime() + (25 * 3600 * 1000), 'yyyy/MM/dd hh:mm');
+          : formatDate(new Date().getTime() + 25 * 3600 * 1000, 'yyyy/MM/dd hh:mm');
         const value = contentindexes[index].body.money || '';
         rewardQa = {
           ...(contentindexes[index].body || {}),
@@ -409,9 +575,8 @@ class ThreadPostAction extends ThreadPostStore {
           value,
         };
       } else if (tomId === THREAD_TYPE.iframe.toString()) {
-        iframe = contentindexes[index].body || { };
-      }
-      else {
+        iframe = contentindexes[index].body || {};
+      } else {
         const { body = {}, _plugin } = contentindexes[index];
         // const { _plugin } = body;
         if (!_plugin) return;
@@ -420,7 +585,7 @@ class ThreadPostAction extends ThreadPostStore {
           tomId,
           body,
           _plugin,
-        }
+        };
       }
     });
     const anonymous = isAnonymous ? 1 : 0;
@@ -446,7 +611,7 @@ class ThreadPostAction extends ThreadPostStore {
       orderInfo,
       threadId,
       iframe,
-      plugin
+      plugin,
     });
   }
 
@@ -515,7 +680,7 @@ class ThreadPostAction extends ThreadPostStore {
       if (canCreateThread) {
         item = this.categories[i];
         if (children && children.length) {
-          item.children = [...children.filter(elem => elem.canCreateThread)];
+          item.children = [...children.filter((elem) => elem.canCreateThread)];
         }
         result.push(item);
       }
@@ -534,7 +699,7 @@ class ThreadPostAction extends ThreadPostStore {
       if (canEditThread) {
         item = this.categories[i];
         if (children && children.length) {
-          item.children = [...children.filter(elem => elem.canEditThread)];
+          item.children = [...children.filter((elem) => elem.canEditThread)];
         }
         result.push(item);
       }
@@ -585,19 +750,17 @@ class ThreadPostAction extends ThreadPostStore {
       body: {
         ...body,
         _plugin: {
-          name: pluginName
-        }
+          name: pluginName,
+        },
       },
       isShow,
-    }
+    };
     this.postData = { ...this.postData };
   }
 
   @action.bound
   deletePluginPostData(data) {
-    const {
-      _pluginInfo
-    } = data;
+    const { _pluginInfo } = data;
     const { pluginName } = _pluginInfo;
     if (this.postData.plugin[pluginName]) {
       delete this.postData.plugin[pluginName];

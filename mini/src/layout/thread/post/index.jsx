@@ -765,6 +765,7 @@ class Index extends Component {
     // const { categories } = this.props.threadPost;
     const categories = this.props.threadPost?.getCurrentCategories();
     const { postData, setPostData, setCursorPosition, navInfo, cursorPosition } = this.props.threadPost;
+
     const { rewardQa, redpacket, video, product, position, contentText = '' } = postData;
     const {
       postType,
@@ -905,7 +906,7 @@ class Index extends Component {
                     <Units
                       type='tag'
                       style={{ marginTop: 0, paddingRight: '8px' }}
-                      tagContent={`付费总额${(postData.price || postData.attachmentPrice).toFixed(2)}元`}
+                      tagContent={`付费总额${(Number(postData.price) || Number(postData.attachmentPrice) || Number(0)).toFixed(2)}元`}
                       onTagClick={() => {
                         if (postData.price) {
                           this.handlePluginClick({ type: THREAD_TYPE.paidPost })

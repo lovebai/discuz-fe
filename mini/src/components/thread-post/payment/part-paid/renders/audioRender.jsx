@@ -1,6 +1,6 @@
 import React from 'react';
+import { Audio } from '@discuzq/design';
 import { inject, observer } from 'mobx-react';
-import AudioPlay from '../../../audio-play';
 
 const AudioRender = inject('threadPost')(
   observer(({ ...props }) => {
@@ -8,7 +8,7 @@ const AudioRender = inject('threadPost')(
     const { postData = {} } = threadPost;
     const { audio = {} } = postData;
 
-    return <AudioPlay url={audio.mediaUrl} />;
+    return <Audio src={audio.mediaUrl} />;
   }),
 );
 

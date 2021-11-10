@@ -1,7 +1,7 @@
-import { inject, observer } from 'mobx-react';
-import Unit from '@components/thread/all-post-paid/part-paid/units/unit';
-import { Slider } from '@discuzq/design';
 import React from 'react';
+import { inject, observer } from 'mobx-react';
+import Unit from '@components/thread-post/payment/part-paid/units/unit';
+import { Slider } from '@discuzq/design';
 
 const TextUnit = inject('threadPost')(
   observer(({ ...props }) => {
