@@ -28,8 +28,10 @@ const Index = inject('threadPost')(
         postData.price && setPrice(postData.price);
         setFreeWords(postData.freeWords * 100);
       }
+
       if (isAttach) {
-        postData.attachmentPrice && setPrice(postData.attachmentPrice);
+        // 部分付费，从帖子内容还原上次的选择情况
+        postData.setPartPayFromPostData();
       }
 
       if (isAudio) {
