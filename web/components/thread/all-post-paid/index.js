@@ -59,19 +59,39 @@ const Index = inject('threadPost')(
       // 检查状态
       if (isAudio && freeAudio) return true;
 
-      if (!price) {
-        Toast.info({ content: '请输入付费金额', duration: 2000 });
-        return false;
+      if (isAttach) {
+        const partPayPrice = threadPost.partPayInfo.payPrice;
+        if (!partPayPrice) {
+          Toast.info({ content: '请输入付费金额', duration: 2000 });
+          return false;
+        }
+
+        if (parseFloat(partPayPrice) < 0.1) {
+          Toast.info({ content: '付费金额最低0.1元', duration: 2000 });
+          return false;
+        }
+
+        if (parseFloat(partPayPrice) > 100000) {
+          Toast.info({ content: '付费金额最高10w元', duration: 2000 });
+          return false;
+        }
       }
 
-      if (parseFloat(price) < 0.1) {
-        Toast.info({ content: '付费金额最低0.1元', duration: 2000 });
-        return false;
-      }
+      if (isPost) {
+        if (!price) {
+          Toast.info({ content: '请输入付费金额', duration: 2000 });
+          return false;
+        }
 
-      if (parseFloat(price) > 100000) {
-        Toast.info({ content: '付费金额最高10w元', duration: 2000 });
-        return false;
+        if (parseFloat(price) < 0.1) {
+          Toast.info({ content: '付费金额最低0.1元', duration: 2000 });
+          return false;
+        }
+
+        if (parseFloat(price) > 100000) {
+          Toast.info({ content: '付费金额最高10w元', duration: 2000 });
+          return false;
+        }
       }
 
       return true;
@@ -81,7 +101,7 @@ const Index = inject('threadPost')(
       // 确认
       // 1 校验
 
-      // if (!checkState()) return;
+      if (!checkState()) return;
 
       // 2 update store
       const { setPostData, postData } = threadPost;
@@ -90,7 +110,6 @@ const Index = inject('threadPost')(
       }
       if (isAttach) {
         threadPost.setPartPayInfo();
-        // setPostData({ attachmentPrice: parseFloat(price) });
       }
       if (isAudio) {
         setPostData({
