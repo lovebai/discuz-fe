@@ -52,6 +52,9 @@
       text-align: justify;
       word-break: break-word;
     }
+    :global(.dzq-strong) {
+      display: inline;
+    }
     // :global(.dzq-p) {
     //   display: flex;
     //   align-items: center;
