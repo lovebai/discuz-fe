@@ -87,7 +87,6 @@ const Index = inject('threadPost')(
         setPostData({ price: parseFloat(price), freeWords: freeWords / 100 });
       }
       if (isAttach) {
-        console.log(threadPost.partPayInfo);
         threadPost.setPartPayInfo();
         // setPostData({ attachmentPrice: parseFloat(price) });
       }

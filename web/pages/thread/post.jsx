@@ -405,12 +405,12 @@ class PostPage extends React.Component {
       return false;
     }
     if (child && child.id) {
-      const content = '帖子付费和附件付费不能同时设置';
-      if (postData.price && child.id === '附件付费') {
+      const content = '全贴付费和部分付费不能同时设置';
+      if (postData.price && child.id === '部分付费') {
         this.postToast(content);
         return false;
       }
-      if (postData.attachmentPrice && child.id === '帖子付费') {
+      if (postData.attachmentPrice && child.id === '全贴付费') {
         Toast.error({ content });
         return false;
       }
