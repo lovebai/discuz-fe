@@ -26,13 +26,16 @@ const Paid = inject('threadPost')(observer((props) => {
 
   const { threadPost } = props;
   const { partPayInfo } = threadPost;
-
   // Hook
   useEffect(() => { // 初始化
     const { postData } = props.threadPost;
     if (isPost) {
       postData.price && setPrice(postData.price);
       setFreeWords(parseInt(Number(postData.freeWords) * 100));
+    }
+
+    if (isAttach) {
+      props.threadPost.setPartPayFromPostData();
     }
 
     if (isAudio) {

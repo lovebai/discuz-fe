@@ -31,7 +31,7 @@ const Index = inject('threadPost')(
 
       if (isAttach) {
         // 部分付费，从帖子内容还原上次的选择情况
-        postData.setPartPayFromPostData();
+        threadPost.setPartPayFromPostData();
       }
 
       if (isAudio) {

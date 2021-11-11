@@ -1013,7 +1013,7 @@ class Index extends Component {
           onClick={(item) => {
             if ((item.type === THREAD_TYPE.paidPost && postData.attachmentPrice) || (item.type === THREAD_TYPE.paidAttachment && postData.price)) {
               Toast.error({
-                content: '帖子付费和附件付费不能同时设置',
+                content: '全贴付费和部分付费不能同时设置',
               });
             } else {
               this.handlePluginClick(item);
