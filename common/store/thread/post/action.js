@@ -1,4 +1,4 @@
-import { action } from 'mobx';
+import { action, observable } from 'mobx';
 import ThreadPostStore from './store';
 import {
   readEmoji,
@@ -68,7 +68,7 @@ class ThreadPostAction extends ThreadPostStore {
     this.setLoadingStatus(LOADING_TOTAL_TYPE.emoji, false);
     const { code, data = [] } = ret;
     let emojis = [];
-    if (code === 0) emojis = data.map((item) => ({ code: item.code, url: item.url }));
+    if (code === 0) emojis = data.map(item => ({ code: item.code, url: item.url }));
     this.setEmoji(emojis);
     return ret;
   }
@@ -278,9 +278,7 @@ class ThreadPostAction extends ThreadPostStore {
     if (this.filesPriceList && this.filesPriceList.length > 0) {
       const actualFilePriceList = this.filesPriceList.filter((id) => {
         let isInCurrentFiles = false;
-        isInCurrentFiles = Object.values(this.postData.files).find((file) => {
-          return file.id === id;
-        });
+        isInCurrentFiles = Object.values(this.postData.files).find(file => file.id === id);
         return isInCurrentFiles;
       });
       this.filesPriceList = actualFilePriceList || [];
@@ -305,9 +303,7 @@ class ThreadPostAction extends ThreadPostStore {
     if (this.imagesPriceList && this.imagesPriceList.length > 0) {
       const actualImagePriceList = this.imagesPriceList.filter((id) => {
         let isInCurrentFiles = false;
-        isInCurrentFiles = Object.values(this.postData.images).find((image) => {
-          return image.id === id;
-        });
+        isInCurrentFiles = Object.values(this.postData.images).find(image => image.id === id);
         return isInCurrentFiles;
       });
       this.imagesPriceList = actualImagePriceList || [];
@@ -359,8 +355,8 @@ class ThreadPostAction extends ThreadPostStore {
 
     this.checkPartPayInfo();
 
-    const imageIds = Object.values(images).map((item) => item.id);
-    const docIds = Object.values(files).map((item) => item.id);
+    const imageIds = Object.values(images).map(item => item.id);
+    const docIds = Object.values(files).map(item => item.id);
     const contentIndexes = {};
     // 和后端商量之后，还是如果没有数据的插件不传给后端
     if (imageIds.length > 0) {
@@ -430,7 +426,7 @@ class ThreadPostAction extends ThreadPostStore {
 
     // 插件扩展
     if (plugin) {
-      for (let key in plugin) {
+      for (const key in plugin) {
         contentIndexes[plugin[key].tomId] = {
           ...plugin[key],
         };
@@ -481,14 +477,13 @@ class ThreadPostAction extends ThreadPostStore {
     if (position.address) params.position = position;
     else {
       // 主要是编辑时删除位置的情况，暂时区别开编辑和发帖，因为后台没有更新接口避免影响发帖
-      if (isUpdate)
-        params.position = {
-          longitude: 0,
-          latitude: 0,
-          cityname: '',
-          address: '',
-          location: '',
-        };
+      if (isUpdate) params.position = {
+        longitude: 0,
+        latitude: 0,
+        cityname: '',
+        address: '',
+        location: '',
+      };
     }
     params.price = price || 0;
     params.freeWords = freeWords || 0;
@@ -575,7 +570,7 @@ class ThreadPostAction extends ThreadPostStore {
           value,
         };
       } else if (tomId === THREAD_TYPE.iframe.toString()) {
-        iframe = contentindexes[index].body || {};
+        iframe = contentindexes[index].body || { };
       } else {
         const { body = {}, _plugin } = contentindexes[index];
         // const { _plugin } = body;
@@ -589,7 +584,7 @@ class ThreadPostAction extends ThreadPostStore {
       }
     });
     const anonymous = isAnonymous ? 1 : 0;
-    this.setPostData({
+    this.setPostData(observable({
       // 标题去掉富文本
       title: title.replace(/<[^<>]+>/g, ''),
       categoryId,
@@ -612,7 +607,7 @@ class ThreadPostAction extends ThreadPostStore {
       threadId,
       iframe,
       plugin,
-    });
+    }));
   }
 
   @action
@@ -680,7 +675,7 @@ class ThreadPostAction extends ThreadPostStore {
       if (canCreateThread) {
         item = this.categories[i];
         if (children && children.length) {
-          item.children = [...children.filter((elem) => elem.canCreateThread)];
+          item.children = [...children.filter(elem => elem.canCreateThread)];
         }
         result.push(item);
       }
@@ -699,7 +694,7 @@ class ThreadPostAction extends ThreadPostStore {
       if (canEditThread) {
         item = this.categories[i];
         if (children && children.length) {
-          item.children = [...children.filter((elem) => elem.canEditThread)];
+          item.children = [...children.filter(elem => elem.canEditThread)];
         }
         result.push(item);
       }
@@ -760,7 +755,9 @@ class ThreadPostAction extends ThreadPostStore {
 
   @action.bound
   deletePluginPostData(data) {
-    const { _pluginInfo } = data;
+    const {
+      _pluginInfo,
+    } = data;
     const { pluginName } = _pluginInfo;
     if (this.postData.plugin[pluginName]) {
       delete this.postData.plugin[pluginName];

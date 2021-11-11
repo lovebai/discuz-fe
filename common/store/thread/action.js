@@ -180,7 +180,7 @@ class ThreadAction extends ThreadStore {
   @action
   setThreadData(data) {
     // this.threadData = data;
-    this.threadData = {...this.threadData, ...data};
+    this.threadData = { ...this.threadData, ...data };
     this.threadData.id = data.threadId;
   }
 
@@ -316,7 +316,7 @@ class ThreadAction extends ThreadStore {
         this.updateLikeReward(newLikeUsers);
       }
       // 全量查询打赏人员列表
-      this.queryTipList({threadId: params.threadId, type: 2, page: 1});
+      this.queryTipList({ threadId: params.threadId, type: 2, page: 1 });
 
       // 更新列表store
       this.updateListStore();
@@ -738,7 +738,7 @@ class ThreadAction extends ThreadStore {
 
     const requestParams = {
       id,
-      postId:pid,
+      postId: pid,
       data: {
         attributes: {
           isLiked: !!isLiked,
@@ -799,21 +799,21 @@ class ThreadAction extends ThreadStore {
   }
 
   // 查询打赏列表
-  @action 
-  async queryTipList(params){
-    const res = await readLikedUsers({ params:{...params,perPage:300} });
-    let resList  = res.data?.pageData?.list;
-    resList = resList.filter(i=>i.type===3);
+  @action
+  async queryTipList(params) {
+    const res = await readLikedUsers({ params: { ...params, perPage: 300 } });
+    let resList = res.data?.pageData?.list;
+    resList = resList.filter(i => i.type === 3);
 
     const filterObj = {};
-    resList = resList.reduce((cur,next) => {
+    resList = resList.reduce((cur, next) => {
       console.log(next);
       filterObj[next.userId] ? "" : filterObj[next.userId] = true && cur.push(next);
       return cur;
-    },[])
+    }, [])
 
 
-    this.threadData={...this.threadData,tipList:resList.slice(0,32) || []}
+    this.threadData = { ...this.threadData, tipList: resList.slice(0, 32) || [] }
   }
 
 }

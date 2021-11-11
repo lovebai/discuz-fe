@@ -17,7 +17,7 @@ import styles from './index.module.scss';
 import { extensionList, isPromise, noop } from '../utils';
 
 /**
- * 附件
+ * 附件 - 免费附件正常展示，付费附件隐藏
  * @prop {Array} attachments 附件数组
  * @prop {Boolean} isHidden 是否隐藏删除按钮
  */
@@ -25,7 +25,7 @@ import { extensionList, isPromise, noop } from '../utils';
 const Index = ({
   attachments = [],
   isHidden = true,
-  isPay = false,
+  isPay = false, // 是否需要部分付费
   onClick = noop,
   onPay = noop,
   user = null,
@@ -38,6 +38,11 @@ const Index = ({
   canDownloadAttachment = false,
   customActionArea = null,
 }) => {
+  // 过滤需要部分付费的附件
+  const showAttachList = attachments.filter(
+    item => item.needPay === undefined ? !isPay : item.needPay !== 1
+  );
+
   // 处理文件大小的显示
   const handleFileSize = (fileSize) => {
     if (fileSize > 1000000) {
@@ -106,14 +111,17 @@ const Index = ({
 
       if (!item || !threadId) return;
 
-      // downloading[index] = true;
+    if (!item?.url) {
+      Toast.info({ content: "获取下载链接失败" });
+      // downloading[index] = false;
       // setDownloading([...downloading]);
+      return;
+    }
 
       if (!item?.url) {
         Toast.info({ content: '获取下载链接失败' });
         // downloading[index] = false;
         // setDownloading([...downloading]);
-        return;
       }
 
       Taro.downloadFile({
@@ -234,12 +242,9 @@ const Index = ({
     if (!isPay) {
       if (!file || !threadId) return;
 
-      await fetchDownloadUrl(threadId, file.id, () => {
-        file.readyToPlay = true;
-      });
-    } else {
-      onPay();
-    }
+    await fetchDownloadUrl(threadId, file.id, () => {
+      file.readyToPlay = true;
+    });
 
     return !!file.readyToPlay;
   };
@@ -339,7 +344,7 @@ const Index = ({
     if (~path.indexOf('/indexPages/thread/index')) {
       setIsShowMore(false);
     } else {
-      setIsShowMore(attachments.length > ATTACHMENT_FOLD_COUNT);
+      setIsShowMore(showAttachList.length > ATTACHMENT_FOLD_COUNT);
     }
   }, []);
   const clickMore = () => {

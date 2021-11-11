@@ -92,7 +92,7 @@ const Index = (props) => {
           onTextItemClick={onTextItemClick} />
         }
 
-        {videoData && (
+        {videoData && videoData.mediaUrl && (
           <WrapperView onClick={onClick}>
             <VideoPlay
               url={videoData.mediaUrl}
@@ -157,8 +157,8 @@ const Index = (props) => {
         {/* 投票帖子展示 */}
         {voteData && <VoteDisplay recomputeRowHeights={props.recomputeRowHeights} voteData={voteData} threadId={threadId} />}
         <DZQPluginCenterInjectionPolyfill
-          target='plugin_index' 
-          hookName='thread_extension_display_hook' 
+          target='plugin_index'
+          hookName='thread_extension_display_hook'
           pluginProps={{
             renderData: plugin,
             threadData: props.data,
@@ -166,11 +166,11 @@ const Index = (props) => {
             updateThread: props.updateThread,
             recomputeRowHeights: props.recomputeRowHeights
         }}/>
-        
+
       </>
     );
   };
- 
+
   return (
     <>
       <SiteMapLink href={`/thread/${threadId}`} text={newTitle && newTitle !== '' ? newTitle : props.data?.content?.text}/>
@@ -183,7 +183,7 @@ const Index = (props) => {
           <div className={styles.pay}>
             <Button className={styles.button} type="primary" onClick={onPay}>
               <Icon className={styles.payIcon} name="GoldCoinOutlined" size={16}></Icon>
-              {payType === 1 ? <p className={styles.payText}>{`支付${price}元查看剩余内容`}</p> : <p className={styles.payText}>{`支付${attachmentPrice}元查看附件内容`}</p>}
+              {payType === 1 ? <p className={styles.payText}>{`支付${price}元查看剩余内容`}</p> : <p className={styles.payText}>{`支付${attachmentPrice}元查看付费内容`}</p>}
             </Button>
           </div>
 

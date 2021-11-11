@@ -19,6 +19,7 @@ import Toast from '@discuzq/design/dist/components/toast';
 import { STORAGE_KEY, STORAGE_TYPE } from '@common/utils/viewcount-in-storage';
 import DZQPluginCenter from '@discuzq/plugin-center';
 import PluginDevelopTools from '../utils/PluginDevelopTools';
+import { throttle } from '@common/utils/throttle-debounce.js';
 
 // if (!isServer()) {
 //   process.env.NODE_ENV === 'production' && sentry();
@@ -30,7 +31,7 @@ class DzqApp extends App {
   constructor(props) {
     super(props);
     this.appStore = appStore;
-    this.updateSize = this.updateSize.bind(this);
+    this.updateSize = throttle(this.updateSize.bind(this), 100);
     this.toastInstance = null;
   }
 
@@ -155,9 +156,15 @@ class DzqApp extends App {
   }
 
   updateSize() {
-    this.appStore.site.setPlatform(getPlatform(window.navigator.userAgent));
-
+    const oldPlatform = this.appStore.site.platform;
+    const newPlatform = getPlatform(window.navigator.userAgent);
+    this.appStore.site.setPlatform(newPlatform);
     this.initOretation();
+
+    if (oldPlatform !== newPlatform) {
+      console.log('重新注册插件');
+      DZQPluginCenter.refreshRegister();
+    }
   }
 
   render() {

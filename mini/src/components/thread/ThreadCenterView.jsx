@@ -90,7 +90,7 @@ const Index = (props) => {
             onTextItemClick={onTextItemClick}
           />
         )}
-        {videoData && (
+        {videoData && videoData.mediaUrl && (
           <WrapperView onClick={onClick} videoH={videoH}>
             <VideoPlay
               url={videoData.mediaUrl}
@@ -202,7 +202,7 @@ const Index = (props) => {
             {payType === 1 ? (
               <Text className={styles.payText}>{`支付${price}元查看剩余内容`}</Text>
             ) : (
-              <Text className={styles.payText}>{`支付${attachmentPrice}元查看附件内容`}</Text>
+              <Text className={styles.payText}>{`支付${attachmentPrice}元查看付费内容`}</Text>
             )}
           </Button>
         </View>

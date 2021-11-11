@@ -145,6 +145,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
             name={threadStore?.threadData?.user?.nickname || ''}
             avatar={threadStore?.threadData?.user?.avatar || ''}
             groupName={threadStore?.threadData?.group?.groupName || ''}
+            groupLevel={threadStore?.threadData?.group?.level || 0}
             location={threadStore?.threadData?.position.location || ''}
             view={`${threadStore?.threadData?.viewCount}` || ''}
             time={`${threadStore?.threadData?.diffTime}` || ''}
@@ -210,7 +211,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
         {text && <PostContent needShowMore={false} content={text || ''} usePointer={false} />}
 
         {/* 视频 */}
-        {parseContent.VIDEO && (
+        {parseContent.VIDEO && parseContent.VIDEO.mediaUrl && (
           <VideoPlay
             url={parseContent.VIDEO.mediaUrl}
             coverUrl={parseContent.VIDEO.coverUrl}
@@ -327,8 +328,8 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
           && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
 
         <DZQPluginCenterInjectionPolyfill
-          target='plugin_detail' 
-          hookName='thread_extension_display_hook' 
+          target='plugin_detail'
+          hookName='thread_extension_display_hook'
           pluginProps={{
             threadData: threadStore?.threadData,
             renderData: parseContent.plugin,

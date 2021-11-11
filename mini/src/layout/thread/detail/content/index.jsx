@@ -141,6 +141,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread', 
               avatar={threadStore?.threadData?.user?.avatar || ''}
               location={threadStore?.threadData?.position.location || ''}
               groupName={threadStore?.threadData?.group?.groupName || ''}
+              groupLevel={threadStore?.threadData?.group?.level || 0}
               view={`${threadStore?.threadData?.viewCount}` || ''}
               time={`${threadStore?.threadData?.diffTime}` || ''}
               isEssence={isEssence}
@@ -166,7 +167,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread', 
           {text && <PostContent useShowMore={false} content={text || ''} />}
 
           {/* 视频 */}
-          {parseContent.VIDEO && (
+          {parseContent.VIDEO && parseContent.VIDEO.mediaUrl && (
             <VideoPlay
               url={parseContent.VIDEO.mediaUrl}
               coverUrl={parseContent.VIDEO.coverUrl}

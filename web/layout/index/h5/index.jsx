@@ -16,7 +16,7 @@ import dynamic from 'next/dynamic';
 import DynamicLoading from '@components/dynamic-loading';
 import { debounce, throttle } from '@common/utils/throttle-debounce.js';
 import Autoplay from '@common/utils/autoplay';
-import PacketOpen from '@components/red-packet-animation/web';
+import PacketOpen from '@components/red-packet-animation/h5';
 import ThreadContent from '@components/thread/SSRAdapter';
 import SiteMapLink from '@components/site-map-link';
 
@@ -315,6 +315,7 @@ class IndexH5Page extends React.Component {
 
         <FilterView
           data={currentCategories}
+          typelist={this.props.index.threadTypelist}
           current={filter}
           onCancel={this.onClose}
           visible={this.state.visible}

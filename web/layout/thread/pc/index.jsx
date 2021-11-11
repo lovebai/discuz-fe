@@ -690,7 +690,7 @@ class ThreadPCPage extends React.Component {
     if (categoryId || typeof categoryId === 'number') {
       this.props.index.refreshHomeData({ categoryIds: [categoryId] });
     }
-    this.props.router.push(`/?categoryId=${categoryId}&sequence=0`);
+    this.props.router.push(`/cate/${categoryId}/seq/0`);
   }
 
   // 点击发送私信
@@ -701,9 +701,9 @@ class ThreadPCPage extends React.Component {
       return;
     }
 
-    const { username, nickname } = this.props.thread?.authorInfo;
-    if (!username) return;
-    Router.push({ url: `/message?page=chat&username=${username}&nickname=${nickname}` });
+    const { userId, nickname } = this.props.thread?.authorInfo;
+    if (!userId) return;
+    Router.push({ url: `/message?page=chat&userId=${userId}&nickname=${nickname}` });
   }
 
   onUserClick(userId) {
