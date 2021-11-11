@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import IndexH5Page from '@layout/index/h5';
 import IndexPCPage from '@layout/index/pc';
-import { readCategories, readStickList, readThreadList, readRecommends } from '@server';
+import { readCategories, readStickList, readThreadList, readRecommends, readTypelist } from '@server';
 import { handleString2Arr } from '@common/utils/handleCategory';
 import HOCFetchSiteData from '../middleware/HOCFetchSiteData';
 import ViewAdapter from '@components/view-adapter';
@@ -27,7 +27,6 @@ class Index extends React.Component {
   page = 1;
   prePage = 10;
   static async getInitialProps(ctx, { user, site }) {
-
     const { platform } = site;
     const result = getRouterCategory(ctx, site);
     const { essence = 0, sequence = 0, attention = 0, sort = 1 } = result;
@@ -36,17 +35,18 @@ class Index extends React.Component {
     const categoryIds = handleString2Arr(result, 'categoryids');
 
     const categories = await readCategories({}, ctx);
+    const threadTypelist = await readTypelist();
     const sticks = await readStickList({ params: { categoryIds } }, ctx);
     const threads = await readThreadList({
       params: {
         // 为优化seo，对ssr部署时，获取50条数据，普通用户10条
-        perPage: process.env.NODE_ENV !== 'development' && process.env.DISCUZ_RUN === 'ssr' ? 50 : 10,
+        perPage: process.env.NODE_ENV !== 'development' && process.env.DISCUZ_RUN === 'ssr' ? 100 : 10,
         page: 1,
         sequence,
         filter: { categoryids: categoryIds, types: newTypes, essence, attention, sort },
       },
     }, ctx);
-    
+
 
     // 只有pc下才去加载推荐内容
     let recommend = null;
@@ -60,6 +60,7 @@ class Index extends React.Component {
         sticks: sticks && sticks.code === 0 ? sticks.data : null,
         threads: threads && threads.code === 0 ? threads.data : null,
         recommend: recommend && recommend.code === 0 ? recommend.data : null,
+        threadTypelit: threadTypelist && threadTypelist.code === 0 ? threadTypelist.data : [],
       },
     };
   }
@@ -77,10 +78,10 @@ class Index extends React.Component {
     serverIndex && serverIndex.sticks && index.setSticks(serverIndex.sticks);
     serverIndex && serverIndex.threads && index.setThreads(serverIndex.threads);
     serverIndex && serverIndex.threads && index.setRecommends(serverIndex.recommend);
+    serverIndex && serverIndex.threadTypelist && index.setThreadTypelist(serverIndex.threadTypelist);
   }
 
   componentDidMount() {
-
     const { index } = this.props;
     const { essence = 0, sequence = 0, attention = 0, sort = 1 } = index.filter;
 
@@ -95,6 +96,7 @@ class Index extends React.Component {
     if (!hasCategoriesData) {
       this.props.index.getReadCategories();
     }
+    this.props.index.fetchThreadTypelist();
 
     if (!hasSticksData) {
       this.props.index.getRreadStickList(categoryIds);
@@ -126,15 +128,15 @@ class Index extends React.Component {
     else if (essence === 1) index.topMenuIndex = isShowRecommend ? '2' : '1';
     else if (attention === 1) index.topMenuIndex = isShowRecommend ? '3' : '2';
     index.setFilter(result);
-
     !isServer() && this.setUrl(categoryids, sequence);
-
   }
 
   // 根据选中的筛选项，设置地址栏
   setUrl = (categoryIds = [], sequence = 0) => {
-    const url = (categoryIds?.length || sequence !== 0)  ? `/?categoryId=${categoryIds.join('_')}&sequence=${sequence}` : '/'
-    this.props.router.replace(url)
+    const url = ((categoryIds?.length && categoryIds.join('') !== 'all')
+      || sequence !== 0)
+      ? `/cate/${categoryIds.join('_')}/seq/${sequence}` : '/';
+    this.props.router.replace(url);
   }
 
   dispatch = async (type, data = {}) => {
@@ -155,7 +157,7 @@ class Index extends React.Component {
     }
 
     if (type === 'click-filter') { // 点击tab
-      this.setUrl(categoryIds, sequence)
+      this.setUrl(newData.categoryids, sequence)
 
       this.page = 1;
       this.props.baselayout.setJumpingToTop();
@@ -203,7 +205,7 @@ export default HOCFetchSiteData(Index, (pass) => {
   // 因部署方式的问题，所有路径第一次访问都会访问index.html，导致会出现首页渲染出来之后跳转到制定的url地址，为了防止这种情况，对首页的渲染做一次判断，如果url不是首页连接，将不渲染首页。
   if (!isServer() && !browser.env('uc')) { // uc浏览器存在异常，首页不做判断
     const pathname = window.location.pathname;
-    if (pathname === '/' || pathname === '/index') {
+    if (pathname === '/' || pathname === '/index' || pathname.indexOf('/cate/') > -1) {
       return true;
     } else {
       return false;

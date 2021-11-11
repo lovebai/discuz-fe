@@ -7,6 +7,12 @@
   // overflow: hidden;
   .contentWrapper{
     .content {
+
+      :global{
+        iframe{
+          max-width: 100%;
+        }
+      }
       //@include cursor-on-pc;
       cursor: text;
       width: 100%;
@@ -39,6 +45,9 @@
       text-align: justify;
       word-break: break-word;
     }
+    // :global(.dzq-richText .dzq-pre .dzq-code){
+    //   white-space:initial!important;
+    // }
     
     iframe {
       width: 100%;

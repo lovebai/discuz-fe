@@ -11,7 +11,7 @@ import Header from '@components/header';
 import Router from '@discuzq/sdk/dist/router';
 
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
-  const { siteMode, isPC } = site;
+  const { siteMode, isPC, webConfig } = site;
   const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, payGroups } = user;
   const { group = {} } = userInfo || {};
   const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId, typeTime, remainTime } = group;
@@ -46,8 +46,7 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     if (time.isCurrentYear(expiredAt)) {
       return 'MM月DD日';
     } else {
-      // return 'YYYY年MM月DD日';
-      return 'MM月DD日';
+      return 'YYYY年MM月DD日';
     }
   };
 
@@ -61,8 +60,11 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
     if (level > 0) {
       return (
         <>
-          <Text className={styles.feeDay} style={{color: theme.otherColor}}>{remainTime}</Text>
-          <Text style={{color: theme.desAndDateColor}}>{typeMap[typeTime]}&nbsp;•&nbsp;{time.formatDate(expirationTime, getDateFormat())}到期</Text>
+          <View className={styles.feeDayContainer}>
+            <Text className={styles.feeDay} style={{color: theme.otherColor}}>{remainTime}</Text>
+            <Text style={{color: theme.desAndDateColor}}>{typeMap[typeTime]}</Text>
+          </View>
+          <Text>{time.formatDate(expirationTime, getDateFormat())}到期</Text>
         </>
       );
     }
@@ -80,8 +82,10 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
       } else {
         return (
           <>
-            <Text className={styles.feeDay}>{expiredDays}</Text>天&nbsp;•&nbsp;
-            {time.formatDate(expiredAt, getDateFormat())}到期
+            <View className={styles.feeDayContainer}>
+              <Text className={styles.feeDay}>{expiredDays}</Text>天
+            </View>
+            <Text>{time.formatDate(expiredAt, getDateFormat())}到期</Text>
           </>
         );
       }
@@ -138,8 +142,8 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
           <View className={styles.roleType} style={{color: theme.groupNameColor}}>{groupName}</View>
           <View className={styles.tagline} style={{color: theme.desAndDateColor}}>{level > 0 ? description : '访问海量站点内容'}</View>
           <View className={styles.RenewalFee} style={{visibility: noBtn ? 'hidden' : 'visible'}}>
-            {renderButton()}
-            <Text className={styles.feeTimer}>{renderFeeDateContent()}</Text>
+            {webConfig?.other?.threadOptimize && renderButton()}
+            <View className={styles.feeTimer}>{renderFeeDateContent()}</View>
           </View>
         </View>
       </View>

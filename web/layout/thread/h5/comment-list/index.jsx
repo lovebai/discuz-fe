@@ -9,6 +9,10 @@ import InputPopup from '../components/input-popup';
 import DeletePopup from '@components/thread-detail-pc/delete-popup';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import { debounce } from '@common/utils/throttle-debounce';
+import Router from '@discuzq/sdk/dist/router';
+import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
+
+
 // 评论列表
 @inject('thread')
 @inject('comment')
@@ -292,6 +296,22 @@ class RenderCommentList extends React.Component {
         });
     }
 
+    //  验证码
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      // 开启了腾讯云验证码验证时，进行验证，通过后再进行实际的发布请求
+
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        // 验证码票据，验证码字符串不全时，弹出滑块验证码
+        const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
+        if (!captchaTicket && !captchaRandStr) {
+          return false ;
+        }
+      }
+    }
+
     const { success, msg, isApproved } = await this.props.comment.createReply(
       params,
       this.props.isPositionComment ? this.props.commentPosition : this.props.thread,
@@ -327,7 +347,7 @@ class RenderCommentList extends React.Component {
   // 跳转评论详情
   onCommentClick(data) {
     if (data.id && this.props.thread?.threadData?.id) {
-      this.props.router.push(`/thread/comment/${data.id}?threadId=${this.props.thread?.threadData?.id}`);
+      Router.push({url: `/thread/comment/${data.id}?threadId=${this.props.thread?.threadData?.id}`});
     }
   }
 
@@ -384,7 +404,7 @@ class RenderCommentList extends React.Component {
   avatarClick(data) {
     const { userId } = data;
     if (!userId) return;
-    this.props.router.push(`/user/${userId}`);
+    Router.push({url: `/user/${userId}`});
   }
 
   // 点击回复头像
@@ -496,4 +516,4 @@ RenderCommentList.defaultProps = {
   showHeader: true, // 是否显示排序头部
 };
 
-export default RenderCommentList;
+export default HOCTencentCaptcha(RenderCommentList);

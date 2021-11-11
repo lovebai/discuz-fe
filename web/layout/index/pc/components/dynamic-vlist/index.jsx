@@ -7,17 +7,33 @@ import ThreadContent from '@components/thread';
 import WindowVList from '@components/virtual-list/pc';
 import styles from './index.module.scss';
 
-const TopFilterView = ({ onFilterClick, isShowDefault, onPostThread, ishide }) => {
+import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
+import IndexTabsHook from '@common/plugin-hooks/plugin_index@tabs';
+
+const TopFilterView = ({ onFilterClick, isShowDefault, onPostThread, ishide, site }) => {
+  const component = (
+    <div className={styles.topBox}>
+      <TopMenu onSubmit={onFilterClick} isShowDefault={isShowDefault} />
+      <div className={styles.PostTheme}>
+        <Button type="primary" className={styles.publishBtn} onClick={onPostThread}>
+          发布
+        </Button>
+      </div>
+    </div>
+  );
+
+  const changeFilter = (params) => {
+    const { types, sort, essence, attention, sequence } = params;
+    const result = {
+      sequence,
+      filter: { types, sort, essence, attention },
+    };
+    onFilterClick(result);
+  };
+
   return (
     <div className={styles.topWrapper} style={{ visibility: ishide ? 'hidden' : 'visible' }}>
-      <div className={styles.topBox}>
-        <TopMenu onSubmit={onFilterClick} isShowDefault={isShowDefault} />
-        <div className={styles.PostTheme}>
-          <Button type="primary" className={styles.publishBtn} onClick={onPostThread}>
-            发布
-          </Button>
-        </div>
-      </div>
+      <IndexTabsHook changeFilter={(params) => changeFilter(params)} component={component}></IndexTabsHook>
     </div>
   );
 };
@@ -29,10 +45,17 @@ export default class DynamicVList extends React.Component {
 
   // 中间 -- 筛选 置顶信息 是否新内容发布 主题内容
   renderContent = (data) => {
-    const { visible, conNum, isShowDefault, onFilterClick, onPostThread, goRefresh, canPublish = () => {} } = this.props;
+    const {
+      visible,
+      conNum,
+      isShowDefault,
+      onFilterClick,
+      onPostThread,
+      goRefresh,
+      canPublish = () => {},
+    } = this.props;
     const { sticks, threads } = data;
     const { pageData } = threads || {};
-
 
     return (
       <div className={styles.indexContent}>
@@ -76,6 +99,7 @@ export default class DynamicVList extends React.Component {
         onPostThread={onPostThread}
         isShowDefault={isShowDefault}
         ishide={false}
+        site={this.props.siteStore}
       />
     );
   };
@@ -94,13 +118,28 @@ export default class DynamicVList extends React.Component {
       requestError,
       noMore,
       errorText,
-      onScroll = () => { },
-      canPublish = () => { }
+      onScroll = () => {},
+      canPublish = () => {},
     } = this.props;
     const { sticks, threads } = data;
     const { pageData } = threads || {};
     const { siteStore } = this.props;
     const { countThreads = 0 } = siteStore?.webConfig?.other || {};
+
+    const toppingComponent = (
+      <div className={styles.contnetTop}>
+        {sticks?.length > 0 && (
+          <div className={`${styles.TopNewsBox} ${!visible && styles.noBorder}`}>
+            <TopNews data={sticks} platform="pc" isShowBorder={false} />
+          </div>
+        )}
+        {visible && (
+          <div className={styles.topNewContent}>
+            <NewContent visible={visible} conNum={conNum} goRefresh={goRefresh} />
+          </div>
+        )}
+      </div>
+    );
 
     return (
       <WindowVList
@@ -128,7 +167,8 @@ export default class DynamicVList extends React.Component {
               data={item}
               className={styles.listItem}
               recomputeRowHeights={measure}
-            />)
+            />
+          );
         }}
       >
         <div className={styles.indexContent}>
@@ -137,20 +177,10 @@ export default class DynamicVList extends React.Component {
             onPostThread={onPostThread}
             isShowDefault={isShowDefault}
             ishide={true}
+            site={this.props.siteStore}
           />
 
-          <div className={styles.contnetTop}>
-            {sticks?.length > 0 && (
-              <div className={`${styles.TopNewsBox} ${!visible && styles.noBorder}`}>
-                <TopNews data={sticks} platform="pc" isShowBorder={false} />
-              </div>
-            )}
-            {visible && (
-              <div className={styles.topNewContent}>
-                <NewContent visible={visible} conNum={conNum} goRefresh={goRefresh} />
-              </div>
-            )}
-          </div>
+          <IndexToppingHooks component={toppingComponent} renderData={{ sticks }}></IndexToppingHooks>
         </div>
       </WindowVList>
     );

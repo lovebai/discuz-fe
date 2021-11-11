@@ -1,5 +1,8 @@
+import s9e from '@common/utils/s9e';
+import replaceStringInRegex from '@common/utils/replace-string-in-regex';
 import htmlparser2 from 'htmlparser2';
-import { getByteLen } from '../../utils';
+import { getByteLen, cutText } from '../../utils';
+
 
 
 import {
@@ -8,180 +11,31 @@ import {
   maxContentHeight,
   imagesGap,
   posterPadding,
-  commentX,
   commentWidth,
+  screenHeight,
   baseX,
-  nameAndTagsY,
-  avatarWidth,
-  minGap,
+  contentWidth,
 } from '../constants';
 
-export const getContentConfig = ({ comment }) => {
-  const blocksTitle = handleTitleName(comment)
-  const texts = handleTexts(comment,blocksTitle.height);
-  const images =handleImagesArea(comment, texts.height, blocksTitle.height); // texts.height是：{ originalTextHeight, renderedTextHeight }
-  const totalContentHeight = texts.height + images.height.renderedImgHeight + blocksTitle.height;
-  const blocksBox = handleCommentBox(totalContentHeight);
-  const {avatarBlock, avatarImage} = handleAvatar(comment);
-  const times = handleTimes(comment,totalContentHeight);
+export const getContentConfig = ({ comment , baseHeight, hidePart }) => {
+  const texts = handleTexts(comment,baseHeight , hidePart);
+  const images =handleImagesArea(comment, texts.height, baseHeight, hidePart); // texts.height是：{ originalTextHeight, renderedTextHeight }
+  const totalContentHeight = baseHeight+ texts.height + images.height.renderedImgHeight 
 
   const returnConfig = {
     height: totalContentHeight + 50,
     config: {
-      blocks: [...blocksBox.blocks],
-      texts: [...blocksTitle.texts, ...texts.texts , ...times.texts],
+      texts: [ ...texts.texts,],
       images: [...images.images],
     },
   }
-  if(!comment.user.avatar || comment.isAnonymous) {
-    returnConfig.config.blocks.push(avatarBlock);
-  } else {
-    returnConfig.config.images.push(avatarImage);
-  }
-
   return returnConfig;
 };
 
-// 处理头像
-const handleAvatar = (comment) => {
-  const avatar = comment.user.avatar || ''
-  let avatarBlock = {};
-  let avatarImage = {};
-  if(!avatar || comment.isAnonymous) {
-    avatarBlock = getAvatarBlock(comment);
-  } else {
-    avatarImage = getAvatarImage(comment);
-  }
-  return {
-    avatarBlock,
-    avatarImage
-  }
-}
-
-// 处理头像
-const getAvatarBlock = (comment) => {
-  let {nickname} = comment.user
-  if(comment.isAnonymous) {
-    nickname = '匿'
-  }
-  const name = nickname.charAt(0)
-  return {
-    x: baseX,
-    y: nameAndTagsY,
-    width: avatarWidth,
-    height: 76,
-    borderRadius: 76,
-    borderColor: '#000',
-    backgroundColor: '#8590a6',
-    text: {
-      text: name,
-      color: '#fff',
-      fontSize: 28,
-      lineHeight: 28,
-      textAlign: 'center',
-      baseLine: 'middle',
-      zIndex: 10,
-      fontFamily: 'PingFang SC',
-      width: avatarWidth - minGap * 6,
-    },
-    zIndex: 10,
-  }
-}
-
-// 处理头像
-const getAvatarImage = (comment) => {
-    const avatar = comment.user.avatar || ''
-    return {
-        url: avatar,
-        x: baseX,
-        y: nameAndTagsY,
-        width: avatarWidth,
-        height: avatarWidth,
-        borderRadius: 76,
-        borderColor: '#000',
-        zIndex: 10,
-    }
-}
-
-const handleCommentBox = totalContentHeight =>({
-    height: totalContentHeight,
-    blocks: [
-      {
-        x: commentX,
-        y: 25,
-        width: commentWidth,
-        height: totalContentHeight,
-        backgroundColor: '#f5f7f8',
-        borderRadius: 10,
-      },
-    ],
-  })
-
-const handleTimes = (comment,totalContentHeight) =>({
-    height: 40,
-    texts: [
-      {
-        text: comment.createdAt,
-        x: commentX,
-        y: totalContentHeight + 40,
-        width: comment.createdAt.length*26,
-        fontSize: 24,
-        lineHeight: baseLineHeight,
-        lineNum: 1,
-        textAlign: 'left',
-        zIndex: 10,
-        baseLine: 'top',
-        color: '#8590a6',
-        fontFamily: 'PingFang SC',
-      },
-    ],
-  })
-
-const handleTitleName = comment =>{
-  const nickname = comment.user?.nickname;
-  let groupname = comment.user?.groups?.name;
-  groupname = groupname.length>7? `${groupname.slice(0,7)}...`:groupname;
-  const titleY = 50;
-  return {
-    height: 60,
-    texts: [
-      // 内容
-      {
-        text: nickname,
-        x: baseX+commentX,
-        y: titleY,
-        width: nickname.length*26,
-        fontSize: 26,
-        lineHeight: baseLineHeight,
-        lineNum: 1,
-        textAlign: 'left',
-        zIndex: 10,
-        baseLine: 'top',
-        color: '#000',
-        fontFamily: 'PingFang SC',
-        fontWeight:'bold',
-      },
-      {
-        text: groupname,
-        x: baseX+commentX + nickname.length*26 + 10,
-        y: titleY,
-        width: groupname.length*32,
-        fontSize: 26,
-        lineHeight: baseLineHeight,
-        lineNum: 1,
-        textAlign: 'left',
-        zIndex: 10,
-        baseLine: 'top',
-        color: '#8590a6',
-        fontFamily: 'PingFang SC',
-      },
-    ],
-  }
-}
 
 
 
-const handleTexts = (comment, titleHeight) => {
+const handleTexts = (comment, baseHeight ,hidePart) => {
   const content =[];
   const { Parser } = htmlparser2;
   const parse = new Parser({
@@ -196,27 +50,44 @@ const handleTexts = (comment, titleHeight) => {
     },
   });
 
+  let commentText = s9e.parse(comment.content);
+  commentText = replaceStringInRegex(commentText, 'code', '');
+  commentText = replaceStringInRegex(commentText, 'img', '');
 
-  parse.parseComplete(comment.content);
-  const contentStr = content.join('');
+  parse.parseComplete(commentText);
+  let contentStr = content.join('');
 
   // 统计有几个换行
-  const n = contentStr.length - contentStr.replace(/[\n]/g, '').length - 1;
+  // const n = contentStr.length - contentStr.replace(/[\n]/g, '').length - 1;
   // 计算文本高度,计算有多少文字乘以文字宽度最后除以一行的宽度,再乘以一行的高度52
-  const contentHeight = (Math.ceil((getByteLen(contentStr) * 14) / commentWidth) + (n >= 0 ? n : 0)) * baseLineHeight;
-  console.log(contentHeight,111)
+  // const contentHeight = (Math.ceil((getByteLen(contentStr) * 14) / commentWidth) + (n >= 0 ? n : 0)) * baseLineHeight;
+
+  const { textLineNumber, n } = handleHeightAccuracy(contentStr);
+  let allLine = textLineNumber + (n >= 0 ? n : 0);
+  if( hidePart ){
+    const maxLine = 10;
+    if(allLine < maxLine ){
+      contentStr = contentStr.slice(0, Math.ceil(contentStr.length/2)) + (contentStr.length > 1?'...':'')
+    }else{
+      contentStr = `${cutText(contentStr , contentWidth , maxLine)  }...`;
+    }
+    const { textLineNumber:curTextLineNumber, n:curN} = handleHeightAccuracy(contentStr);
+    allLine = curTextLineNumber + (curN >= 0 ?  curN: 0);
+  }
+  const contentHeight = allLine * baseLineHeight;
+ 
   return {
     height: contentHeight,
     texts: [
       // 内容
       {
-        text: content.join(''),
-        x: baseX+commentX,
-        y: titleHeight+50,
-        width: commentWidth-45,
+        text: contentStr,
+        x: baseX,
+        y: baseHeight,
+        width: contentWidth,
         fontSize: 32,
         lineHeight: baseLineHeight,
-        lineNum: parseInt(contentHeight / baseLineHeight),
+        lineNum: allLine,
         textAlign: 'left',
         zIndex: 10,
         baseLine: 'top',
@@ -227,13 +98,30 @@ const handleTexts = (comment, titleHeight) => {
   };
 };
 
-const handleImagesArea = (comment, textHeight , titleHeight) => {
+const handleHeightAccuracy = (content) => {
+  const date = new Date();
+  const replaceTextSign = `${date.getTime()  }`;
+  const contentArr = content.replace(/[\n]/g, replaceTextSign).split(replaceTextSign);
+  let textLineNumber = 0;
+  // 换行符个数
+  const n = contentArr.length;
+  // 将文本分段判断文本行数，每段文本末尾会有一个换行符被统计视为一行，所以每段文本最后一行不记录统计行数
+  for (let i = 0; i < contentArr.length; i++) {
+    if(contentArr[i]) {
+      textLineNumber += Math.floor((getByteLen(contentArr[i]) * 16) / contentWidth);
+    }
+  }
+  return { textLineNumber, n };
+}
+
+
+const handleImagesArea = (comment, textHeight , baseHeight, hidePart) => {
   let renderedImgHeight = 0;
 
   const images = [];
   let imgInfo = {};
   // 图片区域，返回一组图片url集合
-  imgInfo = handleImage(comment, textHeight);
+  imgInfo = handleImage(comment, textHeight , hidePart);
 
   if (imgInfo?.imagesArray) {
     const {imagesArray} = imgInfo;
@@ -248,10 +136,10 @@ const handleImagesArea = (comment, textHeight , titleHeight) => {
 
       const image = {
         url: item.url,
-        width: commentWidth-45,
+        width: contentWidth,
         height: item.height,
-        y: imageY + titleHeight,
-        x: baseX+commentX,
+        y: imageY + baseHeight,
+        x: baseX,
         borderRadius: 12,
         zIndex: 10,
       };
@@ -278,12 +166,12 @@ const handleImagesArea = (comment, textHeight , titleHeight) => {
 
 
 // 处理图片，返回一组图片url和高度的集合
-const handleImage = (comment, contentHeight) => {
+const handleImage = (comment, contentHeight ,hidePart) => {
   let imgArray = [];
   // 处理付费或无内容时的图片
   imgArray = comment.images;
   const imagesArray = [];
-  const availableImageSpace = maxContentHeight - contentHeight;
+  const availableImageSpace = ( hidePart ? screenHeight : maxContentHeight ) - contentHeight;
 
   let sumOfFilesHeight = 0; // 根据帖子中的图片高度计算渲染多少个图，用于减少访问数量
   for (let i = 0; i < imgArray.length; i++) {

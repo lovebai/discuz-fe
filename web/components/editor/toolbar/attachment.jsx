@@ -1,3 +1,4 @@
+/* eslint-disable spaced-comment */
 /**
  * 附件操作栏比如：图片上传、视频上传、语音上传等
  */
@@ -10,6 +11,7 @@ import { attachIcon } from '@common/constants/const';
 import { createAttachment } from '@common/server';
 import { THREAD_TYPE } from '@common/constants/thread-post';
 import { tencentVodUpload } from '@common/utils/tencent-vod';
+import DZQPluginCenterInjectionPolyfill from '../../../utils/DZQPluginCenterInjectionPolyfill';
 
 // 插件引入
 /**DZQ->plugin->register<plugin_post@post_extension_entry_hook>**/
@@ -53,7 +55,7 @@ function getObjectURL(file) {
 function AttachmentToolbar(props) {
   let file = null;
   let toastInstance = null;
-  const [showAll, setShowAll] = useState(true);
+  const [showAll, setShowAll] = useState(false);
   const [currentAction, setCurrentAction] = useState('');
   const inputRef = React.createRef(null);
   const { onVideoUpload = () => { } } = props;
@@ -176,8 +178,7 @@ function AttachmentToolbar(props) {
 
 
   const icons = () => {
-
-    let defaultEntryList = attachIcon.map((item) => {
+    const defaultEntryList = attachIcon.map((item) => {
       const { permission } = props;
       if (props.pc && item.type === THREAD_TYPE.voice) return null;
       const clsName = getIconCls(item);
@@ -199,7 +200,7 @@ function AttachmentToolbar(props) {
       return isShow ? (
         <div key={item.name} className={clsName}>
           <Icon
-            onClick={e => {
+            onClick={(e) => {
               handleAttachClick(e, item);
               trggerInput(item);
             }}
@@ -218,29 +219,23 @@ function AttachmentToolbar(props) {
         </div>
       ) : null;
     });
-
-    // 插件注入
-    defaultEntryList = defaultEntryList.concat(DZQPluginCenter.injection('plugin_post', 'post_extension_entry_hook').map(({ render, pluginInfo }) => {
-      const clsName = getIconCls({ type: pluginInfo.pluginName });
-      return (
-        <div key={pluginInfo.pluginName} className={clsName}>
-          {render({
-            site: props.site,
-            onConfirm: props.onPluginSetPostData,
-            renderData: props.postData.plugin,
-            postData: {
-              navInfo: props.threadPost.navInfo
-            }
-          })}
-        </div>
-      )
-    }));
-
     return defaultEntryList;
-  }
+  };
 
-
-  if (props.pc) return icons();
+  if (props.pc) return (
+    <>
+      {icons()}
+      <DZQPluginCenterInjectionPolyfill
+        className={pluginInfo => getIconCls({ type: pluginInfo?.pluginName })}
+        target='plugin_post'
+        hookName='post_extension_entry_hook'
+        pluginProps={{
+          onConfirm: props.onPluginSetPostData,
+          renderData: props.threadPost.postData.plugin,
+          postData: props.threadPost.postData,
+        }}/>
+    </>
+  );
   const styl = !showAll ? { display: 'none' } : {};
   const action = props.currentSelectedToolbar || currentAction;
   const currentIcon = attachIcon.filter(item => item.type === action)[0]?.name
@@ -262,6 +257,15 @@ function AttachmentToolbar(props) {
       <div className={styles['dvditor-attachment-toolbar__inner']} style={styl}>
         <div className={styles['dvditor-attachment-toolbar__left']}>
           {icons()}
+          <DZQPluginCenterInjectionPolyfill
+            className={pluginInfo => getIconCls({ type: pluginInfo?.pluginName })}
+            target='plugin_post'
+            hookName='post_extension_entry_hook'
+            pluginProps={{
+              onConfirm: props.onPluginSetPostData,
+              renderData: props.threadPost.postData.plugin,
+              postData: props.threadPost.postData,
+            }}/>
         </div>
         <div
           className={classNames(styles['dvditor-attachment-toolbar__right'], styles.show)}

@@ -12,13 +12,15 @@ import { handleLink } from '@components/thread/utils';
 import Router from '@discuzq/sdk/dist/router';
 import PostContent from '@components/thread/post-content';
 import { debounce } from '@common/utils/throttle-debounce';
+import { IMG_SRC_HOST } from '@common/constants/site';
 import styles from './index.module.scss';
 // import redPacketMini from '../../../../../../web/public/dzq-img/redpacket-mini.png';
 // import coin from '../../../../../../web/public/dzq-img/coin.png';
 import ReplyList from '../reply-list/index';
+import MemberBadge from '@components/member-badge';
 
-const coin = 'https://imgcache.qq.com/operation/dianshi/other/coin.e66d1d9205f2d6a18b38fe29b733eb109e168504.png';
-const redPacketMini = 'https://imgcache.qq.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
+const coin = `${IMG_SRC_HOST}/assets/coin.e66d1d9205f2d6a18b38fe29b733eb109e168504.png`;
+const redPacketMini = `${IMG_SRC_HOST}/assets/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png`;
 
 @inject('user')
 @observer
@@ -181,7 +183,7 @@ class CommentList extends React.Component {
             ></Avatar>
           </View>
           <View className={styles.commentListContent}>
-            <View className={`${styles.commentListContentText} ${this.props.active && styles.active}`}>
+            <View onClick={this.handleClick.bind(this)} className={`${styles.commentListContentText} ${this.props.active && styles.active}`}>
               <View className={styles.commentHeader}>
                 <View className={styles.userInfo}>
                   <View className={styles.commentListName}>
@@ -193,7 +195,18 @@ class CommentList extends React.Component {
                     </View>
                   )}
                   {!!groups?.isDisplay && (
-                    <View className={styles.groups}>{groups?.name || groups?.groupName}</View>
+                    <View className={styles.groupsBox}>
+                      {
+                        groups?.level ?
+                        <MemberBadge
+                          groupLevel={groups?.level}
+                          groupName={groups?.name || groups?.groupName}
+                          groupNameStyle={{maxWidth: '100px'}}
+                        />
+                        :
+                        <View className={styles.groups}>{groups?.name || groups?.groupName}</View>
+                      }
+                    </View>
                   )}
                 </View>
                 {!isApproved ? <View className={styles.isApproved}>审核中</View> : <View></View>}
@@ -205,7 +218,6 @@ class CommentList extends React.Component {
                   useShowMore={!!this.state.isShowOne}
                   content={this.props?.data?.content}
                   customHoverBg
-                  onClick={this.handleClick.bind(this)}
                 ></PostContent>
               </View>
               {/* <RichText

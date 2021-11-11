@@ -29,6 +29,8 @@ import RenderCommentList from './comment-list';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import classNames from 'classnames';
 
+import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
+
 @inject('site')
 @inject('user')
 @inject('thread')
@@ -348,7 +350,7 @@ class ThreadPCPage extends React.Component {
       Toast.success({
         content: '删除成功，即将跳转至首页',
       });
-
+      this.props.index.deleteThreadsData({ id }, this.props.site);
       setTimeout(() => {
         this.props.router.push('/');
       }, 1000);
@@ -380,6 +382,22 @@ class ThreadPCPage extends React.Component {
       Toast.info({ content: '请输入内容' });
       return;
     }
+
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      // 开启了腾讯云验证码验证时，进行验证，通过后再进行实际的发布请求
+
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        // 验证码票据，验证码字符串不全时，弹出滑块验证码
+        const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
+        if (!captchaTicket && !captchaRandStr) {
+          return false ;
+        }
+      }
+    }
+
     return this.comment ? await this.updateComment(val, imageList) : await this.createComment(val, imageList);
   }
 
@@ -672,7 +690,7 @@ class ThreadPCPage extends React.Component {
     if (categoryId || typeof categoryId === 'number') {
       this.props.index.refreshHomeData({ categoryIds: [categoryId] });
     }
-    this.props.router.push(`/?categoryId=${categoryId}&sequence=0`);
+    this.props.router.push(`/cate/${categoryId}/seq/0`);
   }
 
   // 点击发送私信
@@ -683,9 +701,9 @@ class ThreadPCPage extends React.Component {
       return;
     }
 
-    const { username, nickname } = this.props.thread?.authorInfo;
-    if (!username) return;
-    Router.push({ url: `/message?page=chat&username=${username}&nickname=${nickname}` });
+    const { userId, nickname } = this.props.thread?.authorInfo;
+    if (!userId) return;
+    Router.push({ url: `/message?page=chat&userId=${userId}&nickname=${nickname}` });
   }
 
   onUserClick(userId) {
@@ -753,7 +771,7 @@ class ThreadPCPage extends React.Component {
             onTagClick={() => this.onTagClick()}
             onPayClick={() => this.onPayClick()}
             onUserClick={() => this.onUserClick(this.props.thread?.threadData?.user?.userId)}
-          ></RenderThreadContent>
+          />
         ) : (
           <LoadingTips type="init"></LoadingTips>
         )}
@@ -946,4 +964,4 @@ class ThreadPCPage extends React.Component {
   }
 }
 
-export default withRouter(ThreadPCPage);
+export default withRouter(HOCTencentCaptcha(ThreadPCPage));

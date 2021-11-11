@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { View } from '@tarojs/components';
 import { inject, observer } from 'mobx-react';
 import Taro from '@tarojs/taro';
+import Toast from '@discuzq/design/dist/components/toast/index';
 import DialogBox from './dialog-box';
 import InteractionBox from './interaction-box';
 import styles from './index.module.scss';
@@ -11,7 +12,10 @@ import { getMessageImageSize } from '@common/utils/get-message-image-size';
 import { getMessageTimestamp } from '@common/utils/get-message-timestamp';
 import calcCosImageQuality from '@common/utils/calc-cos-image-quality';
 
-const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialogId, username, nickname, threadPost }) => {
+// 用户已被屏蔽
+const USER_SHIELDING = -4001;
+
+const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialogId, userId, nickname, threadPost }) => {
 
   const { clearMessage, readDialogMsgList, dialogMsgList, updateDialog, createDialogMsg, createDialog, readDialogIdByUsername } = message;
   const { supportImgExt, supportMaxSize } = webConfig?.setAttach;
@@ -59,10 +63,10 @@ const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialo
       }
     }
 
-    if (!dialogId && username) {
+    if (!dialogId && userId) {
       setIsSubmiting(true);
       ret = await createDialog({
-        recipientUsername: username,
+        recipientUserId: userId,
         ...data,
       });
       setIsSubmiting(false);
@@ -159,7 +163,7 @@ const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialo
     let localDialogId = 0;
     if (!dialogId) {
       const ret = await createDialog({
-        recipientUsername: username,
+        recipientUserId: userId,
         isImage: true,
       });
       const { code, data } = ret;
@@ -187,6 +191,10 @@ const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialo
     }));
 
     Promise.all(files.map(() => submitEmptyImage(dialogId || localDialogId))).then((results) => {
+      if (results[0]?.code === USER_SHIELDING) {
+        Toast.error({ content: results[0].msg });
+        return;
+      }
       // 把消息id从小到大排序
       results.sort((a, b) => a.data.dialogMessageId - b.data.dialogMessageId);
 
@@ -218,7 +226,6 @@ const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialo
 
   const messagesHistory = useMemo(() => {
     setTimeout(() => {
-      scrollEnd();
       // 把消息状态更新为已读
       updateDialog(dialogId);
     }, 100);
@@ -263,7 +270,7 @@ const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialo
         ownedBy: user.id === item.userId ? 'myself' : 'itself',
         width: width,
         height: height,
-        nickname: item.user.username,
+        nickname: item.user.nickname,
       }
     }).filter(item => (item.imageUrl || item.text)).reverse();
 
@@ -281,8 +288,8 @@ const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialo
   }, [dialogMsgList]);
 
   useEffect(async () => {
-    if (username && !dialogId) {
-      const res = await readDialogIdByUsername(username);
+    if (userId && !dialogId) {
+      const res = await readDialogIdByUsername(userId);
       const { code, data: { dialogId } } = res;
       if (code === 0 && dialogId) {
         setDialogId(dialogId);
@@ -330,7 +337,6 @@ const Index = ({ message, user, site: { webConfig, envConfig }, dialogId: _dialo
         typingValue={typingValue}
         setTypingValue={setTypingValue}
         chooseImage={chooseImage}
-        username={username}
         keyboardHeight={keyboardHeight}
         showEmoji={showEmoji}
         dialogId={dialogId}

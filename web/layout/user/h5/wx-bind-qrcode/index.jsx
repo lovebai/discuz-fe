@@ -135,13 +135,14 @@ class WeixinBindQrCodePage extends React.Component {
 
   handleSkipWechatButtonClick = async () => {
     const loginToken = this.props.commonLogin.getLoginToken();
+    this.props.commonLogin.needToBindWechat = false;
     if (loginToken) {
       const dzqUserId = locals.get('dzq_user_id');
       dzqUserId && await this.props.user.updateUserInfo(dzqUserId);
       setAccessToken({
         accessToken: loginToken,
       });
-      loginHelper.restore();
+      window.location.href = '/';
     }
   };
 
@@ -224,7 +225,7 @@ class WeixinBindQrCodePage extends React.Component {
         {
           platform === 'h5'
             ? <HomeHeader hideInfo mode='login'/>
-            : <Header/>
+            : null
         }
         <div className={platform === 'h5' ? layout.content : layout.pc_content}>
           <div className={platform === 'h5' ? layout.title : layout.pc_title}>绑定微信号</div>

@@ -87,7 +87,20 @@ class LikePCPage extends React.Component {
           errorText={requestError.errorText}
         >
           {likeThreadList?.map((item, index) => (
-            <ThreadContent className={styles.threadContent} data={item} key={index} />
+            <ThreadContent
+              className={styles.threadContent}
+              data={item}
+              key={item.threadId}
+              onPraise={({ isLiked }) => {
+                if (!isLiked) {
+                  setTimeout(() => {
+                    threadList.deleteTargetListItem({
+                      namespace: 'like',
+                      item: {...item, isLiked}
+                    })
+                  }, 100)
+                }
+              }} />
           ))}
         </SidebarPanel>
       </BaseLayout>

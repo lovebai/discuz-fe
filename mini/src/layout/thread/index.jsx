@@ -36,7 +36,9 @@ import styles from './post/index.module.scss';
 import Router from '@discuzq/sdk/dist/router';
 import canPublish from '@common/utils/can-publish';
 import { parseContentData } from './utils';
-const hongbaoMini = 'https://imgcache.qq.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
+import { IMG_SRC_HOST } from '@common/constants/site';
+
+const hongbaoMini = `${IMG_SRC_HOST}/assets/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png`;
 
 @inject('site')
 @inject('user')
@@ -116,6 +118,7 @@ class ThreadH5Page extends React.Component {
       // this.position = this.commentDataRef?.current?.offsetTop - 50;
 
       const { id, title } = this.props?.thread?.threadData;
+
       if (id) {
         // 分享相关数据
         this.shareData = {
@@ -529,10 +532,15 @@ class ThreadH5Page extends React.Component {
       Toast.success({
         content: '删除成功，即将跳转至上一页',
       });
-
+      this.props.index.deleteThreadsData({ id }, this.props.site);
       setTimeout(() => {
         Taro.navigateBack({
           delta: 1,
+          fail:()=>{
+            Taro.navigateTo({
+              url: '/indexPages/home/index',
+            });
+          }
         });
       }, 1000);
 
@@ -1102,7 +1110,7 @@ class ThreadH5Page extends React.Component {
           <View className={classNames(layout.footerContainer, this.state.showCommentInput && layout.zindex)}>
             <View className={classNames(layout.footer, this.state.showCommentInput && layout.zindex)}>
               {/* 评论区触发 */}
-              <View 
+              <View
                 className={classNames(footer.inputClick, hasHongbao && footer.hasHongbao)}
                 onClick={() => this.onInputClick()}
               >

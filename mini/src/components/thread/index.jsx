@@ -22,6 +22,7 @@ import Comment from './comment';
 @inject('index')
 @inject('user')
 @inject('thread')
+@inject('plugin')
 @observer
 class Index extends React.Component {
   constructor(props) {
@@ -109,12 +110,13 @@ class Index extends React.Component {
       goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
-    const { data = {}, user } = this.props;
+    const { data = {}, user, onPraise } = this.props;
     const { threadId = '', isLike, postId } = data;
     this.setState({ isSendingLike: true });
     this.props.index.updateThreadInfo({ pid: postId, id: threadId, data: { attributes: { isLiked: !isLike } } }).then((result) => {
       if (result.code === 0 && result.data) {
         updateThreadAssignInfoInLists(threadId, { updateType: 'like', updatedInfo: result.data, user: user.userInfo });
+        typeof onPraise === 'function' && onPraise({isLiked: result.data.isLiked})
       }
       this.setState({ isSendingLike: false, minHeight: 0 }, () => {
         // 点赞更新完数据后，重新修正帖子高度
@@ -183,7 +185,6 @@ class Index extends React.Component {
 
   onUser = (e) => {
     e && e.stopPropagation();
-
     const { user = {}, isAnonymous } = this.props.data || {};
     if (!!isAnonymous) {
       this.onClick()
@@ -268,7 +269,7 @@ class Index extends React.Component {
   canPublish = () => canPublish(this.props.user, this.props.site)
 
   render() {
-    const { index, data, thread:threadStore, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null,extraTag} = this.props;
+    const { plugin, index, data, thread:threadStore, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null,extraTag} = this.props;
     const { platform = 'pc' } = site;
     if (!data) {
       return <NoData />;
@@ -312,6 +313,7 @@ class Index extends React.Component {
                   location={position.location}
                   view={`${viewCount}`}
                   groupName={group?.groupName}
+                  groupLevel={group?.level}
                   time={diffTime}
                   isEssence={isEssence}
                   isPay={isPrice}
@@ -328,6 +330,13 @@ class Index extends React.Component {
 
               <ThreadCenterView
                 site={site}
+                plugin={{
+                  pluginComponent: plugin.pluginComponent,
+                  plugin: {
+                    setPluginStore: plugin.setPluginStore,
+                    getPluginStore: plugin.getPluginStore,
+                  }
+                }}
                 user={this.props.user}
                 updateThread={threadStore.updateThread.bind(threadStore)}
                 updateListThreadIndexes={index.updateListThreadIndexes.bind(index)}

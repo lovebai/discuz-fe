@@ -8,13 +8,13 @@ import { inject, observer } from 'mobx-react';
 import UserCenterThreads from '@components/user-center-threads';
 import BaseLayout from '@components/base-layout';
 import Router from '@discuzq/sdk/dist/router';
+import Taro, { getImageInfo, getCurrentInstance, eventCenter } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import Taro, { getCurrentInstance, eventCenter } from '@tarojs/taro';
+
 import SectionTitle from '@components/section-title';
 import BottomView from '@components/list/BottomView';
 import ImagePreviewer from '@discuzq/design/dist/components/image-previewer/index';
-import checkImgExists from '@common/utils/check-image-exists';
-
+import LoginHelper from '@common/utils/login-helper';
 @inject('site')
 @inject('user')
 @inject('threadList')
@@ -24,7 +24,8 @@ class H5OthersPage extends React.Component {
     super(props);
     this.state = {
       fetchUserInfoLoading: true,
-      previewBackgroundUrl: null // 预览背景图片链接
+      previewBackgroundUrl: null, // 预览背景图片链接
+      isNormalTitle: false
     };
 
     this.previewBackgroundLoading = false; // 预览背景图片是否在预加载
@@ -92,6 +93,8 @@ class H5OthersPage extends React.Component {
 
       await this.props.user.getTargetUserInfo({ userId: this.targetUserId });
 
+      await this.getBackgroundUrl();
+
       this.setState({
         fetchUserInfoLoading: false,
       });
@@ -112,6 +115,7 @@ class H5OthersPage extends React.Component {
     this.setNavigationBarStyle();
     const { id = '' } = getCurrentInstance().router.params;
     const myId = this.props.user?.id;
+
     if (String(myId) === id) {
       Router.replace({ url: '/userPages/my/index' });
       return;
@@ -148,39 +152,69 @@ class H5OthersPage extends React.Component {
     return wx?.getSystemInfoSync()?.statusBarHeight || 44;
   }
 
+  getTopBarStyle() {
+    if (this.state.isNormalTitle) {
+      return {
+        position: 'fixed',
+        top: 0,
+        height: `${this.getStatusBarHeight() + 50}px`,
+        zIndex: 1000,
+        width: '100%',
+        maxWidth: '100%',
+        backgroundColor: 'white',
+      };
+    }
+  }
+
   // 全屏状态下自定义左上角返回按钮位置
   getTopBarBtnStyle() {
-    return {
+    const style = {
       position: 'fixed',
       top: `${this.getStatusBarHeight()}px`,
       left: '12px',
-      transform: 'translate(0, 10px)',
-    };
+      transform: 'translate(0, 10px)'
+    }
+    if (this.state.isNormalTitle) {
+      style.backgroundColor = 'white';
+      style.color = 'black';
+    }
+    return style;
   }
 
   getTopBarTitleStyle() {
-    return {
+    const style = {
       position: 'fixed',
       top: `${this.getStatusBarHeight()}px`,
       left: '50%',
-      transform: 'translate(-50%, 8px)',
-    };
+      transform: 'translate(-50%, 8px)'
+    }
+    if (this.state.isNormalTitle) {
+      style.backgroundColor = 'white';
+      style.color = 'black';
+    }
+    return style;
   }
 
   handleBack = () => {
-    Taro.navigateBack();
+    const { share = '' } = getCurrentInstance().router.params;
+    if (share === 'true') {
+      LoginHelper.gotoIndex();
+    } else {
+      Taro.navigateBack();
+    }
   };
 
   // 渲染顶部title
   renderTitleContent = () => {
-    const { id = '' } = getCurrentInstance().router.params;
+    const { id = ''} = getCurrentInstance().router.params;
     const { user } = this.props;
+    const { isNormalTitle } = this.state;
 
     if (user.targetUsers[id]) {
       return (
-        <View className={styles.topBar}>
+        <View className={styles.topBar} style={this.getTopBarStyle()}>
           <View onClick={this.handleBack} className={styles.customCapsule} style={this.getTopBarBtnStyle()}>
-            <Icon size={18} name="LeftOutlined" />
+            <Icon size={20} name='LeftOutlined' color={ isNormalTitle && 'black'}/>
           </View>
           <View style={this.getTopBarTitleStyle()} className={styles.fullScreenTitle}>
             {user.targetUsers[id]?.nickname}的主页
@@ -190,43 +224,54 @@ class H5OthersPage extends React.Component {
     }
 
     return (
-      <View className={styles.topBar}>
+      <View className={styles.topBar} style={this.getTopBarStyle()}>
         <View onClick={this.handleBack} className={styles.customCapsule} style={this.getTopBarBtnStyle()}>
-          <Icon size={18} name="LeftOutlined" />
+          <Icon size={20} name='LeftOutlined' color={ isNormalTitle && 'black'}/>
         </View>
       </View>
     );
   };
 
   getBackgroundUrl = async () => {
-    if (this.state.previewBackgroundUrl) return;
-    let backgroundUrl = '';
     const { id = '' } = getCurrentInstance().router.params;
+
+    let backgroundPreviewUrl = '';
+
     if (id && this.props.user?.targetUsers[id]) {
       const targetUsers = this.props.user.targetUsers[id];
-      backgroundUrl = await checkImgExists(targetUsers.originalBackGroundUrl, targetUsers.backgroundUrl);
+      if (targetUsers.originalBackGroundUrl) {
+        try {
+          await getImageInfo({
+            src: targetUsers.originalBackGroundUrl,
+          });
+          backgroundPreviewUrl = targetUsers.originalBackGroundUrl;
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+      if (targetUsers.backgroundUrl) {
+        if (!backgroundPreviewUrl) {
+          try {
+            await getImageInfo({
+              src: targetUsers.backgroundUrl,
+            });
+            backgroundPreviewUrl = targetUsers.backgroundUrl;
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      }
+
     }
-    backgroundUrl && this.setState({
-      previewBackgroundUrl: backgroundUrl
-    })
+
+    if (backgroundPreviewUrl) {
+      this.setState({
+        previewBackgroundUrl: backgroundPreviewUrl,
+      });
+    }
+
   };
-
-  previewBackgroundPreLoad = async () => {
-    const { previewBackgroundUrl } = this.state;
-    const { id = '' } = getCurrentInstance().router.params;
-    const { user } = this.props;
-
-    if( !id || !user.targetUsers[id] || previewBackgroundUrl || this.previewBackgroundLoading){
-      return;
-    }
-    this.previewBackgroundLoading = true;
-    const imgUrl = await checkImgExists(user.targetUsers[id].originalBackGroundUrl, user.targetUsers[id].backgroundUrl);
-    this.previewBackgroundLoading = false;
-    this.setState({
-      previewBackgroundUrl: imgUrl
-    })
-
-  }
 
   showPreviewerRef = () => {
     if (this.previewerRef.current) {
@@ -247,9 +292,8 @@ class H5OthersPage extends React.Component {
     const { targetUserId } = this;
     const { threadList } = this.props;
     const { lists } = threadList;
-    const { previewBackgroundUrl } = this.state
+    const { previewBackgroundUrl } = this.state;
 
-    this.previewBackgroundPreLoad(); // 背景图预加载
     const userThreadsList = threadList.getList({
       namespace: `user/${targetUserId}`,
     });
@@ -269,8 +313,6 @@ class H5OthersPage extends React.Component {
       key: 'currentPage',
     });
 
-    !previewBackgroundUrl && this.getBackgroundUrl();
-
     return (
       <BaseLayout
         showHeader={false}
@@ -279,6 +321,18 @@ class H5OthersPage extends React.Component {
         onRefresh={this.fetchTargetUserThreads}
         noMore={totalPage < currentPage}
         showLoadingInCenter={!userThreadsList.length}
+        onScroll={(e) => {
+          const currentScrollTop = e.detail.scrollTop;
+          if (currentScrollTop > 170) {
+            this.setState({
+              isNormalTitle: true,
+            });
+          } else {
+            this.setState({
+              isNormalTitle: false,
+            });
+          }
+        }}
       >
         <View className={styles.mobileLayout}>
           {this.renderTitleContent()}
@@ -287,7 +341,7 @@ class H5OthersPage extends React.Component {
           )}
           <View
             style={{
-              display: !this.state.fetchUserInfoLoading ? 'block' : 'none'
+              display: !this.state.fetchUserInfoLoading ? 'block' : 'none',
             }}
           >
             <View onClick={this.handlePreviewBgImage}>
@@ -320,11 +374,7 @@ class H5OthersPage extends React.Component {
           </View>
         </View>
         {previewBackgroundUrl && (
-          <ImagePreviewer
-            ref={this.previewerRef}
-            imgUrls={[previewBackgroundUrl]}
-            currentUrl={previewBackgroundUrl}
-          />
+          <ImagePreviewer ref={this.previewerRef} imgUrls={[previewBackgroundUrl]} currentUrl={previewBackgroundUrl} />
         )}
       </BaseLayout>
     );

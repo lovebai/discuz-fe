@@ -20,6 +20,11 @@ import PacketOpen from '@components/red-packet-animation/web';
 import ThreadContent from '@components/thread/SSRAdapter';
 import TopNews from '../h5/components/top-news/SSRAdapter';
 
+import IndexRecommendHook from '@common/plugin-hooks/plugin_index@recommend';
+import IndexQrcodeHook from '@common/plugin-hooks/plugin_index@qrcode';
+import IndexCopyrightHook from '@common/plugin-hooks/plugin_index@copyright';
+import IndexLeftHook from '@common/plugin-hooks/plugin_index@left';
+import IndexRightHook from '@common/plugin-hooks/plugin_index@right';
 
 const DynamicVListLoading = dynamic(() => import('./components/dynamic-vlist'), {
   loading: (res) => {
@@ -142,7 +147,7 @@ class IndexPCPage extends React.Component {
   };
 
   onNavigationClick = ({ categoryIds }) => {
-    const categories = this.props.index.categories || [];
+    const categories = this.props.index.currentCategories || [];
     // 获取处理之后的分类id
     const id = categoryIds[0];
     const newCategoryIds = getSelectedCategoryIds(categories, id);
@@ -184,8 +189,7 @@ class IndexPCPage extends React.Component {
   // 左侧 -- 分类
   renderLeft = (countThreads = 0) => {
     const { currentCategories, activeCategoryId, activeChildCategoryId, categoryError } = this.props.index;
-
-    return (
+    const component = (
       <div className={styles.indexLeft}>
         <div className={styles.indexLeftBox}>
           <Navigation
@@ -200,17 +204,53 @@ class IndexPCPage extends React.Component {
         </div>
       </div>
     );
+    return (
+      <IndexLeftHook
+        component={component}
+        renderData={{
+          categories: currentCategories,
+          activeCategoryId,
+          activeChildCategoryId,
+          totalThreads: countThreads,
+          isError: categoryError.isError,
+          errorText: categoryError.errorText,
+        }}
+        onNavigationClick={this.onNavigationClick}
+      ></IndexLeftHook>
+    );
   };
   // 右侧 -- 二维码 推荐内容
-  renderRight = (data) => (
-    <div className={styles.indexRight}>
-      <Recommend />
-      <div className={styles.indexRightCon}>
-        <QcCode />
+  renderRight = (data) => {
+    const { recommends, getRecommends } = this.props.index || {};
+    const url = this.props.site?.webConfig?.setSite?.siteUrl;
+
+    const component = (
+      <div className={styles.indexRight}>
+        <IndexRecommendHook
+          component={<Recommend />}
+          onGetRecommends={getRecommends}
+          renderData={{ recommends }}
+        ></IndexRecommendHook>
+        <IndexQrcodeHook
+          component={
+            <div className={styles.indexRightCon}>
+              <QcCode />
+            </div>
+          }
+          renderData={{ url }}
+        ></IndexQrcodeHook>
+        <IndexCopyrightHook component={<Copyright />}></IndexCopyrightHook>
       </div>
-      <Copyright />
-    </div>
-  );
+    );
+
+    return (
+      <IndexRightHook
+        component={component}
+        onGetRecommends={getRecommends}
+        renderData={{ recommends, url }}
+      ></IndexRightHook>
+    );
+  };
 
   checkIsOpenDefaultTab() {
     return this.props.site.checkSiteIsOpenDefautlThreadListData();
@@ -233,14 +273,15 @@ class IndexPCPage extends React.Component {
 
   renderSSRContent(thread, sticks) {
     if (process.env.DISCUZ_RUN === 'ssr' && ThreadContent) {
-      const { pageData } = thread
+      const { pageData } = thread;
 
       return (
-        <div className='ssr-box' style={{ display: 'none' }}>
+        <div className="ssr-box" style={{ display: 'none' }}>
           {sticks && sticks.length > 0 && <TopNews data={sticks} platform="pc" isShowBorder={false} />}
           <div>
-            {
-              pageData && pageData.length != 0 && pageData.map((item, index) => {
+            {pageData &&
+              pageData.length != 0 &&
+              pageData.map((item, index) => {
                 return (
                   <ThreadContent
                     onContentHeightChange={() => {}}
@@ -251,10 +292,8 @@ class IndexPCPage extends React.Component {
                     recomputeRowHeights={() => {}}
                   />
                 );
-              })
-            }
+              })}
           </div>
-
         </div>
       );
     }
@@ -306,9 +345,7 @@ class IndexPCPage extends React.Component {
           enabledVList={this.enabledVList}
           canPublish={canPublish}
         />
-        {
-          hasRedPacket > 0 && <PacketOpen onClose={() => thread.setRedPacket(0)} money={hasRedPacket} />
-        }
+        {hasRedPacket > 0 && <PacketOpen onClose={() => thread.setRedPacket(0)} money={hasRedPacket} />}
       </BaseLayout>
     );
   }

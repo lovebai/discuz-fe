@@ -7,6 +7,11 @@ class SiteAction extends SiteStore {
     super(props);
   }
 
+  // @action
+  // setPluginStore(store) {
+  //   this.pluginStore = store
+  // }
+
   /**
    * 获取插件配置信息
    */
@@ -73,6 +78,12 @@ class SiteAction extends SiteStore {
       return true;
     }
     return false;
+  }
+
+  // TODO: 目前报名帖占用，待调整成页面级的
+  @action
+  setNavInfo(info) {
+    if (info) this.navInfo = info;
   }
 }
 

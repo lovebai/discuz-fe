@@ -1,10 +1,11 @@
+/* eslint-disable spaced-comment */
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import classnames from 'classnames';
 import styles from './index.module.scss';
 import clearLoginStatus from '@common/utils/clear-login-status';
-import UserCenterPost from '@components/user-center-post-pc';
-import UserCenterAction from '@components/user-center-action-pc';
+import UserCenterPost from '@components/user-center-post';
+import UserCenterAction from '@components/user-center-action';
 import SidebarPanel from '@components/sidebar-panel';
 import Avatar from '@components/avatar';
 import Copyright from '@components/copyright';
@@ -18,9 +19,14 @@ import UserCenterHeaderPc from '@components/user-center/header-pc';
 import MemberShipCard from '@components/member-ship-card';
 import RenewalFee from '@components/user-center/renewal-fee';
 import UserCenterThreads from '@components/user-center-threads';
+import PacketOpen from '@components/red-packet-animation/web';
+
+// 插件引入
+/**DZQ->plugin->register<plugin_user@user_extension_left_layout_hook>**/
 
 @inject('site')
 @inject('user')
+@inject('thread')
 @inject('threadList')
 @observer
 class PCMyPage extends React.Component {
@@ -236,8 +242,9 @@ class PCMyPage extends React.Component {
 
   render() {
     const { isLoading } = this.state;
-    const { threadList } = this.props;
+    const { thread, threadList } = this.props;
     const { lists } = threadList;
+    const { hasRedPacket } = thread;
 
     const myThreadsList = threadList.getList({
       namespace: 'my',
@@ -298,6 +305,7 @@ class PCMyPage extends React.Component {
           </div>
         </BaseLayout>
         <RenewalFee visible={this.state.isRenewalFeeVisible} onClose={this.onRenewalFeeClose} />
+        {hasRedPacket > 0 && <PacketOpen onClose={() => thread.setRedPacket(0)} money={hasRedPacket} />}
       </>
     );
   }

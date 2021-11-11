@@ -16,6 +16,7 @@ import throttle from '@common/utils/thottle.js';
 import LoginHelper from '@common/utils/login-helper';
 import MemberShipCard from '@components/member-ship-card';
 import checkImgExists from '@common/utils/check-image-exists';
+import MemberBadge from '@components/member-badge';
 
 @inject('site')
 @inject('user')
@@ -196,8 +197,8 @@ class index extends Component {
 
   // 点击发送私信
   handleMessage = () => {
-    const { username, nickname } = this.targetUser;
-    Router.push({ url: `/subPages/message/index?page=chat&username=${username}&nickname=${nickname}` });
+    const { id, nickname } = this.targetUser;
+    Router.push({ url: `/subPages/message/index?page=chat&userId=${id}&nickname=${nickname}` });
   };
 
   // 点击我的点赞
@@ -309,7 +310,17 @@ class index extends Component {
         <View>
           <View className={styles.userNameOrTeam}>
             <Text className={styles.userNickname}>{user.nickname}</Text>
-            <Text className={styles.groupName}>{user.group?.groupName}</Text>
+            { user.group?.level > 0 ? (
+              <View className={styles.memberBadge}>
+                <MemberBadge
+                  hasBg
+                  groupLevel={user.group?.level}
+                  groupName={user.group?.groupName}
+                />
+              </View>
+            ) : (
+              <Text className={styles.groupName}>{user.group?.groupName}</Text>
+            )}
           </View>
           <Text className={styles.text}>{user.signature || '这个人很懒，什么也没留下~'}</Text>
         </View>

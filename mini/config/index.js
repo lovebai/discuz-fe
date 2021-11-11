@@ -1,4 +1,11 @@
 const path = require('path');
+
+const include = [
+  path.resolve(__dirname, '../../common'),
+  path.resolve(__dirname, '../node_modules/.plugin')
+];
+
+
 const config = {
   projectName: 'discuz-app-mini',
   date: '2021-2-19',
@@ -42,9 +49,7 @@ const config = {
   framework: 'react',
   mini: {
     compile: {
-      include: [
-        path.resolve(__dirname, '../../common'),
-      ],
+      include: include,
     },
     baseLevel: 20,
     postcss: {

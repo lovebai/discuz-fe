@@ -40,6 +40,7 @@ const MoneyInput = (props) => {
           placeholder="0.00"
           onChange={e => handleChange(e.target.value)}
           mode="number"
+          maxLength={8}
         />
       </div>
       {moneyInputType === 'withdrawal' ? (
@@ -49,7 +50,7 @@ const MoneyInput = (props) => {
         </div>
       ) : (
         <div className={styles.leastMoney}>
-          充值金额最低1元
+          充值金额最低0.1元
         </div>
       )}
     </div>

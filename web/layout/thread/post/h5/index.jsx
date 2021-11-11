@@ -38,6 +38,7 @@ import VoteWidget from '@components/thread-post/vote-widget';
 import VoteEditor from '@components/thread-post/vote-editor';
 import IframeVideo from '@components/thread-post/iframe-video';
 import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
+import DZQPluginCenterInjectionPolyfill from '../../../../utils/DZQPluginCenterInjectionPolyfill';
 
 // 插件引入
 /**DZQ->plugin->register<plugin_post@post_extension_content_hook>**/
@@ -246,8 +247,9 @@ class ThreadCreate extends React.Component {
     const { threadPost, user, site } = this.props;
     const { threadExtendPermissions, permissions } = user;
     const { postData, setPostData } = threadPost;
+    const { plugin } = postData;
 
-    const { webConfig = {} } = site;
+    const { webConfig = {}, attachmentLimit = 9 } = site;
     const { setAttach, qcloud } = webConfig;
     const { supportImgExt, supportMaxSize } = setAttach;
     const { qcloudCosBucketName, qcloudCosBucketArea, qcloudCosSignUrl, qcloudCos } = qcloud;
@@ -359,7 +361,7 @@ class ThreadCreate extends React.Component {
           {/* 附件上传组件 */}
           {(currentDefaultOperation === defaultOperation.attach || Object.keys(postData.files).length > 0) && (
             <FileUpload
-              limit={9}
+              limit={attachmentLimit}
               fileList={Object.values(postData.files)}
               onChange={fileList => this.props.handleUploadChange(fileList, THREAD_TYPE.file)}
               onComplete={(ret, file) => this.props.handleUploadComplete(ret, file, THREAD_TYPE.file)}
@@ -383,19 +385,14 @@ class ThreadCreate extends React.Component {
               onDelete={() => this.props.setPostData({ product: {} })}
             />
           )}
-
-          {
-            DZQPluginCenter.injection('plugin_post', 'post_extension_content_hook').map(({ render, pluginInfo }) => (
-                <div key={pluginInfo.pluginName}>
-                  {render({
-                    site: this.props.site,
-                    renderData: postData.plugin,
-                    deletePlugin: this.props.threadPost.deletePluginPostData,
-                    updatePlugin: this.props.threadPost.setPluginPostData,
-                  })}
-                </div>
-            ))
-          }
+          <DZQPluginCenterInjectionPolyfill
+            target='plugin_post'
+            hookName='post_extension_content_hook'
+            pluginProps={{
+              renderData: plugin,
+              deletePlugin: this.props.threadPost.deletePluginPostData,
+              updatePlugin: this.props.threadPost.setPluginPostData,
+            }}/>
         </div>
         <div id="post-bottombar" className={styles['post-bottombar']}>
           {threadPost.isHaveLocalData && (<div id="post-localdata" className={styles['post-localdata']}>
@@ -555,6 +552,8 @@ class ThreadCreate extends React.Component {
             cancel={() => {
               this.props.handleSetState({ currentAttachOperation: false });
               this.props.threadPost.setCurrentSelectedToolbar(false);
+              // 位置重新计算
+              this.handler();
             }}
           />
         )}

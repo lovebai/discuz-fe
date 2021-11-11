@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Button from '@discuzq/design/dist/components/button/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
 import Icon from '@discuzq/design/dist/components/icon/index';
 import { View } from '@tarojs/components';
+import { IMG_SRC_HOST } from '@common/constants/site';
 import classNames from 'classnames';
 import MoneyInput from '../withdrawal/components/money-input';
 import styles from './index.module.scss';
@@ -48,24 +48,33 @@ class Recharge extends React.Component {
     const inputValue = this.state.inputValue;
     const { rechargeMoney } = this.props.wallet;
     const { success, msg } = await rechargeMoney(inputValue);
-    
-    if (this.props.onCreateCash) {
-      this.props.onCreateCash();
-    }
+
     if (success) {
-      Toast.success({
-        content: msg,
-        duration: 2000,
-      });
-      const { getUserWalletInfo } = this.props.wallet;
+      Taro.showToast({
+        title: msg,
+        icon: 'success',
+        duration: 2000
+      })
+      setTimeout(() => {
+        Taro.hideToast();
+      }, 2000)
+      const { setTabsType, getUserWalletInfo, getIncomeDetail } = this.props.wallet;
+      setTabsType('income');
+      await getIncomeDetail();
       await getUserWalletInfo();
       this.initState();
-      Taro.navigateBack();
+      setTimeout(() => {
+        Taro.navigateBack();
+      }, 200)
     } else {
-      Toast.error({
-        content: msg,
-        duration: 2000,
-      });
+      Taro.showToast({
+        title: msg,
+        icon: 'fail',
+        duration: 2000
+      })
+      setTimeout(() => {
+        Taro.hideToast();
+      }, 2000)
     }
   }
 
@@ -114,7 +123,7 @@ class Recharge extends React.Component {
   getDisabeledButton = () => {
     const { inputValue } = this.state;
     const btnDisabled =
-      !inputValue || parseFloat(inputValue) < 1;
+      !inputValue || parseFloat(inputValue) < 0.1;
     return btnDisabled;
   };
 
@@ -125,7 +134,7 @@ class Recharge extends React.Component {
           <View className={styles.main}>
             {/* 自定义顶部返回 */}
             {this.renderTitleContent()}
-            <View className={styles.totalAmount}>
+            <View className={styles.totalAmount} style={{ backgroundImage: `url(${IMG_SRC_HOST}/assets/walletbackground.d038c3fcc736f8c7bb086e90c5abe4df9b946fc0.png)` }}>
               <View className={styles.moneyTitle}>充值</View>
             </View>
             <View className={styles.moneyInput}>

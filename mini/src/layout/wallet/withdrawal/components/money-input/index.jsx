@@ -50,6 +50,7 @@ const MoneyInput = (props) => {
           onChange={(e) => handleChange(e.target.value)}
           mode="number"
           placeholder-style="color:#c5c6ca;"
+          maxLength={8}
         />
       </View>
       <View>
@@ -65,7 +66,7 @@ const MoneyInput = (props) => {
             </View>
           ) : (
             <View className={styles.leastMoney}>
-                充值金额最低1元
+                充值金额最低0.1元
             </View>
           )
         }

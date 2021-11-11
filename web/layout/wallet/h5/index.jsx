@@ -2,7 +2,6 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import { Tabs, Icon, Button, Toast } from '@discuzq/design';
-import Header from '@components/header';
 import WalletInfo from './components/wallet-info/index';
 import IncomeList from './components/income-list/index';
 import PayList from './components/pay-list/index';
@@ -12,7 +11,6 @@ import FilterView from './components/all-state-popup';
 import DatePickers from '@components/thread/date-picker';
 import { formatDate } from '@common/utils/format-date.js';
 import { INCOME_DETAIL_CONSTANTS, EXPAND_DETAIL_CONSTANTS, CASH_DETAIL_CONSTANTS } from '@common/constants/wallet';
-import List from '@components/list';
 import { typeFilter } from './adapter';
 import BaseLayout from '@components/base-layout'
 
@@ -39,7 +37,7 @@ class WalletH5Page extends React.Component {
     super(props);
 
     this.state = {
-      tabsType: 'income',
+      isKeep: false, // 是否保持组件状态
       visibleshow: false,
       consumptionTimeshow: false,
       consumptionTime: new Date(),
@@ -52,6 +50,13 @@ class WalletH5Page extends React.Component {
     const { getUserWalletInfo } = this.props.wallet;
     await getUserWalletInfo();
   }
+
+  componentWillUnmount() {
+    if (!this.state.isKeep) {
+      this.props.wallet.setTabsType(); // 重置tab
+    }
+  }
+
   // 点击冻结金额
   onFrozenAmountClick() {
     this.props.router.push('/wallet/frozen');
@@ -59,10 +64,9 @@ class WalletH5Page extends React.Component {
 
   // 切换选项卡
   onTabActive = (val) => {
-    this.props.wallet.resetInfo()
-    this.setState({
-      tabsType: val,
-    });
+    this.props.wallet.resetInfo();
+    this.props.wallet.getUserWalletInfo();
+    this.props.wallet.setTabsType(val);
     this.initSelectType(() => {
       this.initStateAndFetch();
     });
@@ -84,7 +88,7 @@ class WalletH5Page extends React.Component {
         totalPage: 1,
       },
       () => {
-        switch (this.state.tabsType) {
+        switch (this.props.wallet.tabsType) {
           case 'income':
             this.fetchIncomeDetail();
             break;
@@ -101,11 +105,13 @@ class WalletH5Page extends React.Component {
 
   // 点击提现
   toWithrawal = () => {
+    this.setState({ isKeep: true });
     this.props.router.push('/wallet/withdrawal');
   };
 
-  // 点击提现
+  // 点击充值
   toRecharge = () => {
+    this.setState({ isKeep: true });
     this.props.router.push('/wallet/recharge');
   };
 
@@ -158,7 +164,7 @@ class WalletH5Page extends React.Component {
     };
 
     let dataSource = {};
-    switch (this.state.tabsType) {
+    switch (this.props.wallet.tabsType) {
       case 'income':
         dataSource = INCOME_DETAIL_CONSTANTS;
         defaultType.title = '全部类型';
@@ -180,7 +186,7 @@ class WalletH5Page extends React.Component {
   };
 
   renderSelectTitle = () => {
-    switch (this.state.tabsType) {
+    switch (this.props.wallet.tabsType) {
       case 'income':
       case 'pay':
         return '选择类型';
@@ -191,7 +197,7 @@ class WalletH5Page extends React.Component {
 
   fetchIncomeDetail = async () => {
     try {
-      const detailRes = await this.props.wallet.getInconmeDetail({
+      const detailRes = await this.props.wallet.getIncomeDetail({
         page: this.state.page,
         type: this.state.selectType,
         date: this.state.consumptionTime,
@@ -266,14 +272,12 @@ class WalletH5Page extends React.Component {
 
   // 点击切换tag的显示
   renderSelectedType = () => {
+    const { tabsType } = this.props.wallet;
     if (this.state.selectType === 'all') {
-      if (this.state.tabsType === 'withdrawal') {
-        return '全部状态';
-      }
-      return '全部类型';
+      return tabsType === 'withdrawal' ? '全部状态' : '全部类型'
     }
     let arr = {};
-    switch (this.state.tabsType) {
+    switch (tabsType) {
       case 'income':
         arr = INCOME_DETAIL_CONSTANTS;
         break;
@@ -308,8 +312,8 @@ class WalletH5Page extends React.Component {
           {
             isShowRecharge && (
               <Button className={layout.button} onClick={this.toRecharge} >
-              充值
-            </Button>)
+                充值
+              </Button>)
           }
         </div>
       </div>
@@ -318,7 +322,7 @@ class WalletH5Page extends React.Component {
 
   // 处理上拉加载更多逻辑
   handleOnRefresh = () => {
-    const { tabsType } = this.state
+    const { tabsType } = this.props.wallet;
     if (tabsType === 'income') {
       return this.fetchIncomeDetail()
     } else if (tabsType === 'pay') {
@@ -330,6 +334,11 @@ class WalletH5Page extends React.Component {
   }
 
   render() {
+    const { tabsType, walletInfo, incomeDetail = {}, expandDetail, cashDetail } = this.props.wallet;
+    const incomeData = this.listRenderDataFilter(incomeDetail) || [];
+    const expandData = this.listRenderDataFilter(expandDetail) || [];
+    const cashData = this.listRenderDataFilter(cashDetail) || [];
+
     const tabList = [
       [
         'income',
@@ -337,7 +346,7 @@ class WalletH5Page extends React.Component {
           <Icon
             name="TicklerOutlined"
             className={classNames(layout.tag, {
-              [layout['tag-active-green']]: this.state.tabsType !== 'income',
+              [layout['tag-active-green']]: tabsType !== 'income',
             })}
           />
           收入明细
@@ -350,7 +359,7 @@ class WalletH5Page extends React.Component {
           <Icon
             name="WallOutlined"
             className={classNames(layout.tag, {
-              [layout['tag-active-blue']]: this.state.tabsType !== 'pay',
+              [layout['tag-active-blue']]: tabsType !== 'pay',
             })}
           />
           支出明细
@@ -363,7 +372,7 @@ class WalletH5Page extends React.Component {
           <Icon
             name="TransferOutOutlined"
             className={classNames(layout.tag, {
-              [layout['tag-active-red']]: this.state.tabsType !== 'withdrawal',
+              [layout['tag-active-red']]: tabsType !== 'withdrawal',
             })}
           />
           提现记录
@@ -371,12 +380,6 @@ class WalletH5Page extends React.Component {
         { name: 'TransferOutOutlined' },
       ],
     ];
-    const { walletInfo, incomeDetail = {}, expandDetail, cashDetail } = this.props.wallet;
-
-    const incomeData = this.listRenderDataFilter(incomeDetail) || [];
-    const expandData = this.listRenderDataFilter(expandDetail) || [];
-    const cashData = this.listRenderDataFilter(cashDetail) || [];
-
     return (
       <BaseLayout
         noMore={this.state.page > this.state.totalPage}
@@ -409,25 +412,25 @@ class WalletH5Page extends React.Component {
         </div>
 
         <div className={layout.tabs}>
-          <Tabs scrollable={true} className={layout.tabList} onActive={this.onTabActive}>
+          <Tabs activeId={tabsType} scrollable={true} className={layout.tabList} onActive={this.onTabActive}>
             {tabList.map(([id, label, icon]) => (
               <Tabs.TabPanel key={id} id={id} label={label} name={icon.name}></Tabs.TabPanel>
             ))}
           </Tabs>
 
-          {this.state.tabsType === 'income' &&
+          {tabsType === 'income' &&
             incomeData.map((value, index) => (
               <IncomeList key={value.id} incomeVal={value} itemKey={index} dataLength={incomeData.length} />
             ))
           }
 
-          {this.state.tabsType === 'pay' &&
+          {tabsType === 'pay' &&
             expandData.map((value, index) => (
               <PayList key={value.id} payVal={value} itemKey={index} dataLength={expandData.length} />
             ))
           }
 
-          {this.state.tabsType === 'withdrawal' &&
+          {tabsType === 'withdrawal' &&
             cashData.map((value, index) => (
               <WithdrawalList key={value.id} withdrawalVal={value} itemKey={index} dataLength={cashData.length} />
             ))

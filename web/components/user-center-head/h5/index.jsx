@@ -12,6 +12,7 @@ import browser from '@common/utils/browser';
 import throttle from '@common/utils/thottle.js';
 import LoginHelper from '@common/utils/login-helper.js';
 import MemberShipCard from '@components/member-ship-card';
+import MemberBadge from '@components/member-badge';
 
 @inject('user')
 @inject('site')
@@ -169,8 +170,8 @@ class index extends Component {
   // 点击发送私信
   handleMessage = () => {
     const { targetUser } = this;
-    const { username, nickname } = targetUser;
-    Router.push({ url: `/message?page=chat&username=${username}&nickname=${nickname}` });
+    const { id, nickname } = targetUser;
+    Router.push({ url: `/message?page=chat&userId=${id}&nickname=${nickname}` });
   };
 
   gotoLikeList = () => {
@@ -262,7 +263,17 @@ class index extends Component {
         <div>
           <div className={styles.userNameOrTeam}>
             <span className={styles.userNickname}>{user.nickname}</span>
-            <span className={styles.groupName}>{user.group?.groupName}</span>
+            { user.group?.level > 0 ? (
+              <div className={styles.memberBadge}>
+                <MemberBadge
+                  hasBg
+                  groupLevel={user.group?.level}
+                  groupName={user.group?.groupName}
+                />
+              </div>
+            ) : (
+              <span className={styles.groupName}>{user.group?.groupName}</span>
+            )}
           </div>
           <p className={styles.text}>{user.signature || '这个人很懒，什么也没留下~'}</p>
         </div>

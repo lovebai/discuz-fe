@@ -327,6 +327,7 @@ class UserCenterFollows extends React.Component {
                   onContainerClick={() => this.props.onContainerClick({id: user.id})}
                   nickName={user.nickName}
                   userGroup={user.groupName}
+                  groupLevel={user.level}
                   followHandler={this.followUser}
                   unFollowHandler={this.unFollowUser}
                   itemStyle={this.props.itemStyle}
@@ -338,7 +339,7 @@ class UserCenterFollows extends React.Component {
                         onClick={(e) => {
                           e.stopPropagation();
                           Router.replace({
-                            url: `/message?page=chat&username=${user.userName}&nickname=${user.nickName}`,
+                            url: `/message?page=chat&userId=${user.id}&nickname=${user.nickName}`,
                           });
                         }}
                       >

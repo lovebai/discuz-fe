@@ -16,10 +16,13 @@ import dynamic from 'next/dynamic';
 import DynamicLoading from '@components/dynamic-loading';
 import { debounce, throttle } from '@common/utils/throttle-debounce.js';
 import Autoplay from '@common/utils/autoplay';
-import PacketOpen from '@components/red-packet-animation/web';
+import PacketOpen from '@components/red-packet-animation/h5';
 import ThreadContent from '@components/thread/SSRAdapter';
 import SiteMapLink from '@components/site-map-link';
 
+import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';
+import IndexHeaderHooks from '@common/plugin-hooks/plugin_index@header';
+import IndexTabsHook from '@common/plugin-hooks/plugin_index@tabs';
 
 @inject('site')
 @inject('user')
@@ -53,7 +56,10 @@ class IndexH5Page extends React.Component {
   DynamicVListLoading = dynamic(() => import('./components/dynamic-vlist'), {
     loading: (res) => (
       <div>
-        <HomeHeader ref={this.headerRef} />
+        {/* 顶部插件hooks */}
+        <div ref={this.headerRef}>
+          <IndexHeaderHooks  component={<HomeHeader />}></IndexHeaderHooks>
+        </div>
         <DynamicLoading
           data={res}
           style={{ padding: '0 0 20px' }}
@@ -158,7 +164,7 @@ class IndexH5Page extends React.Component {
   }, 50);
 
   handleScroll = ({ scrollTop = 0, startNum, stopNum } = {}) => {
-    const { height = 180 } = this.headerRef.current?.state || {};
+    const height = this.headerRef.current?.clientHeight || 180;
     const { fixedTab } = this.state;
 
     this.checkVideoPlause();
@@ -176,45 +182,45 @@ class IndexH5Page extends React.Component {
     const { fixedTab } = this.state;
     const { categories = [], activeCategoryId, currentCategories } = this.props.index;
 
-    return (
+    const component = categories?.length > 0 && (
       <>
-        {categories?.length > 0 && (
-          <>
-            <div
-              ref={this.listRef}
-              className={`${styles.homeContent} ${!this.enableVlist && fixedTab && styles.fixed}`}
-            >
-              {currentCategories?.map((item, index) => (
-                <SiteMapLink href={`/?categoryId=${item.pid === 'all' ? '' : item.pid}&sequence=0`} text={`分类_${item.name}`}/>
-              ))}
-              <Tabs
-                className={styles.tabsBox}
-                scrollable
-                type="primary"
-                onActive={this.onClickTab}
-                activeId={activeCategoryId}
-                tabBarExtraContent={
-                  <div onClick={this.searchClick} className={styles.tabIcon}>
-                    <Icon name="SecondaryMenuOutlined" className={styles.buttonIcon} size={16} />
-                  </div>
-                }
-              >
-                {currentCategories?.map((item, index) => (
-                  <Tabs.TabPanel key={index} id={item.pid} label={item.name} />
-                ))}
-              </Tabs>
-            </div>
-            {!this.enableVlist && fixedTab && <div className={styles.tabPlaceholder}></div>}
-          </>
-        )}
+        <div ref={this.listRef} className={`${styles.homeContent} ${!this.enableVlist && fixedTab && styles.fixed}`}>
+          <Tabs
+            className={styles.tabsBox}
+            scrollable
+            type="primary"
+            onActive={this.onClickTab}
+            activeId={activeCategoryId}
+            tabBarExtraContent={
+              <div onClick={this.searchClick} className={styles.tabIcon}>
+                <Icon name="SecondaryMenuOutlined" className={styles.buttonIcon} size={16} />
+              </div>
+            }
+          >
+            {currentCategories?.map((item, index) => (
+              <Tabs.TabPanel key={index} id={item.pid} label={item.name} />
+            ))}
+          </Tabs>
+        </div>
+        {!this.enableVlist && fixedTab && <div className={styles.tabPlaceholder}></div>}
       </>
+    );
+
+    return (
+      <IndexTabsHook
+        component={component}
+        changeFilter={params => this.changeFilter(params)}
+        renderData={{
+          categories,
+        }}
+      ></IndexTabsHook>
     );
   };
 
   renderHeaderContent = () => {
     const { sticks = [] } = this.props.index || {};
 
-    return (
+    const component = (
       <>
         {sticks?.length > 0 && (
           <div className={styles.homeContentTop}>
@@ -223,20 +229,23 @@ class IndexH5Page extends React.Component {
         )}
       </>
     );
+
+    return <IndexToppingHooks component={component} renderData={{ sticks }}></IndexToppingHooks>;
   };
 
   renderSSRContent(thread, sticks) {
-    if (  process.env.DISCUZ_RUN === 'ssr' && ThreadContent ) {
-      const { pageData } = thread
-      
+    if (process.env.DISCUZ_RUN === 'ssr' && ThreadContent) {
+      const { pageData } = thread;
+
       return (
-        <div className='ssr-box' style={{display: 'none'}}>
-          <HomeHeader />
+        <div className="ssr-box" style={{ display: 'none' }}>
+          <IndexHeaderHooks site={this.props.site} component={<HomeHeader />}></IndexHeaderHooks>
           {this.renderTabs()}
           {this.renderHeaderContent()}
           <div>
-            {
-              pageData && pageData.length != 0 && pageData.map((item, index) => {
+            {pageData &&
+              pageData.length != 0 &&
+              pageData.map((item, index) => {
                 return (
                   <ThreadContent
                     onContentHeightChange={() => {}}
@@ -247,10 +256,8 @@ class IndexH5Page extends React.Component {
                     recomputeRowHeights={() => {}}
                   />
                 );
-              })
-            }
+              })}
           </div>
-          
         </div>
       );
     }
@@ -258,7 +265,7 @@ class IndexH5Page extends React.Component {
   }
 
   render() {
-    const { index, thread} = this.props;
+    const { index, thread } = this.props;
     const { hasRedPacket } = thread;
 
     const { isFinished } = this.state;
@@ -268,7 +275,7 @@ class IndexH5Page extends React.Component {
     return (
       <BaseLayout
         showHeader={false}
-        showTabBar
+        showTabBar={!hasRedPacket}
         onRefresh={this.onRefresh}
         noMore={currentPage >= totalPage}
         isFinished={isFinished}
@@ -296,7 +303,11 @@ class IndexH5Page extends React.Component {
             errorText={threadError.errorText}
             platform={'h5'}
           >
-            <HomeHeader ref={this.headerRef} />
+            {/* 头部插件hooks */}
+            <div ref={this.headerRef}>
+              <IndexHeaderHooks component={<HomeHeader />}></IndexHeaderHooks>
+            </div>
+
             <Observer>{() => this.renderTabs()}</Observer>
             <Observer>{() => this.renderHeaderContent()}</Observer>
           </this.DynamicVListLoading>
@@ -304,15 +315,14 @@ class IndexH5Page extends React.Component {
 
         <FilterView
           data={currentCategories}
+          typelist={this.props.index.threadTypelist}
           current={filter}
           onCancel={this.onClose}
           visible={this.state.visible}
           onSubmit={this.changeFilter}
         />
 
-        {
-          hasRedPacket > 0 && <PacketOpen onClose={() => thread.setRedPacket(0)} money={hasRedPacket} />
-        }
+        {hasRedPacket > 0 && <PacketOpen onClose={() => thread.setRedPacket(0)} money={hasRedPacket} />}
       </BaseLayout>
     );
   }

@@ -40,23 +40,21 @@ class Recharge extends React.Component {
       inputValue: '',
     });
   };
-  
+
   // 充值
   onRechargeMoney = async () => {
     if (this.getDisabeledButton()) return;
     const inputValue = this.state.inputValue;
     const { rechargeMoney } = this.props.wallet;
     const { success, msg } = await rechargeMoney(inputValue);
-
-    if (this.props.onCreateCash) {
-      this.props.onCreateCash();
-    }
     if (success) {
       Toast.success({
         content: msg,
         duration: 2000,
       });
-      const { getUserWalletInfo } = this.props.wallet;
+      const { setTabsType, getUserWalletInfo, getIncomeDetail } = this.props.wallet;
+      setTabsType('income');
+      await getIncomeDetail();
       await getUserWalletInfo();
       this.initState();
       Router.back();
@@ -71,7 +69,7 @@ class Recharge extends React.Component {
   // 获取禁用逻辑
   getDisabeledButton = () => {
     const { inputValue } = this.state;
-    const btnDisabled = !inputValue || parseFloat(inputValue) < 1;
+    const btnDisabled = !inputValue || parseFloat(inputValue) < 0.1;
     return btnDisabled;
   };
 

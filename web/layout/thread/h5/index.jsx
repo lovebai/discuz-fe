@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
-import { withRouter } from 'next/router';
 import Router from '@discuzq/sdk/dist/router';
 
 import layout from './layout.module.scss';
@@ -31,16 +30,16 @@ import isWeiXin from '@common/utils/is-weixin';
 import RenderThreadContent from './content';
 import RenderCommentList from './comment-list';
 import classNames from 'classnames';
-import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 
 import BottomView from '@components/list/BottomView';
 import Copyright from '@components/copyright';
 
 import MorePopop from '@components/more-popop';
 
+import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 
 import { parseContentData } from '../utils';
-const hongbaoMini = 'https://imgcache.qq.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
+const hongbaoMini = 'https://cloudcache.tencentcs.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
 
 @inject('site')
 @inject('user')
@@ -280,7 +279,7 @@ class ThreadH5Page extends React.Component {
     // 编辑
     if (type === 'edit') {
       if (!this.props.thread?.threadData?.id) return;
-      this.props.router.push(`/thread/post?id=${this.props.thread?.threadData?.id}`);
+      Router.push({ url: `/thread/post?id=${this.props.thread?.threadData?.id}` });
     }
 
     // 举报
@@ -402,9 +401,9 @@ class ThreadH5Page extends React.Component {
       Toast.success({
         content: '删除成功，即将跳转至首页',
       });
-
+      this.props.index.deleteThreadsData({ id }, this.props.site);
       setTimeout(() => {
-        this.props.router.push('/');
+        Router.push({ url: '/' });
       }, 1000);
 
       return;
@@ -428,6 +427,23 @@ class ThreadH5Page extends React.Component {
       Toast.info({ content: '请输入内容' });
       return;
     }
+
+    // 验证码
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      // 开启了腾讯云验证码验证时，进行验证，通过后再进行实际的发布请求
+
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        // 验证码票据，验证码字符串不全时，弹出滑块验证码
+        const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
+        if (!captchaTicket && !captchaRandStr) {
+          return false ;
+        }
+      }
+    }
+
     return this.comment ? await this.updateComment(val, imageList) : await this.createComment(val, imageList);
   }
 
@@ -694,19 +710,19 @@ class ThreadH5Page extends React.Component {
       this.props.index.refreshHomeData({ categoryIds: [categoryId] });
     }
     this.props.vlist.resetPosition();
-    this.props.router.push(`/?categoryId=${categoryId}&sequence=0`);
+    Router.push({ url: `/cate/${categoryId}/seq/0` });
   }
 
   replyAvatarClick(reply, comment, floor) {
     if (floor === 2) {
       const { userId } = reply;
       if (!userId) return;
-      this.props.router.push(`/user/${userId}`);
+      Router.push({ url: `/user/${userId}` });
     }
     if (floor === 3) {
       const { commentUserId } = reply;
       if (!commentUserId) return;
-      this.props.router.push(`/user/${commentUserId}`);
+      Router.push({ url: `/user/${commentUserId}` });
     }
   }
 
@@ -714,7 +730,7 @@ class ThreadH5Page extends React.Component {
     const { threadData } = this.props.thread || {};
     const useId = threadData?.user?.userId;
     if (!useId) return;
-    this.props.router.push(`/user/${threadData?.user?.userId}`);
+    Router.push({ url: `/user/${threadData?.user?.userId}` });
   }
 
   // 点击加载更多
@@ -758,7 +774,7 @@ class ThreadH5Page extends React.Component {
     const { thread: threadStore } = this.props;
     const { isReady, isCommentReady, isNoMore, totalCount, isCommentListError } = threadStore;
     const { indexes } = threadStore?.threadData?.content || {};
-    const {RED_PACKET} = parseContentData(indexes);
+    const { RED_PACKET } = parseContentData(indexes);
     const hasHongbao = RED_PACKET?.condition === 0 && RED_PACKET?.remainNumber > 0; // 是否s是回复红包且还有剩余未领完红包
 
     const fun = {
@@ -848,18 +864,17 @@ class ThreadH5Page extends React.Component {
                     <Fragment>
                       <RenderCommentList
                         isPositionComment={true}
-                        router={this.props.router}
                         sort={flag => this.onSortChange(flag)}
                         replyAvatarClick={(comment, reply, floor) => this.replyAvatarClick(comment, reply, floor)}
                       ></RenderCommentList>
                       {!isCommentPositionNoMore && (
-                        // <BottomView
-                        //   onClick={() => this.onLoadMoreClick()}
-                        //   noMoreType="line"
-                        //   loadingText="点击加载更多"
-                        //   isError={isCommentListError}
-                        //   noMore={isCommentPositionNoMore}
-                        // ></BottomView>
+                      // <BottomView
+                      //   onClick={() => this.onLoadMoreClick()}
+                      //   noMoreType="line"
+                      //   loadingText="点击加载更多"
+                      //   isError={isCommentListError}
+                      //   noMore={isCommentPositionNoMore}
+                      // ></BottomView>
 
                         <div className={layout.showMore} onClick={() => this.onLoadMoreClick()}>
                           <div className={layout.hidePercent}>展开更多评论</div>
@@ -874,7 +889,6 @@ class ThreadH5Page extends React.Component {
                     canPublish={this.props.canPublish}
                     positionRef={this.positionRef}
                     showHeader={!isShowCommentList}
-                    router={this.props.router}
                     sort={flag => this.onSortChange(flag)}
                     onEditClick={comment => this.onEditClick(comment)}
                     replyAvatarClick={(comment, reply, floor) => this.replyAvatarClick(comment, reply, floor)}
@@ -1013,4 +1027,4 @@ class ThreadH5Page extends React.Component {
   }
 }
 
-export default withRouter(ThreadH5Page);
+export default HOCTencentCaptcha(ThreadH5Page);

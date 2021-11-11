@@ -6,9 +6,10 @@ export const followerAdapter = (data) => {
     users.map(user => followers.push({
       id: user.user.userId || user.user.pid,
       groupName: user.group.groupName,
+      level: user.group.level,
       avatar: user.user.avatar,
       userName: user.user.userName,
-      nickName: user.user.nickName,
+      nickName: user.user.nickname,
       isMutual: user.userFollow.isMutual,
       isFollow: user.userFollow.isFollow,
     }));

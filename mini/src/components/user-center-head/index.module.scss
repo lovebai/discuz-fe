@@ -93,7 +93,8 @@
     }
   }
   .userNameOrTeam {
-    height: 28px;
+    // height: rem(28);
+    line-height: rem(22);
     display: flex;
     align-items: center;
     .userNickname {
@@ -101,9 +102,12 @@
       font-weight: 600;
       color: $text-color-primary;
       margin-right: $margin-2n;
-      height: 28px;
+      height: rem(28);
       display: block;
       @include text-ellipsis();
+    }
+    .memberBadge {
+      flex-shrink: 0;
     }
     .groupName {
       font-size: $font-size-small;

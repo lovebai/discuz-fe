@@ -200,9 +200,21 @@
 
   .tag-text {
     @include text-ellipsis();
+    line-height: 24px;
   }
 
   .remove {
     margin-left: $margin-2n;
+  }
+}
+
+.attachmentInfo {
+  :global {
+    .dzq-divider__text {
+      padding: 0;
+      color: $text-color-placeholder;
+      font-size: 12px;
+      text-align: center;
+    }
   }
 }
