@@ -21,9 +21,6 @@ import threadReducer from './reducer';
 import rewardPay from '@common/pay-bussiness/reward-pay';
 import createPreFetch from '@common/utils//pre-fetch';
 
-
-import mockData from '../mock/detail-pay1.json';
-
 class ThreadAction extends ThreadStore {
   constructor(props) {
     super(props);

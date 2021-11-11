@@ -236,7 +236,6 @@ class IndexAction extends IndexStore {
     const currentReq = this.latestReq;
 
     const result = await this.threadList.fetchList({ namespace: this.namespace, perPage, page, filter, sequence }, ctx);
-
     if (currentReq !== this.latestReq) {
       return;
     }
