@@ -14,8 +14,6 @@ import threadReducer from '../thread/reducer';
 import { getCategoryName, getActiveId, getCategories, handleString2Arr } from '@common/utils/handleCategory'
 import replaceStringInRegex from '../../utils/replace-string-in-regex'
 
-import mockData from '../mock/list-pay.json';
-
 class IndexAction extends IndexStore {
   constructor(props) {
     super(props);
@@ -237,12 +235,7 @@ class IndexAction extends IndexStore {
     this.latestReq += 1;
     const currentReq = this.latestReq;
 
-    let result = await this.threadList.fetchList({ namespace: this.namespace, perPage, page, filter, sequence }, ctx);
-    if (this.namespace === 'home' && page === 1) {
-      const {code, data, msg} = mockData;
-      result = {code, data, msg};
-    }
-    console.log('result', this.namespace,page, result)
+    const result = await this.threadList.fetchList({ namespace: this.namespace, perPage, page, filter, sequence }, ctx);
 
     if (currentReq !== this.latestReq) {
       return;

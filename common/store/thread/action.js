@@ -107,14 +107,9 @@ class ThreadAction extends ThreadStore {
   async fetchThreadDetail(id) {
     const params = { threadId: id };
     const ret = await readThreadDetail({ params });
-    // const { code, data } = ret;
-    // if (code === 0) this.setThreadData(data);
-    // return ret;
-    const { code, msg, data } = mockData;
-    console.log('mockData detail',mockData)
-
+    const { code, data } = ret;
     if (code === 0) this.setThreadData(data);
-    return { code, msg, data }
+    return ret;
   }
 
   /**
