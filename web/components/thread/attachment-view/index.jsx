@@ -233,12 +233,13 @@ const Index = ({
     if (!isPay) {
       if (!file || !threadId) return;
 
-    await fetchDownloadUrl(threadId, file.id, () => {
-      file.readyToPlay = true;
-    });
+      await fetchDownloadUrl(threadId, file.id, () => {
+        file.readyToPlay = true;
+      });
 
-    return !!file.readyToPlay;
-  };
+      return !!file.readyToPlay;
+    }
+  }
 
   const renderRightArea = ({ item, index }) => {
     if (customActionArea) {
