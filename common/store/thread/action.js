@@ -21,6 +21,9 @@ import threadReducer from './reducer';
 import rewardPay from '@common/pay-bussiness/reward-pay';
 import createPreFetch from '@common/utils//pre-fetch';
 
+
+import mockData from '../mock/detail-pay1.json';
+
 class ThreadAction extends ThreadStore {
   constructor(props) {
     super(props);
@@ -104,9 +107,14 @@ class ThreadAction extends ThreadStore {
   async fetchThreadDetail(id) {
     const params = { threadId: id };
     const ret = await readThreadDetail({ params });
-    const { code, data } = ret;
+    // const { code, data } = ret;
+    // if (code === 0) this.setThreadData(data);
+    // return ret;
+    const { code, msg, data } = mockData;
+    console.log('mockData detail',mockData)
+
     if (code === 0) this.setThreadData(data);
-    return ret;
+    return { code, msg, data }
   }
 
   /**
@@ -180,7 +188,7 @@ class ThreadAction extends ThreadStore {
   @action
   setThreadData(data) {
     // this.threadData = data;
-    this.threadData = {...this.threadData, ...data};
+    this.threadData = { ...this.threadData, ...data };
     this.threadData.id = data.threadId;
   }
 
@@ -316,7 +324,7 @@ class ThreadAction extends ThreadStore {
         this.updateLikeReward(newLikeUsers);
       }
       // 全量查询打赏人员列表
-      this.queryTipList({threadId: params.threadId, type: 2, page: 1});
+      this.queryTipList({ threadId: params.threadId, type: 2, page: 1 });
 
       // 更新列表store
       this.updateListStore();
@@ -738,7 +746,7 @@ class ThreadAction extends ThreadStore {
 
     const requestParams = {
       id,
-      postId:pid,
+      postId: pid,
       data: {
         attributes: {
           isLiked: !!isLiked,
@@ -799,21 +807,21 @@ class ThreadAction extends ThreadStore {
   }
 
   // 查询打赏列表
-  @action 
-  async queryTipList(params){
-    const res = await readLikedUsers({ params:{...params,perPage:300} });
-    let resList  = res.data?.pageData?.list;
-    resList = resList.filter(i=>i.type===3);
+  @action
+  async queryTipList(params) {
+    const res = await readLikedUsers({ params: { ...params, perPage: 300 } });
+    let resList = res.data?.pageData?.list;
+    resList = resList.filter(i => i.type === 3);
 
     const filterObj = {};
-    resList = resList.reduce((cur,next) => {
+    resList = resList.reduce((cur, next) => {
       console.log(next);
       filterObj[next.userId] ? "" : filterObj[next.userId] = true && cur.push(next);
       return cur;
-    },[])
+    }, [])
 
 
-    this.threadData={...this.threadData,tipList:resList.slice(0,32) || []}
+    this.threadData = { ...this.threadData, tipList: resList.slice(0, 32) || [] }
   }
 
 }

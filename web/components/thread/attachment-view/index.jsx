@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect }from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Icon, Toast, Spin, AudioPlayer } from '@discuzq/design';
 import { extensionList, isPromise, noop } from '../utils';
@@ -17,7 +17,7 @@ import styles from './index.module.scss';
 import Router from '@discuzq/sdk/dist/router';
 
 /**
- * 附件
+ * 附件 - 免费附件正常展示，付费附件隐藏
  * @prop {Array} attachments 附件数组
  * @prop {Boolean} isHidden 是否隐藏删除按钮
  */
@@ -25,7 +25,7 @@ import Router from '@discuzq/sdk/dist/router';
 const Index = ({
   attachments = [],
   isHidden = true,
-  isPay = false,
+  isPay = false, // 是否需要部分付费
   onClick = noop,
   onPay = noop,
   threadId = null,
@@ -38,6 +38,11 @@ const Index = ({
   canViewAttachment = false,
 }) => {
   let itemUrl = null;
+  // 过滤需要部分付费的附件
+  const showAttachList = attachments.filter(
+    item => item.needPay === undefined ? !isPay : item.needPay !== 1
+  );
+
   // 处理文件大小的显示
   const handleFileSize = (fileSize) => {
     if (fileSize > 1000000) {
@@ -51,21 +56,21 @@ const Index = ({
   };
 
   const fetchDownloadUrl = async (threadId, attachmentId, callback) => {
-    if(!threadId || !attachmentId) return;
+    if (!threadId || !attachmentId) return;
 
     let toastInstance = Toast.loading({
       duration: 0,
     });
 
     await thread.fetchThreadAttachmentUrl(threadId, attachmentId).then((res) => {
-      if(res?.code === 0 && res?.data) {
+      if (res?.code === 0 && res?.data) {
         const { url, fileName } = res.data;
-        if(!url) {
+        if (!url) {
           Toast.info({ content: '获取下载链接失败' });
         }
         callback(url, fileName);
       } else {
-        if(res?.msg || res?.Message) Toast.info({ content: res?.msg || res?.Message });
+        if (res?.msg || res?.Message) Toast.info({ content: res?.msg || res?.Message });
       }
     }).catch((error) => {
       Toast.info({ content: '获取下载链接失败' });
@@ -77,7 +82,7 @@ const Index = ({
   }
 
   const [downloading, setDownloading] =
-        useState(Array.from({length: attachments.length}, () => false));
+    useState(Array.from({ length: showAttachList.length }, () => false));
 
   const onDownLoad = (item, index) => {
     updateViewCount();
@@ -89,12 +94,8 @@ const Index = ({
 
     itemUrl = item.url; // 暂用于微信下载
 
-    if (!isPay) {
-      if(!item || !threadId) return;
-      download(item);
-    } else {
-      onPay();
-    }
+    if (!item || !threadId) return;
+    download(item);
   };
 
   const download = async (item) => {
@@ -124,21 +125,8 @@ const Index = ({
       return true;
     }
 
-    if (res?.code === -7083) {  // 超过今天可下载附件的最大次数
-      Toast.info({ content: res?.msg });
-    }
+    Toast.info({ content: res?.msg });
 
-    if (res?.code === -7082) {  // 下载资源已失效
-      Toast.info({ content: res?.msg });
-    }
-
-    if (res?.code === -4004) {  // 资源不存在
-      Toast.info({ content: res?.msg });
-    }
-    
-    if (res?.code === -5001) { // 操作太快，请稍后再试
-      Toast.info({ content: res?.msg });
-    }
     return false;
   }
 
@@ -148,27 +136,23 @@ const Index = ({
       Toast.warning({ content: '暂⽆权限查看附件' });
       return;
     }
-    if (!isPay) {
-      if(!item || !threadId) return;
+    if (!item || !threadId) return;
 
-      const attachmentId = item.id;
-      fetchDownloadUrl(threadId, attachmentId, async (url, fileName) => {
-        // 链接拼接
-        url = splicingLink(url, fileName);
-        
-        setTimeout(() => {
-          if(!h5Share({url: url})) {
-            navigator.clipboard.writeText(url); // qq浏览器不支持异步document.execCommand('Copy')
-          }
-          Toast.success({
-            content: '链接复制成功',
-          });
-        }, 300);
-      });
+    const attachmentId = item.id;
+    fetchDownloadUrl(threadId, attachmentId, async (url, fileName) => {
+      // 链接拼接
+      url = splicingLink(url, fileName);
 
-    } else {
-      onPay();
-    }
+      setTimeout(() => {
+        if (!h5Share({ url: url })) {
+          navigator.clipboard.writeText(url); // qq浏览器不支持异步document.execCommand('Copy')
+        }
+        Toast.success({
+          content: '链接复制成功',
+        });
+      }, 300);
+    });
+
   };
 
   const splicingLink = (url, fileName) => {
@@ -192,15 +176,11 @@ const Index = ({
       return;
     }
 
-    if (!isPay) {
-      if(!file || !threadId) return;
+    if (!file || !threadId) return;
 
-      fetchDownloadUrl(threadId, file.id, () => { // 校验权限
-        setPreviewFile(file);
-      });
-    } else {
-      onPay();
-    }
+    fetchDownloadUrl(threadId, file.id, () => { // 校验权限
+      setPreviewFile(file);
+    });
   };
 
   // 音频播放
@@ -211,20 +191,16 @@ const Index = ({
   const beforeAttachPlay = async (file) => {
     // 该文件已经通过校验，能直接播放
     if (file.readyToPlay) {
-      return true;  
+      return true;
     }
 
     // 播放前校验权限
     updateViewCount();
-    if (!isPay) {
-      if(!file || !threadId) return;
+    if (!file || !threadId) return;
 
-      await fetchDownloadUrl(threadId, file.id, () => {
-        file.readyToPlay = true;
-      });
-    } else {
-      onPay();
-    }
+    await fetchDownloadUrl(threadId, file.id, () => {
+      file.readyToPlay = true;
+    });
 
     return !!file.readyToPlay;
   };
@@ -251,7 +227,7 @@ const Index = ({
       <div className={styles.container} key={index} onClick={onClick} >
         <div className={styles.wrapper}>
           <div className={styles.left}>
-            <img alt="图片" className={styles.containerIcon} src={getAttachmentIconLink(type)}/>
+            <img alt="图片" className={styles.containerIcon} src={getAttachmentIconLink(type)} />
             <div className={styles.containerText}>
               <span className={styles.content}>{item.fileName}</span>
               <span className={styles.size}>{handleFileSize(parseFloat(item.fileSize || 0))}</span>
@@ -266,14 +242,14 @@ const Index = ({
             }
             <span className={styles.span} onClick={unifyOnClick || (throttle(() => onLinkShare(item), 1000))}>链接</span>
             <div className={styles.label}>
-              { downloading[index] ?
-                  <Spin className={styles.spinner} type="spinner" /> :
-                  <span
-                    className={styles.span}
-                    onClick={unifyOnClick || (throttle(() => onDownLoad(item, index), 1000))}
-                  >
-                    下载
-                  </span>
+              {downloading[index] ?
+                <Spin className={styles.spinner} type="spinner" /> :
+                <span
+                  className={styles.span}
+                  onClick={unifyOnClick || (throttle(() => onDownLoad(item, index), 1000))}
+                >
+                  下载
+                </span>
               }
             </div>
           </div>
@@ -285,7 +261,7 @@ const Index = ({
   const Pay = ({ item, index, type }) => {
     return (
       <div className={`${styles.container} ${styles.containerPay}`} key={index} onClick={onPay}>
-        <img className={styles.containerIcon} src={getAttachmentIconLink(type)}/>
+        <img className={styles.containerIcon} src={getAttachmentIconLink(type)} />
         <span className={styles.content}>{item.fileName}</span>
       </div>
     );
@@ -295,11 +271,11 @@ const Index = ({
   const [isShowMore, setIsShowMore] = useState(false);
   useEffect(() => {
     // 详情页不折叠
-    const {pathname} = window.location;
+    const { pathname } = window.location;
     if (/^\/thread\/\d+/.test(pathname)) {
       setIsShowMore(false);
     } else {
-      setIsShowMore(attachments.length > ATTACHMENT_FOLD_COUNT);
+      setIsShowMore(showAttachList.length > ATTACHMENT_FOLD_COUNT);
     }
   }, []);
   const clickMore = () => {
@@ -308,33 +284,27 @@ const Index = ({
 
   return (
     <div className={styles.wrapper}>
-        {
-          attachments.map((item, index) => {
-            if (isShowMore && index >= ATTACHMENT_FOLD_COUNT) {
-              return null;
-            }
+      {
+        showAttachList.map((item, index) => {
+          if (isShowMore && index >= ATTACHMENT_FOLD_COUNT) {
+            return null;
+          }
 
-            // 获取文件类型
-            const extension = item?.extension || '';
-            const type = extensionList.indexOf(extension.toUpperCase()) > 0
-              ? extension.toUpperCase()
-              : 'UNKNOWN';
-            return (
-              !isPay ? (
-                // <Normal key={index} item={item} index={index} type={type} />
-                renderNormal({key: index, item, index, type})
-              ) : (
-                <Pay key={index} item={item} index={index} type={type} />
-              )
-            );
-          })
-        }
-        {
-          isShowMore ? (<div className={styles.loadMore} onClick={clickMore}>
-            查看更多<Icon name='RightOutlined' className={styles.icon} size={12} />
-          </div>) : <></>
-        }
-        { previewFile ? <FilePreview file={previewFile} onClose={() => setPreviewFile(null) } /> : <></> }
+          // 获取文件类型
+          const extension = item?.extension || '';
+          const type = extensionList.indexOf(extension.toUpperCase()) > 0
+            ? extension.toUpperCase()
+            : 'UNKNOWN';
+
+          return renderNormal({ key: index, item, index, type });
+        })
+      }
+      {
+        isShowMore ? (<div className={styles.loadMore} onClick={clickMore}>
+          查看更多<Icon name='RightOutlined' className={styles.icon} size={12} />
+        </div>) : <></>
+      }
+      {previewFile ? <FilePreview file={previewFile} onClose={() => setPreviewFile(null)} /> : <></>}
     </div>
   );
 };

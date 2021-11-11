@@ -11,10 +11,9 @@ const Index = ({ onClickMore: gotoDetail, imgData = [], flat = false, platform =
   const [visible, setVisible] = useState(false);
   const [defaultImg, setDefaultImg] = useState('');
   const ImagePreviewerRef = React.useRef(null);
-  // const [firstImgData, setFirstImgData] = useState(null);
   const [firstImgData, setFirstImgData] = useState({ width: !Array.isArray(imgData) ? imgData[0]?.fileWidth || 0 : 0, height: !Array.isArray(imgData) ? imgData[0]?.fileHeight || 0 : 0 });
 
-  const imagePreviewers = useMemo(() => imgData.map(item => item?.url), [imgData]);
+  const imagePreviewers = useMemo(() => imgData.filter(item => item?.needPay !== 1).map(item => item?.url), [imgData]);
   useEffect(() => {
     if (visible && ImagePreviewerRef && ImagePreviewerRef.current) {
       ImagePreviewerRef.current.show();
@@ -74,18 +73,21 @@ const Index = ({ onClickMore: gotoDetail, imgData = [], flat = false, platform =
   //   onImageReady && onImageReady();
   // }, [flat, firstImgData]);
 
-  const onClick = (id) => {
-    if (isPay) {
+  const onClick = (item) => {
+    const needPay = item.needPay === undefined ? isPay : item.needPay === 1;
+
+    if (needPay) {
       onPay();
-    } else {
-      updateViewCount();
-      imgData.forEach((item) => {
-        if (item.id === id) {
-          setDefaultImg(item?.url);
-          setVisible(true);
-        }
-      });
+      return;
     }
+
+    updateViewCount();
+    imgData.forEach((i) => {
+      if (i.id === item?.id) {
+        setDefaultImg(i?.url);
+        setVisible(true);
+      }
+    });
   };
 
   const onClickMore = (e) => {
@@ -250,7 +252,7 @@ const Three = ({ type, bigImages, smallImages, onClick, style, showLongPicture, 
                     type={item?.fileType}
                     size={item?.fileSize}
                     src={item?.thumbUrl}
-                    onClick={() => onClick(item?.id)}
+                    onClick={() => onClick(item)}
                     showLongPicture={showLongPicture} />
                 </Col>
               ))}
@@ -282,7 +284,7 @@ const Three = ({ type, bigImages, smallImages, onClick, style, showLongPicture, 
               type={item?.fileType}
               src={item?.thumbUrl}
               size={item?.fileSize}
-              onClick={() => onClick(item?.id)}
+              onClick={() => onClick(item)}
               showLongPicture={showLongPicture} />
           </Col>
         ))}
@@ -314,7 +316,7 @@ const Four = ({ type, bigImages, smallImages, onClick, style, showLongPicture, p
                 type={item?.fileType}
                 src={item?.thumbUrl}
                 size={item?.fileSize}
-                onClick={() => onClick(item?.id)}
+                onClick={() => onClick(item)}
                 showLongPicture={showLongPicture} />
             </Col>
           ))}
@@ -336,7 +338,7 @@ const Five = ({ type, bigImages, smallImages, onClick, style, imgData = [], onCl
             type={item?.fileType}
             src={item?.thumbUrl}
             size={item?.fileSize}
-            onClick={() => onClick(item?.id)}
+            onClick={() => onClick(item)}
             showLongPicture={showLongPicture} />
         </Col>
       ))}
@@ -350,7 +352,7 @@ const Five = ({ type, bigImages, smallImages, onClick, style, imgData = [], onCl
             type={item?.fileType}
             src={item?.thumbUrl}
             size={item?.fileSize}
-            onClick={() => onClick(item?.id)}
+            onClick={() => onClick(item)}
             showLongPicture={showLongPicture} />
           {imgData?.length > 5 && index === smallImages.length - 1 && (
             <div className={styles.modalBox} onClick={onClickMore}>{`+${imgData.length - 5}`}</div>

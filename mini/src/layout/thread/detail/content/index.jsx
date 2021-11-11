@@ -167,7 +167,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread', 
           {text && <PostContent useShowMore={false} content={text || ''} />}
 
           {/* 视频 */}
-          {parseContent.VIDEO && (
+          {parseContent.VIDEO && parseContent.VIDEO.mediaUrl && (
             <VideoPlay
               url={parseContent.VIDEO.mediaUrl}
               coverUrl={parseContent.VIDEO.coverUrl}
