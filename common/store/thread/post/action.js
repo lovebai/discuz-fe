@@ -308,17 +308,18 @@ class ThreadPostAction extends ThreadPostStore {
         text,
       },
     };
-    if (position.address) params.position = position;
-    else {
-      // 主要是编辑时删除位置的情况，暂时区别开编辑和发帖，因为后台没有更新接口避免影响发帖
-      if (isUpdate) params.position = {
-        longitude: 0,
-        latitude: 0,
-        cityname: '',
-        address: '',
-        location: '',
-      };
-    }
+    // if (position.address) params.position = position;
+    // else {
+    //   // 主要是编辑时删除位置的情况，暂时区别开编辑和发帖，因为后台没有更新接口避免影响发帖
+    //   if (isUpdate) params.position = {
+    //     longitude: 0,
+    //     latitude: 0,
+    //     cityname: '',
+    //     address: '',
+    //     location: '',
+    //   };
+    // }
+    params.position = position.address ? position : {};
     params.price = price || 0;
     params.freeWords = freeWords || 0;
     params.attachmentPrice = attachmentPrice || 0;
