@@ -381,6 +381,10 @@ class ThreadPostAction extends ThreadPostStore {
         audio.id = audioId;
       } else if (tomId === THREAD_TYPE.vote.toString()) {
         vote = contentindexes[index].body[0] || {};
+        if (vote.expiredAt) {
+          // 兼容IOS时间字符串格式
+          vote.expiredAt = vote.expiredAt.replace(/-/g, '/');
+        }
       } else if (tomId === THREAD_TYPE.goods.toString()) product = contentindexes[index].body;
       else if (tomId === THREAD_TYPE.video.toString()) {
         video = contentindexes[index].body || {};
