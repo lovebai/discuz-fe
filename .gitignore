@@ -34,3 +34,5 @@ sls.config.yaml
 .pluginConfig.js
 pluginPages/
 
+test-serverless.yml
+
