@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import AudioPlay from '../../../audio-play';
+import AudioPlay from '../../../../thread/audio-play';
 
 const AudioRender = inject('threadPost')(
   observer(({ ...props }) => {

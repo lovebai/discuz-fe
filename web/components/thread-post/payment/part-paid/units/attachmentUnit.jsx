@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import { useSelectAll } from '@components/thread/all-post-paid/part-paid/hooks';
-import Unit from '@components/thread/all-post-paid/part-paid/units/unit';
-import SelectAll from '@components/thread/all-post-paid/part-paid/units/selectAll';
-import AttachmentRender from '@components/thread/all-post-paid/part-paid/renders/attachmentRender';
+import { useSelectAll } from '@components/thread-post/payment/part-paid/hooks';
+import Unit from '@components/thread-post/payment/part-paid/units/unit';
+import SelectAll from '@components/thread-post/payment/part-paid/units/selectAll';
+import AttachmentRender from '@components/thread-post/payment/part-paid/renders/attachmentRender';
 
 const AttachmentUnit = inject('threadPost')(
   observer(({ ...props }) => {

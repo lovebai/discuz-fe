@@ -1,5 +1,5 @@
 import { inject, observer } from 'mobx-react';
-import Unit from '@components/thread/all-post-paid/part-paid/units/unit';
+import Unit from '@components/thread-post/payment/part-paid/units/unit';
 import { Input } from '@discuzq/design';
 import React, { useState, useEffect } from 'react';
 

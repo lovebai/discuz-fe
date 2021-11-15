@@ -1,7 +1,7 @@
 import { inject, observer } from 'mobx-react';
-import Unit from '@components/thread/all-post-paid/part-paid/units/unit';
+import Unit from '@components/thread-post/payment/part-paid/units/unit';
 import React from 'react';
-import VideoRender from '@components/thread/all-post-paid/part-paid/renders/videoRender';
+import VideoRender from '@components/thread-post/payment/part-paid/renders/videoRender';
 
 const VideoUnit = inject('threadPost')(
   observer(({ ...props }) => {

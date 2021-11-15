@@ -1,9 +1,9 @@
 import { inject, observer } from 'mobx-react';
-import { useSelectAll } from '@components/thread/all-post-paid/part-paid/hooks';
-import Unit from '@components/thread/all-post-paid/part-paid/units/unit';
+import { useSelectAll } from '@components/thread-post/payment/part-paid/hooks';
+import Unit from '@components/thread-post/payment/part-paid/units/unit';
 import React from 'react';
-import SelectAll from '@components/thread/all-post-paid/part-paid/units/selectAll';
-import ImageRender from '@components/thread/all-post-paid/part-paid/renders/imageRender';
+import SelectAll from '@components/thread-post/payment/part-paid/units/selectAll';
+import ImageRender from '@components/thread-post/payment/part-paid/renders/imageRender';
 
 const ImageUnit = inject('threadPost')(observer(({ ...props }) => {
   const { threadPost = {} } = props;

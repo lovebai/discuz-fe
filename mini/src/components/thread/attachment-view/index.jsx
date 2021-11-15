@@ -39,9 +39,7 @@ const Index = ({
   customActionArea = null,
 }) => {
   // 过滤需要部分付费的附件
-  const showAttachList = attachments.filter(
-    item => item.needPay === undefined ? !isPay : item.needPay !== 1
-  );
+  const showAttachList = attachments.filter((item) => (item.needPay === undefined ? !isPay : item.needPay !== 1));
 
   // 处理文件大小的显示
   const handleFileSize = (fileSize) => {
@@ -111,12 +109,12 @@ const Index = ({
 
       if (!item || !threadId) return;
 
-    if (!item?.url) {
-      Toast.info({ content: "获取下载链接失败" });
-      // downloading[index] = false;
-      // setDownloading([...downloading]);
-      return;
-    }
+      if (!item?.url) {
+        Toast.info({ content: '获取下载链接失败' });
+        // downloading[index] = false;
+        // setDownloading([...downloading]);
+        return;
+      }
 
       if (!item?.url) {
         Toast.info({ content: '获取下载链接失败' });
@@ -242,11 +240,12 @@ const Index = ({
     if (!isPay) {
       if (!file || !threadId) return;
 
-    await fetchDownloadUrl(threadId, file.id, () => {
-      file.readyToPlay = true;
-    });
+      await fetchDownloadUrl(threadId, file.id, () => {
+        file.readyToPlay = true;
+      });
 
-    return !!file.readyToPlay;
+      return !!file.readyToPlay;
+    }
   };
 
   const onPlay = (audioRef, audioWrapperRef) => {
@@ -338,6 +337,7 @@ const Index = ({
 
   // 是否展示 查看更多
   const [isShowMore, setIsShowMore] = useState(false);
+
   useEffect(() => {
     // 详情页不折叠
     const { path } = Taro.getCurrentInstance().router;
@@ -347,6 +347,7 @@ const Index = ({
       setIsShowMore(showAttachList.length > ATTACHMENT_FOLD_COUNT);
     }
   }, []);
+
   const clickMore = () => {
     setIsShowMore(false);
   };
