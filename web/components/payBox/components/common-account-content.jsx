@@ -52,7 +52,7 @@ export default class CommonAccountContent extends Component {
         value = '问答围观';
         break;
       case ORDER_TRADE_TYPE.ORDER_TYPE_ATTACHMENT: // 附件 7
-        value = '附件';
+        value = '帖子内容';
         break;
       case ORDER_TRADE_TYPE.ORDER_TYPE_RENEW: // 站点付费 8
         value = '站点付费';
