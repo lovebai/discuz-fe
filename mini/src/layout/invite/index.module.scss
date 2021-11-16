@@ -76,6 +76,9 @@
     line-height: $font-line-height-small;
     color: $text-color-secondary;
   }
+  .memberBadgeBox {
+    padding-top: $padding-1n;
+  }
   .user_info_invite{
     width: rem(311);
     height: rem(78);
