@@ -51,6 +51,8 @@
     justify-content: center;
     font-size: $font-size-primary;
     .title {
+      max-width: 100px;
+      @include lamp-clamp(2);
       color: $text-color-primary;
       line-height: 20px;
     }
