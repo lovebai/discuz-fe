@@ -29,13 +29,19 @@
         align-items: center;
       }
       .name {
+        display: inline-block;
+        vertical-align: middle;
+        max-width: rem(500);
+        height: rem(18);
         font-weight: 700;
         font-size: rem($font-size-middle);
         line-height: rem(18);
         color: $text-color-primary;
         margin-right: rem($margin-2n);
+        @include text-ellipsis();
       }
       .group {
+        vertical-align: middle;
         font-size: rem($font-size-primary);
         line-height: rem($font-line-height-small);
         color: $text-color-secondary;
