@@ -292,7 +292,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
           <div style={{ textAlign: 'center' }} onClick={onContentClick}>
             <Button className={styles.payButton} type="primary">
               <Icon className={styles.payIcon} name="GoldCoinOutlined" size={16}></Icon>
-              <p>支付{attachmentPrice}元查看附件内容</p>
+              <p>支付{attachmentPrice}元查看付费内容</p>
             </Button>
           </div>
         )}

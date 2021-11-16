@@ -87,7 +87,7 @@ const Index = ({
       });
   };
 
-  const [downloading, setDownloading] = useState(Array.from({ length: attachments.length }, () => false));
+  const [downloading, setDownloading] = useState(Array.from({ length: showAttachList.length }, () => false));
 
   const onDownLoad = (item, index) => {
     updateViewCount();
@@ -99,12 +99,8 @@ const Index = ({
 
     itemUrl = item.url; // 暂用于微信下载
 
-    if (!isPay) {
-      if (!item || !threadId) return;
-      download(item);
-    } else {
-      onPay();
-    }
+    if (!item || !threadId) return;
+    download(item);
   };
 
   const download = async (item) => {
@@ -134,25 +130,8 @@ const Index = ({
       return true;
     }
 
-    if (res?.code === -7083) {
-      // 超过今天可下载附件的最大次数
-      Toast.info({ content: res?.msg });
-    }
+    Toast.info({ content: res?.msg });
 
-    if (res?.code === -7082) {
-      // 下载资源已失效
-      Toast.info({ content: res?.msg });
-    }
-
-    if (res?.code === -4004) {
-      // 资源不存在
-      Toast.info({ content: res?.msg });
-    }
-
-    if (res?.code === -5001) {
-      // 操作太快，请稍后再试
-      Toast.info({ content: res?.msg });
-    }
     return false;
   };
 
@@ -162,26 +141,22 @@ const Index = ({
       Toast.warning({ content: '暂⽆权限查看附件' });
       return;
     }
-    if (!isPay) {
-      if (!item || !threadId) return;
+    if (!item || !threadId) return;
 
-      const attachmentId = item.id;
-      fetchDownloadUrl(threadId, attachmentId, async (url, fileName) => {
-        // 链接拼接
-        url = splicingLink(url, fileName);
+    const attachmentId = item.id;
+    fetchDownloadUrl(threadId, attachmentId, async (url, fileName) => {
+      // 链接拼接
+      url = splicingLink(url, fileName);
 
-        setTimeout(() => {
-          if (!h5Share({ url: url })) {
-            navigator.clipboard.writeText(url); // qq浏览器不支持异步document.execCommand('Copy')
-          }
-          Toast.success({
-            content: '链接复制成功',
-          });
-        }, 300);
-      });
-    } else {
-      onPay();
-    }
+      setTimeout(() => {
+        if (!h5Share({ url: url })) {
+          navigator.clipboard.writeText(url); // qq浏览器不支持异步document.execCommand('Copy')
+        }
+        Toast.success({
+          content: '链接复制成功',
+        });
+      }, 300);
+    });
   };
 
   const splicingLink = (url, fileName) => {
@@ -205,16 +180,12 @@ const Index = ({
       return;
     }
 
-    if (!isPay) {
-      if (!file || !threadId) return;
+    if (!file || !threadId) return;
 
-      fetchDownloadUrl(threadId, file.id, () => {
-        // 校验权限
-        setPreviewFile(file);
-      });
-    } else {
-      onPay();
-    }
+    fetchDownloadUrl(threadId, file.id, () => {
+      // 校验权限
+      setPreviewFile(file);
+    });
   };
 
   // 音频播放
@@ -230,15 +201,13 @@ const Index = ({
 
     // 播放前校验权限
     updateViewCount();
-    if (!isPay) {
-      if (!file || !threadId) return;
+    if (!file || !threadId) return;
 
-      await fetchDownloadUrl(threadId, file.id, () => {
-        file.readyToPlay = true;
-      });
+    await fetchDownloadUrl(threadId, file.id, () => {
+      file.readyToPlay = true;
+    });
 
-      return !!file.readyToPlay;
-    }
+    return !!file.readyToPlay;
   }
 
   const renderRightArea = ({ item, index }) => {
@@ -334,7 +303,7 @@ const Index = ({
 
   return (
     <div className={styles.wrapper}>
-      {attachments.map((item, index) => {
+      {showAttachList.map((item, index) => {
         if (isShowMore && index >= ATTACHMENT_FOLD_COUNT) {
           return null;
         }
@@ -342,12 +311,7 @@ const Index = ({
         // 获取文件类型
         const extension = item?.extension || '';
         const type = extensionList.indexOf(extension.toUpperCase()) > 0 ? extension.toUpperCase() : 'UNKNOWN';
-        return !isPay ? (
-          // <Normal key={index} item={item} index={index} type={type} />
-          renderNormal({ key: index, item, index, type })
-        ) : (
-          <Pay key={index} item={item} index={index} type={type} />
-        );
+        return renderNormal({ item, index, type });
       })}
       {isShowMore ? (
         <div className={styles.loadMore} onClick={clickMore}>

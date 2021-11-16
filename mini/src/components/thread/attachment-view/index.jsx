@@ -85,7 +85,7 @@ const Index = ({
       });
   };
 
-  const [downloading, setDownloading] = useState(Array.from({ length: attachments.length }, () => false));
+  const [downloading, setDownloading] = useState(Array.from({ length: showAttachList.length }, () => false));
 
   const onDownLoad = async (item, index) => {
     updateViewCount();
@@ -95,66 +95,62 @@ const Index = ({
       return;
     }
 
-    if (!isPay) {
-      if (!item || !threadId) return;
-      const params = downloadAttachmentParams(item);
-      const isDownload = await downloadAttachment(params);
-      if (!isDownload) return;
+    if (!item || !threadId) return;
+    const params = downloadAttachmentParams(item);
+    const isDownload = await downloadAttachment(params);
+    if (!isDownload) return;
 
-      // 下载中
-      if (downloading?.length && downloading[index]) {
-        Toast.info({ content: '下载中，请稍后' });
-        return;
-      }
-
-      if (!item || !threadId) return;
-
-      if (!item?.url) {
-        Toast.info({ content: '获取下载链接失败' });
-        // downloading[index] = false;
-        // setDownloading([...downloading]);
-        return;
-      }
-
-      if (!item?.url) {
-        Toast.info({ content: '获取下载链接失败' });
-        // downloading[index] = false;
-        // setDownloading([...downloading]);
-      }
-
-      Taro.downloadFile({
-        url: item.url,
-        success(res) {
-          Taro.openDocument({
-            filePath: res.tempFilePath,
-            success(res) {
-              Toast.info({ content: '下载成功' });
-            },
-            fail(error) {
-              Toast.info({ content: '小程序暂不支持下载此类文件，请点击“链接”复制下载链接' });
-              console.error(error.errMsg);
-            },
-            complete() {},
-          });
-        },
-        fail(error) {
-          if (error?.errMsg.indexOf('domain list') !== -1) {
-            Toast.info({ content: '下载链接不在域名列表中' });
-          } else if (error?.errMsg.indexOf('invalid url') !== -1) {
-            Toast.info({ content: '下载链接无效' });
-          } else {
-            Toast.info({ content: error.errMsg });
-          }
-          console.error(error.errMsg);
-        },
-        complete() {
-          // downloading[index] = false;
-          // setDownloading([...downloading]);
-        },
-      });
-    } else {
-      onPay();
+    // 下载中
+    if (downloading?.length && downloading[index]) {
+      Toast.info({ content: '下载中，请稍后' });
+      return;
     }
+
+    if (!item || !threadId) return;
+
+    if (!item?.url) {
+      Toast.info({ content: '获取下载链接失败' });
+      // downloading[index] = false;
+      // setDownloading([...downloading]);
+      return;
+    }
+
+    if (!item?.url) {
+      Toast.info({ content: '获取下载链接失败' });
+      // downloading[index] = false;
+      // setDownloading([...downloading]);
+    }
+
+    Taro.downloadFile({
+      url: item.url,
+      success(res) {
+        Taro.openDocument({
+          filePath: res.tempFilePath,
+          success(res) {
+            Toast.info({ content: '下载成功' });
+          },
+          fail(error) {
+            Toast.info({ content: '小程序暂不支持下载此类文件，请点击“链接”复制下载链接' });
+            console.error(error.errMsg);
+          },
+          complete() { },
+        });
+      },
+      fail(error) {
+        if (error?.errMsg.indexOf('domain list') !== -1) {
+          Toast.info({ content: '下载链接不在域名列表中' });
+        } else if (error?.errMsg.indexOf('invalid url') !== -1) {
+          Toast.info({ content: '下载链接无效' });
+        } else {
+          Toast.info({ content: error.errMsg });
+        }
+        console.error(error.errMsg);
+      },
+      complete() {
+        // downloading[index] = false;
+        // setDownloading([...downloading]);
+      },
+    });
   };
 
   const downloadAttachmentParams = (item) => {
@@ -173,25 +169,8 @@ const Index = ({
       return true;
     }
 
-    if (res?.code === -7083) {
-      // 超过今天可下载附件的最大次数
-      Toast.info({ content: res?.msg });
-    }
+    Toast.info({ content: res?.msg });
 
-    if (res?.code === -7082) {
-      // 下载资源已失效
-      Toast.info({ content: res?.msg });
-    }
-
-    if (res?.code === -4004) {
-      // 资源不存在
-      Toast.info({ content: res?.msg });
-    }
-
-    if (res?.code === -5001) {
-      // 操作太快，请稍后再试
-      Toast.info({ content: res?.msg });
-    }
     return false;
   };
 
@@ -201,26 +180,22 @@ const Index = ({
       Toast.warning({ content: '暂⽆权限查看附件' });
       return;
     }
-    if (!isPay) {
-      if (!item || !threadId) return;
+    if (!item || !threadId) return;
 
-      const attachmentId = item.id;
-      fetchDownloadUrl(threadId, attachmentId, (url, fileName) => {
-        // 链接拼接
-        url = splicingLink(url, fileName);
+    const attachmentId = item.id;
+    fetchDownloadUrl(threadId, attachmentId, (url, fileName) => {
+      // 链接拼接
+      url = splicingLink(url, fileName);
 
-        Taro.setClipboardData({
-          data: url,
-          success(res) {
-            Taro.getClipboardData({
-              success(res) {},
-            });
-          },
-        });
+      Taro.setClipboardData({
+        data: url,
+        success(res) {
+          Taro.getClipboardData({
+            success(res) { },
+          });
+        },
       });
-    } else {
-      onPay();
-    }
+    });
   };
 
   const splicingLink = (url, fileName) => {
@@ -237,15 +212,13 @@ const Index = ({
       return true;
     }
 
-    if (!isPay) {
-      if (!file || !threadId) return;
+    if (!file || !threadId) return;
 
-      await fetchDownloadUrl(threadId, file.id, () => {
-        file.readyToPlay = true;
-      });
+    await fetchDownloadUrl(threadId, file.id, () => {
+      file.readyToPlay = true;
+    });
 
-      return !!file.readyToPlay;
-    }
+    return !!file.readyToPlay;
   };
 
   const onPlay = (audioRef, audioWrapperRef) => {
@@ -354,7 +327,7 @@ const Index = ({
 
   return (
     <View className={styles.wrapper}>
-      {attachments.map((item, index) => {
+      {showAttachList.map((item, index) => {
         if (isShowMore && index >= ATTACHMENT_FOLD_COUNT) {
           return null;
         }
@@ -363,12 +336,7 @@ const Index = ({
         const extension = item?.extension || '';
         const type = extensionList.indexOf(extension.toUpperCase()) > 0 ? extension.toUpperCase() : 'UNKNOWN';
 
-        return !isPay ? (
-          // <Normal key={index} item={item} index={index} type={type} />
-          renderNormal({ item, index, type })
-        ) : (
-          <Pay key={index} item={item} index={index} type={type} />
-        );
+        return renderNormal({ item, index, type });
       })}
       {isShowMore ? (
         <View className={styles.loadMore} onClick={clickMore}>
