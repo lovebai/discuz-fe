@@ -591,20 +591,20 @@ class ThreadPostAction extends ThreadPostStore {
     const anonymous = isAnonymous ? 1 : 0;
 
     // 恢复部分付费的选择信息
-    if (content[THREAD_TYPE.image].priceList) {
-      this.imagesPriceList = content[THREAD_TYPE.image].priceList;
+    if (content.indexes[THREAD_TYPE.image]?.priceList) {
+      this.imagesPriceList = content.indexes[THREAD_TYPE.image].priceList;
     }
 
-    if (content[THREAD_TYPE.video].priceList) {
-      this.videoPriceList = content[THREAD_TYPE.video].priceList;
+    if (content.indexes[THREAD_TYPE.video]?.priceList) {
+      this.videoPriceList = content.indexes[THREAD_TYPE.video].priceList;
     }
 
-    if (content[THREAD_TYPE.file].priceList) {
-      this.filesPriceList = content[THREAD_TYPE.file].priceList;
+    if (content.indexes[THREAD_TYPE.file]?.priceList) {
+      this.filesPriceList = content.indexes[THREAD_TYPE.file].priceList;
     }
 
-    if (content[THREAD_TYPE.voice].priceList) {
-      this.audioPriceList = content[THREAD_TYPE.voice].priceList;
+    if (content.indexes[THREAD_TYPE.voice]?.priceList) {
+      this.audioPriceList = content.indexes[THREAD_TYPE.voice].priceList;
     }
 
     this.setPostData(observable({
