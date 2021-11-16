@@ -166,15 +166,15 @@ export default class PayBox extends React.Component {
       const { options = {} } = this.props.payBox;
       const { amount = 0 } = options;
       if (Number(this.props.payBox?.walletAvaAmount) < Number(amount)) {
-        // 钱包余额不足 && 开启微信支付 && 开启充值功能 && 小程序设置了开启充值 跳转到充值页 
+        // 钱包余额不足 && 开启微信支付 && 开启充值功能 && 小程序设置了开启充值 跳转到充值页
         const { isWechatPayOpen, webConfig } = this.props.site || {};
         const { siteCharge } = webConfig.setSite || {};
         const { threadOptimize } = webConfig.other || {};
         const isShowRecharge = isWechatPayOpen && siteCharge === 1 && threadOptimize;
-        if (isShowRecharge) {
-          this.toRechargePage();
-          return;
-        }
+        // if (isShowRecharge) {
+        //   this.toRechargePage();
+        //   return;
+        // }
         Toast.error({
           content: '钱包余额不足',
           duration: 2000,
@@ -234,9 +234,9 @@ export default class PayBox extends React.Component {
   getPayText = () => {
     const { options = {} } = this.props.payBox;
     const { amount = 0 } = options;
-    if (this.isToRecharge()) {
-      return '去充值';
-    }
+    // if (this.isToRecharge()) {
+    //   return '去充值';
+    // }
     return '确定支付';
   }
 
@@ -282,6 +282,11 @@ export default class PayBox extends React.Component {
                     {(item.paymentType === PAYWAY_MAP.WX ||
                       (canWalletPay && Number(this.props.payBox?.walletAvaAmount) >= Number(options.amount))) && (
                       <Radio name={item.paymentType} />
+                    )}
+                    {this.isToRecharge() && item.paymentType === PAYWAY_MAP.WALLET && (
+                      <View className={styles.textPrimary} onClick={this.handlePayConfirmed}>
+                        充值
+                      </View>
                     )}
                   </View>
                 </View>
