@@ -59,6 +59,10 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
   const canEssence = threadStore?.threadData?.ability?.canEssence;
   const canStick = threadStore?.threadData?.ability?.canStick;
 
+  // 是否作者自己
+  const isSelf = props.user?.userInfo?.id && props.user?.userInfo?.id === threadStore?.threadData?.userId;
+  // 是否已经付费
+  const isPayed = threadStore?.threadData?.paid === true;
   // 是否可以免费查看付费帖子
   const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
   // 是否部分付费
@@ -69,10 +73,6 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
   // 是否帖子付费
   const isThreadPay = threadStore?.threadData?.payType === 1;
   const threadPrice = threadStore?.threadData?.price || 0;
-  // 是否已经付费
-  const isPayed = threadStore?.threadData?.paid === true;
-  // 是否作者自己
-  const isSelf = props.user?.userInfo?.id && props.user?.userInfo?.id === threadStore?.threadData?.userId;
 
   // 是否红包帖
   const isRedPack = threadStore?.threadData?.displayTag?.isRedPack;
