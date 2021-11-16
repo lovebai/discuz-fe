@@ -92,6 +92,10 @@ const Index = ({ onClickMore: gotoDetail, imgData = [], flat = false, platform =
 
   const onClickMore = (e) => {
     e.stopPropagation();
+    if (imagePreviewers.length === 0 || imgData.slice(5).some(i => !!i?.needPay)) {
+      onPay();
+      return;
+    }
     updateViewCount();
     setDefaultImg(imgData[4]?.url);
     setTimeout(() => {
@@ -135,7 +139,7 @@ const Index = ({ onClickMore: gotoDetail, imgData = [], flat = false, platform =
                 noSmart
                 type={item?.fileType}
                 src={item?.url}
-                onClick={() => onClick(item.id)}
+                onClick={() => onClick(item)}
                 showLongPicture={showLongPicture} />
             </div>
           ))}
@@ -202,7 +206,7 @@ const One = ({ type, bigImages, onClick, style, showLongPicture, postLoad }) => 
         type={item?.fileType}
         src={item?.thumbUrl}
         size={item?.fileSize}
-        onClick={() => onClick(item.id)}
+        onClick={() => onClick(item)}
         showLongPicture={showLongPicture} />
     </div>
   );
@@ -219,7 +223,7 @@ const Two = ({ type, bigImages, onClick, style, showLongPicture, postLoad }) => 
             type={item?.fileType}
             src={item?.thumbUrl}
             size={item?.fileSize}
-            onClick={() => onClick(item.id)}
+            onClick={() => onClick(item)}
             showLongPicture={showLongPicture} />
         </Col>
       ))}
@@ -238,7 +242,7 @@ const Three = ({ type, bigImages, smallImages, onClick, style, showLongPicture, 
               postLoad={postLoad}
               type={bigImages[0]?.fileType}
               src={bigImages[0]?.thumbUrl}
-              onClick={() => onClick(bigImages[0].id)}
+              onClick={() => onClick(bigImages[0])}
               size={bigImages[0]?.fileSize}
               showLongPicture={showLongPicture} />
           </Col>
@@ -272,7 +276,7 @@ const Three = ({ type, bigImages, smallImages, onClick, style, showLongPicture, 
           type={bigImages[0]?.fileType}
           src={bigImages[0]?.thumbUrl}
           size={bigImages[0]?.fileSize}
-          onClick={() => onClick(bigImages[0].id)}
+          onClick={() => onClick(bigImages[0])}
           showLongPicture={showLongPicture} />
       </div>
       <Row gutter={4} className={styles.smallImages}>
@@ -303,7 +307,7 @@ const Four = ({ type, bigImages, smallImages, onClick, style, showLongPicture, p
           type={bigImages[0]?.fileType}
           src={bigImages[0]?.thumbUrl}
           size={bigImages[0]?.fileSize}
-          onClick={() => onClick(bigImages[0]?.id)}
+          onClick={() => onClick(bigImages[0])}
           showLongPicture={showLongPicture} />
       </Col>
       <Col span={4} className={styles.col}>

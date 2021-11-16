@@ -54,6 +54,10 @@ const Index = ({
 
   const onClickMore = (e) => {
     e.stopPropagation();
+    if (imagePreviewers.length === 0 || imgData.slice(5).some(i => !!i?.needPay)) {
+      onPay();
+      return;
+    }
     updateViewCount();
     setDefaultImg(imgData[4]?.url);
     setTimeout(() => {
@@ -216,7 +220,7 @@ const Three = ({ type, bigImages, smallImages, onClick, style }) => {
       <View className={`${styles[style]} ${styles[type]}`} onClick={e => e.stopPropagation()}>
         <Row gutter={4}>
           <Col span={8} className={styles.col}>
-            <SmartImg level={1} type={bigImages[0]?.fileType} mode='aspectFill' src={bigImages[0]?.thumbUrl} size={bigImages[0]?.fileSize} onClick={() => onClick(bigImages[0]?.id)} />
+            <SmartImg level={1} type={bigImages[0]?.fileType} mode='aspectFill' src={bigImages[0]?.thumbUrl} size={bigImages[0]?.fileSize} onClick={() => onClick(bigImages[0])} />
           </Col>
           <Col span={4} className={styles.col}>
             <Row gutter={4} className={styles.smallRow}>
@@ -235,7 +239,7 @@ const Three = ({ type, bigImages, smallImages, onClick, style }) => {
   return (
     <View className={`${styles[style]} ${styles[type]}`} onClick={e => e.stopPropagation()}>
       <View className={styles.bigImages}>
-        <SmartImg level={1} type={bigImages[0]?.fileType} src={bigImages[0]?.thumbUrl} size={bigImages[0]?.fileSize} mode='aspectFill' onClick={() => onClick(bigImages[0]?.id)} />
+        <SmartImg level={1} type={bigImages[0]?.fileType} src={bigImages[0]?.thumbUrl} size={bigImages[0]?.fileSize} mode='aspectFill' onClick={() => onClick(bigImages[0])} />
       </View>
       <Row gutter={4} className={styles.smallImages}>
         {smallImages.map((item, index) => (
@@ -252,7 +256,7 @@ const Four = ({ type, bigImages, smallImages, onClick, style }) => (
   <View onClick={e => e.stopPropagation()}>
     <Row gutter={4} className={styles[style]} >
       <Col span={8} className={styles.col}>
-        <SmartImg level={1} type={bigImages[0]?.fileType} src={bigImages[0]?.thumbUrl} size={bigImages[0]?.fileSize} mode='aspectFill' onClick={() => onClick(bigImages[0]?.id)} />
+        <SmartImg level={1} type={bigImages[0]?.fileType} src={bigImages[0]?.thumbUrl} size={bigImages[0]?.fileSize} mode='aspectFill' onClick={() => onClick(bigImages[0])} />
       </Col>
       <Col span={4} className={styles.col}>
         <Row gutter={4} className={styles.smallRow}>

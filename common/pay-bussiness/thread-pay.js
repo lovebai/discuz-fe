@@ -49,11 +49,11 @@ export default (thread, user) => {
     data.title = title || '付费主题';
   }
 
-  // 附件付费
+  // 附件部分付费
   if (payType === 2) {
     data.type = 7;
     data.amount = attachmentPrice;
-    data.title = title || '附件付费';
+    data.title = title || '部分付费';
   }
 
   return new Promise((resolve, reject) => {
