@@ -552,7 +552,7 @@ class Index extends Component {
       if (qcloudCaptcha && createThreadWithCaptcha) {
         if (!this.ticket || !this.randstr) {
           this.setState({
-            isSavingDraft: true
+            isSavingDraft: isDraft
           });
           toTCaptcha(qcloudCaptchaAppId);
           return false;
@@ -660,7 +660,10 @@ class Index extends Component {
         this.removeLocalData(); // 支付成功删除本地缓存
       }
       !isAutoSave && this.postToast('发布成功', 'success');
-      if (!isDraft) Taro.redirectTo({ url: `/indexPages/thread/index?id=${data.threadId}` });
+
+      if (!isDraft) {
+        Taro.redirectTo({ url: `/indexPages/thread/index?id=${data.threadId}` });
+      }
       // }
       return true;
     }
