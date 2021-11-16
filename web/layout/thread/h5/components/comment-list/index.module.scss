@@ -80,6 +80,7 @@
             .masterBox {
               padding-top:rem(2);
               padding-left: rem($padding-2n);
+              flex: none;
               .masterText {
                 border-radius: rem(2);
                 background: $primary-color;
@@ -94,13 +95,17 @@
                 color: $white;
               }
             }
+            .groupsBox {
+              display: flex;
+              align-items: center;
+              padding-left: $padding-2n;
+            }
             .groups {
               color: $text-color-secondary;
               font-size: $font-size-label;
               max-width: rem(100);
               white-space: nowrap;
               overflow: hidden;
-              padding-left: $padding-2n;
               line-height: rem(20);
               text-overflow: ellipsis;
             }

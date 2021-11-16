@@ -5,6 +5,7 @@ import { noop } from '../utils';
 import styles from './index.module.scss';
 import { ThreadCommonContext } from '../utils'
 import classNames from 'classnames';
+import MemberBadge from '@components/member-badge';
 
 const attachInfo = {
   name: '姓名',
@@ -31,6 +32,7 @@ const Index = ({
   type = 0,
   subTitle,
   label,
+  groupLevel,
   index,
   onClick = noop,
   userId,
@@ -43,7 +45,7 @@ const Index = ({
   const handleClick = (e) => {
     e.stopPropagation();
     const avatarPopup = e?.currentTarget.querySelector("#avatar-popup");
-    if( e && avatarPopup && avatarPopup.contains(e.target)) { // 处理来源于Avatar弹框的点击
+    if (e && avatarPopup && avatarPopup.contains(e.target)) { // 处理来源于Avatar弹框的点击
       return;
     }
     onClick(userId);
@@ -55,17 +57,19 @@ const Index = ({
   return (
     <div className={classNames(classString.trim(), {
       [styles.additional]: isHaveAdditionalInfo,
-    })} key={index} style={itemStyle} onClick={handleClick}>
+    })} key={index} style={itemStyle} onClick={isHaveAdditionalInfo ? noop : handleClick}>
       {isHaveAdditionalInfo && index === 0 && (
         <div className={styles['additional-wrapper']}>
           <div className={styles['additional-user']}>
             用户
           </div>
-          {Object.keys(additionalInfo || {}).map((item, ind) => (
-            <div className={styles['additional-item']} key={ind}>
-              {attachInfo[item]}
-            </div>
-          ))}
+          <div className={styles['additional-right']}>
+            {Object.keys(additionalInfo || {}).map((item, ind) => (
+              <div className={styles['additional-name']} key={ind}>
+                {attachInfo[item]}
+              </div>
+            ))}
+          </div>
         </div>
       )}
       {isHaveAdditionalInfo && (
@@ -81,11 +85,13 @@ const Index = ({
             />
             <span className={styles.title}>{title}</span>
           </div>
-          {Object.keys(additionalInfo || {}).map((item, key) => (
-            <div className={styles['additional-item']} key={key}>
-              {additionalInfo[item]}
-            </div>
-          ))}
+          <div className={classNames(styles['additional-right'], styles['additional-scrollX'])}>
+            {Object.keys(additionalInfo || {}).map((item, key) => (
+              <div className={styles['additional-item']} key={key}>
+                {additionalInfo[item]}
+              </div>
+            ))}
+          </div>
         </div>
       )}
       {!isHaveAdditionalInfo && <>
@@ -110,7 +116,16 @@ const Index = ({
       {
         label || label === '' ? (
           <div className={styles.footer}>
-            <span className={styles.label}>{label}</span>
+            {
+              groupLevel ? 
+              <MemberBadge
+                groupLevel={groupLevel}
+                groupName={label}
+                memberBadgeStyle={{marginRight: '7px'}}
+              />
+              :
+              <span className={styles.label}>{label}</span>
+            }
             <Icon className={styles.rightIcon} name="RightOutlined" size={12} />
           </div>
         ) : (

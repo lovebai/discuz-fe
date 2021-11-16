@@ -5,8 +5,9 @@ import Avatar from '../../avatar';
 import { noop } from '../utils';
 import styles from './index.module.scss';
 import { ThreadCommonContext } from '../utils'
-import { View, Text } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import classNames from 'classnames';
+import MemberBadge from '@components/member-badge';
 
 const attachInfo = {
   name: '姓名',
@@ -33,6 +34,7 @@ const Index = ({
   type = 0,
   subTitle,
   label,
+  groupLevel,
   index,
   onClick = noop,
   userId,
@@ -64,11 +66,13 @@ const Index = ({
           <View className={styles['additional-user']}>
             用户
           </View>
-          {Object.keys(additionalInfo || {}).map((item, ind) => (
-            <View className={styles['additional-item']} key={ind}>
-              {attachInfo[item]}
-            </View>
-          ))}
+          <View className={styles['additional-right']}>
+            {Object.keys(additionalInfo || {}).map((item, ind) => (
+              <View className={styles['additional-name']} key={ind}>
+                {attachInfo[item]}
+              </View>
+            ))}
+          </View>
         </View>
       )}
       {isHaveAdditionalInfo && (
@@ -85,11 +89,15 @@ const Index = ({
             />
             <View className={styles.title}>{title}</View>
           </View>
-          {Object.keys(additionalInfo || {}).map((item, key) => (
-            <View className={styles['additional-item']} key={key}>
-              {additionalInfo[item]}
-            </View>
-          ))}
+          <View className={styles['additional-right']}>
+            <ScrollView scrollX>
+              {Object.keys(additionalInfo || {}).map((item, key) => (
+                <View className={styles['additional-item']} key={key}>
+                  {additionalInfo[item]}
+                </View>
+              ))}
+            </ScrollView>
+          </View>
         </View>
       )}
       {!isHaveAdditionalInfo && <>
@@ -120,7 +128,16 @@ const Index = ({
       {
         label || label === '' ? (
           <View className={styles.footer}>
-            <Text className={styles.label}>{label}</Text>
+            {
+              groupLevel ?
+              <MemberBadge
+                groupLevel={groupLevel}
+                groupName={label}
+                memberBadgeStyle={{marginRight: '7px'}}
+              />
+              :
+              <Text className={styles.label}>{label}</Text>
+            }
             <Icon className={styles.rightIcon} name="RightOutlined" size={12} />
           </View>
         ) : (
