@@ -12,6 +12,7 @@ import Copyright from '@components/copyright';
 import MorePopop from '@components/more-popop';
 import SharePopup from '@components/thread/share-popup';
 import Router from '@discuzq/sdk/dist/router';
+import isWeiXin from '@common/utils/is-weixin';
 
 @inject('site')
 @inject('user')
@@ -26,6 +27,7 @@ class InviteH5Page extends React.Component {
 
   async componentDidMount() {
     try {
+      this.setState({ loadWeiXin: isWeiXin() });
       await this.props.invite.getInviteUsersList();
     } catch (e) {
       Toast.error({
