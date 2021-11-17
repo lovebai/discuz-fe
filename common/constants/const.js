@@ -87,7 +87,7 @@ export const defaultIcon = [
     menu: [
       {
         id: 'threadpay',
-        name: '全贴付费',
+        name: '全帖付费',
       },
       {
         id: 'attachpay',
@@ -145,7 +145,7 @@ export const attachIcon = [
 // 发帖底部付费选项
 export const paidOption = [
   {
-    name: '全贴付费',
+    name: '全帖付费',
     type: THREAD_TYPE.paidPost,
   },
   {

@@ -1102,71 +1102,72 @@ class ThreadH5Page extends React.Component {
                 )}
               </View>
             )}
+             {/* 底部操作栏 */}
+              {isReady && isApproved && (
+                <View className={classNames(layout.footerContainer, this.state.showCommentInput && layout.zindex)}>
+                  <View className={classNames(layout.footer, this.state.showCommentInput && layout.zindex)}>
+                    {/* 评论区触发 */}
+                    <View
+                      className={classNames(footer.inputClick, hasHongbao && footer.hasHongbao)}
+                      onClick={() => this.onInputClick()}
+                    >
+                      {hasHongbao && <Image className={footer.hongbaoMini} src={hongbaoMini}></Image>}
+                      <Input
+                        className={footer.input}
+                        placeholder="写评论"
+                        disabled
+                        prefixIcon="EditOutlined"
+                        placeholderClass={footer.inputPlaceholder}
+                      ></Input>
+                    </View>
+
+                    {/* 操作区 */}
+                    <View className={footer.operate}>
+                      <View className={footer.icon} onClick={() => this.onMessageClick()}>
+                        {this.state.stateFlag ?
+                          totalCount > 0 ? (
+                            <View className={classNames(footer.badge, totalCount < 10 && footer.isCricle)}>
+                              {totalCount > 99 ? '99+' : `${totalCount || '0'}`}
+                            </View>
+                          ) : (
+                            ''
+                          ) : (
+                            <View className={footer.content}>
+                              正文
+                            </View>
+                          )}
+                        <Icon size="20" name="MessageOutlined"></Icon>
+                      </View>
+                      <Icon
+                        className={classNames(footer.icon, {
+                          [footer.isliked]: this.props.thread?.threadData?.isLike,
+                        })}
+                        onClick={debounce(() => this.onLikeClick(), 500)}
+                        size="20"
+                        name="LikeOutlined"
+                      ></Icon>
+                      <Icon
+                        className={classNames(footer.icon, {
+                          [footer.isliked]: this.props.thread?.isFavorite,
+                        })}
+                        onClick={debounce(() => this.onCollectionClick(), 500)}
+                        size="20"
+                        name="CollectOutlinedBig"
+                      ></Icon>
+
+                      {/* 分享button */}
+                      <View className={classNames(footer.share, footer.icon)} onClick={() => this.onShareClick()}>
+                        <Icon className={footer.icon} size="20" name="ShareAltOutlined"></Icon>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              )}
+
           </View>
         </ScrollView>
 
-        {/* 底部操作栏 */}
-        {isReady && isApproved && (
-          <View className={classNames(layout.footerContainer, this.state.showCommentInput && layout.zindex)}>
-            <View className={classNames(layout.footer, this.state.showCommentInput && layout.zindex)}>
-              {/* 评论区触发 */}
-              <View
-                className={classNames(footer.inputClick, hasHongbao && footer.hasHongbao)}
-                onClick={() => this.onInputClick()}
-              >
-                {hasHongbao && <Image className={footer.hongbaoMini} src={hongbaoMini}></Image>}
-                <Input
-                  className={footer.input}
-                  placeholder="写评论"
-                  disabled
-                  prefixIcon="EditOutlined"
-                  placeholderClass={footer.inputPlaceholder}
-                ></Input>
-              </View>
-
-              {/* 操作区 */}
-              <View className={footer.operate}>
-                <View className={footer.icon} onClick={() => this.onMessageClick()}>
-                  {this.state.stateFlag ?
-                    totalCount > 0 ? (
-                      <View className={classNames(footer.badge, totalCount < 10 && footer.isCricle)}>
-                        {totalCount > 99 ? '99+' : `${totalCount || '0'}`}
-                      </View>
-                    ) : (
-                      ''
-                    ) : (
-                      <View className={footer.content}>
-                        正文
-                      </View>
-                    )}
-                  <Icon size="20" name="MessageOutlined"></Icon>
-                </View>
-                <Icon
-                  className={classNames(footer.icon, {
-                    [footer.isliked]: this.props.thread?.threadData?.isLike,
-                  })}
-                  onClick={debounce(() => this.onLikeClick(), 500)}
-                  size="20"
-                  name="LikeOutlined"
-                ></Icon>
-                <Icon
-                  className={classNames(footer.icon, {
-                    [footer.isliked]: this.props.thread?.isFavorite,
-                  })}
-                  onClick={debounce(() => this.onCollectionClick(), 500)}
-                  size="20"
-                  name="CollectOutlinedBig"
-                ></Icon>
-
-                {/* 分享button */}
-                <View className={classNames(footer.share, footer.icon)} onClick={() => this.onShareClick()}>
-                  <Icon className={footer.icon} size="20" name="ShareAltOutlined"></Icon>
-                </View>
-              </View>
-            </View>
-          </View>
-        )}
-
+       
         {isReady && (
           <Fragment>
             {/* 评论弹层 */}

@@ -44,6 +44,7 @@ class Index extends Component {
       canEditRedpacket: true, // 可编辑红包
       canEditReward: true, // 可编辑悬赏
       isShowTitle: true, // 默认显示标题
+      isSavingDraft: false, // 当前是否在保存草稿流程中，用于临时给保存草稿流程使用
       maxLength: 5000, // 文本输入最大长度
       showClassifyPopup: false, // 切换分类弹框show
       operationType: 0,
@@ -482,12 +483,20 @@ class Index extends Component {
     this.randstr = result.randstr;
     const { router } = this.inst;
     // 当前页面才进行提交操作，避免其他页面引起的多余的提交
-    if (router.path.indexOf('indexPages/thread/post/index') > -1) this.handleSubmit();
+    if (router.path.indexOf('indexPages/thread/post/index') > -1) this.handleSubmit(this.state.isSavingDraft);
+
+    this.setState({
+      isSavingDraft: false
+    })
   }
 
   // 验证码点击关闭的回调
   handleCloseChaReault = () => {
     Taro.hideLoading();
+
+    this.setState({
+      isSavingDraft: false
+    })
   }
 
   checkAttachPrice = () => {
@@ -542,6 +551,9 @@ class Index extends Component {
       const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
       if (qcloudCaptcha && createThreadWithCaptcha) {
         if (!this.ticket || !this.randstr) {
+          this.setState({
+            isSavingDraft: isDraft
+          });
           toTCaptcha(qcloudCaptchaAppId);
           return false;
         }
@@ -648,7 +660,10 @@ class Index extends Component {
         this.removeLocalData(); // 支付成功删除本地缓存
       }
       !isAutoSave && this.postToast('发布成功', 'success');
-      if (!isDraft) Taro.redirectTo({ url: `/indexPages/thread/index?id=${data.threadId}` });
+
+      if (!isDraft) {
+        Taro.redirectTo({ url: `/indexPages/thread/index?id=${data.threadId}` });
+      }
       // }
       return true;
     }
@@ -680,9 +695,19 @@ class Index extends Component {
       this.postToast('保存成功', 'success');
       setTimeout(() => {
         Taro.hideLoading();
-        Taro.redirectTo({ url: `/userPages/my/draft/index` });
+        // Taro.redirectTo({ url: `/userPages/my/draft/index` });
       }, 1000);
     } else {
+
+      const { webConfig } = this.props.site;
+      if (webConfig) {
+        const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+        const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+        if (qcloudCaptcha && createThreadWithCaptcha) {
+          // 如果需要验证码，则不做任何操作
+          return;
+        }
+      }
       this.postToast('保存失败');
     }
   }
@@ -1013,7 +1038,7 @@ class Index extends Component {
           onClick={(item) => {
             if ((item.type === THREAD_TYPE.paidPost && postData.attachmentPrice) || (item.type === THREAD_TYPE.paidAttachment && postData.price)) {
               Toast.error({
-                content: '全贴付费和部分付费不能同时设置',
+                content: '全帖付费和部分付费不能同时设置',
               });
             } else {
               this.handlePluginClick(item);
