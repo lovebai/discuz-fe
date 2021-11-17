@@ -10,6 +10,7 @@ import HomeHeader from '@components/home-header';
 // import bgImage from './../../../../web/public/dzq-img/invite-banner-bg.png';
 import NoMoreDataTip from '@components/no-more-data-tip';
 import SiteShare from '@components/site-share';
+import MemberBadge from '@components/member-badge';
 import layout from './index.module.scss';
 
 const bgImage = `${IMG_SRC_HOST}/assets/invite-banner-bg.8ebc5c7a58f15fe8979ce893715bf37422ae2e68.png`;
@@ -71,7 +72,19 @@ class InviteH5Page extends React.Component {
               </View>
               <View className={layout.user_info_content}>
                 <View className={layout.user_info_name}>{inviteData.nickname}</View>
-                <View className={layout.user_info_tag}>{inviteData.groupName}</View>
+                {
+                  inviteData.level ?
+                  <View className={layout.memberBadgeBox}>
+                    <MemberBadge
+                      groupLevel={inviteData.level}
+                      groupName={inviteData.groupName}
+                    />
+                  </View>
+                  
+                  :
+                  <View className={layout.user_info_tag}>{inviteData.groupName}</View>
+                }
+                
                 <View className={layout.user_info_invite}>
                   <View className={layout.invite_num}>
                     <View className={layout.invite_num_title}>已邀人数</View>

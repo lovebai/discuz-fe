@@ -62,7 +62,17 @@ function MiniLayout(props) {
             name={inviteData.nickname && inviteData.nickname.substring(0, 1)}
           />
           <div className={layout.userName}>{ inviteData.nickname }</div>
-          <div className={layout.userGroup}>{ inviteData.groupName }</div>
+          {
+            inviteData.level ?
+            <div className={layout.memberBadgeBox}>
+              <MemberBadge
+                groupLevel={inviteData.level}
+                groupName={inviteData.groupName}
+              />
+            </div>
+            :
+            <div className={layout.userGroup}>{ inviteData.groupName }</div>
+          }
         </div>
         <div className={layout.userRight}>
           <div className={layout.userTag}>

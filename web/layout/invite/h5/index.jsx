@@ -11,6 +11,7 @@ import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
 import Copyright from '@components/copyright';
 import MorePopop from '@components/more-popop';
 import SharePopup from '@components/thread/share-popup';
+import MemberBadge from '@components/member-badge';
 import Router from '@discuzq/sdk/dist/router';
 import isWeiXin from '@common/utils/is-weixin';
 
@@ -123,7 +124,17 @@ class InviteH5Page extends React.Component {
                 </div>
                 <div className={layout.user_info_content}>
                   <div className={layout.user_info_name} title={inviteData.nickname}>{inviteData.nickname}</div>
-                  <div className={layout.user_info_tag}>{inviteData.groupName}</div>
+                  {
+                    inviteData.level ?
+                    <div className={layout.memberBadgeBox}>
+                      <MemberBadge
+                        groupLevel={inviteData.level}
+                        groupName={inviteData.groupName}
+                      />
+                    </div>
+                    :
+                    <div className={layout.user_info_tag}>{inviteData.groupName}</div>
+                  }
                   <div className={layout.user_info_invite}>
                     <div className={layout.invite_num}>
                       <div className={layout.invite_num_title}>已邀人数</div>
