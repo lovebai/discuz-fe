@@ -124,9 +124,9 @@ const Index = ({
         )
       }
       {/* 视频蒙层 已付费时隐藏 未付费时显示 */}
-      {
+      {/* {
         isPay && <View className={styles.payBox} onClick={onPay}></View>
-      }
+      } */}
       {/* 视频蒙层 有权限播放时隐藏 无权限播放时显示 */}
       {
         !canViewVideo && <View className={styles.payBox} onClick={() => Toast.warning({ content: '暂⽆权限播放视频' })}></View>
