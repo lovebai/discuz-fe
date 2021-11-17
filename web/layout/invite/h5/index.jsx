@@ -9,34 +9,30 @@ import { numberFormat } from '@common/utils/number-format';
 import BaseLayout from '@components/base-layout';
 import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
 import Copyright from '@components/copyright';
+import MorePopop from '@components/more-popop';
+import SharePopup from '@components/thread/share-popup';
+import MemberBadge from '@components/member-badge';
+import Router from '@discuzq/sdk/dist/router';
+import isWeiXin from '@common/utils/is-weixin';
 
 @inject('site')
 @inject('user')
 @inject('invite')
 @observer
 class InviteH5Page extends React.Component {
+  state = {
+    visible: false,
+    loadWeiXin: false,
+    show: false,
+  }
+
   async componentDidMount() {
     try {
+      this.setState({ loadWeiXin: isWeiXin() });
       await this.props.invite.getInviteUsersList();
     } catch (e) {
       Toast.error({
         content: e.Message,
-      });
-    }
-  }
-
-  createInviteLink = async () => {
-    try {
-      const { site: { setSite: { siteName } = {} } = {}, user } = this.props;
-      // copyToClipboard(`${window.location.origin}/forum/partner-invite?inviteCode=${user.id}`);
-      h5Share({ title: `邀请您加入${siteName || ''}`, path: `/forum/partner-invite?inviteCode=${user.id}` });
-      Toast.success({
-        content: '创建邀请链接成功',
-        duration: 1000,
-      });
-    } catch (e) {
-      Toast.error({
-        content: e.Message || e,
       });
     }
   }
@@ -56,9 +52,51 @@ class InviteH5Page extends React.Component {
     if (!this.checkLoadCondition()) return;
     return await invite.getInviteUsersList(invite.currentPage + 1);
   };
+  onClose = () => {
+    this.setState({ visible: false });
+  }
+
+  onCancel = () => {
+    this.setState({ show: false });
+  }
+
+  handleH5Share = () => {
+    try {
+      const { site: { setSite: { siteName } = {} } = {}, user } = this.props;
+      h5Share({ title: `邀请您加入${siteName || ''}`, path: `/forum/partner-invite?inviteCode=${user.id}` });
+      Toast.success({
+        content: '创建邀请链接成功',
+        duration: 1000,
+      });
+      this.onCancel();
+    } catch (e) {
+      Toast.error({
+        content: e.Message || e,
+      });
+    }
+  }
+
+  handleWxShare = () => {
+    this.setState({ visible: true });
+    this.onCancel();
+  }
+
+  createCard = () => {
+    Router.push({ url: '/card' });
+  }
+
+  handleClick = () => {
+    const { user } = this.props;
+    if (!user.isLogin()) {
+      goToLoginPage({ url: '/user/login' });
+      return;
+    }
+    this.setState({ show: true });
+  }
 
   render() {
     const { inviteData, inviteUsersList, isNoData, inviteLoading } = this.props.invite;
+    const { visible, loadWeiXin } = this.state;
 
     return (
       <>
@@ -86,7 +124,17 @@ class InviteH5Page extends React.Component {
                 </div>
                 <div className={layout.user_info_content}>
                   <div className={layout.user_info_name} title={inviteData.nickname}>{inviteData.nickname}</div>
-                  <div className={layout.user_info_tag}>{inviteData.groupName}</div>
+                  {
+                    inviteData.level ?
+                    <div className={layout.memberBadgeBox}>
+                      <MemberBadge
+                        groupLevel={inviteData.level}
+                        groupName={inviteData.groupName}
+                      />
+                    </div>
+                    :
+                    <div className={layout.user_info_tag}>{inviteData.groupName}</div>
+                  }
                   <div className={layout.user_info_invite}>
                     <div className={layout.invite_num}>
                       <div className={layout.invite_num_title}>已邀人数</div>
@@ -156,12 +204,20 @@ class InviteH5Page extends React.Component {
           <div className={layout.invite_bottom}>
             <Button
               className={layout.invite_bottom_button}
-              onClick={this.createInviteLink}
+              onClick={this.handleClick}
             >
               邀请朋友
             </Button>
           </div>
           {/* 邀请朋友 end */}
+          <MorePopop
+            show={this.state.show}
+            onClose={this.onCancel}
+            handleH5Share={this.handleH5Share}
+            handleWxShare={this.handleWxShare}
+            createCard={this.createCard}
+          ></MorePopop>
+          {loadWeiXin && <SharePopup visible={visible} onClose={this.onClose} />}
         </div>
         </BaseLayout>
       </>

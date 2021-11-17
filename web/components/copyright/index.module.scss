@@ -39,8 +39,8 @@
   }
 
   &.pc {
-    margin-top: rem($margin-5n);
-    margin-bottom: rem($margin-5n);
+    margin-top: rem($margin-10);
+    margin-bottom: rem($margin-10);
     // PC登录等页面
     &.mode_login {
       margin: $margin-5n 0 auto;
