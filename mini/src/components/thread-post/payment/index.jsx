@@ -16,10 +16,10 @@ import styles from './index.module.scss';
 const Paid = inject('threadPost')(observer((props) => {
   // props state
   const { params: { paidType } } = getCurrentInstance().router;
-  const isPost = parseInt(paidType) === THREAD_TYPE.paidPost; // 全贴付费
-  const isAttach = parseInt(paidType) === THREAD_TYPE.paidAttachment; //附件付费
+  const isPost = parseInt(paidType) === THREAD_TYPE.paidPost; // 全帖付费
+  const isAttach = parseInt(paidType) === THREAD_TYPE.paidAttachment; // 附件付费
   const isAudio = parseInt(paidType) === THREAD_TYPE.voice; // 音频付费
-  const [price, setPrice] = useState(''); // 全贴价格\附件价格\音频价格
+  const [price, setPrice] = useState(''); // 全帖价格\附件价格\音频价格
   const [freeWords, setFreeWords] = useState(1); // 免费查看百分比
   const [freeAudio, setFreeAudio] = useState(false); // 默认音频不免费
   const [refresh, setRefresh] = useState(true); // 手动刷新页面
@@ -119,8 +119,7 @@ const Paid = inject('threadPost')(observer((props) => {
     paidCancel();
   };
 
-  const postComponent = () => {
-    return (
+  const postComponent = () => (
       <>
         <View className={styles['paid-item']}>
           <View className={styles.left}>支付金额</View>
@@ -146,15 +145,12 @@ const Paid = inject('threadPost')(observer((props) => {
         </View>
       </>
     )
-  }
 
-  const attachmentComponent = () => {
-    return (
+  const attachmentComponent = () => (
       <View className={styles['paid-wrapper']}>
         <PartPaid />
       </View>
     )
-  }
 
   return (
     <View className={styles.wrapper}>
