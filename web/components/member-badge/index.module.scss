@@ -14,15 +14,14 @@
     top: 1px;
     display: flex;
     align-items: center;
+    @include text-ellipsis;
 
     .memberBadgeNameText {
       font-size: 10px;
       max-width: rem(120);
       height: 12px;
       line-height: 12px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include text-ellipsis;
     }
 
     &_1 {

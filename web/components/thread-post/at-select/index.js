@@ -146,10 +146,10 @@ class AtSelect extends Component {
               </div>
               <div className={styles.info}>
                 <div className={styles.username}>{nickname}</div>
-                {/* <div className={styles.group}>{groupName}</div> */}
                 {
                   level ?
                   <MemberBadge
+                    className={styles.group}
                     groupLevel={level}
                     groupName={groupName}
                   />

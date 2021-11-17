@@ -184,13 +184,13 @@ class AtSelect extends Component {
                 {
                   level ?
                   <MemberBadge
+                    className={styles.group}
                     groupLevel={level}
                     groupName={groupName}
                   />
                   :
                   <View className={styles.group}>{groupName}</View>
                 }
-                
               </View>
             </Checkbox>
           </View>
