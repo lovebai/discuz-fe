@@ -60,7 +60,7 @@ class AtSelect extends Component {
     const { code, data } = ret;
     if (code === 0) {
       this.setState({
-        page: page + 1,
+        page: keywords === this.state.keywords ? page + 1 : 1,
         finish: page * perPage >= data?.totalCount,
       });
     } else {
