@@ -72,7 +72,10 @@
           color: $text-color-secondary;
           margin-right: rem($margin-4n);
         }
-
+        .textPrimary {
+          font-size: $font-size-label;
+          color: $primary-color;
+        }
         .textButton {
           font-size: rem($font-size-label);
         }

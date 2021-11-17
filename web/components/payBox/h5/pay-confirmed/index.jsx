@@ -143,10 +143,10 @@ export default class PayBox extends React.Component {
         const { isWechatPayOpen, webConfig } = this.props.site || {};
         const { siteCharge } = webConfig.setSite || {};
         const isShowRecharge = isWechatPayOpen && siteCharge === 1;
-        if (isShowRecharge) {
-          this.toRechargePage();
-          return;
-        }
+        // if (isShowRecharge) {
+        //   this.toRechargePage();
+        //   return;
+        // }
         Toast.error({
           content: '钱包余额不足',
           duration: 2000,
@@ -225,9 +225,9 @@ export default class PayBox extends React.Component {
 
   // 支付按钮文本显示
   getPayText = () => {
-    if (this.isToRecharge()) {
-      return '去充值';
-    }
+    // if (this.isToRecharge()) {
+    //   return '去充值';
+    // }
     return '确定支付';
   }
 
@@ -322,6 +322,7 @@ export default class PayBox extends React.Component {
                   <div className={styles.right}>
                     {/*{item.paymentType === PAYWAY_MAP.WALLET && this.walletPaySubText()}*/}
                     {this.renderRightChoices(item)}
+                    {this.isToRecharge() && item.paymentType === PAYWAY_MAP.WALLET && <p className={styles.textPrimary} onClick={this.handlePayConfirmed}>充值</p>}
                   </div>
                 </div>
               );
