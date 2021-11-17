@@ -41,6 +41,7 @@
   justify-content: center;
   margin-bottom: constant(safe-area-inset-bottom); ///兼容 IOS<11.2/
   margin-bottom: env(safe-area-inset-bottom); ///兼容 IOS>11.2/
+  padding-bottom: 50px;
 }
 
 
@@ -56,25 +57,32 @@
 }
 
 .footerContainer {
-  height: 50px;
+  height: auto;
   width: 100%;
   flex: 0 0 50px;
   background: $white;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: $zindex-backtotop;
 }
 
 .footer {
-  position: fixed;
-  bottom: constant(safe-area-inset-bottom); ///兼容 IOS<11.2/
-  bottom: env(safe-area-inset-bottom); ///兼容 IOS>11.2/
+  position: absolute;
+  // bottom: constant(safe-area-inset-bottom); ///兼容 IOS<11.2/
+  // bottom: env(safe-area-inset-bottom); ///兼容 IOS>11.2/
+  bottom: 0;
+  padding-top: 10px;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
   left: 0;
   width: 100%;
-  z-index: $zindex-backtotop;
+  border-top: $border-solid-1;
   min-height: 50px;
   padding-left: $padding-4n;
   padding-right: $padding-4n;
   box-sizing: border-box;
   background: $white;
-  border-top: $border-solid-1;
   display: flex;
   align-items: center;
   justify-content: space-between;
