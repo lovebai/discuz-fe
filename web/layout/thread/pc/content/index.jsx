@@ -59,20 +59,20 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
   const canEssence = threadStore?.threadData?.ability?.canEssence;
   const canStick = threadStore?.threadData?.ability?.canStick;
 
+  // 是否作者自己
+  const isSelf = props.user?.userInfo?.id && props.user?.userInfo?.id === threadStore?.threadData?.userId;
+  // 是否已经付费
+  const isPayed = threadStore?.threadData?.paid === true;
   // 是否可以免费查看付费帖子
   const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
-  // 是否附件付费
+  // 是否部分付费
   const isAttachmentPay = threadStore?.threadData?.payType === 2 && threadStore?.threadData?.paid === false;
   const attachmentPrice = threadStore?.threadData?.attachmentPrice || 0;
-  // 是否需要附加付费
+  // 是否需要部分付费
   const needAttachmentPay = !canFreeViewPost && isAttachmentPay && !isSelf && !isPayed;
   // 是否帖子付费
   const isThreadPay = threadStore?.threadData?.payType === 1;
   const threadPrice = threadStore?.threadData?.price || 0;
-  // 是否已经付费
-  const isPayed = threadStore?.threadData?.paid === true;
-  // 是否作者自己
-  const isSelf = props.user?.userInfo?.id && props.user?.userInfo?.id === threadStore?.threadData?.userId;
 
   // 是否红包帖
   const isRedPack = threadStore?.threadData?.displayTag?.isRedPack;
@@ -211,7 +211,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
         {text && <PostContent needShowMore={false} content={text || ''} usePointer={false} />}
 
         {/* 视频 */}
-        {parseContent.VIDEO && (
+        {parseContent.VIDEO && parseContent.VIDEO.mediaUrl && (
           <VideoPlay
             url={parseContent.VIDEO.mediaUrl}
             coverUrl={parseContent.VIDEO.coverUrl}
@@ -343,7 +343,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
             <Button className={topic.payButton} type="primary" size="large">
               <div className={topic.pay}>
                 <Icon className={topic.payIcon} name="GoldCoinOutlined" size={18}></Icon>
-                支付{attachmentPrice}元查看附件
+                支付{attachmentPrice}元查看付费内容
               </div>
             </Button>
           </div>

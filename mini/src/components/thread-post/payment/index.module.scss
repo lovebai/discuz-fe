@@ -1,4 +1,4 @@
-@import "@common/styles/index.scss";
+@import '@common/styles/index.scss';
 @mixin flex() {
   display: flex;
   justify-content: space-between;
@@ -20,8 +20,8 @@
         border: none;
       }
 
-      .input-placeholder{
-        color: $text-color-placeholder
+      .input-placeholder {
+        color: $text-color-placeholder;
       }
     }
 
@@ -45,7 +45,7 @@
         border: 1px solid $white;
 
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           left: 50%;
           top: 50%;
@@ -57,11 +57,16 @@
         }
       }
     }
+
+    .dzq-divider {
+      margin-bottom: 0;
+      margin-top: 0;
+    }
   }
 
   .paid-item {
     @include flex();
-    padding-top: $padding-4n;
+    padding: $padding-4n 0;
     font-size: $font-size-primary;
     color: $text-color-primary;
 
@@ -70,6 +75,7 @@
       color: $text-color-regular;
       line-height: 18px;
       text-align: left;
+      font-size: 14px;
     }
 
     .right {
@@ -125,4 +131,60 @@
       background-color: $primary-color;
     }
   }
+}
+
+.videoWrapper {
+  position: relative;
+
+  :global {
+    .dzq-video {
+      video {
+        width: 100%;
+        max-height: 300px;
+      }
+    }
+  }
+
+  .videoCheckBox {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+
+  .imageCheckBox {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+  }
+
+  .image {
+    width: 100%;
+    max-height: 600px;
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.paid-unit {
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  .paid-unit-desc {
+    color: $text-color-secondary;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 12px;
+  }
+}
+
+.paid-wrapper {
+  overflow-y: scroll;
+  max-height: calc(100vh - 60px - env(safe-area-inset-bottom));
 }

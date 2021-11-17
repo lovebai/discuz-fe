@@ -504,12 +504,12 @@ class ThreadCreate extends React.Component {
           <PostPopup
             list={this.props.paySelectText}
             onClick={(val) => {
-              const content = '帖子付费和附件付费不能同时设置';
-              if (postData.price && val === '附件付费') {
+              const content = '全贴付费和部分付费不能同时设置';
+              if (postData.price && val === '部分付费') {
                 Toast.error({ content });
                 return false;
               }
-              if (postData.attachmentPrice && val === '帖子付费') {
+              if (postData.attachmentPrice && val === '全贴付费') {
                 Toast.error({ content });
                 return false;
               }

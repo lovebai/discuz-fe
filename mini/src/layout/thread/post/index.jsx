@@ -767,7 +767,6 @@ class Index extends Component {
     const categories = this.props.threadPost?.getCurrentCategories();
     const { postData, setPostData, setCursorPosition, navInfo, cursorPosition } = this.props.threadPost;
     const { rewardQa, redpacket, video, product, position, contentText = '', title } = postData;
-    console.log(postData)
     const {
       postType,
       isShowTitle,
@@ -907,7 +906,7 @@ class Index extends Component {
                     <Units
                       type='tag'
                       style={{ marginTop: 0, paddingRight: '8px' }}
-                      tagContent={`付费总额${(postData.price || postData.attachmentPrice).toFixed(2)}元`}
+                      tagContent={`付费总额${(Number(postData.price) || Number(postData.attachmentPrice) || Number(0)).toFixed(2)}元`}
                       onTagClick={() => {
                         if (postData.price) {
                           this.handlePluginClick({ type: THREAD_TYPE.paidPost })
@@ -1014,7 +1013,7 @@ class Index extends Component {
           onClick={(item) => {
             if ((item.type === THREAD_TYPE.paidPost && postData.attachmentPrice) || (item.type === THREAD_TYPE.paidAttachment && postData.price)) {
               Toast.error({
-                content: '帖子付费和附件付费不能同时设置',
+                content: '全贴付费和部分付费不能同时设置',
               });
             } else {
               this.handlePluginClick(item);
