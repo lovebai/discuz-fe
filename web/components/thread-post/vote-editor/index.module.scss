@@ -10,9 +10,9 @@
     height: 100vh;
     height: -webkit-fill-available;
     min-height: 100vh;
-    min-height: -webkit-fill-available; 
+    min-height: -webkit-fill-available;
   }
-  
+
   background-color: $white;
   z-index: $zindex-popup;
   .line-box {
@@ -300,6 +300,7 @@
     .dzq-modal__container {
       max-height: 600px;
       overflow: auto;
+      @include scroll-bar();
     }
   }
 }

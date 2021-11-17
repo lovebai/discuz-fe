@@ -680,7 +680,7 @@ class Index extends Component {
       this.postToast('保存成功', 'success');
       setTimeout(() => {
         Taro.hideLoading();
-        Taro.redirectTo({ url: `/userPages/my/draft/index` });
+        // Taro.redirectTo({ url: `/userPages/my/draft/index` });
       }, 1000);
     } else {
       this.postToast('保存失败');
