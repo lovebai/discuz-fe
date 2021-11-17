@@ -132,7 +132,7 @@ const Index = ({
         !canViewVideo && <View className={styles.payBox} onClick={() => Toast.warning({ content: '暂⽆权限播放视频' })}></View>
       }
       {
-        !isPay && status !== 1 && (
+        status !== 1 && (
           <View className={styles.payBox}>
             <View className={`${styles.alert} ${status === 0 ? styles.alertWarn : styles.alertError}`}>
               <Icon className={styles.tipsIcon} size={20} name={status === 0 ? 'TipsOutlined' : 'WrongOutlined'}></Icon>
