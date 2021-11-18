@@ -210,7 +210,7 @@ class ThreadPostAction extends ThreadPostStore {
   @action
   resetPartPay() {
     this.partPayInfo = {
-      textFreeValue: '0',
+      textFreeValue: '',
       payPrice: '',
       selectedImages: [],
       selectedAttachments: [],
@@ -230,7 +230,7 @@ class ThreadPostAction extends ThreadPostStore {
     this.partPayInfo.selectedVideo = this.videoPriceList;
     this.partPayInfo.selectedAudio = this.audioPriceList;
     this.partPayInfo.selectedAttachments = this.filesPriceList;
-    this.partPayInfo.payPrice = this.postData.attachmentPrice;
+    this.partPayInfo.payPrice = this.postData.attachmentPrice || '';
     this.partPayInfo.textFreeValue = this.postData.freeWords * 100;
   };
 

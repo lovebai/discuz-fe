@@ -8,27 +8,26 @@ const PriceUnit = inject('threadPost')(
   observer(({ ...props }) => {
     const { threadPost } = props;
     const { partPayInfo } = threadPost;
-    let { payPrice } = partPayInfo;
+    const { payPrice } = partPayInfo;
 
     return (
       <Unit
-        title={'设置付费价格'}
-        rightActionRender={() => {
-          return (
-            <>
-              <Input
-                mode={'number'}
-                htmlType={'number'}
-                trim={true}
-                value={payPrice}
-                onChange={(e) => {
-                  partPayInfo.payPrice = e.target.value;
-                }}
-              />
-              <Text>&nbsp;元</Text>
-            </>
-          );
-        }}
+        title="设置付费价格"
+        rightActionRender={() => (
+          <>
+            <Input
+              mode="number"
+              htmlType="number"
+              placeholder="金额"
+              trim
+              value={payPrice}
+              onChange={(e) => {
+                partPayInfo.payPrice = e.target.value;
+              }}
+            />
+            <Text>&nbsp;元</Text>
+          </>
+        )}
       />
     );
   }),

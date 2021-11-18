@@ -164,9 +164,24 @@
 
     .paid-wrapper {
       max-height: 600px;
-      overflow-y: scroll;
 
       @include scrollbar();
+
+      overflow-y: scroll;
+      overflow-y: overlay;
+
+      &::-webkit-scrollbar {
+        z-index: 9999;
+      }
+      &::-webkit-scrollbar-track {
+        z-index: 9999;
+      }
+      &::-webkit-scrollbar-corner {
+        z-index: 9999;
+      }
+      &::-webkit-scrollbar-button {
+        z-index: 9999;
+      }
     }
   }
 
