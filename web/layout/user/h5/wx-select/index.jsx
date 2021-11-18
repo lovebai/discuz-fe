@@ -116,7 +116,7 @@ class WXSelectH5Page extends React.Component {
               }
             }}
           >
-            <Icon name='WechatOutlined' size={16}/>
+            <Icon name='WeChatOutlinedThick' size={16}/>
             微信登录
           </Button>
           {this.props.site.isUserLoginVisible && (

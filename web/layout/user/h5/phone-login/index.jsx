@@ -206,7 +206,7 @@ class LoginPhoneH5Page extends React.Component {
                 onClick={this.goToWechatLogin}
                 className={platform === 'h5' ? layout['otherLogin-button-weixin'] : layout.button_left}
               >
-                <Icon size={20} name='WechatOutlined' color='#04C160'/>
+                <Icon size={20} name='WeChatOutlinedThick' color='#04C160'/>
               </span>
             )}
             {this.props.site.isUserLoginVisible && (
