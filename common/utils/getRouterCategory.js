@@ -18,7 +18,6 @@ export default function getRouterCategory(router, site) {
     }
     // eslint-disable-next-line prefer-const
     let [, categoryId, , sequence] = slug;
-    if (!categoryId) return defaultData;
     const { webConfig } = site || {};
     const { other } = webConfig || {};
     const { threadTab } = other || {}; // 所有:0,1 推荐:2 精华:3 已关注:4
@@ -28,6 +27,7 @@ export default function getRouterCategory(router, site) {
     if (threadTab === 2) sequence = '1';
     if (threadTab === 3) defaultData.essence = 1;
     if (threadTab === 4) defaultData.attention = 1;
+    if (!categoryId) return { ...defaultData, sequence };
     // 分享链接设置的sequece值大于threadTab管理后台设置的tab选中状态
     if (router?.query?.sequence === '1') sequence = router?.query?.sequence;
     // 路由中带值
