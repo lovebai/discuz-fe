@@ -284,7 +284,7 @@ export default class PayBox extends React.Component {
                       <Radio name={item.paymentType} />
                     )}
                     {this.isToRecharge() && item.paymentType === PAYWAY_MAP.WALLET && (
-                      <View className={styles.textPrimary} onClick={this.handlePayConfirmed}>
+                      <View className={styles.textPrimary} onClick={this.toRechargePage}>
                         充值
                       </View>
                     )}

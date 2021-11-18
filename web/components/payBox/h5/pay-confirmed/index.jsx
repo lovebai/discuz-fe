@@ -322,7 +322,7 @@ export default class PayBox extends React.Component {
                   <div className={styles.right}>
                     {/*{item.paymentType === PAYWAY_MAP.WALLET && this.walletPaySubText()}*/}
                     {this.renderRightChoices(item)}
-                    {this.isToRecharge() && item.paymentType === PAYWAY_MAP.WALLET && <p className={styles.textPrimary} onClick={this.handlePayConfirmed}>充值</p>}
+                    {this.isToRecharge() && item.paymentType === PAYWAY_MAP.WALLET && <p className={styles.textPrimary} onClick={this.toRechargePage}>充值</p>}
                   </div>
                 </div>
               );
