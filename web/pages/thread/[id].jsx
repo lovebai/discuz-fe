@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'next/router';
 import { inject, observer } from 'mobx-react';
-import { readThreadDetail, readUser} from '@server';
+import { readThreadDetail, readUser } from '@server';
 import ThreadH5Page from '@layout/thread/h5';
 import ThreadPCPage from '@layout/thread/pc';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
@@ -26,11 +26,10 @@ import { updateThreadAssignInfoInLists } from '@common/store/thread-list/list-bu
 @observer
 class Detail extends React.Component {
   static async getInitialProps(ctx, options) {
-
     const id = ctx?.query?.id;
     const serverThread = {
       threadData: null,
-      threadUserData: null
+      threadUserData: null,
     };
 
     if (id) {
@@ -39,12 +38,12 @@ class Detail extends React.Component {
       if (res.code === 0) {
         serverThread.threadData = res.data;
         const { site } = options;
-        let platform = site ? site.platform : 'pc';
+        const platform = site ? site.platform : 'pc';
 
         const userId = serverThread.threadData?.user?.userId;
         if (platform === 'pc' && userId) {
           const userRes = await readUser({ params: { userId } });
-          if ( userRes.code === 0 ) {
+          if (userRes.code === 0) {
             serverThread.threadUserData = userRes.data;
           }
         }
@@ -116,7 +115,7 @@ class Detail extends React.Component {
       const { content, title, user: threadUser, payType, isAnonymous } = threadData;
       const { text, indexes } = content;
       function setSpecialTitle(text, user, indexes = []) {
-        // 全贴付费不能使用内容展示
+        // 全帖付费不能使用内容展示
         if (text) {
           const contentStr = htmlToString(text);
           if (contentStr) {
@@ -137,7 +136,7 @@ class Detail extends React.Component {
       function setShareImg(threadUser, text, indexes = [], favicon) {
         let img = null;
 
-        // 全贴付费不能使用内容展示
+        // 全帖付费不能使用内容展示
         if (payType !== 1) {
           // 取图文混排图片
           const imageList = text.match(/<img[\s]+[^<>]*>|<img[\s]+[^<>]*/g) || [];
@@ -210,7 +209,7 @@ class Detail extends React.Component {
         this.setState({
           isServerError: true,
         });
-        
+
         // 没有权限 返回首页
         if (res.code === -4002) {
           setTimeout(() => {
@@ -327,7 +326,6 @@ class Detail extends React.Component {
   }
 
   render() {
-
     const { site, canPublish } = this.props;
     const { platform } = site;
     let showSiteName = true;
