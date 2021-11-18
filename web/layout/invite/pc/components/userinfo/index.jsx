@@ -6,6 +6,7 @@ import Avatar from '@components/avatar';
 import { numberFormat } from '@common/utils/number-format';
 import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
 import Router from '@discuzq/sdk/dist/router';
+import MemberBadge from '@components/member-badge';
 
 function DefaultLayout(props) {
   const { inviteData, createInviteLink, onAvatarClick } = props;
