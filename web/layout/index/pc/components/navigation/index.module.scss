@@ -154,3 +154,11 @@
   }
 
 }
+
+/* 兼容火狐滚动条 */
+@supports not (overflow-y: overlay){
+  .verticalScrollbar{
+    scrollbar-width: thin;
+    scrollbar-color: $border-shadow-color $border-color;
+  }
+}

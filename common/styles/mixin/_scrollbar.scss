@@ -1,4 +1,8 @@
 @mixin scrollbar() {
+  /* 兼容火狐 */
+  scrollbar-width: thin;
+  scrollbar-color: $border-shadow-color transparent;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -27,6 +31,10 @@
 }
 
 @mixin verticalScrollbar($size: 4px)  {
+  /* 兼容火狐 */
+  scrollbar-width: thin;
+  scrollbar-color: $border-shadow-color transparent;
+  
   &::-webkit-scrollbar {
     display: none;
   }
