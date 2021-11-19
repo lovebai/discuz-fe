@@ -119,7 +119,8 @@
 
       .react-datepicker {
         // 整个盒子
-        zoom: 0.7;
+        transform: scale(0.7);
+        transform-origin: center bottom;
         display: flex;
         height: 342px;
         font-size: $font-size-middle;
@@ -292,15 +293,23 @@
   .vote-editor {
     position: static;
     width: 100%;
-    // height: 240px;
     min-height: 240px;
+    max-height: 476px;
+    overflow-y: auto;
+    overflow-y: overlay;
+    padding-right: 16px;
+    margin-right: -16px;
+
+    @include scrollbar();
+  }
+
+  .delete-icon {
+    right: -12px;
   }
 
   :global {
     .dzq-modal__container {
       max-height: 600px;
-      overflow: auto;
-      @include scroll-bar();
     }
   }
 }

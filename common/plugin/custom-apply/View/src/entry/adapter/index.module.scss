@@ -12,8 +12,10 @@
   align-items: center;
 }
 .dzqp-act {
-  .dzq-modal__body {
-    padding: 0;
+  :global {
+    .dzq-modal__body {
+      padding: 0;
+    }
   }
 
   .dzqp-act--item {
@@ -184,11 +186,11 @@
 .dzqp-act.pc {
   :global {
     .dzq-modal__body {
-      margin-right: -16px;
       padding-right: 16px;
       max-height: 500px;
-      overflow-y: scroll;
-
+      overflow-x: hidden;
+      overflow-y: auto;
+      overflow-y: overlay;
       @include scrollbar();
     }
   }
@@ -214,8 +216,8 @@
     .dzq-modal__body {
       height: calc(100vh - 120px - constant(safe-area-inset-bottom));
       height: calc(100vh - 120px - env(safe-area-inset-bottom));
-      overflow-y: scroll;
       overflow-x: hidden;
+      overflow-y: auto;
     }
     .dzq-modal__footer {
       border-top: $border-solid-1;

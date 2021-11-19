@@ -151,7 +151,6 @@
 }
 
 .paid-wrapper {
-  overflow-y: scroll;
   max-height: calc(100vh - 60px - env(safe-area-inset-bottom));
 }
 
@@ -164,6 +163,10 @@
 
     .paid-wrapper {
       max-height: 600px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overflow-y: overlay;
+      padding-right: 16px;
 
       @include scrollbar();
 
@@ -182,6 +185,12 @@
       &::-webkit-scrollbar-button {
         z-index: 9999;
       }
+    }
+  }
+
+  @supports not (height: -webkit-fill-available) {
+    .wrapper {
+      height: 100%;
     }
   }
 

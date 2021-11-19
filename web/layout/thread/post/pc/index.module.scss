@@ -38,8 +38,9 @@
   border-radius: $border-radius-small;
   &-inner {
     height: 450px;
-    overflow-y: scroll;
     overflow-x: hidden;
+    overflow-y: auto;
+    overflow-y: overlay;
     @include scrollbar();
     &:hover {
       margin-right: -8px;

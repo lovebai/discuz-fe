@@ -104,7 +104,6 @@
 
     .at-item__inner {
       height: 70px;
-      margin: 0 $margin-4n;
       border-top: $border-solid-1;
       box-sizing: border-box;
     }
@@ -245,7 +244,7 @@
   z-index: 9;
   .info {
     .username {
-      max-width: rem(110) !important;
+      max-width: rem(100) !important;
     }
   }
 
@@ -289,31 +288,15 @@
   .list {
     padding: 0 $padding-6n;
     height: 180px !important;
-    overflow: auto;
-    margin-right: -16px;
     background-color: $white;
 
     .list__inner {
-      overflow-y: scroll !important;
+      overflow-x: hidden;
+      overflow-y: auto !important;
+      overflow-y: overlay !important;
+      padding-right: 16px;
 
-      // 整个滚动条
-      &::-webkit-scrollbar {
-        display: block;
-        margin-right: -8px;
-        width: 8px;
-        border-radius: $border-radius-small;
-      }
-
-      // 滚动条轨道
-      &::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      // 滚动条上的滚动滑块
-      &::-webkit-scrollbar-thumb {
-        background: $border-shadow-color;
-        border-radius: 4px;
-      }
+      @include scrollbar();
     }
     .avatar {
       width: 24px !important;
@@ -339,7 +322,6 @@
     .at-item__inner {
       height: auto !important;
       margin-left: 0;
-      margin-right: $margin-2n;
     }
   }
   .btn-container {
