@@ -34,10 +34,18 @@ export default class MemberBadge extends React.Component {
   }
 
   render() {
-    const { groupLevel, groupName, hasBg, groupNameStyle, memberBadgeStyle } = this.props;
+    const { groupLevel, groupName, hasBg, groupNameStyle, memberBadgeStyle, onClick = () => {} } = this.props;
 
     return (
-      <View className={classnames(styles.memberBadgeBox, hasBg ? styles.bg : styles.default)} style={memberBadgeStyle}>
+      <View className={classnames(styles.memberBadgeBox, hasBg ? styles.bg : styles.default)} style={memberBadgeStyle}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick({
+            groupLevel,
+            groupName,
+          });
+        }}
+      >
         <Image className={styles.memberBadgeIcon} src={this.getMemberBadgeIcon()} />
         <View className={classnames(styles.memberBadgeName, styles['memberBadgeName_' + groupLevel])}>
           <Text className={styles.memberBadgeNameText} style={groupNameStyle}>

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Tag } from '@discuzq/design';
 import styles from './index.module.scss';
@@ -7,6 +7,7 @@ import { diffDate } from '@common/utils/diff-date';
 import classNames from 'classnames';
 import SiteMapLink from '@components/site-map-link';
 import MemberBadge from '@components/member-badge';
+import MemberShipCard from '@components/member-ship-card';
 
 UserInfo.propTypes = {
   name: PropTypes.string.isRequired, // 用户名称
@@ -41,7 +42,8 @@ export default function UserInfo(props) {
   props.isPay && (tagsNumber = tagsNumber + 1);
   props.isReward && (tagsNumber = tagsNumber + 1);
   props.isRed && (tagsNumber = tagsNumber + 1);
-
+  // 是否显示用户组弹框
+  const [showShipCard, setShowShipCard] = useState(false);
 
   const isPc = props.platform === 'pc';
   return (
@@ -64,11 +66,12 @@ export default function UserInfo(props) {
           <div className={styles.info}>
             <div className={classNames(styles.name, props.platform === 'pc' && styles.pc, styles.cursor)} onClick={e => props.onClick(e)}>{props.name}</div>
             {
-            !props.isAnonymous && props.groupName && 
+            !props.isAnonymous && props.groupName &&
             <div className={styles.groupNameBox}>
               {
                 props.groupLevel ?
                 <MemberBadge
+                  onClick={() => setShowShipCard(true) }
                   groupLevel={props.groupLevel}
                   groupName={props.groupName}
                   groupNameStyle={tagsNumber < 3 ? {maxWidth: '82.5px'} : {maxWidth: '58px'}}
@@ -107,6 +110,15 @@ export default function UserInfo(props) {
           {/* {props.collect === 'collect' || true &&  <Icon className={styles.listItemIcon} name='CollectOutlined' size={20} />} */}
           {props.extraTag && props.extraTag}
         </div>
+        {showShipCard && (
+          <MemberShipCard
+            showRenderCard={false}
+            visible={showShipCard}
+            onClose={() => setShowShipCard(false)}
+            groupLevel={props.groupLevel}
+            groupName={props.groupName}
+          />
+        )}
       </div>
     </>
   );
