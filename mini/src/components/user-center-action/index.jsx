@@ -54,7 +54,7 @@ class UserCenterAction extends React.Component {
           name: '我的购买',
           url: '/userPages/my/buy/index',
           iconName: 'ShoppingCartOutlined',
-          visible: true,
+          visible: this.props.site.webConfig?.other?.threadOptimize,
         },
         {
           cid: 'draft',
