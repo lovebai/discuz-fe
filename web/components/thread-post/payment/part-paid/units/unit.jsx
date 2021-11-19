@@ -4,8 +4,8 @@ import styles from '@components/thread-post/payment/index.module.scss';
 import { Divider } from '@discuzq/design';
 
 // 容器
-const Unit = ({ children, title, desc, rightActionRender = null, withoutDivider = false }) => (
-  <div className={styles['paid-unit']}>
+const Unit = ({ className = '', children, title, desc, rightActionRender = null, withoutDivider = false }) => (
+  <div className={`${styles['paid-unit']} ${className}`}>
     {!withoutDivider && <Divider />}
 
     {/* 内容区首*/}
