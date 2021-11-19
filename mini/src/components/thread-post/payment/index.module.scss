@@ -200,5 +200,11 @@
 
   overflow-y: scroll;
 
+  /* fix: 消除IOS小程序显示的滚动条*/
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+  }
+
   max-height: calc(100vh - 60px - env(safe-area-inset-bottom));
 }
