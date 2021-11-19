@@ -7,9 +7,11 @@ import Avatar from '@discuzq/design/dist/components/avatar/index';
 import { IMG_SRC_HOST } from '@common/constants/site';
 
 import HomeHeader from '@components/home-header';
-import layout from './index.module.scss';
 // import bgImage from './../../../../web/public/dzq-img/invite-banner-bg.png';
 import NoMoreDataTip from '@components/no-more-data-tip';
+import SiteShare from '@components/site-share';
+import MemberBadge from '@components/member-badge';
+import layout from './index.module.scss';
 
 const bgImage = `${IMG_SRC_HOST}/assets/invite-banner-bg.8ebc5c7a58f15fe8979ce893715bf37422ae2e68.png`;
 
@@ -18,6 +20,10 @@ const bgImage = `${IMG_SRC_HOST}/assets/invite-banner-bg.8ebc5c7a58f15fe8979ce89
 @inject('invite')
 @observer
 class InviteH5Page extends React.Component {
+  state = {
+    show: false,
+  };
+
   async componentDidMount() {
     try {
       await this.props.invite.getInviteUsersList();
@@ -28,15 +34,22 @@ class InviteH5Page extends React.Component {
     }
   }
 
+  handleShareClick = () => {
+    this.setState({ show: true })
+  }
+
+  onShareClose= () => {
+    this.setState({ show: false})
+  }
+
   render() {
-    const inviteCode = this.props.user?.userInfo?.id;
-    const siteName = this.props.site?.webConfig?.setSite?.siteName || '';
+    const { site, user, invite: { inviteData } } = this.props;
+    const inviteCode = user?.userInfo?.id;
+    const siteName = site?.webConfig?.setSite?.siteName || '';
     const shareData = {
-      path: `/subPages/forum/partner-invite/index?inviteCode=${inviteCode}`,
+      path: `/subPages/forum/partner-invite/index`,
       title: `邀请您加入 ${siteName}`,
     };
-
-    const { inviteData } = this.props.invite;
 
     return (
       <>
@@ -59,7 +72,19 @@ class InviteH5Page extends React.Component {
               </View>
               <View className={layout.user_info_content}>
                 <View className={layout.user_info_name}>{inviteData.nickname}</View>
-                <View className={layout.user_info_tag}>{inviteData.groupName}</View>
+                {
+                  inviteData.level ?
+                  <View className={layout.memberBadgeBox}>
+                    <MemberBadge
+                      groupLevel={inviteData.level}
+                      groupName={inviteData.groupName}
+                    />
+                  </View>
+                  
+                  :
+                  <View className={layout.user_info_tag}>{inviteData.groupName}</View>
+                }
+                
                 <View className={layout.user_info_invite}>
                   <View className={layout.invite_num}>
                     <View className={layout.invite_num_title}>已邀人数</View>
@@ -115,10 +140,11 @@ class InviteH5Page extends React.Component {
         </View>
         {/* 邀请朋友 start */}
         <View className={layout.footer}>
-          <Button className={layout.button} openType="share" plain="true" data-shareData={shareData}>
+          <Button className={layout.button} onClick={this.handleShareClick}>
             邀请朋友
           </Button>
         </View>
+        {this.state.show && <SiteShare show={this.state.show} onShareClose={this.onShareClose} inviteCode={inviteCode} customShareData={shareData} type='invite' site={site}></SiteShare>}
         {/* 邀请朋友 end */}
       </>
     );

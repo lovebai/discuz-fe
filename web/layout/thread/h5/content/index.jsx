@@ -48,24 +48,23 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
   // 是否免费帖
   const isFree = threadStore?.threadData?.payType === 0;
 
+  // 是否作者自己
+  const isSelf = props.user?.userInfo?.id && props.user?.userInfo?.id === threadStore?.threadData?.userId;
+  // 是否已经付费
+  const isPayed = threadStore?.threadData?.paid === true;
+  // 是否可以免费查看付费帖子
+  const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
   // 是否附件付费帖
   const isAttachmentPay = threadStore?.threadData?.payType === 2 && threadStore?.threadData?.paid === false;
   const attachmentPrice = threadStore?.threadData?.attachmentPrice || 0;
-
-   // 是否可以免费查看付费帖子
-   const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
-
   // 是否需要附加付费
   const needAttachmentPay = !canFreeViewPost && isAttachmentPay && !isSelf && !isPayed;
   // 是否付费帖子
   const isThreadPay = threadStore?.threadData?.payType === 1;
   const threadPrice = threadStore?.threadData?.price || 0;
-  // 是否已经付费
-  const isPayed = threadStore?.threadData?.paid === true;
+
   // 当前用户是否需要付费
   const isNeedPay = threadStore?.threadData?.payType === 1 && threadStore?.threadData?.paid === false;
-  // 是否作者自己
-  const isSelf = props.user?.userInfo?.id && props.user?.userInfo?.id === threadStore?.threadData?.userId;
 
   // 是否红包帖
   const isRedPack = threadStore?.threadData?.displayTag?.isRedPack;
@@ -163,7 +162,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
         {text && <PostContent needShowMore={false} content={text || ''} />}
 
         {/* 视频 */}
-        {parseContent.VIDEO && (
+        {parseContent.VIDEO && parseContent.VIDEO.mediaUrl && (
           <VideoPlay
             url={parseContent.VIDEO.mediaUrl}
             coverUrl={parseContent.VIDEO.coverUrl}
@@ -276,10 +275,10 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
         {/* 投票 */}
         {parseContent.VOTE_THREAD
           && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
-    
+
         <DZQPluginCenterInjectionPolyfill
-          target='plugin_detail' 
-          hookName='thread_extension_display_hook' 
+          target='plugin_detail'
+          hookName='thread_extension_display_hook'
           pluginProps={{
             threadData: threadStore?.threadData,
             renderData: parseContent.plugin,
@@ -292,12 +291,12 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
           <div style={{ textAlign: 'center' }} onClick={onContentClick}>
             <Button className={styles.payButton} type="primary">
               <Icon className={styles.payIcon} name="GoldCoinOutlined" size={16}></Icon>
-              <p>支付{attachmentPrice}元查看附件内容</p>
+              <p>支付{attachmentPrice}元查看付费内容</p>
             </Button>
           </div>
         )}
-        
-          
+
+
 
           {/* 标签 */}
           {(parentCategoryName || categoryName) && (

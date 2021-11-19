@@ -167,7 +167,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread', 
           {text && <PostContent useShowMore={false} content={text || ''} />}
 
           {/* 视频 */}
-          {parseContent.VIDEO && (
+          {parseContent.VIDEO && parseContent.VIDEO.mediaUrl && (
             <VideoPlay
               url={parseContent.VIDEO.mediaUrl}
               coverUrl={parseContent.VIDEO.coverUrl}
@@ -292,7 +292,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread', 
             <View style={{ textAlign: 'center' }} onClick={onContentClick}>
               <Button className={styles.payButton} type="primary">
                 <Icon className={styles.payIcon} name="GoldCoinOutlined" size={16}></Icon>
-                <View>支付{attachmentPrice}元查看附件内容</View>
+                <View>支付{attachmentPrice}元查看付费内容</View>
               </Button>
             </View>
           )}

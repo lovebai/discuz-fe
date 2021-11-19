@@ -62,6 +62,10 @@
           color: $text-color-secondary;
           margin-right: $margin-4n;
         }
+        .textPrimary {
+          font-size: $font-size-label;
+          color: $primary-color;
+        }
         :global {
           .dzq-checkbox--radio {
             border-radius: $border-radius-small;

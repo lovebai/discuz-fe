@@ -28,7 +28,7 @@ import DZQPluginCenterInjectionPolyfill from '../../../../utils/DZQPluginCenterI
 import isServer from '@common/utils/is-server';
 
 // 插件引入
-/**DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
+/** DZQ->plugin->register<plugin_detail@thread_extension_display_hook>**/
 
 // 帖子内容
 const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')(observer((props) => {
@@ -59,20 +59,20 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
   const canEssence = threadStore?.threadData?.ability?.canEssence;
   const canStick = threadStore?.threadData?.ability?.canStick;
 
+  // 是否作者自己
+  const isSelf = props.user?.userInfo?.id && props.user?.userInfo?.id === threadStore?.threadData?.userId;
+  // 是否已经付费
+  const isPayed = threadStore?.threadData?.paid === true;
   // 是否可以免费查看付费帖子
   const canFreeViewPost = threadStore?.threadData?.ability.canFreeViewPost;
-  // 是否附件付费
+  // 是否部分付费
   const isAttachmentPay = threadStore?.threadData?.payType === 2 && threadStore?.threadData?.paid === false;
   const attachmentPrice = threadStore?.threadData?.attachmentPrice || 0;
-  // 是否需要附加付费
+  // 是否需要部分付费
   const needAttachmentPay = !canFreeViewPost && isAttachmentPay && !isSelf && !isPayed;
   // 是否帖子付费
   const isThreadPay = threadStore?.threadData?.payType === 1;
   const threadPrice = threadStore?.threadData?.price || 0;
-  // 是否已经付费
-  const isPayed = threadStore?.threadData?.paid === true;
-  // 是否作者自己
-  const isSelf = props.user?.userInfo?.id && props.user?.userInfo?.id === threadStore?.threadData?.userId;
 
   // 是否红包帖
   const isRedPack = threadStore?.threadData?.displayTag?.isRedPack;
@@ -132,10 +132,10 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
   const {
     canDownloadAttachment,
     canViewAttachment,
-    canViewVideo
+    canViewVideo,
   } = threadStore?.threadData?.ability || {};
 
-  const { tipList } = threadStore?.threadData || {};
+  const { tipList, isAnonymous } = threadStore?.threadData || {};
 
   return (
     <div className={`${topic.container}`}>
@@ -144,7 +144,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
           <UserInfo
             name={threadStore?.threadData?.user?.nickname || ''}
             avatar={threadStore?.threadData?.user?.avatar || ''}
-            groupName={threadStore?.threadData?.group?.groupName || ''}
+            groupName={isAnonymous ? '' : (threadStore?.threadData?.group?.groupName || '')}
             groupLevel={threadStore?.threadData?.group?.level || 0}
             location={threadStore?.threadData?.position.location || ''}
             view={`${threadStore?.threadData?.viewCount}` || ''}
@@ -211,7 +211,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
         {text && <PostContent needShowMore={false} content={text || ''} usePointer={false} />}
 
         {/* 视频 */}
-        {parseContent.VIDEO && (
+        {parseContent.VIDEO && parseContent.VIDEO.mediaUrl && (
           <VideoPlay
             url={parseContent.VIDEO.mediaUrl}
             coverUrl={parseContent.VIDEO.coverUrl}
@@ -328,14 +328,14 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
           && <VoteDisplay voteData={parseContent.VOTE_THREAD} threadId={threadStore?.threadData?.threadId} page="detail" />}
 
         <DZQPluginCenterInjectionPolyfill
-          target='plugin_detail' 
-          hookName='thread_extension_display_hook' 
+          target='plugin_detail'
+          hookName='thread_extension_display_hook'
           pluginProps={{
             threadData: threadStore?.threadData,
             renderData: parseContent.plugin,
             updateListThreadIndexes: index.updateListThreadIndexes.bind(index),
             updateThread: thread.updateThread.bind(thread),
-        }}/>
+          }}/>
 
         {/* 付费附件：不能免费查看付费帖 && 需要付费 && 不是作者 && 没有付费 */}
         {needAttachmentPay && (
@@ -343,7 +343,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
             <Button className={topic.payButton} type="primary" size="large">
               <div className={topic.pay}>
                 <Icon className={topic.payIcon} name="GoldCoinOutlined" size={18}></Icon>
-                支付{attachmentPrice}元查看附件
+                支付{attachmentPrice}元查看付费内容
               </div>
             </Button>
           </div>
@@ -382,8 +382,8 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
             <div className={topic.moneyList}>
               <div className={topic.top}>{tipList.length}人打赏</div>
               <div className={topic.itemList}>
-                  {tipList.map(i=>(
-                    <div key={i.userId} onClick={()=>Router.push({ url: `/user/${i.userId}` })} className={topic.itemAvatar}>
+                  {tipList.map(i => (
+                    <div key={i.userId} onClick={() => Router.push({ url: `/user/${i.userId}` })} className={topic.itemAvatar}>
                       <Avatar
                         image={i.avatar}
                         name={i.nickname}

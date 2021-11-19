@@ -28,6 +28,10 @@ const Index = ({ index: indexStore, onSubmit = noop, isShowDefault = false }) =>
   const [dataSource, setDataSource] = useState(deepClone(newFilterData));
 
   useEffect(() => {
+    if (indexStore.topMenuIndex !== 0) {
+      newFilterData[0].isActive = false;
+      newFilterData[indexStore.topMenuIndex].isActive = true;
+    }
     newFilterData[newFilterData.length - 2].children = [
       {
         label: '不限',
@@ -120,6 +124,7 @@ const Index = ({ index: indexStore, onSubmit = noop, isShowDefault = false }) =>
       } else {
         item.isActive = false
       }
+      return item;
     })
   }
 

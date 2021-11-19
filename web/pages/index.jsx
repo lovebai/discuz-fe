@@ -134,7 +134,7 @@ class Index extends React.Component {
   // 根据选中的筛选项，设置地址栏
   setUrl = (categoryIds = [], sequence = 0) => {
     const url = ((categoryIds?.length && categoryIds.join('') !== 'all')
-      || sequence !== 0)
+      || parseInt(sequence, 10) !== 0)
       ? `/cate/${categoryIds.join('_')}/seq/${sequence}` : '/';
     this.props.router.replace(url);
   }

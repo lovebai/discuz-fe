@@ -53,7 +53,7 @@ class PostPage extends React.Component {
       // 解析完后显示商品信息
       productShow: false,
       // 语音贴上传成功的语音地址
-      paySelectText: ['帖子付费', '附件付费'],
+      paySelectText: ['全帖付费', '部分付费'],
       curPaySelect: '',
       count: 0,
       draftShow: false,
@@ -405,12 +405,12 @@ class PostPage extends React.Component {
       return false;
     }
     if (child && child.id) {
-      const content = '帖子付费和附件付费不能同时设置';
-      if (postData.price && child.id === '附件付费') {
+      const content = '全帖付费和部分付费不能同时设置';
+      if (postData.price && child.id === '部分付费') {
         this.postToast(content);
         return false;
       }
-      if (postData.attachmentPrice && child.id === '帖子付费') {
+      if (postData.attachmentPrice && child.id === '全帖付费') {
         Toast.error({ content });
         return false;
       }
