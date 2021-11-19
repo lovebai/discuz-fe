@@ -173,7 +173,10 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName,
             setDialogVisible(false);
           }}
         >
-          {isPC ? null : <Header allowJump={false} customJum={() => setDialogVisible(false)} />}
+          {isPC ? null : <Header allowJump={false} customJum={() => {
+            onClose();
+            setDialogVisible(false);
+          }} />}
           <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
             {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId, days }) => {
               const data = {
