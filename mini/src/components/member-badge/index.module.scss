@@ -19,8 +19,8 @@
 
     .memberBadgeNameText {
       font-size: 10px;
-      height: 12px;
-      line-height: 12px;
+      height: 16px;
+      line-height: 16px;
       max-width: rem(120);
       @include text-ellipsis;
     }
