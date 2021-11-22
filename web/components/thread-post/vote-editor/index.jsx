@@ -160,7 +160,7 @@ const Index = ({ cancel, pc, visible, threadPost }) => {
       {pc ? '' : (
         <>
           <DatePickers
-            // time={time}
+            time={new Date(time)}
             onSelects={(e) => {
               setTime(e);
               setShow(false);
