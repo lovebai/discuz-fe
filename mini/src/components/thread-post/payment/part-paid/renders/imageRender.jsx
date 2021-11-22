@@ -33,7 +33,7 @@ const ImageRender = inject('threadPost')(
         {imagesArray.map((imageInfo) => {
           return (
             <View key={imageInfo.id} className={styles.imageWrapper}>
-              <Image src={imageInfo.thumbUrl} className={styles.image} />
+              <Image mode="aspectFill" src={imageInfo.thumbUrl} className={styles.image} />
               <View className={styles.imageCheckBox}>
                 <Checkbox
                   checked={selectedImages.indexOf(imageInfo.id) !== -1}

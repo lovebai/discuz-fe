@@ -52,11 +52,13 @@ class AtSelect extends Component {
   async fetchAllUser() {
     const { search } = this.props;
     const { page, perPage } = this.state;
-    const ret = await search.getUsersList({ search: this.getSearchKeyword(), type: 'nickname', page, perPage });
+    const keywords = this.getSearchKeyword();
+    const ret = await search.getUsersList({ search: keywords, type: 'nickname', page, perPage });
     const { code, data } = ret;
     if (code === 0) {
       this.setState({
-        page: page + 1,
+        // fix: 请求结束后，如果当前搜索关键字已经变化，就重置page
+        page: keywords === this.getSearchKeyword() ? page + 1 : 1,
         finish: page * perPage >= data?.totalCount,
       });
     } else {
@@ -146,10 +148,10 @@ class AtSelect extends Component {
               </div>
               <div className={styles.info}>
                 <div className={styles.username}>{nickname}</div>
-                {/* <div className={styles.group}>{groupName}</div> */}
                 {
                   level ?
                   <MemberBadge
+                    className={styles.group}
                     groupLevel={level}
                     groupName={groupName}
                   />
