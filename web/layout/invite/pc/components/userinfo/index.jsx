@@ -23,7 +23,16 @@ function DefaultLayout(props) {
         </div>
         <div className={layout.user_card_info}>
           <div className={layout.user_info_name} title={inviteData.nickname}>{inviteData.nickname}</div>
-          <div className={layout.user_info_tag}>{inviteData.groupName}</div>
+          {
+            inviteData.level
+              ? <div>
+                  <MemberBadge
+                    groupLevel={inviteData.level}
+                    groupName={inviteData.groupName}
+                  />
+                </div>
+              : <div className={layout.user_info_tag}>{inviteData.groupName}</div>
+          }
           <div className={layout.user_info_invite}>
             <div className={layout.invite_num}>
               <div className={layout.invite_num_title}>已邀人数</div>
@@ -60,19 +69,19 @@ function MiniLayout(props) {
             onClick={() => onAvatarClick({ id: inviteData.userId })}
             userId={inviteData.userId}
             image={inviteData.avatar}
+            wrapClassName={layout.mini__avatar}
             name={inviteData.nickname && inviteData.nickname.substring(0, 1)}
           />
           <div className={layout.userName}>{ inviteData.nickname }</div>
           {
-            inviteData.level ?
-            <div className={layout.memberBadgeBox}>
-              <MemberBadge
-                groupLevel={inviteData.level}
-                groupName={inviteData.groupName}
-              />
-            </div>
-            :
-            <div className={layout.userGroup}>{ inviteData.groupName }</div>
+            inviteData.level
+              ? <div>
+                  <MemberBadge
+                    groupLevel={inviteData.level}
+                    groupName={inviteData.groupName}
+                  />
+                </div>
+              : <div className={layout.userGroup}>{ inviteData.groupName }</div>
           }
         </div>
         <div className={layout.userRight}>
