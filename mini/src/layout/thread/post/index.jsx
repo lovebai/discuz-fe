@@ -563,8 +563,8 @@ class Index extends Component {
     const { setPostData } = threadPost;
     if (this.ticket && this.randstr) {
       setPostData({
-        ticket: this.ticket,
-        randstr: this.randstr,
+        captchaTicket: this.ticket,
+        captchaRandStr: this.randstr,
       });
       this.ticket = '';
       this.randstr = '';

@@ -74,6 +74,7 @@ class UserCenterPost extends React.Component {
         if (!captchaTicket && !captchaRandStr) {
           return false ;
         }
+        setPostData({captchaTicket, captchaRandStr});
       }
     }
 

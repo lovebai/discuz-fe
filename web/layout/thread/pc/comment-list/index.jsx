@@ -306,6 +306,8 @@ class RenderCommentList extends React.Component {
         if (!captchaTicket && !captchaRandStr) {
           return false ;
         }
+        params.captchaTicket = captchaTicket;
+        params.captchaRandStr = captchaRandStr;
       }
     }
 

@@ -114,7 +114,7 @@ class CommentAction extends CommentStore {
    */
   @action
   async createComment(params, ThreadStore) {
-    const { id, content, attachments, postId, sort, isNoMore } = params;
+    const { id, content, attachments, postId, sort, isNoMore, captchaTicket, captchaRandStr } = params;
     if (!id || (!content && attachments.length === 0)) {
       return {
         msg: '参数不完整',
@@ -128,6 +128,11 @@ class CommentAction extends CommentStore {
       replyId: postId,
       attachments,
     };
+
+    if (captchaTicket && captchaRandStr) {
+      requestParams.captchaTicket = captchaTicket;
+      requestParams.captchaRandStr = captchaRandStr;
+    }
 
     const res = await createPosts({ data: requestParams });
 
@@ -177,7 +182,7 @@ class CommentAction extends CommentStore {
    */
   @action
   async updateComment(params, ThreadStore) {
-    const { id, postId, content, attachments } = params;
+    const { id, postId, content, attachments, captchaTicket, captchaRandStr } = params;
     if (!id || !content || !postId) {
       return {
         msg: '参数不完整',
@@ -195,6 +200,11 @@ class CommentAction extends CommentStore {
         },
       },
     };
+
+    if (captchaTicket && captchaRandStr) {
+      requestParams.captchaTicket = captchaTicket;
+      requestParams.captchaRandStr = captchaRandStr;
+    }
 
     const res = await updatePosts({ data: requestParams });
 
@@ -238,7 +248,7 @@ class CommentAction extends CommentStore {
    */
   @action
   async createReply(params, ThreadStore) {
-    const { id, commentId, replyId, commentPostId, content, isComment, attachments } = params;
+    const { id, commentId, replyId, commentPostId, content, isComment, attachments, captchaRandStr, captchaTicket } = params;
     if (!id || (!content && attachments.length === 0) || !replyId || !commentId) {
       return {
         msg: '参数不完整',
@@ -253,6 +263,11 @@ class CommentAction extends CommentStore {
       attachments,
       commentPostId,
     };
+
+    if (captchaTicket && captchaRandStr) {
+      requestParams.captchaTicket = captchaTicket;
+      requestParams.captchaRandStr = captchaRandStr;
+    }
 
     const res = await createPosts({ data: requestParams });
 

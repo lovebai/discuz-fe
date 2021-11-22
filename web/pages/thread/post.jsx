@@ -666,6 +666,7 @@ class PostPage extends React.Component {
         // 验证码票据，验证码字符串不全时，弹出滑块验证码
         const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
         if (!captchaTicket && !captchaRandStr) return false;
+        threadPost.setPostData({captchaTicket, captchaRandStr});
       }
     }
 

@@ -345,6 +345,8 @@ class CommentH5Page extends React.Component {
         if (!captchaTicket && !captchaRandStr) {
           return false ;
         }
+        params.captchaTicket = captchaTicket;
+        params.captchaRandStr = captchaRandStr;
       }
     }
 
