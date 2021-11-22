@@ -150,6 +150,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread', 
               isReward={isReward}
               isRed={isRedPack}
               onClick={onUserClick}
+              hasMoreIcon={props?.user?.isLogin() && isApproved}
             ></UserInfo>
           </View>
           {props?.user?.isLogin() && isApproved && (
