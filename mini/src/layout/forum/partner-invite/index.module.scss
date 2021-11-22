@@ -79,36 +79,35 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: rem(-46);
-    padding: $padding-2n 0;
+    bottom: calc(100% + 12px);
+    padding: rem($padding-2n);
     text-align: center;
-    font-size: $font-size-label;
+    font-size: rem($font-size-label);
     color: $white;
     width: calc(100vw - 32px);
-    height: rem(34);
     box-sizing: border-box;
-    border-radius: $border-radius-small;
+    border-radius: rem($border-radius-small);
     background: $text-color-regular;
     .bottom_tips_img{
       width: rem(18);
       height: rem(18);
+      flex-shrink: 0;
       border-radius: $border-radius-circle;
-      line-height: rem(18);
+      line-height: rem($font-line-height-xs);
     }
     .bottom_tips_text{
-      padding-left: $padding-2n;
-      view {
-        display: inline;
-      }
+      padding-left: rem($padding-2n);
+      line-height: rem($font-line-height-xs);
+      text-align: left;
     }
     .bottom_tips_arrows{
       position: absolute;
-      bottom: rem(-14);
+      bottom: rem(-16);
       display: inline-block;
       width: 0;
       height: 0;
-      border: $border-radius-8 solid transparent;
-      border-top: $border-radius-8 solid $text-color-regular;
+      border: rem(8) solid transparent;
+      border-top: rem(8) solid $text-color-regular;
     }
   }
 }
