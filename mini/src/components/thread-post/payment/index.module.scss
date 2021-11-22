@@ -185,6 +185,26 @@
 }
 
 .paid-wrapper {
+  &::-webkit-scrollbar {
+    z-index: 9999;
+  }
+  &::-webkit-scrollbar-track {
+    z-index: 9999;
+  }
+  &::-webkit-scrollbar-corner {
+    z-index: 9999;
+  }
+  &::-webkit-scrollbar-button {
+    z-index: 9999;
+  }
+
   overflow-y: scroll;
+
+  /* fix: 消除IOS小程序显示的滚动条*/
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+  }
+
   max-height: calc(100vh - 60px - env(safe-area-inset-bottom));
 }

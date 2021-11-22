@@ -167,6 +167,9 @@ $baseHeight: 860px;
     :global(.dzq-avatar--primary) {
       cursor: pointer;
     }
+    .mini__avatar {
+      max-width: none;
+    }
     .userName {
       @include lamp-clamp(2);
       margin-top: rem($margin-1n);

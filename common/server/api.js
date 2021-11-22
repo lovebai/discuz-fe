@@ -139,7 +139,7 @@ http.interceptors.response.use((res) => {
       msg: data.Message
     });
   }
-
+  
   switch (data.Code) {
     case INVALID_TOKEN: {
       // @TODO 未登陆且无权限时，直接跳转加入页面。可能影响其它逻辑
@@ -189,9 +189,9 @@ http.interceptors.response.use((res) => {
     }
     case JUMP_TO_REFUSE: {
       if (process.env.DISCUZ_ENV === 'web') {
-        url = '/user/status?statusCode=-4007';
+        url = `/user/status?statusCode=-4007&statusMsg=${data?.Data?.rejectReason}`;
       } else {
-        url = '/userPages/user/status/index?statusCode=-4007'
+        url = `/userPages/user/status/index?statusCode=-4007&statusMsg=${data?.Data?.rejectReason}`
       }
       Router.push({
         url

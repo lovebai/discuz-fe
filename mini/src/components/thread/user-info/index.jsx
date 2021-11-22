@@ -68,7 +68,7 @@ export default function UserInfo(props) {
                   }}
                   groupLevel={props.groupLevel}
                   groupName={props.groupName}
-                  groupNameStyle={tagsNumber < 3 ? {maxWidth: '82.5px'} : {maxWidth: '58px'}}
+                  groupNameStyle={tagsNumber < 3 ? {maxWidth: '82.5px'} : ((tagsNumber < 4) ? {maxWidth: '58px'} : {maxWidth: '30px'})}
                 />
                 :
                 <View className={`${styles.groupName} ${tagsNumber < 3 ? styles.groupName2 : styles.groupName3}`}>{props.groupName}</View>
@@ -94,16 +94,16 @@ export default function UserInfo(props) {
         </View>
       </View>
 
-      <View className={styles.tags}>
+      <View className={styles.tags} >
         {props.isEssence && (
-          <View className={classNames('dzq-tag', styles.categoryEssence)}>
+          <View style={(props.hasMoreIcon) ? {marginLeft:'3px'}:{}} className={classNames('dzq-tag', styles.categoryEssence)}>
             <Text className="dzq-tag-text">{tagsNumber > 2 && !isPc ? '精' : '精华'}</Text>
           </View>
         )}
         {/* {props.isEssence && <Tag type="primary">精华</Tag>} */}
-        {props.isReward && <Tag type="warning">{tagsNumber > 2 && !isPc ? '悬' : '悬赏'}</Tag>}
-        {props.isRed && <Tag type="danger">{tagsNumber > 2 && !isPc ? '红' : '红包'}</Tag>}
-        {props.isPay && <Tag type="success">{tagsNumber > 2 && !isPc ? '付' : '付费'}</Tag>}
+        {props.isReward && <Tag style={(props.hasMoreIcon) ? {marginLeft:'3px'}:{}} type="warning">{tagsNumber > 2 && !isPc ? '悬' : '悬赏'}</Tag>}
+        {props.isRed && <Tag style={(props.hasMoreIcon) ? {marginLeft:'3px'}:{}} type="danger">{tagsNumber > 2 && !isPc ? '红' : '红包'}</Tag>}
+        {props.isPay && <Tag style={(props.hasMoreIcon) ? {marginLeft:'3px'}:{}} type="success">{tagsNumber > 2 && !isPc ? '付' : '付费'}</Tag>}
         {props.extraTag && props.extraTag}
       </View>
     </View>

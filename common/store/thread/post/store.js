@@ -92,7 +92,7 @@ class ThreadPostStore {
    * 部分付费信息,用于存储操作时的数据
    */
   @observable partPayInfo = {
-    textFreeValue: '0',
+    textFreeValue: '',
     payPrice: '',
     selectedImages: [],
     selectedAttachments: [],
