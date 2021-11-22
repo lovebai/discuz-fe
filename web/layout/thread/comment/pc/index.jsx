@@ -391,6 +391,7 @@ class CommentPCPage extends React.Component {
                   data={commentData}
                   likeClick={() => this.likeClick(commentData)}
                   replyClick={() => this.replyClick(commentData)}
+                  deleteClick={() => this.deleteClick(commentData)}
                   replyLikeClick={reply => this.replyLikeClick(reply, commentData)}
                   replyReplyClick={reply => this.replyReplyClick(reply, commentData)}
                   replyDeleteClick={reply => this.replyDeleteClick(reply, commentData)}
