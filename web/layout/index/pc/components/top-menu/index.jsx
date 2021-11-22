@@ -28,10 +28,11 @@ const Index = ({ index: indexStore, onSubmit = noop, isShowDefault = false }) =>
   const [dataSource, setDataSource] = useState(deepClone(newFilterData));
 
   useEffect(() => {
-    if (indexStore.topMenuIndex !== 0) {
-      newFilterData[0].isActive = false;
-      newFilterData[indexStore.topMenuIndex].isActive = true;
-    }
+    // fix: 选中子菜单时，subIndex形如a/b，下标无法直接使用
+    const activeIndex = indexStore.topMenuIndex[0] || 0;
+    newFilterData[0].isActive = false;
+    newFilterData[activeIndex].isActive = true;
+
     newFilterData[newFilterData.length - 2].children = [
       {
         label: '不限',
