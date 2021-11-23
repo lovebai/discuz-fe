@@ -60,6 +60,18 @@ class CommentAction extends CommentStore {
   }
 
   @action
+  setPostContent({value = '', imageList = []}) {
+    this.postValue = value;
+    this.postImageList = imageList;
+  }
+
+  @action
+  clearPostContent() {
+    this.postValue = '';
+    this.postImageList = [];
+  }
+
+  @action
   setCommentDetail(data) {
     this.commentDetail = data;
     if (this.commentDetail) {

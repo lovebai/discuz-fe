@@ -10,6 +10,10 @@ class CommentStore {
   @observable authorInfo = null; // 作者信息
   @observable isAuthorInfoError = false;
 
+  // 保障小程序启用滑动验证码，跳转其它小程序后再回来，数据不丢失
+  @observable postValue = ''; // 评论、回复内容
+  @observable postImageList = [];  // 评论、回复图片
+
   // 回复列表
   @computed get replyList() {
     return this.commentDetail?.commentPosts || [];
