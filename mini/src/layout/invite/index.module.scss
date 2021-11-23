@@ -69,6 +69,8 @@
     color: $text-color-primary;
     opacity: 1;
     margin-top: rem(68);
+    max-width: rem(343);
+    @include text-ellipsis();
   }
   .user_info_tag{
     font-weight: normal;
