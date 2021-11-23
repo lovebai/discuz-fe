@@ -1,4 +1,5 @@
 import React, { createRef, useEffect, useState, useCallback, useMemo } from 'react';
+import Taro from '@tarojs/taro';
 import { View, CustomWrapper } from '@tarojs/components'
 import Input from '@discuzq/design/dist/components/input';
 import Button from '@discuzq/design/dist/components/button';
@@ -7,11 +8,12 @@ import { readEmoji } from '@common/server';
 import Avatar from '@components/avatar';
 import Emoji from '@components/emoji';
 import { debounce } from '@common/utils/throttle-debounce.js';
+import { toTCaptcha } from '@common/utils/to-tcaptcha';
 import classnames from 'classnames';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 
-const CommentInput = inject('site')(inject('user')((props) => {
+const CommentInput = (props) => {
   const { onSubmit, onClose, height, initValue = '', placeholder = '写下我的评论...', platform = 'pc', userInfo, emojihide } = props;
 
   const textareaRef = createRef();
@@ -25,6 +27,10 @@ const CommentInput = inject('site')(inject('user')((props) => {
   const [showEmojis, setShowEmojis] = useState(false);
 
   const [cursorPos, setCursorPos] = useState(0);
+
+  // 验证码票据、字符串
+  const [ticket, setTicket] = useState('');
+  const [randstr, setRandStr] = useState('');
 
   const canSubmit = useMemo(() => !!value, [value]);
 
@@ -40,21 +46,79 @@ const CommentInput = inject('site')(inject('user')((props) => {
     if (emojihide) setShowEmojis(false);
   }, [emojihide]);
 
-  const onSubmitClick = async () => {
-    if (typeof onSubmit === 'function') {
-      try {
-        setLoading(true);
-        const success = await onSubmit(value);
-        if (success) {
-          setValue('');
+  useEffect(() => {
+    Taro.eventCenter.on('captchaResult', handleCaptchaResult);
+    Taro.eventCenter.on('closeChaReault', handleCloseChaReault);
+
+    return () => {
+      Taro.eventCenter.off('captchaResult', handleCaptchaResult);
+      Taro.eventCenter.off('closeChaReault', handleCloseChaReault);
+    };
+  }, []);
+
+  const handleCaptchaResult = (result) => {
+    setTicket(result.ticket);
+    setRandStr(result.randstr);
+    onSubmitClick(true);
+  };
+
+  const handleCloseChaReault = () => {
+    setTicket('');
+    setRandStr('');
+  };
+
+  const checkSubmit = async () => {
+    const valuestr = value.replace(/\s/g, '');
+    // 如果内部为空，且只包含空格或空行
+    if (!valuestr) {
+      Toast.info({ content: '请输入内容' });
+      return false;
+    }
+
+
+    const { webConfig } = props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const qcloudCaptchaAppId = webConfig?.qcloud?.qcloudCaptchaAppId;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        if (!ticket || !randstr) {
+          await props.comment.setPostContent({value});
+          toTCaptcha(qcloudCaptchaAppId);
+          return false;
         }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        // 发布成功隐藏表情
-        setShowEmojis(false);
-        setLoading(false);
       }
+    }
+
+    return true;
+  }
+
+  const onSubmitClick = async (isCaptchaCallback = false) => {
+    if (typeof onSubmit !== 'function') return;
+    if (!isCaptchaCallback) {
+      if (!checkSubmit()) return;
+    }
+
+    const { postValue, clearPostContent } = props.comment;
+    try {
+      setLoading(true);
+      const data = {
+        val: isCaptchaCallback ? postValue : value,
+        captchaTicket: ticket,
+        captchaRandStr: randstr,
+      }
+      const success = await onSubmit(data);
+      if (success) {
+        setValue('');
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // 发布成功隐藏表情
+      setShowEmojis(false);
+      setLoading(false);
+      clearPostContent();
+      handleCloseChaReault();
     }
   };
 
@@ -118,12 +182,12 @@ const CommentInput = inject('site')(inject('user')((props) => {
               onBlur={onBlur}
             ></Input>
           </CustomWrapper>
-          </View>
+        </View>
       </View>
 
 
       <View className={styles.footer}>
-        {showEmojis && <View className={styles.emojis}><Emoji show={showEmojis} emojis={emojis} onClick={onEmojiClick}/></View>}
+        {showEmojis && <View className={styles.emojis}><Emoji show={showEmojis} emojis={emojis} onClick={onEmojiClick} /></View>}
 
         <View className={styles.linkBtn}>
           <Icon
@@ -148,6 +212,6 @@ const CommentInput = inject('site')(inject('user')((props) => {
       </View>
     </View>
   );
-}));
+};
 
-export default CommentInput;
+export default inject('comment', 'user', 'site')(observer(CommentInput));

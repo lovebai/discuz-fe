@@ -219,13 +219,7 @@ class RenderCommentList extends React.Component {
   }
 
   // 创建回复评论+回复回复接口
-  async createReply(val = '', imageList = []) {
-    const valuestr = val.replace(/\s/g, '');
-    // 如果内部为空，且只包含空格或空行
-    if (!valuestr && imageList.length === 0) {
-      Toast.info({ content: '请输入内容' });
-      return;
-    }
+  async createReply({ val, imageList, captchaTicket, captchaRandStr }) {
 
     const id = this.props.thread?.threadData?.id;
     if (!id) return;
@@ -233,6 +227,8 @@ class RenderCommentList extends React.Component {
     const params = {
       id,
       content: val,
+      captchaTicket,
+      captchaRandStr,
     };
 
     // 楼中楼回复
@@ -406,7 +402,7 @@ class RenderCommentList extends React.Component {
           visible={this.state.showCommentInput}
           inputText={this.state.inputText}
           onClose={() => this.setState({ showCommentInput: false })}
-          onSubmit={(value, imgList) => this.createReply(value, imgList)}
+          onSubmit={data => this.createReply(data)}
           site={this.props.site}
         ></InputPopup>
 

@@ -21,6 +21,7 @@ import Router from '@discuzq/sdk/dist/router';
 @inject('commentPosition')
 @inject('comment')
 @inject('user')
+@inject('site')
 @observer
 class RenderCommentList extends React.Component {
   constructor(props) {
@@ -434,7 +435,8 @@ class RenderCommentList extends React.Component {
           visible={this.state.showCommentInput}
           inputText={this.state.inputText}
           onClose={() => this.setState({ showCommentInput: false })}
-          onSubmit={(value) => this.createReply(value)}
+          onSubmit={data => this.createReply(data)}
+          site={this.props.site}
         ></InputPopup>
 
         {/* 删除弹层 */}

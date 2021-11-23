@@ -84,7 +84,7 @@ class CommentH5Page extends React.Component {
       this.shareData = {
         path: `/indexPages/thread/comment/index?id=${this.props.comment?.commentDetail?.id}&threadId=${id}&fromMessage=true`,
       };
-    } 
+    }
   }
 
   componentWillUnmount() {
@@ -134,7 +134,6 @@ class CommentH5Page extends React.Component {
     }
   };
 
-  
   // 生成海报
   async onPosterShare() {
     const commentData = this.props.comment?.commentDetail;
@@ -365,13 +364,7 @@ class CommentH5Page extends React.Component {
   }
 
   // 创建回复评论+回复回复接口
-  async createReply(val, imageList) {
-    const valuestr = val.replace(/\s/g, '');
-    // 如果内部为空，且只包含空格或空行
-    if (!(valuestr || imageList.length)) {
-      Toast.info({ content: '请输入内容' });
-      return;
-    }
+  async createReply({ val, imageList, captchaTicket, captchaRandStr }) {
 
     const { threadId: id } = this.props.comment;
     if (!id) return;
@@ -379,6 +372,8 @@ class CommentH5Page extends React.Component {
     const params = {
       id,
       content: val,
+      captchaTicket,
+      captchaRandStr,
     };
 
     // 楼中楼回复
@@ -475,7 +470,7 @@ class CommentH5Page extends React.Component {
     const { threadId } = this.props.comment;
     Router.push({ url: `/indexPages/thread/index?id=${threadId}&fromMessage=true` });
   }
-  
+
   // 点击内容
   onCommentClick = (data) => {
     this.operationData = data || null;
@@ -535,7 +530,7 @@ class CommentH5Page extends React.Component {
       goToLoginPage({ url: '/userPages/user/wx-auth/index' });
       return;
     }
-  
+
     this.setState({
       isShowShare: true,
       showMorePopup: true,
@@ -662,7 +657,7 @@ class CommentH5Page extends React.Component {
             visible={this.state.showCommentInput}
             inputText={this.state.inputText}
             onClose={() => this.setState({ showCommentInput: false })}
-            onSubmit={(value, imageList) => this.createReply(value, imageList)}
+            onSubmit={data => this.createReply(data)}
             site={this.props.site}
             checkUser={this.props?.thread?.checkUser || []}
             thread={this.props?.thread}
@@ -679,7 +674,6 @@ class CommentH5Page extends React.Component {
             onOperClick={(type) => this.onOperClick(type)}
             isShowShare={this.state.isShowShare}
           />
-          
 
           {/* 删除弹层 */}
           <DeletePopup

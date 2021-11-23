@@ -558,29 +558,22 @@ class ThreadH5Page extends React.Component {
   }
 
   // 点击发布按钮
-  async publishClick(val = '', imageList = []) {
-    const valuestr = val.replace(/\s/g, '');
-    // 如果内部为空，且只包含空格或空行
-    if (!valuestr && imageList.length === 0) {
-      Toast.info({ content: '请输入内容' });
-      return;
-    }
-
+  async publishClick(data) {
     if (this.commentType === 'comment') {
-      return await this.onPublishClick(val, imageList);
+      return await this.onPublishClick(data);
     }
     if (this.commentType === 'reply') {
-      return await this.createReply(val, imageList);
+      return await this.createReply(data);
     }
   }
 
   // 发布评论
-  async onPublishClick(val, imageList) {
-    return this.comment ? await this.updateComment(val, imageList) : await this.createComment(val, imageList);
+  async onPublishClick(data) {
+    return this.comment ? await this.updateComment(data) : await this.createComment(data);
   }
 
   // 创建评论
-  async createComment(val, imageList) {
+  async createComment({ val, imageList, captchaTicket, captchaRandStr }) {
     const id = this.props.thread?.threadData?.id;
     const params = {
       id,
@@ -588,6 +581,8 @@ class ThreadH5Page extends React.Component {
       sort: this.commentDataSort, // 目前的排序
       isNoMore: this.props?.thread?.isNoMore,
       attachments: [],
+      captchaTicket,
+      captchaRandStr,
     };
 
     if (imageList?.length) {
@@ -642,7 +637,7 @@ class ThreadH5Page extends React.Component {
   }
 
   // 更新评论
-  async updateComment(val) {
+  async updateComment({val, captchaTicket = '', captchaRandStr = '' }) {
     if (!this.comment) return;
 
     const id = this.props.thread?.threadData?.id;
@@ -651,6 +646,8 @@ class ThreadH5Page extends React.Component {
       postId: this.comment.id,
       content: val,
       attachments: [],
+      captchaTicket,
+      captchaRandStr,
     };
     const { success, msg, isApproved } = await this.props.comment.updateComment(params, this.props.thread);
     if (success) {
@@ -733,7 +730,7 @@ class ThreadH5Page extends React.Component {
   }
 
   // 创建回复评论+回复回复接口
-  async createReply(val = '', imageList = []) {
+  async createReply({val = '', imageList = [], captchaTicket = '', captchaRandStr = ''}) {
     if (!val && imageList.length === 0) {
       Toast.info({ content: '请输入内容!' });
       return;
@@ -745,6 +742,8 @@ class ThreadH5Page extends React.Component {
     const params = {
       id,
       content: val,
+      captchaTicket,
+      captchaRandStr,
     };
 
     // 楼中楼回复
@@ -1167,7 +1166,6 @@ class ThreadH5Page extends React.Component {
           </View>
         </ScrollView>
 
-       
         {isReady && (
           <Fragment>
             {/* 评论弹层 */}
@@ -1176,7 +1174,7 @@ class ThreadH5Page extends React.Component {
               visible={this.state.showCommentInput}
               onClose={() => this.onClose()}
               initValue={this.state.inputValue}
-              onSubmit={(value, imgList) => this.publishClick(value, imgList)}
+              onSubmit={data => this.publishClick(data)}
               site={this.props.site}
               checkUser={this.props?.thread?.checkUser || []}
               thread={this.props?.thread}

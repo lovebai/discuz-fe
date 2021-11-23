@@ -1,4 +1,5 @@
 import React, { useEffect, useState, createRef, Fragment } from 'react';
+import { inject, observer } from 'mobx-react';
 import { View, CustomWrapper } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import Popup from '@discuzq/design/dist/components/popup/index';
@@ -10,6 +11,7 @@ import classnames from 'classnames';
 import { readEmoji } from '@common/server';
 import { THREAD_TYPE } from '@common/constants/thread-post';
 import { debounce } from '@common/utils/throttle-debounce';
+import { toTCaptcha } from '@common/utils/to-tcaptcha';
 import Emoji from '@components/emoji';
 import styles from './index.module.scss';
 import ImageUpload from '../image-upload';
@@ -30,6 +32,9 @@ const InputPop = (props) => {
   const [bottomHeight, setBottomHeight] = useState(0);
   const [isDisabled, setDisabled] = useState(true)
   const [focus, setFocus] = useState(true);
+  // 验证码票据、字符串
+  const [ticket, setTicket] = useState('');
+  const [randstr, setRandStr] = useState('');
 
   // 输入框光标位置
   const [cursorPos, setCursorPos] = useState(0);
@@ -40,6 +45,7 @@ const InputPop = (props) => {
   useEffect(() => {
     setValue(initValue);
   }, [initValue]);
+
   useEffect(() => {
     setFocus(true)
     if (props.showEmojis) {
@@ -58,6 +64,7 @@ const InputPop = (props) => {
     }
     fetchEmojis()
   }, [props.showEmojis]);
+
   useEffect(() => {
     setFocus(true)
     if (props.showPicture) {
@@ -65,10 +72,59 @@ const InputPop = (props) => {
       setShowPicture(props.showPicture);
     }
   }, [props.showPicture]);
+
+  useEffect(() => {
+    Taro.eventCenter.on('captchaResult', handleCaptchaResult);
+    Taro.eventCenter.on('closeChaReault', handleCloseChaReault);
+
+    return () => {
+      Taro.eventCenter.off('captchaResult', handleCaptchaResult);
+      Taro.eventCenter.off('closeChaReault', handleCloseChaReault);
+    };
+  }, []);
+
+  const handleCaptchaResult = (result) => {
+    setTicket(result.ticket);
+    setRandStr(result.randstr);
+    onSubmitClick(true);
+  };
+
+  const handleCloseChaReault = () => {
+    setTicket('');
+    setRandStr('');
+  };
+
+  const checkSubmit = async () => {
+    const valuestr = value.replace(/\s/g, '');
+    // 如果内部为空，且只包含空格或空行
+    if (!valuestr && imageList.length === 0) {
+      Toast.info({ content: '请输入内容' });
+      return false;
+    }
+
+
+    const { webConfig } = props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const qcloudCaptchaAppId = webConfig?.qcloud?.qcloudCaptchaAppId;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        if (!ticket || !randstr) {
+          await props.comment.setPostContent({ value, imageList });
+          toTCaptcha(qcloudCaptchaAppId);
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   // 监听键盘的高度
   Taro.onKeyboardHeightChange((res) => {
     setBottomHeight((res?.height || 0) - (getBottomSafeArea() || 0));
   });
+
   // 获取底部安全距离
   const getBottomSafeArea = () => {
     const { screenHeight } = Taro.getSystemInfoSync();
@@ -78,29 +134,40 @@ const InputPop = (props) => {
   };
 
   // 点击发布
-  const onSubmitClick = async () => {
+  const onSubmitClick = async (isCaptchaCallback = false) => {
     if (loading || imageUploading) return;
+    if (typeof onSubmit !== 'function') return;
+    if (!isCaptchaCallback) {
+      if (!checkSubmit()) return;
+    }
 
-    if (typeof onSubmit === 'function') {
-      try {
-        setLoading(true);
-        const success = await onSubmit(value, imageList);
-        if (success) {
-          setTimeout(() => {
-            setValue('');
-          });
-          setShowPicture(false);
-          setShowEmojis(false);
-          setImageList([]);
-          setFocus(true);
-          setDisabled(false);
-          thread.setCheckUser([]);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
+    const { postValue, postImageList, clearPostContent } = props.comment;
+    try {
+      setLoading(true);
+      const data = {
+        val: isCaptchaCallback ?  postValue : value,
+        imageList: isCaptchaCallback ? postImageList : imageList,
+        captchaTicket: ticket,
+        captchaRandStr: randstr,
       }
+      const success = await onSubmit(data);
+      if (success) {
+        setTimeout(() => {
+          setValue('');
+        });
+        setShowPicture(false);
+        setShowEmojis(false);
+        setImageList([]);
+        setFocus(true);
+        setDisabled(false);
+        thread.setCheckUser([]);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      clearPostContent();
+      handleCloseChaReault();
     }
   };
 
@@ -373,4 +440,4 @@ InputPop.options = {
   addGlobalClass: true,
 };
 
-export default InputPop;
+export default inject('comment')(observer(InputPop));
