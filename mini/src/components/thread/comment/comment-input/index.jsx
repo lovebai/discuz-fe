@@ -202,7 +202,7 @@ const CommentInput = (props) => {
         <Button
           loading={loading}
           disabled={!canSubmit}
-          onClick={onSubmitClick}
+          onClick={() => onSubmitClick(false)}
           className={styles.button}
           type="primary"
           size="large"

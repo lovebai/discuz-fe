@@ -413,7 +413,7 @@ const InputPop = (props) => {
                 ></Icon>
               </View>
               <View
-                onClick={onSubmitClick}
+                onClick={() => onSubmitClick(false)}
                 className={classnames(styles.ok, (loading || imageUploading || isDisabled) && styles.disabled)}
               >
                 发布

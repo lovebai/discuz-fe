@@ -59,13 +59,13 @@ class CommentAction extends CommentStore {
     this.authorInfo = null;
   }
 
-  @action
+  @action.bound
   setPostContent({value = '', imageList = []}) {
     this.postValue = value;
     this.postImageList = imageList;
   }
 
-  @action
+  @action.bound
   clearPostContent() {
     this.postValue = '';
     this.postImageList = [];
