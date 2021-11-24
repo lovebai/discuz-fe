@@ -8,6 +8,7 @@ import { diffDate } from '@common/utils/diff-date';
 import classNames from 'classnames';
 import { View, Text } from '@tarojs/components'
 import MemberBadge from '@components/member-badge';
+import Router from '@discuzq/sdk/dist/router';
 
 UserInfo.propTypes = {
   name: PropTypes.string.isRequired, // 用户名称
@@ -57,11 +58,14 @@ export default function UserInfo(props) {
         <View className={styles.info}>
           <View className={styles.name} onClick={(e) => props.onClick(e)}>{props.name}</View>
           {
-            !props.isAnonymous && props.groupName && 
+            !props.isAnonymous && props.groupName &&
             <View className={styles.groupNameBox}>
               {
                 props.groupLevel ?
                 <MemberBadge
+                  onClick={() => {
+                    Router.push({url: `/userPages/my/upgrade/index?level=${props.groupLevel}`});
+                  }}
                   groupLevel={props.groupLevel}
                   groupName={props.groupName}
                   groupNameStyle={tagsNumber < 3 ? {maxWidth: '82.5px'} : ((tagsNumber < 4) ? {maxWidth: '58px'} : {maxWidth: '30px'})}

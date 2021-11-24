@@ -17,6 +17,7 @@ const Index = ({ site, user, shipCardClassName }) => {
   const [defaultActive, setDefaultActive] = useState(1);
 
   useEffect(async () => {
+    await user.queryPayGroups();
     const { level = 1 } = Taro.getCurrentInstance().router.params;
     setDefaultActive(Number(level) || 1);
   }, []);

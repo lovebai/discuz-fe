@@ -8,20 +8,29 @@ import groupPay from '@common/pay-bussiness/group-pay';
 import classnames from 'classnames';
 import Header from '@components/header';
 
-const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
+const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName,
+  showRenderCard = true, visible = false, onClose = () => { }, groupLevel }) => {
   const { siteMode, isPC } = site;
   const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, payGroups } = user;
   const { group } = userInfo;
   const { level, remainDays, expirationTime, groupName, description, isTop, hasPayGroup, amount, groupId, typeTime, remainTime } = group;
   const theme = levelStyle[level] || {};
   const isPaySite = siteMode === 'pay';
-  const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(visible);
   const [defaultActive, setDefaultActive] = useState(1);
 
   // 获取付费用户组数据
   useEffect(async () => {
     user.queryPayGroups();
   }, []);
+
+  useEffect(() => {
+    if (visible) setDialogVisible(visible);
+  }, [visible]);
+
+  useEffect(() => {
+    setDefaultActive(groupLevel); // 如果是点击用户组徽章的情况
+  }, [groupLevel]);
 
   // 打开升级付费用户组的弹窗
   const handlePayGroupRenewal = (upgradeLevel) => {
@@ -152,16 +161,22 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) =>
   };
 
   return isAdmini ? null : (
-    <div className={styles.wrapper}>
-      {renderCard({groupName, level, description})}
+    <div className={styles.wrapper} onClick={ e => e.stopPropagation() }>
+      {showRenderCard && renderCard({groupName, level, description})}
       {dialogVisible && (
         <Dialog
           className={isPC ? styles.dialogWrapper : styles.mobileDialogWrapper}
           visible={true}
           maskClosable={true}
-          onClose={() => setDialogVisible(false)}
+          onClose={() => {
+            onClose();
+            setDialogVisible(false);
+          }}
         >
-          {isPC ? null : <Header allowJump={false} customJum={() => setDialogVisible(false)} />}
+          {isPC ? null : <Header allowJump={false} customJum={() => {
+            onClose();
+            setDialogVisible(false);
+          }} />}
           <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
             {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId, days }) => {
               const data = {

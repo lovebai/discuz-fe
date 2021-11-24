@@ -70,6 +70,7 @@ class UserAction extends SiteStore {
   // 获取付费用户组信息
   @action
   async queryPayGroups() {
+    if (this.payGroups?.length) return this.payGroups;
     const res = await getPayGroups();
     const { code, data } = res;
     if (code === 0) {
