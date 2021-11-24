@@ -96,7 +96,7 @@ const CommentInput = (props) => {
   const onSubmitClick = async (isCaptchaCallback = false) => {
     if (typeof onSubmit !== 'function') return;
     if (!isCaptchaCallback) {
-      if (!checkSubmit()) return;
+      if (!(await checkSubmit())) return;
     }
 
     const { postValue, clearPostContent } = props.comment;

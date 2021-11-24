@@ -138,14 +138,14 @@ const InputPop = (props) => {
     if (loading || imageUploading) return;
     if (typeof onSubmit !== 'function') return;
     if (!isCaptchaCallback) {
-      if (!checkSubmit()) return;
+      if (!(await checkSubmit())) return;
     }
 
     const { postValue, postImageList, clearPostContent } = props.comment;
     try {
       setLoading(true);
       const data = {
-        val: isCaptchaCallback ?  postValue : value,
+        val: isCaptchaCallback ? postValue : value,
         imageList: isCaptchaCallback ? postImageList : imageList,
         captchaTicket: ticket,
         captchaRandStr: randstr,
