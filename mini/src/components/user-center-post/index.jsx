@@ -1,17 +1,19 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import Input from '@discuzq/design/dist/components/input/index';
 import Button from '@discuzq/design/dist/components/button/index';
 import Toast from '@discuzq/design/dist/components/toast/index';
 import Avatar from '@components/avatar';
 import throttle from '@common/utils/thottle.js';
-import debounce from '@common/utils/debounce.js';
+import { toTCaptcha } from '@common/utils/to-tcaptcha';
 import xss from '@common/utils/xss';
 import styles from './index.module.scss';
 
 // 用户中心发帖模块
 @inject('user')
+@inject('site')
 @inject('threadPost')
 @inject('index')
 @observer
@@ -21,10 +23,33 @@ class UserCenterPost extends React.Component {
     this.state = {
       isPostDisabled: false // 表示是否禁用发布按钮
     };
+
+    this.ticket = '';
+    this.randstr = '';
   }
 
   componentDidMount() {
     this.handleThreadPostData();
+    Taro.eventCenter.on('captchaResult', this.handleCaptchaResult);
+    Taro.eventCenter.on('closeChaReault', this.handleCloseChaReault);
+  }
+
+  componentWillUnmount() {
+    Taro.eventCenter.off('captchaResult', this.handleCaptchaResult);
+    Taro.eventCenter.off('closeChaReault', this.handleCloseChaReault);
+  }
+
+  // 验证码滑动成功的回调
+  handleCaptchaResult = (result) => {
+    this.ticket = result.ticket;
+    this.randstr = result.randstr;
+    this.handleClick();
+  }
+
+  // 验证码点击关闭的回调
+  handleCloseChaReault = () => {
+    this.ticket = '';
+    this.randstr = '';
   }
 
   handleChange = (e) => {
@@ -61,6 +86,29 @@ class UserCenterPost extends React.Component {
     const { createThread, setPostData, postData } = this.props.threadPost;
 
     if (!postData.contentText) return Toast.info({ content: '请输入发帖内容' });
+
+    const { webConfig } = this.props.site;
+    if (webConfig) {
+      const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
+      const qcloudCaptchaAppId = webConfig?.qcloud?.qcloudCaptchaAppId;
+      const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
+      if (qcloudCaptcha && createThreadWithCaptcha) {
+        if (!this.ticket || !this.randstr) {
+          toTCaptcha(qcloudCaptchaAppId);
+          return false;
+        }
+      }
+    }
+
+    if (this.ticket && this.randstr) {
+      setPostData({
+        captchaTicket: this.ticket,
+        captchaRandStr: this.randstr,
+      });
+      this.ticket = '';
+      this.randstr = '';
+    }
+
     Toast.loading({
       content: '发布中...',
     });

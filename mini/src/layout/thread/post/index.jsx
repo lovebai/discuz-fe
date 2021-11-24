@@ -12,7 +12,7 @@ import { THREAD_TYPE, MAX_COUNT, THREAD_STATUS } from '@common/constants/thread-
 import { paidOption, draftOption } from '@common/constants/const';
 import { readYundianboSignature } from '@common/server';
 import VodUploader from 'vod-wx-sdk-v2';
-import { toTCaptcha } from '@common/utils/to-tcaptcha'
+import { toTCaptcha } from '@common/utils/to-tcaptcha';
 import PayBox from '@components/payBox/index';
 import { ORDER_TRADE_TYPE } from '@common/constants/payBoxStoreConstants';
 import { get } from '@common/utils/get';
