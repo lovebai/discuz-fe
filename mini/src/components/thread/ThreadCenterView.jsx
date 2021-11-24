@@ -90,15 +90,13 @@ const Index = (props) => {
             onTextItemClick={onTextItemClick}
           />
         )}
-        {videoData && videoData.mediaUrl && (
+        {videoData && videoData.needPay !== 1 && (
           <WrapperView onClick={onClick} videoH={videoH}>
             <VideoPlay
               url={videoData.mediaUrl}
               coverUrl={videoData.coverUrl}
               v_width={videoData.width || null}
               v_height={videoData.height || null}
-              onPay={onPay}
-              isPay={needPay}
               status={videoData.status}
               relativeToViewport={relativeToViewport}
               changeHeight={changeHeight}
