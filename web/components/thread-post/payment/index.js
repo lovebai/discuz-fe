@@ -167,7 +167,7 @@ const Index = inject('threadPost')(observer(({ threadPost, cancel, paidType, pc,
   );
 
   const content = (
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} ${pc ? styles.pc : styles.h5}`}>
         {isPost && postComponent()}
         {isAttach && attachmentComponent()}
         {!pc && btnComponent()}
@@ -180,7 +180,6 @@ const Index = inject('threadPost')(observer(({ threadPost, cancel, paidType, pc,
       <DDialog
         title={paidType}
         visible={visible}
-        className={styles.pc}
         onClose={cancel}
         onCacel={cancel}
         onConfirm={paidConfirm}

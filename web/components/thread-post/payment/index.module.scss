@@ -6,21 +6,11 @@
 }
 
 .wrapper {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 100%;
-  height: -webkit-fill-available;
-  /* mobile viewport bug fix */
-  min-height: -webkit-fill-available;
-  padding: 0 $padding-4n;
-  background-color: $white;
-  z-index: $zindex-popup;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100%;
+  background-color: $white;
 
   :global {
     .dzq-input {
@@ -158,18 +148,26 @@
   margin-right: -16px;
 }
 
-.pc {
-  .wrapper {
-    position: static;
-    width: 100%;
+.wrapper.h5 {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-popup;
+  padding: 0 $padding-4n;
+  height: -webkit-fill-available;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
+}
+
+.wrapper.pc {
+  width: 100%;
+
+  .paid-wrapper {
     max-height: 600px;
-    padding: 0;
 
-    .paid-wrapper {
-      max-height: 600px;
-
-      @include scrollbar();
-    }
+    @include scrollbar();
   }
 }
 

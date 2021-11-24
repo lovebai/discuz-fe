@@ -158,6 +158,7 @@
   .list {
     height: 170px !important;
     background-color: $white;
+    overflow: unset;
     .list__inner {
       overflow-y: auto !important;
       overflow-y: overlay !important;
