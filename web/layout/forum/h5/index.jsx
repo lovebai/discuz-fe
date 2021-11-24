@@ -13,6 +13,7 @@ import layout from './index.module.scss';
 // import UserCenterFriends from '@components/user-center-friends';
 import { simpleRequest } from '@common/utils/simple-request';
 import Copyright from '@components/copyright';
+import MemberBadge from '@components/member-badge';
 
 @inject('site')
 @inject('forum')
@@ -54,7 +55,7 @@ class ForumH5Page extends React.Component {
   };
 
   render() {
-    const { site, forum } = this.props;
+    const { site, forum, user: { group } } = this.props;
     const { platform } = site;
     const { usersPageData = [], isNoMore } = forum;
     // 创建时间
@@ -130,7 +131,14 @@ class ForumH5Page extends React.Component {
             {/* 我的角色 start */}
             <div className={layout.list}>
               <div className={layout.label}>我的角色</div>
-              <div className={layout.right}>{this.props.user?.userInfo?.group?.groupName}</div>
+              {
+                group.level
+                  ? <MemberBadge
+                      groupLevel={group.level}
+                      groupName={group?.groupName}
+                    />
+                  : <div className={layout.right}>{group?.groupName}</div>
+              }
             </div>
             {/* 我的角色 end */}
             {/* 当前版本 start */}

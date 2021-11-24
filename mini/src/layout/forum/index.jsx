@@ -9,6 +9,7 @@ import UserCenterUsers from '@components/user-center-users';
 import { get } from '@common/utils/get';
 import Router from '@discuzq/sdk/dist/router';
 import { simpleRequest } from '@common/utils/simple-request';
+import MemberBadge from '@components/member-badge';
 import layout from './index.module.scss';
 
 @inject('site')
@@ -52,7 +53,7 @@ class ForumH5Page extends React.Component {
   };
 
   render() {
-    const { site, forum } = this.props;
+    const { site, forum, user: { group } } = this.props;
     const { usersPageData = [], isNoMore } = forum;
     // 站点介绍
     const { siteIntroduction } = site;
@@ -120,7 +121,16 @@ class ForumH5Page extends React.Component {
           {/* 我的角色 start */}
           <View className={layout.list}>
             <View className={layout.label}>我的角色</View>
-            <View className={layout.right}>{this.props.user?.userInfo?.group?.groupName}</View>
+            {
+              group.level
+                ? <View className={layout.right}>
+                    <MemberBadge
+                      groupLevel={group.level}
+                      groupName={group?.groupName}
+                    />
+                  </View>
+                : <View className={layout.right}>{this.props.user?.userInfo?.group?.groupName}</View>
+            }
           </View>
           {/* 我的角色 end */}
           {/* 当前版本 start */}
