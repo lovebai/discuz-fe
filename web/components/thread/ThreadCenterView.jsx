@@ -33,7 +33,7 @@ const Index = (props) => {
     attachmentPrice,
     openedMore,
   } = props.data || {};
-  const needPay = useMemo(() => payType !== 0 && !paid, [paid, payType]);
+  const needPay = useMemo(() => payType !== 0 && !paid, [paid, payType]); // 付费贴需要付费
 
   const {
     threadId,
@@ -92,15 +92,13 @@ const Index = (props) => {
           onTextItemClick={onTextItemClick} />
         }
 
-        {videoData && videoData.mediaUrl && (
+        {videoData && videoData.needPay !== 1 && (
           <WrapperView onClick={onClick}>
             <VideoPlay
               url={videoData.mediaUrl}
               coverUrl={videoData.coverUrl}
               v_width={videoData.width || null}
               v_height={videoData.height || null}
-              onPay={onPay}
-              isPay={needPay}
               status={videoData.status}
               onVideoReady={props.onVideoReady}
               updateViewCount={updateViewCount}

@@ -12,25 +12,22 @@ import calcVideoSize from '@common/utils/calc-video-size';
 
 /**
  * 视频
- * @prop {boolean} isPay 是否需要付费
- * @prop {string | number} width 视频宽度
- * @prop {string | number} height 视频高度
- * @prop {string | number} money 付费金额
+  * 视频 - 需要付费时直接不展示
+ * @prop {string | number} v_width 视频宽度
+ * @prop {string | number} v_height 视频高度
  * @prop {string} coverUrl 封面图片
  * @prop {string} url 视频地址
  * @prop {string} time 总时长
- * @prop {function} onPay 付费时，蒙层点击事件
+ * @prop {number} status 视频状态
+ * @prop {boolean} canViewVideo 是否具有查看权限
  */
 
 //TODO 视频转码中和错误状态的蒙层样式有问题，需要调整
 const Index = ({
-  isPay = false,
   coverUrl,
   url,
   time,
-  money = 0,
   status = 0,
-  onPay = noop,
   changeHeight = noop,
   baselayout = {},
   v_width = null,
@@ -50,22 +47,22 @@ const Index = ({
 
   const onPlay = (e) => {
     updateViewCount();
-    if(baselayout) {
+    if (baselayout) {
 
       // 暂停之前正在播放的视频
-      if(baselayout.playingVideoDom) {
-        if(baselayout.playingVideoDom !== e.target.id) {
+      if (baselayout.playingVideoDom) {
+        if (baselayout.playingVideoDom !== e.target.id) {
           Taro.createVideoContext(baselayout.playingVideoDom)?.pause();
         }
       }
 
-       // 暂停之前正在播放的音频
+      // 暂停之前正在播放的音频
       if (baselayout.playingAudioDom) {
         baselayout.playingAudioDom.pause();
       }
 
       if (baselayout.playingAudioDom) {
-        if(baselayout.playingAudioDom !== e.target.id) {
+        if (baselayout.playingAudioDom !== e.target.id) {
           baselayout.playingAudioDom.pause();
         }
       }
@@ -77,9 +74,9 @@ const Index = ({
 
   const onFullscreenChange = (e) => { // 该函数在进出全屏的时候各被调用一次
     e && e.stopPropagation();
-    if(baselayout.videoFullScreenStatus === "") { // 第一次调用
+    if (baselayout.videoFullScreenStatus === "") { // 第一次调用
       baselayout.videoFullScreenStatus = "inFullScreen";
-    } else if(baselayout.videoFullScreenStatus === "inFullScreen") { //第二次调用
+    } else if (baselayout.videoFullScreenStatus === "inFullScreen") { //第二次调用
       baselayout.videoFullScreenStatus = "offFullScreen";
     }
   }
@@ -123,14 +120,17 @@ const Index = ({
           />
         )
       }
-      {/* 视频蒙层 已付费时隐藏 未付费时显示 */}
-      {/* {
-        isPay && <View className={styles.payBox} onClick={onPay}></View>
-      } */}
       {/* 视频蒙层 有权限播放时隐藏 无权限播放时显示 */}
       {
-        !canViewVideo && <View className={styles.payBox} onClick={() => Toast.warning({ content: '暂⽆权限播放视频' })}></View>
+        !canViewVideo && (
+          <View
+            className={styles.maskImage}
+            style={!url && { backgroundImage: `url(${coverUrl})` }}
+            onClick={() => Toast.warning({ content: '暂⽆权限播放视频' })}
+          ></View>
+        )
       }
+      {/* 视频头部提示 视频状态异常时显示 */}
       {
         status !== 1 && (
           <View className={styles.payBox}>
