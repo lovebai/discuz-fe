@@ -195,7 +195,7 @@ export default React.memo(Index);
 
 // 处理
 const WrapperView = ({ children, onClick }) => (
-  <div a="aaaa" className={styles.wrapperView}>
+  <div className={styles.wrapperView}>
     {children}
     <div className={styles.placeholder} onClick={onClick}></div>
   </div>
