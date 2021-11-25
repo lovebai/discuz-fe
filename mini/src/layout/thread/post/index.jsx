@@ -553,12 +553,7 @@ class Index extends Component {
             isSavingDraft: isDraft
           });
 
-          this.handleCaptchaResult({
-            ticket: '2343',
-            randstr: '9809'
-          })
-
-          // toTCaptcha(qcloudCaptchaAppId);
+          toTCaptcha(qcloudCaptchaAppId);
           return false;
         }
       }
