@@ -24,6 +24,7 @@ class ThreadPostAction extends ThreadPostStore {
   @action.bound
   async createThread(isMini) {
     const params = this.getCreateThreadParams(false, isMini);
+    this.setPostData({captchaTicket: '', captchaRandStr: ''});
     const ret = await createThread(params);
     if (ret.code === 0) this.currentSelectedToolbar = false;
     return ret;
@@ -37,6 +38,7 @@ class ThreadPostAction extends ThreadPostStore {
   @action.bound
   async updateThread(id, isMini) {
     const params = this.getCreateThreadParams(true, isMini);
+    this.setPostData({captchaTicket: '', captchaRandStr: ''});
     const ret = await updateThread({ ...params, threadId: Number(id) });
     return ret;
   }

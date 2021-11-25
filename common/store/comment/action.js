@@ -71,6 +71,12 @@ class CommentAction extends CommentStore {
     this.postImageList = [];
   }
 
+  
+  @action.bound
+  setCaptchaMark(id) {
+    this.captchaMark = id;
+  }
+
   @action
   setCommentDetail(data) {
     this.commentDetail = data;
