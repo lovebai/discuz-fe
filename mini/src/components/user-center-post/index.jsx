@@ -16,6 +16,7 @@ import styles from './index.module.scss';
 @inject('site')
 @inject('threadPost')
 @inject('index')
+@inject('comment')
 @observer
 class UserCenterPost extends React.Component {
   constructor(props) {
@@ -43,7 +44,10 @@ class UserCenterPost extends React.Component {
   handleCaptchaResult = (result) => {
     this.ticket = result.ticket;
     this.randstr = result.randstr;
-    this.handleClick();
+    if (this.props.comment.captchaMark === `user-post`) {
+      this.handleClick();
+      this.props.comment.setCaptchaMark('post');
+    }
   }
 
   // 验证码点击关闭的回调
@@ -164,7 +168,10 @@ class UserCenterPost extends React.Component {
             type="primary"
             className={styles.btn}
             disabled={this.state.isPostDisabled}
-            onClick={this.handleClick}
+            onClick={() => {
+              this.props.comment.setCaptchaMark('user-post');
+              this.handleClick();
+            }}
           >
             发布
           </Button>

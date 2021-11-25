@@ -17,8 +17,9 @@ import styles from './index.module.scss';
 import ImageUpload from '../image-upload';
 
 const InputPop = (props) => {
-  const { visible, onSubmit, onClose, initValue, inputText = '写评论...', site, thread, checkUser = [] } = props;
+  const { mark, visible, onSubmit, onClose, initValue, inputText = '写评论...', site, thread, checkUser = [] } = props;
 
+  const captchaMark = `${mark}：${thread?.threadData?.id}`;
   const textareaRef = createRef();
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
@@ -83,10 +84,16 @@ const InputPop = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (ticket && randstr && props.comment.captchaMark === captchaMark) {
+      onSubmitClick(true);
+      props.comment.setCaptchaMark('post');
+    }
+  }, [ticket, randstr])
+
   const handleCaptchaResult = (result) => {
     setTicket(result.ticket);
     setRandStr(result.randstr);
-    onSubmitClick(true);
   };
 
   const handleCloseChaReault = () => {
@@ -413,8 +420,11 @@ const InputPop = (props) => {
                 ></Icon>
               </View>
               <View
-                onClick={() => onSubmitClick(false)}
                 className={classnames(styles.ok, (loading || imageUploading || isDisabled) && styles.disabled)}
+                onClick={() => {
+                  props.comment.setCaptchaMark(captchaMark);
+                  onSubmitClick(false)
+                }}
               >
                 发布
               </View>

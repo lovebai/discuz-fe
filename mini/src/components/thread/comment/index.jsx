@@ -125,7 +125,7 @@ class Comment extends React.Component {
         <ViewMore className={styles.viewMore} onClick={this.onViewMoreClick}></ViewMore>
       )}
 
-      <CommentInput emojihide={shareClickRandom} userInfo={userInfo} onSubmit={data => this.onPublishClick(data)}></CommentInput>
+      <CommentInput mark={'card'} threadId={thread?.threadData?.id} emojihide={shareClickRandom} userInfo={userInfo} onSubmit={data => this.onPublishClick(data)}></CommentInput>
     </>;
   }
 }

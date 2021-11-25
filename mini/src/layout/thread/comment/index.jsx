@@ -650,6 +650,7 @@ class CommentH5Page extends React.Component {
       <View className={styles.footer}>
           {/* 评论弹层 */}
           <InputPopup
+            mark={'comment-detail'}
             showEmojis={this.state.showEmojis}
             cancleEmojie={() => {this.setState({ showEmojis: false });}}
             showPicture={this.state.showPicture}

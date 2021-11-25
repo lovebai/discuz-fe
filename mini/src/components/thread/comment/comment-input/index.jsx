@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useState, useCallback, useMemo } from 'react';
-import Taro from '@tarojs/taro';
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, CustomWrapper } from '@tarojs/components'
 import Input from '@discuzq/design/dist/components/input';
 import Button from '@discuzq/design/dist/components/button';
@@ -14,7 +14,8 @@ import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 
 const CommentInput = (props) => {
-  const { onSubmit, onClose, height, initValue = '', placeholder = '写下我的评论...', platform = 'pc', userInfo, emojihide } = props;
+  const { mark, threadId, onSubmit, initValue = '', placeholder = '写下我的评论...', userInfo, emojihide } = props;
+  const captchaMark = `${mark}：${threadId}`;
 
   const textareaRef = createRef();
 
@@ -56,10 +57,16 @@ const CommentInput = (props) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (ticket && randstr && props.comment.captchaMark === captchaMark) {
+      onSubmitClick(true);
+      props.comment.setCaptchaMark('post');
+    }
+  }, [ticket, randstr])
+
   const handleCaptchaResult = (result) => {
     setTicket(result.ticket);
     setRandStr(result.randstr);
-    onSubmitClick(true);
   };
 
   const handleCloseChaReault = () => {
@@ -83,7 +90,7 @@ const CommentInput = (props) => {
       const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
       if (qcloudCaptcha && createThreadWithCaptcha) {
         if (!ticket || !randstr) {
-          await props.comment.setPostContent({value});
+          await props.comment.setPostContent({ value, imageList: [] });
           toTCaptcha(qcloudCaptchaAppId);
           return false;
         }
@@ -94,6 +101,7 @@ const CommentInput = (props) => {
   }
 
   const onSubmitClick = async (isCaptchaCallback = false) => {
+    if (loading) return;
     if (typeof onSubmit !== 'function') return;
     if (!isCaptchaCallback) {
       if (!(await checkSubmit())) return;
@@ -158,15 +166,12 @@ const CommentInput = (props) => {
     <View className={styles.container}>
       <View className={styles.main}>
         <Avatar
-          isShowUserInfo={!props.hideInfoPopip && props.platform === 'pc'}
           userId={userInfo?.id}
           circle={true}
           image={userInfo?.avatarUrl}
           name={userInfo?.nickname || ''}
           onClick={(e) => props.onClick && props.onClick(e)}
-          unifyOnClick={props.unifyOnClick}
-          platform={props.platform}>
-        </Avatar>
+        ></Avatar>
         <View className={styles.customWrapper}>
           <CustomWrapper >
             <Input
@@ -202,7 +207,10 @@ const CommentInput = (props) => {
         <Button
           loading={loading}
           disabled={!canSubmit}
-          onClick={() => onSubmitClick(false)}
+          onClick={() => {
+            props.comment.setCaptchaMark(captchaMark);
+            onSubmitClick(false)
+          }}
           className={styles.button}
           type="primary"
           size="large"
