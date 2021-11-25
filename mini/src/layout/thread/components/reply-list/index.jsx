@@ -19,7 +19,9 @@ import MemberBadge from '@components/member-badge';
 @observer
 export default class ReplyList extends React.Component {
   // 跳转至评论详情
-  toCommentDetail() {}
+  toCommentDetail = () => {
+    typeof this.props.toCommentDetail === 'function' && this.props.toCommentDetail();
+  }
 
   likeClick() {
     typeof this.props.likeClick === 'function' && this.props.likeClick();
@@ -67,7 +69,7 @@ export default class ReplyList extends React.Component {
   }
 
   transformer = (parsedDom) => {
-    const isSelf =(this.props.threadId === this.props?.data?.commentUserId)
+    const isSelf = (this.props.threadId === this.props?.data?.commentUserId)
 
     const hasAvatarImage = !!this.props?.data?.commentUser?.avatar;
     const element =
@@ -114,10 +116,6 @@ export default class ReplyList extends React.Component {
     return parsedDom;
   };
 
-  toCommentDetail = () => {
-    typeof this.props.toCommentDetail === 'function' && this.props.toCommentDetail();
-  };
-
   render() {
     const { canLike, canDelete, canHide } = this.generatePermissions(this.props.data);
     const { groups } = this.props.data?.user || {};
@@ -154,21 +152,21 @@ export default class ReplyList extends React.Component {
                   <Text className={styles.replyListNameText}>{this.props.data?.user?.nickname || this.props.data?.user?.userName || '用户异常'}</Text>
                 </View>
                 {(isSelf && !this.props.isAnonymous) && (
-                    <View className={styles.masterBox}>
-                      <Text className={styles.masterText}>作者</Text>
-                    </View>
-                  )}
-                {!!groups?.isDisplay  && (
+                  <View className={styles.masterBox}>
+                    <Text className={styles.masterText}>作者</Text>
+                  </View>
+                )}
+                {!!groups?.isDisplay && (
                   <View className={styles.groupsBox}>
                     {
                       groups?.level ?
-                      <MemberBadge
-                        groupLevel={groups?.level}
-                        groupName={groups?.name || groups?.groupName}
-                        groupNameStyle={{maxWidth: '100px'}}
-                      />
-                      :
-                      <View className={styles.groups}>{groups?.name || groups?.groupName}</View>
+                        <MemberBadge
+                          groupLevel={groups?.level}
+                          groupName={groups?.name || groups?.groupName}
+                          groupNameStyle={{ maxWidth: '100px' }}
+                        />
+                        :
+                        <View className={styles.groups}>{groups?.name || groups?.groupName}</View>
                     }
                   </View>
                 )}
@@ -204,23 +202,17 @@ export default class ReplyList extends React.Component {
                     赞&nbsp;{this.props?.data?.likeCount === 0 ? '' : this.props.data.likeCount}
                   </Text>
                 </View>
-                <View className={styles.replyReply}>
-                  <Text onClick={() => this.replyClick()}>回复</Text>
-                </View>
+                {!this.props.disabledReply &&
+                  <View className={styles.replyReply}>
+                    <Text onClick={() => this.replyClick()}>回复</Text>
+                  </View>
+                }
                 {canHide && (
                   <View className={styles.replyReply}>
                     <Text onClick={debounce(() => this.deleteClick(), 500)}>删除</Text>
                   </View>
                 )}
 
-                {/*                <View className={styles.replyReply}>
-                   {canEdit && <View className={styles.revise} onClick={() => this.editClick()}>编辑</View>}
-                  {canDelete && (
-                    <View  onClick={() => this.replyDeleteClick()}>
-                      {canDelete}
-                    </View>
-                  )}
-                </View>*/}
               </View>
             )}
           </View>

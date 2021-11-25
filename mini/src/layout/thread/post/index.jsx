@@ -12,7 +12,7 @@ import { THREAD_TYPE, MAX_COUNT, THREAD_STATUS } from '@common/constants/thread-
 import { paidOption, draftOption } from '@common/constants/const';
 import { readYundianboSignature } from '@common/server';
 import VodUploader from 'vod-wx-sdk-v2';
-import { toTCaptcha } from '@common/utils/to-tcaptcha'
+import { toTCaptcha } from '@common/utils/to-tcaptcha';
 import PayBox from '@components/payBox/index';
 import { ORDER_TRADE_TYPE } from '@common/constants/payBoxStoreConstants';
 import { get } from '@common/utils/get';
@@ -103,6 +103,32 @@ class Index extends Component {
   }
 
   inst = getCurrentInstance();
+
+  // 验证码滑动成功的回调
+  handleCaptchaResult = (result) => {
+    const { setPostData } = this.props.threadPost;
+    setPostData({
+      captchaTicket: result.ticket,
+      captchaRandStr: result.randstr,
+    });
+    const { router } = this.inst;
+    // 当前页面才进行提交操作，避免其他页面引起的多余的提交
+    if (router.path.indexOf('indexPages/thread/post/index') > -1) {
+      this.state.isSavingDraft ? this.handleSaveDraft(true) : this.handleSubmit(false, true);
+    }
+    this.setState({
+      isSavingDraft: false
+    })
+  }
+
+  // 验证码点击关闭的回调
+  handleCloseChaReault = () => {
+    Taro.hideLoading();
+
+    this.setState({
+      isSavingDraft: false
+    })
+  }
 
   // 插件使用弹窗
   showPluginDialog(component) {
@@ -228,9 +254,7 @@ class Index extends Component {
   autoSaveDraft = async () => {
     const { setPostData } = this.props.threadPost;
     if (this.isHaveContent()) {
-      // !postData.draft && setPostData({ draft: 1 });
       this.saveDataLocal();
-      // this.createThread(true, false, true);
       const now = formatDate(new Date(), 'hh:mm');
       setPostData({ autoSaveTime: now });
     }
@@ -271,14 +295,6 @@ class Index extends Component {
     }
 
     const { postData } = this.props.threadPost;
-    // 匹配附件、图片、语音上传
-    this.setState({
-      operationType: item.type
-    }, () => {
-      // if (item.type === THREAD_TYPE.file || item.type === THREAD_TYPE.image || item.type === THREAD_TYPE.voice) {
-      //   this.scrollerIntoView();
-      // }
-    });
 
     if (item.type !== THREAD_TYPE.emoji) {
       this.setState({
@@ -336,7 +352,7 @@ class Index extends Component {
         this.setState({ showDraftOption: true });
         break;
       case THREAD_TYPE.saveDraft:
-        this.setState({ showDraftOption: false }, () => this.handleSaveDraft());
+        this.setState({ showDraftOption: false }, () => this.handleSaveDraft(false));
         break;
       case THREAD_TYPE.abandonDraft:
         this.setState({ showDraftOption: false }, () => this.handlePageJump(true));
@@ -477,28 +493,6 @@ class Index extends Component {
     return `${rule === 1 ? '随机红包' : '定额红包'}\\总金额${amount}元\\${number}个${condition === 1 && likenum > 0 ? `\\集赞个数${likenum}` : ''}`;
   }
 
-  // 验证码滑动成功的回调
-  handleCaptchaResult = (result) => {
-    this.ticket = result.ticket;
-    this.randstr = result.randstr;
-    const { router } = this.inst;
-    // 当前页面才进行提交操作，避免其他页面引起的多余的提交
-    if (router.path.indexOf('indexPages/thread/post/index') > -1) this.handleSubmit(this.state.isSavingDraft);
-
-    this.setState({
-      isSavingDraft: false
-    })
-  }
-
-  // 验证码点击关闭的回调
-  handleCloseChaReault = () => {
-    Taro.hideLoading();
-
-    this.setState({
-      isSavingDraft: false
-    })
-  }
-
   checkAttachPrice = () => {
     const { postData } = this.props.threadPost;
     // 附件付费设置了需要判断是否进行了附件的上传
@@ -522,61 +516,66 @@ class Index extends Component {
     return true;
   }
 
-  handleSubmit = async (isDraft) => {
-    // 1 校验
+  // 发布前校验校验
+  checkSubmit = (isDraft) => {
     const { contentTextLength } = this.state;
-    const { threadPost, site } = this.props;
-    const { postData, redpacketTotalAmount } = threadPost;
+
+    // 检查输入文本
     if (contentTextLength <= 0) {
       this.postToast(`最多输入${MAX_COUNT}字`);
-      return;
+      return false;
     }
 
     // 判断录音状态
-    if (!this.checkAudioRecordStatus()) return;
+    if (!this.checkAudioRecordStatus()) return false;
 
     if (!this.isHaveContent()) {
       this.postToast('请至少填写您要发布的内容或者上传图片、附件、视频、语音、投票等');
-      return;
+      return false;
     }
     if (!this.checkAttachPrice()) {
       this.postToast('请先上传附件、图片、视频或者语音');
-      return;
+      return false;
     }
-    // 2 验证码
-    const { webConfig } = site;
+
+    // 滑块验证
+    const { webConfig } = this.props.site;
     if (webConfig) {
       const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
       const qcloudCaptchaAppId = webConfig?.qcloud?.qcloudCaptchaAppId;
       const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
       if (qcloudCaptcha && createThreadWithCaptcha) {
-        if (!this.ticket || !this.randstr) {
+        const { postData } = this.props.threadPost;
+        const { captchaTicket, captchaRandStr } = postData;
+
+        if (!captchaTicket || !captchaRandStr) {
           this.setState({
             isSavingDraft: isDraft
           });
+
           toTCaptcha(qcloudCaptchaAppId);
           return false;
         }
       }
     }
-    // 3 将验证码信息更新到发布store
-    const { setPostData } = threadPost;
-    if (this.ticket && this.randstr) {
-      setPostData({
-        ticket: this.ticket,
-        randstr: this.randstr,
-      });
-      this.ticket = '';
-      this.randstr = '';
+
+    return true;
+  }
+
+  // 提交发布内容
+  handleSubmit = async (isDraft, isCaptchaCallback = false) => {
+    if (!isCaptchaCallback) {
+      if (!this.checkSubmit(isDraft)) return;
     }
 
-    // 4 支付流程
-    const { rewardQa, redpacket } = postData;
+    const { postData, setPostData, redpacketTotalAmount, isThreadPaid } = this.props.threadPost;
+    const { rewardQa } = postData;
 
+    // 支付流程
     // 如果是编辑的悬赏帖子，则不用再次支付
-    const rewardAmount = threadPost.isThreadPaid ? 0 : (Number(rewardQa.value) || 0);
+    const rewardAmount = isThreadPaid ? 0 : (Number(rewardQa.value) || 0);
     // 如果是编辑的红包帖子，则不用再次支付
-    const redAmount = threadPost.isThreadPaid ? 0 : (Number(redpacketTotalAmount) || 0);
+    const redAmount = isThreadPaid ? 0 : (Number(redpacketTotalAmount) || 0);
 
     const amount = rewardAmount + redAmount;
     const options = { amount };
@@ -618,12 +617,12 @@ class Index extends Component {
     return this.createThread(isDraft);
   }
 
-  async createThread(isDraft, isPay, isAutoSave = false) {
+  async createThread(isDraft, isPay) {
     const { threadId } = this.state;
     const { threadPost } = this.props;
     const { setPostData } = threadPost;
     // 5 loading
-    !isAutoSave && Taro.showLoading({
+    Taro.showLoading({
       title: isDraft && !isPay ? '保存草稿中...' : '发布中...',
       mask: true
     });
@@ -648,23 +647,23 @@ class Index extends Component {
       Taro.hideLoading();
 
       // 未支付的订单
-      if (isDraft && !isAutoSave && threadPost.postData.orderInfo.orderSn
+      if (isDraft && threadPost.postData.orderInfo.orderSn
         && !threadPost.postData.orderInfo.status
         && !threadPost.postData.draft) {
         this.props.payBox.show();
-        return;
+        return false;
       }
 
       if (!isDraft) {
         this.setIndexPageData();
         this.removeLocalData(); // 支付成功删除本地缓存
       }
-      !isAutoSave && this.postToast('发布成功', 'success');
+      this.postToast('发布成功', 'success');
 
       if (!isDraft) {
         Taro.redirectTo({ url: `/indexPages/thread/index?id=${data.threadId}` });
       }
-      // }
+
       return true;
     }
     Taro.hideLoading();
@@ -686,28 +685,18 @@ class Index extends Component {
   };
 
   // 处理用户主动点击保存草稿
-  handleSaveDraft = async () => {
+  handleSaveDraft = async (isCaptchaCallback = false) => {
     const { setPostData } = this.props.threadPost;
     setPostData({ draft: 1 });
-    const isSuccess = await this.handleSubmit(true);
-
+    const isSuccess = await this.handleSubmit(true, isCaptchaCallback);
+    console.log(`isSuccess`, isSuccess)
     if (isSuccess) {
       this.postToast('保存成功', 'success');
       setTimeout(() => {
         Taro.hideLoading();
         // Taro.redirectTo({ url: `/userPages/my/draft/index` });
       }, 1000);
-    } else {
-
-      const { webConfig } = this.props.site;
-      if (webConfig) {
-        const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
-        const createThreadWithCaptcha = webConfig?.other?.createThreadWithCaptcha;
-        if (qcloudCaptcha && createThreadWithCaptcha) {
-          // 如果需要验证码，则不做任何操作
-          return;
-        }
-      }
+    } else if (isSuccess === false) {
       this.postToast('保存失败');
     }
   }
@@ -1004,7 +993,7 @@ class Index extends Component {
               onPluginClick={(item) => {
                 this.handlePluginClick(item);
               }}
-              onSubmit={() => this.handleSubmit()}
+              onSubmit={() => this.handleSubmit(false, false)}
             />
             {/* 通过键盘改变的高度一起来控制表情的显示和隐藏，直接通过 showEmoji 来进行数据的改变，渲染慢 */}
             <Emoji

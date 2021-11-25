@@ -2,6 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Toast from '@discuzq/design/dist/components/toast';
 import goToLoginPage from '@common/utils/go-to-login-page';
+import { toTCaptcha } from '@common/utils/to-tcaptcha';
 import ViewMore from '@components/view-more';
 import LoadingTips from '@layout/thread/components/loading-tips';
 import BottomView from '@components/list/BottomView';
@@ -24,24 +25,17 @@ class Comment extends React.Component {
   }
 
   // 点击发布按钮
-  async onPublishClick(val = '', imageList = []) {
+  async onPublishClick(data) {
     if (!this.props.user.isLogin()) {
       Toast.info({ content: '请先登录!' });
       goToLoginPage({ url: '/user/login' });
       return;
     }
-
-    const valuestr = val.replace(/\s/g, '');
-    // 如果内部为空，且只包含空格或空行
-    if (!valuestr && imageList.length === 0) {
-      Toast.info({ content: '请输入内容' });
-      return;
-    }
-    return await this.createComment(val, imageList);
+    return await this.createComment(data);
   }
 
   // 创建评论
-  async createComment(val, imageList) {
+  async createComment({ val, imageList = [], captchaTicket = '', captchaRandStr = '' }) {
     const id = this.props.thread?.threadData?.id;
 
     const params = {
@@ -51,6 +45,8 @@ class Comment extends React.Component {
       sort: this.commentDataSort, // 目前的排序
       isNoMore: this.props?.thread?.isNoMore,
       attachments: [],
+      captchaTicket,
+      captchaRandStr,
     };
 
     if (imageList?.length) {
@@ -129,7 +125,7 @@ class Comment extends React.Component {
         <ViewMore className={styles.viewMore} onClick={this.onViewMoreClick}></ViewMore>
       )}
 
-      <CommentInput emojihide={shareClickRandom} userInfo={userInfo} onSubmit={val => this.onPublishClick(val)}></CommentInput>
+      <CommentInput mark={'card'} threadId={thread?.threadData?.id} emojihide={shareClickRandom} userInfo={userInfo} onSubmit={data => this.onPublishClick(data)}></CommentInput>
     </>;
   }
 }

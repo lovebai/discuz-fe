@@ -383,6 +383,11 @@ class ThreadPCPage extends React.Component {
       return;
     }
 
+    const params = {
+      val,
+      imageList,
+    }
+
     const { webConfig } = this.props.site;
     if (webConfig) {
       const qcloudCaptcha = webConfig?.qcloud?.qcloudCaptcha;
@@ -395,14 +400,16 @@ class ThreadPCPage extends React.Component {
         if (!captchaTicket && !captchaRandStr) {
           return false ;
         }
+        params.captchaTicket = captchaTicket;
+        params.captchaRandStr = captchaRandStr;
       }
     }
 
-    return this.comment ? await this.updateComment(val, imageList) : await this.createComment(val, imageList);
+    return this.comment ? await this.updateComment(params) : await this.createComment(params);
   }
 
   // 创建评论
-  async createComment(val, imageList) {
+  async createComment({val, imageList, captchaTicket = '', captchaRandStr = ''}) {
     const id = this.props.thread?.threadData?.id;
 
     const params = {
@@ -412,6 +419,8 @@ class ThreadPCPage extends React.Component {
       sort: this.commentDataSort, // 目前的排序
       isNoMore: this.props?.thread?.isNoMore,
       attachments: [],
+      captchaTicket,
+      captchaRandStr,
     };
 
     if (imageList?.length) {
@@ -467,7 +476,7 @@ class ThreadPCPage extends React.Component {
   }
 
   // 更新评论
-  async updateComment(val, imageList) {
+  async updateComment({val, imageList, captchaTicket = '', captchaRandStr = ''}) {
     if (!this.comment) return;
 
     const id = this.props.thread?.threadData?.id;
@@ -476,6 +485,8 @@ class ThreadPCPage extends React.Component {
       postId: this.comment.id,
       content: val,
       attachments: [],
+      captchaTicket,
+      captchaRandStr,
     };
 
     if (imageList?.length) {

@@ -10,7 +10,7 @@ import styles from './index.module.scss';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import threadPay from '@common/pay-bussiness/thread-pay';
 import ThreadCenterView from './ThreadCenterView';
-import { debounce, noop, getElementRect, randomStr, handleAttachmentData} from './utils'
+import { debounce, noop, getElementRect, randomStr, handleAttachmentData } from './utils'
 import { View, Text } from '@tarojs/components'
 import { getImmutableTypeHeight } from './getHeight'
 import { updateThreadAssignInfoInLists, updatePayThreadInfo, getThreadCommentList } from '@common/store/thread-list/list-business';
@@ -116,7 +116,7 @@ class Index extends React.Component {
     this.props.index.updateThreadInfo({ pid: postId, id: threadId, data: { attributes: { isLiked: !isLike } } }).then((result) => {
       if (result.code === 0 && result.data) {
         updateThreadAssignInfoInLists(threadId, { updateType: 'like', updatedInfo: result.data, user: user.userInfo });
-        typeof onPraise === 'function' && onPraise({isLiked: result.data.isLiked})
+        typeof onPraise === 'function' && onPraise({ isLiked: result.data.isLiked })
       }
       this.setState({ isSendingLike: false, minHeight: 0 }, () => {
         // 点赞更新完数据后，重新修正帖子高度
@@ -269,7 +269,7 @@ class Index extends React.Component {
   canPublish = () => canPublish(this.props.user, this.props.site)
 
   render() {
-    const { plugin, index, data, thread:threadStore, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null,extraTag} = this.props;
+    const { plugin, index, data, thread: threadStore, className = '', site = {}, showBottomStyle = true, isShowIcon = false, unifyOnClick = null, relativeToViewport = true, onTextItemClick = null, extraTag } = this.props;
     const { platform = 'pc' } = site;
     if (!data) {
       return <NoData />;
@@ -297,7 +297,7 @@ class Index extends React.Component {
     const { shareNickname, shareAvatar, shareThreadid, shareContent } = this.props.user
     const { minHeight, useShowMore, videoH, shareClickRandom } = this.state
 
-    const {redPacketData} = handleAttachmentData(data.content);
+    const { redPacketData } = handleAttachmentData(data.content);
 
     const hasCommentHongbao = redPacketData && redPacketData.condition === 0 && redPacketData.remainNumber > 0;
 

@@ -11,7 +11,10 @@ import goToLoginPage from '@common/utils/go-to-login-page';
 import { debounce } from '@common/utils/throttle-debounce';
 import Operate from '../../operate';
 
-// 评论列表
+/**
+ * 评论列表
+ * 移动端不需要回复按钮 - disabledReply={true}
+ * */
 @inject('comment')
 @inject('user')
 @observer

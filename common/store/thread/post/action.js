@@ -24,6 +24,7 @@ class ThreadPostAction extends ThreadPostStore {
   @action.bound
   async createThread(isMini) {
     const params = this.getCreateThreadParams(false, isMini);
+    this.setPostData({captchaTicket: '', captchaRandStr: ''});
     const ret = await createThread(params);
     if (ret.code === 0) this.currentSelectedToolbar = false;
     return ret;
@@ -37,6 +38,7 @@ class ThreadPostAction extends ThreadPostStore {
   @action.bound
   async updateThread(id, isMini) {
     const params = this.getCreateThreadParams(true, isMini);
+    this.setPostData({captchaTicket: '', captchaRandStr: ''});
     const ret = await updateThread({ ...params, threadId: Number(id) });
     return ret;
   }
@@ -457,6 +459,8 @@ class ThreadPostAction extends ThreadPostStore {
       freeWords,
       redpacket,
       rewardQa,
+      captchaTicket,
+      captchaRandStr
     } = this.postData;
     let text = contentText;
     if (isMini) {
@@ -474,17 +478,7 @@ class ThreadPostAction extends ThreadPostStore {
         text,
       },
     };
-    // if (position.address) params.position = position;
-    // else {
-    //   // 主要是编辑时删除位置的情况，暂时区别开编辑和发帖，因为后台没有更新接口避免影响发帖
-    //   if (isUpdate) params.position = {
-    //     longitude: 0,
-    //     latitude: 0,
-    //     cityname: '',
-    //     address: '',
-    //     location: '',
-    //   };
-    // }
+
     params.position = position.address ? position : {};
     params.price = price || 0;
     params.freeWords = freeWords || 0;
@@ -495,6 +489,10 @@ class ThreadPostAction extends ThreadPostStore {
     }
     if (rewardQa.value && !this.isThreadPaid) {
       params.draft = 1;
+    }
+    if (captchaTicket && captchaTicket) {
+      params.captchaTicket = captchaTicket;
+      params.captchaRandStr = captchaRandStr;
     }
     params.anonymous = this.postData.anonymous;
     const contentIndexes = this.gettContentIndexes();

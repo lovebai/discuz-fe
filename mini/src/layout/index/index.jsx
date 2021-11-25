@@ -1,18 +1,18 @@
 import React, { createRef } from 'react';
 import { inject, observer } from 'mobx-react';
 import { View } from '@tarojs/components';
-import ThreadContent from '../../components/thread';
-import HomeHeader from '../../components/home-header';
-import FilterView from './components/filter-view';
-import BaseLayout from '../../components/base-layout';
-import TopNew from './components/top-news';
 import { getSelectedCategoryIds } from '@common/utils/handleCategory';
 import Taro from '@tarojs/taro';
 import { debounce } from '@common/utils/throttle-debounce.js';
 import styles from './index.module.scss';
-import IndexTabs from './components/tabs';
+import ThreadContent from '@components/thread';
+import HomeHeader from '@components/home-header';
+import BaseLayout from '@components/base-layout';
 import ThreadList from '@components/virtual-list';
 import PacketOpen from '@components/red-packet-animation';
+import IndexTabs from './components/tabs';
+import TopNew from './components/top-news';
+import FilterView from './components/filter-view';
 
 import IndexHeaderHooks from '@common/plugin-hooks/plugin_index@header';
 import IndexToppingHooks from '@common/plugin-hooks/plugin_index@topping';

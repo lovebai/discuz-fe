@@ -69,11 +69,6 @@ class CommentList extends React.Component {
     typeof this.props.replyDeleteClick === 'function' && this.props.replyDeleteClick(data);
   }
 
-  // 点击评论编辑
-  editClick() {
-    typeof this.props.editClick === 'function' && this.props.editClick();
-  }
-
   // 点击回复赞
   replyLikeClick(data) {
     typeof this.props.replyLikeClick === 'function' && this.props.replyLikeClick(data);
@@ -121,7 +116,7 @@ class CommentList extends React.Component {
     // 评论内容是否通过审核
     const isApproved = this.props?.data?.isApproved === 1;
     const isSelf = this.props.threadId === this.props?.data?.userId;
-    const { redPacketData } = this.props;
+    const { redPacketData, disabledReply = false } = this.props;
     const remainHongbaoLike = redPacketData?.condition === 1 && redPacketData?.remainNumber; // 是否还有剩余的点赞红包
     const needLikeNum = redPacketData?.likenum;
     const curLikeNum = this.props?.data?.likeCount;
@@ -134,7 +129,7 @@ class CommentList extends React.Component {
             <View></View>
             <View className={styles.headerRigth}>
               {
-                isCommenter && remainHongbaoLike*1>0 && curLikeNum < needLikeNum && !this.props.data?.redPacketAmount &&(
+                isCommenter && remainHongbaoLike * 1 > 0 && curLikeNum < needLikeNum && !this.props.data?.redPacketAmount && (
                   <View className={styles.hongbaoLikeNum}>
                     <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
                     再集 <View className={styles.redfont}>&nbsp;{needLikeNum - curLikeNum}&nbsp;</View> 赞可领红包
@@ -198,13 +193,13 @@ class CommentList extends React.Component {
                     <View className={styles.groupsBox}>
                       {
                         groups?.level ?
-                        <MemberBadge
-                          groupLevel={groups?.level}
-                          groupName={groups?.name || groups?.groupName}
-                          groupNameStyle={{maxWidth: '100px'}}
-                        />
-                        :
-                        <View className={styles.groups}>{groups?.name || groups?.groupName}</View>
+                          <MemberBadge
+                            groupLevel={groups?.level}
+                            groupName={groups?.name || groups?.groupName}
+                            groupNameStyle={{ maxWidth: '100px' }}
+                          />
+                          :
+                          <View className={styles.groups}>{groups?.name || groups?.groupName}</View>
                       }
                     </View>
                   )}
@@ -246,9 +241,9 @@ class CommentList extends React.Component {
                         赞&nbsp;{this.props?.data?.likeCount > 0 ? this.props.data.likeCount : ''}
                       </Text>
                     </View>
-                    {!this.props.disabledReply && <View className={styles.commentReply}>
-                        <Text onClick={() => this.replyClick()}>回复</Text>
-                      </View>
+                    {!disabledReply && <View className={styles.commentReply}>
+                      <Text onClick={() => this.replyClick()}>回复</Text>
+                    </View>
                     }
                     {this.props.isShowAdopt && (
                       <View className={styles.commentAdopt}>
@@ -257,7 +252,6 @@ class CommentList extends React.Component {
                     )}
                     {!this.state.isHideEdit && canHide && (
                       <View className={styles.extra}>
-                        {/* {canEdit && <View className={styles.revise} onClick={() => this.editClick()}>编辑</View>} */}
                         {canHide && (
                           <View className={styles.revise} onClick={debounce(() => this.deleteClick(), 500)}>
                             删除
@@ -291,6 +285,7 @@ class CommentList extends React.Component {
                         toCommentDetail={() => this.toCommentDetail()}
                         threadId={this.props.threadId}
                         isAnonymous={this.props.isAnonymous}
+                        disabledReply={disabledReply}
                       ></ReplyList>
                     ) : (
                       (this.needReply || []).map((val, index) => (
@@ -305,6 +300,7 @@ class CommentList extends React.Component {
                             active={val.id === this.props.postId}
                             threadId={this.props.threadId}
                             isAnonymous={this.props.isAnonymous}
+                            disabledReply={disabledReply}
                           ></ReplyList>
                         </View>
                       ))

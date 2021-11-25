@@ -5,15 +5,16 @@ import Toast from '@discuzq/design/dist/components/toast/index';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import CommentList from '../../components/comment-list/index';
-import AboptPopup from '../../components/abopt-popup';
 import comment from './index.module.scss';
 import { parseContentData } from '../../utils';
-import InputPopup from '../../components/input-popup';
 import DeletePopup from '../../components/delete-popup';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import Router from '@discuzq/sdk/dist/router';
 
-// 评论列表
+/**
+ * 详情页下方评论列表
+ * 回复、采纳行为统一传递到详情根页面进行
+ * */ 
 @inject('index')
 @inject('topic')
 @inject('search')
@@ -21,12 +22,12 @@ import Router from '@discuzq/sdk/dist/router';
 @inject('commentPosition')
 @inject('comment')
 @inject('user')
+@inject('site')
 @observer
 class RenderCommentList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showCommentInput: false, // 是否弹出评论框
       commentSort: true, // ture 评论从旧到新 false 评论从新到旧
       showDeletePopup: false, // 是否弹出删除弹框
       showReplyDeletePopup: false, // 是否弹出回复删除弹框
@@ -129,11 +130,6 @@ class RenderCommentList extends React.Component {
 
     if (!reply.id) return;
 
-    if (!this.props.user.isLogin()) {
-      Toast.info({ content: '请先登录!' });
-      return;
-    }
-
     if (this.recordReplyLike.id !== reply.id) {
       this.recordReplyLike.status = null;
     }
@@ -200,100 +196,16 @@ class RenderCommentList extends React.Component {
   // 点击评论的回复
   replyClick(comment) {
     this.props.replyClick(comment);
-    // if (!this.props.user.isLogin()) {
-    //   Toast.info({ content: '请先登录!' });
-    //   goToLoginPage({ url: '/userPages/user/wx-authorization/index' });
-    //   return;
-    // }
-
-    // this.commentData = comment;
-    // this.replyData = null;
-    // const userName = comment?.user?.nickname || comment?.user?.userName;
-    // this.setState({
-    //   showCommentInput: true,
-    //   inputText: userName ? `回复${userName}` : '请输入内容',
-    // });
   }
 
   // 点击回复的回复
   replyReplyClick(reply, comment) {
     this.props.replyReplyClick(reply, comment);
-    // if (!this.props.user.isLogin()) {
-    //   Toast.info({ content: '请先登录!' });
-    //   goToLoginPage({ url: '/userPages/user/wx-authorization/index' });
-    //   return;
-    // }
-
-    // this.commentData = null;
-    // this.replyData = reply;
-    // this.replyData.commentId = comment.id;
-    // const userName = reply?.user?.nickname || reply?.user?.userName;
-
-    // this.setState({
-    //   showCommentInput: true,
-    //   inputText: userName ? `回复${userName}` : '请输入内容',
-    // });
   }
 
-  // 创建回复评论+回复回复接口
-  // async createReply(val) {
-  //   if (!val) {
-  //     Toast.info({ content: '请输入内容!' });
-  //     return;
-  //   }
-
-  //   const id = this.props.thread?.threadData?.id;
-  //   if (!id) return;
-
-  //   const params = {
-  //     id,
-  //     content: val,
-  //   };
-
-  //   // 楼中楼回复
-  //   if (this.replyData) {
-  //     params.replyId = this.replyData.id;
-  //     params.isComment = true;
-  //     params.commentId = this.replyData.commentId;
-  //     params.commentPostId = this.replyData.id;
-  //   }
-  //   // 回复评论
-  //   if (this.commentData) {
-  //     params.replyId = this.commentData.id;
-  //     params.isComment = true;
-  //     params.commentId = this.commentData.id;
-  //   }
-
-  //   const { success, msg } = await this.props.comment.createReply(params, this.props.thread);
-
-  //   if (success) {
-  //     this.setState({
-  //       showCommentInput: false,
-  //       inputValue: '',
-  //     });
-  //     Toast.success({
-  //       content: '回复成功',
-  //     });
-  //     return true;
-  //   }
-
-  //   Toast.error({
-  //     content: msg,
-  //   });
-  // }
-
-  // 点击编辑
-  editClick(comment) {
-    typeof this.props.onEditClick === 'function' && this.props.onEditClick(comment);
-  }
 
   // 跳转评论详情
   onCommentClick(data) {
-    // if (!this.props.user.isLogin()) {
-    //   Toast.info({ content: '请先登录!' });
-    //   goToLoginPage({ url: '/userPages/user/wx-auth/index' });
-    //   return;
-    // }
     if (data.id && this.props.thread?.threadData?.id) {
       Taro.navigateTo({
         url: `/indexPages/thread/comment/index?id=${data.id}&threadId=${this.props.thread?.threadData?.id}`,
@@ -306,15 +218,6 @@ class RenderCommentList extends React.Component {
   // 点击采纳
   onAboptClick(data) {
     typeof this.props.onAboptClick === 'function' && this.props.onAboptClick(data);
-
-    // if (!this.props.user.isLogin()) {
-    //   Toast.info({ content: '请先登录!' });
-    //   goToLoginPage({ url: '/userPages/user/wx-auth/index' });
-    //   return;
-    // }
-
-    // this.commentData = data;
-    // this.setState({ showAboptPopup: true });
   }
 
   avatarClick(data) {
@@ -408,9 +311,8 @@ class RenderCommentList extends React.Component {
                 avatarClick={() => this.avatarClick(val)}
                 replyClick={() => this.replyClick(val)}
                 deleteClick={() => this.deleteClick(val)}
-                editClick={() => this.editClick(val)}
-                replyAvatarClick={(reply, floor) => this.replyAvatarClick(reply, val, floor)}
                 replyLikeClick={(reploy) => this.replyLikeClick(reploy, val)}
+                replyAvatarClick={(reply, floor) => this.replyAvatarClick(reply, val, floor)}
                 replyReplyClick={(reploy) => this.replyReplyClick(reploy, val)}
                 replyDeleteClick={(reply) => this.replyDeleteClick(reply, val)}
                 onCommentClick={() => this.onCommentClick(val)}
@@ -429,14 +331,6 @@ class RenderCommentList extends React.Component {
           ))}
         </View>
 
-        {/* 评论弹层 */}
-        <InputPopup
-          visible={this.state.showCommentInput}
-          inputText={this.state.inputText}
-          onClose={() => this.setState({ showCommentInput: false })}
-          onSubmit={(value) => this.createReply(value)}
-        ></InputPopup>
-
         {/* 删除弹层 */}
         <DeletePopup
           visible={this.state.showDeletePopup}
@@ -450,16 +344,6 @@ class RenderCommentList extends React.Component {
           onClose={() => this.setState({ showReplyDeletePopup: false })}
           onBtnClick={() => this.replyDeleteComment()}
         />
-
-        {/* 采纳弹层 */}
-        {parseContent?.REWARD?.money && (
-          <AboptPopup
-            rewardAmount={parseContent.REWARD.money} // 需要传入剩余悬赏金额
-            visible={this.state.showAboptPopup}
-            onCancel={() => this.onAboptCancel()}
-            onOkClick={(data) => this.onAboptOk(data)}
-          ></AboptPopup>
-        )}
       </Fragment>
     );
   }

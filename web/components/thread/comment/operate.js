@@ -85,10 +85,12 @@ class CommentAction {
    * @param {array} params.attachments 附件内容
    * @param {boolen} params.sort 当前排序  ture 评论从旧到新 false 评论从新到旧
    * @param {boolen} params.isNoMore 是否没有更多
+   * @param {string} params.captchaTicket 验证码票据
+   * @param {string} params.captchaRandStr 验证码字符串
    * @returns {object} 处理结果
    */
   async createComment(params) {
-    const { id, content, attachments, postId } = params;
+    const { id, content, attachments, postId, captchaTicket, captchaRandStr } = params;
     if (!id || (!content && attachments.length === 0)) {
       return {
         msg: '参数不完整',
@@ -102,6 +104,11 @@ class CommentAction {
       replyId: postId,
       attachments,
     };
+
+    if (captchaTicket && captchaRandStr) {
+      requestParams.captchaTicket = captchaTicket;
+      requestParams.captchaRandStr = captchaRandStr;
+    }
 
     const res = await createPosts({ data: requestParams });
 
@@ -133,10 +140,12 @@ class CommentAction {
    * @param {number} params.postId * 评论id
    * @param {string} params.content * 评论内容
    * @param {array} params.attachments 附件内容
+   * @param {string} params.captchaTicket 验证码票据
+   * @param {string} params.captchaRandStr 验证码字符串
    * @returns {object} 处理结果
    */
   async updateComment(params, ThreadStore) {
-    const { id, postId, content, attachments } = params;
+    const { id, postId, content, attachments, captchaTicket, captchaRandStr } = params;
     if (!id || !content || !postId) {
       return {
         msg: '参数不完整',
@@ -154,6 +163,11 @@ class CommentAction {
         },
       },
     };
+
+    if (captchaTicket && captchaRandStr) {
+      requestParams.captchaTicket = captchaTicket;
+      requestParams.captchaRandStr = captchaRandStr;
+    }
 
     const res = await updatePosts({ data: requestParams });
 
@@ -193,10 +207,12 @@ class CommentAction {
    * @param {array} params.attachments 附件内容
    * @param {array} params.commentPostId 评论回复ID
    * @param {array} params.commentUserId 评论回复用户id
+   * @param {string} params.captchaTicket 验证码票据
+   * @param {string} params.captchaRandStr 验证码字符串
    * @returns {object} 处理结果
    */
   async createReply(params) {
-    const { id, commentId, replyId, commentPostId, content, isComment, attachments } = params;
+    const { id, commentId, replyId, commentPostId, content, isComment, attachments, captchaTicket, captchaRandStr } = params;
     if (!id || (!content && attachments.length === 0) || !replyId || !commentId) {
       return {
         msg: '参数不完整',
@@ -211,6 +227,11 @@ class CommentAction {
       attachments,
       commentPostId,
     };
+
+    if (captchaTicket && captchaRandStr) {
+      requestParams.captchaTicket = captchaTicket;
+      requestParams.captchaRandStr = captchaRandStr;
+    }
 
     const res = await createPosts({ data: requestParams });
 
