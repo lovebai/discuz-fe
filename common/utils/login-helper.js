@@ -7,7 +7,7 @@ import {
 // 记录用户访问的初始地址，用户登陆、付费等操作后跳回
 const JUMP_URL_LABEL = '__jump_url';
 const HOME_PAGE_PC = '/';
-const HOME_PAGE_MINI = '/indexPages/home/index';
+const HOME_PAGE_MINI = '/pages/index/index';
 
 // web环境判断
 function isWeb() {
