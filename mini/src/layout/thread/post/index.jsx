@@ -296,6 +296,10 @@ class Index extends Component {
 
     const { postData } = this.props.threadPost;
 
+    this.setState({
+      operationType: item.type
+    });
+
     if (item.type !== THREAD_TYPE.emoji) {
       this.setState({
         showEmoji: false
