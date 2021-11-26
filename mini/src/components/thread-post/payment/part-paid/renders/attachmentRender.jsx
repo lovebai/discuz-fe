@@ -16,6 +16,7 @@ const AttachmentRender = inject('threadPost')(
     return (
       <AttachmentView
         attachments={attachments}
+        showPlayStatus={false}
         isShowShowMore={false}
         customActionArea={({ item }) => (
           <Checkbox
