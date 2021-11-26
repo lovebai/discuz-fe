@@ -48,7 +48,7 @@ export default class ReplyList extends React.Component {
   }
 
   transformer = (parsedDom) => {
-    const isSelf =(this.props.threadId === this.props?.data?.commentUserId)
+    const isSelf = (this.props.threadId === this.props?.data?.commentUserId)
     const hasAvatarImage = !!this.props?.data?.commentUser?.avatar;
     const element = this.props.data.commentUserId ? (
       <div className={`${styles.commentUser} ${hasAvatarImage ? '' : styles.positionTop}`}>
@@ -125,25 +125,25 @@ export default class ReplyList extends React.Component {
           <div className={`${styles.replyListContentText} ${this.props.active && styles.active}`}>
             <div className={styles.replyListName}>
               <div className={styles.userInfo}>
-                <div className={styles.replyListName} onClick={() => {this.avatarClick(2)}}>
-                    <span className={styles.replyListNameText}>{this.props.data?.user?.nickname || this.props.data?.user?.userName || '用户异常'}</span>
+                <div className={styles.replyListName} onClick={() => { this.avatarClick(2) }}>
+                  <span className={styles.replyListNameText}>{this.props.data?.user?.nickname || this.props.data?.user?.userName || '用户异常'}</span>
                 </div>
                 {(isSelf && !this.props.isAnonymous) && (
-                    <div className={styles.masterBox}>
-                      <span className={styles.masterText}>作者</span>
-                    </div>
-                  )}
-                {!!groups?.isDisplay  && (
+                  <div className={styles.masterBox}>
+                    <span className={styles.masterText}>作者</span>
+                  </div>
+                )}
+                {!!groups?.isDisplay && (
                   <div className={styles.groupsBox}>
                     {
                       groups?.level ?
-                      <MemberBadge
-                        groupLevel={groups?.level}
-                        groupName={groups?.name || groups?.groupName}
-                        groupNameStyle={{maxWidth: '100px'}}
-                      />
-                      :
-                      <div className={styles.groups}>{groups?.name || groups?.groupName}</div>
+                        <MemberBadge
+                          groupLevel={groups?.level}
+                          groupName={groups?.name || groups?.groupName}
+                          groupNameStyle={{ maxWidth: '100px' }}
+                        />
+                        :
+                        <div className={styles.groups}>{groups?.name || groups?.groupName}</div>
                     }
                   </div>
                 )}
@@ -180,9 +180,11 @@ export default class ReplyList extends React.Component {
                     赞&nbsp;{this.props?.data?.likeCount === 0 ? '' : this.props.data.likeCount}
                   </span>
                 </div>
-                <div className={styles.replyReply}>
-                  <span onClick={() => this.replyClick()}>回复</span>
-                </div>
+                {!this.props.disabledReply &&
+                  <div className={styles.replyReply}>
+                    <span onClick={() => this.replyClick()}>回复</span>
+                  </div>
+                }
                 {canHide && (
                   <div className={styles.replyDelete}>
                     <span onClick={() => this.deleteClick()}>删除</span>

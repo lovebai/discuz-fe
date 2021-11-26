@@ -389,7 +389,7 @@ class ThreadCreate extends React.Component {
             target='plugin_post'
             hookName='post_extension_content_hook'
             pluginProps={{
-              renderData: plugin,
+              renderData: postData.plugin,
               deletePlugin: this.props.threadPost.deletePluginPostData,
               updatePlugin: this.props.threadPost.setPluginPostData,
             }}/>

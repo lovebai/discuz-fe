@@ -37,6 +37,7 @@ const Index = ({
   canViewAttachment = false,
   canDownloadAttachment = false,
   customActionArea = null,
+  showPlayStatus = true,
 }) => {
   // 过滤需要部分付费的附件
   const showAttachList = attachments.filter((item) => (item.needPay === undefined ? !isPay : item.needPay !== 1));
@@ -204,7 +205,7 @@ const Index = ({
   };
 
   // 音频播放
-  const isAttachPlayable = (file) => AUDIO_FORMAT.includes(file?.extension?.toUpperCase());
+  const isAttachPlayable = (file) => (showPlayStatus && AUDIO_FORMAT.includes(file?.extension?.toUpperCase()));
 
   const beforeAttachPlay = async (file) => {
     // 该文件已经通过校验，能直接播放

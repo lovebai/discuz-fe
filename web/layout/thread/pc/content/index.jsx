@@ -211,7 +211,7 @@ const RenderThreadContent = (inject('index', 'site', 'user', 'thread', 'plugin')
         {text && <PostContent needShowMore={false} content={text || ''} usePointer={false} />}
 
         {/* 视频 */}
-        {parseContent.VIDEO && parseContent.VIDEO.mediaUrl && (
+        {parseContent.VIDEO && parseContent.VIDEO.needPay !== 1 && (
           <VideoPlay
             url={parseContent.VIDEO.mediaUrl}
             coverUrl={parseContent.VIDEO.coverUrl}

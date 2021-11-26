@@ -6,18 +6,11 @@
 }
 
 .wrapper {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 100vh;
-  height: -webkit-fill-available;
-  /* mobile viewport bug fix */
-  min-height: -webkit-fill-available;
-  padding: 0 $padding-4n;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
   background-color: $white;
-  z-index: $zindex-popup;
 
   :global {
     .dzq-input {
@@ -116,15 +109,11 @@
   }
 
   .btn {
+    flex-basis: 60px;
     @include flex();
     flex-wrap: nowrap;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: constant(safe-area-inset-bottom);
-    bottom: env(safe-area-inset-bottom);
-    margin: 0 $margin-10;
-    padding: $padding-2n 0;
+    position: static;
+    padding: 0;
     background: $white;
     border-top: $border-solid-1;
 
@@ -151,58 +140,34 @@
 }
 
 .paid-wrapper {
-  overflow-y: scroll;
-  max-height: calc(100vh - 60px - env(safe-area-inset-bottom));
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overflow-y: overlay;
+  padding-right: 16px;
+  margin-right: -16px;
 }
 
-.pc {
-  .wrapper {
-    position: static;
-    width: 100%;
+.wrapper.h5 {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-popup;
+  padding: 0 $padding-4n;
+  height: -webkit-fill-available;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
+}
+
+.wrapper.pc {
+  width: 100%;
+
+  .paid-wrapper {
     max-height: 600px;
-    padding: 0;
 
-    .paid-wrapper {
-      max-height: 600px;
-
-      @include scrollbar();
-
-      overflow-y: scroll;
-      overflow-y: overlay;
-
-      &::-webkit-scrollbar {
-        z-index: 9999;
-      }
-      &::-webkit-scrollbar-track {
-        z-index: 9999;
-      }
-      &::-webkit-scrollbar-corner {
-        z-index: 9999;
-      }
-      &::-webkit-scrollbar-button {
-        z-index: 9999;
-      }
-    }
-  }
-
-  .btn {
-    padding: 0;
-    position: static;
-    width: 100%;
-    height: rem(36);
-    display: block;
-    text-align: center;
-    border: none;
-  }
-  :global {
-    .dzq-button {
-      width: rem(116);
-      height: rem(36);
-      border-radius: $border-radius-small;
-      &:first-child {
-        margin-right: 10px;
-      }
-    }
+    @include scrollbar();
   }
 }
 
@@ -238,6 +203,7 @@
     min-width: 100%;
     min-height: 100px;
     margin-bottom: 8px;
+    object-fit: cover;
 
     &:last-child {
       margin-bottom: 0;

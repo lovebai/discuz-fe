@@ -124,7 +124,7 @@ const Index = inject('threadPost')(observer(({ threadPost, cancel, paidType, pc,
   };
 
   const postComponent = () => (
-        <>
+        <div className={styles['paid-wrapper']}>
           <div className={styles['paid-item']}>
             <div className={styles.left}>支付金额</div>
             <div className={styles.right}>
@@ -147,7 +147,7 @@ const Index = inject('threadPost')(observer(({ threadPost, cancel, paidType, pc,
               onChange={throttle(e => setFreeWords(e), 100)}
             />
           </div>
-        </>
+        </div>
   );
 
   // 为部分付费的容器
@@ -167,7 +167,7 @@ const Index = inject('threadPost')(observer(({ threadPost, cancel, paidType, pc,
   );
 
   const content = (
-      <div className={styles.wrapper}>
+      <div className={`${styles.wrapper} ${pc ? styles.pc : styles.h5}`}>
         {isPost && postComponent()}
         {isAttach && attachmentComponent()}
         {!pc && btnComponent()}
@@ -180,7 +180,6 @@ const Index = inject('threadPost')(observer(({ threadPost, cancel, paidType, pc,
       <DDialog
         title={paidType}
         visible={visible}
-        className={styles.pc}
         onClose={cancel}
         onCacel={cancel}
         onConfirm={paidConfirm}

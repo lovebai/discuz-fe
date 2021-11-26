@@ -29,7 +29,7 @@ const Index = ({
     bottomViewStyle= {},
 }) => {
     return (
-        <div class={styles.bottomViewContainer} style={bottomViewStyle}>
+        <div className={styles.bottomViewContainer} style={bottomViewStyle}>
             <div className={`${styles.bottomView} ${className} ${isBox ? styles.bottomViewBox : ''}`}>
                 {!isError ? (
                     loadingView || <RefreshView onRefreshPlaceholder={onRefreshPlaceholder} noMore={noMore} loadText={loadingText} noMoreText={noMoreText} noMoreType={noMoreType} />

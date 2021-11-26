@@ -17,6 +17,7 @@ const Index = ({ site, user, shipCardClassName }) => {
   const [defaultActive, setDefaultActive] = useState(1);
 
   useEffect(async () => {
+    await user.queryPayGroups();
     const { level = 1 } = Taro.getCurrentInstance().router.params;
     setDefaultActive(Number(level) || 1);
   }, []);
@@ -71,7 +72,7 @@ const Index = ({ site, user, shipCardClassName }) => {
                       <View className={styles.time}>有效期：{`${days}天`}</View>
                     </View>
 
-                    {level > group.level && <Button className={styles.upgradeBtn} style={{margin: 0}} onClick={() => doPay({amount, title: '付费用户组升级', groupId })}>立即升级</Button>}
+                    {level > group.level && <Button className={styles.upgradeBtn} style={{margin: 0}} onClick={() => doPay({amount, title: groupName, groupId })}>立即升级</Button>}
                   </View>
                 </View>
 

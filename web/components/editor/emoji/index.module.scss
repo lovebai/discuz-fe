@@ -43,7 +43,8 @@
   bottom: 54px;
   height: 200px;
   width: 390px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-y: overlay;
   z-index: $zindex-dialog;
   .dzq-emoji__icon {
     cursor: pointer;
@@ -57,6 +58,12 @@
   &::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.09);
     border-radius: 100px;
+  }
+}
+@supports not (overflow-y: overlay) {
+  .pc{
+    scrollbar-width: thin;
+    scrollbar-color: $border-shadow-color transparent;
   }
 }
 .h5 {

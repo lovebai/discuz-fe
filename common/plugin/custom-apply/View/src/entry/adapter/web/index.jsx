@@ -104,6 +104,9 @@ export default class CustomApplyEntry extends React.Component {
    * 报名结束时间早于活动结束时间置灰
    */
   getMinTime = (date) => {
+    const { siteData } = this.props;
+    if (!siteData.isPC) return;
+
     const { body } = this.state;
     const { activityStartTime, activityEndTime } = body;
     const start = format(activityStartTime, 'yyyy/MM/dd');
@@ -130,6 +133,9 @@ export default class CustomApplyEntry extends React.Component {
    * 报名结束时间晚于活动结束时间置灰
    */
   getMaxTime = (date) => {
+    const { siteData } = this.props;
+    if (!siteData.isPC) return;
+
     const { body } = this.state;
     const { activityEndTime, activityStartTime } = body;
     const start = format(activityStartTime, 'yyyy/MM/dd');
@@ -287,8 +293,8 @@ export default class CustomApplyEntry extends React.Component {
 
   render() {
     const { siteData } = this.props;
-    const platform = siteData.platform === 'h5' ? styles.h5 : styles.pc;
-    const isPc = siteData.platform !== 'h5';
+    const isPc = siteData.isPC;
+    const platformCls = isPc ? styles.pc : styles.h5;
     const { visible, showMore, body, showMobileDatePicker, minTime, maxTime } = this.state;
     const moreClass = !showMore
       ? classNames(styles['dzqp-act--more'], styles.fold) : classNames(styles['dzqp-act--more'], styles.expand);
@@ -311,7 +317,7 @@ export default class CustomApplyEntry extends React.Component {
           isNew={true}
           type="confirm"
           title="创建活动报名"
-          className={classNames(styles['dzqp-act'], platform)}
+          className={classNames(styles['dzqp-act'], platformCls)}
         >
           <div className={styles['dzqp-act--item']}>
             <div className={styles['dzqp-act--item_title']}>开始时间</div>

@@ -5,6 +5,7 @@
   align-items: center;
 
   .memberBadgeIcon {
+    flex: 0 0 16px;
     z-index: 1;
   }
 
@@ -14,15 +15,14 @@
     top: rem(1);
     display: flex;
     align-items: center;
+    @include text-ellipsis;
 
     .memberBadgeNameText {
       font-size: 10px;
-      height: 12px;
-      line-height: 12px;
+      height: 16px;
+      line-height: 16px;
       max-width: rem(120);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      @include text-ellipsis;
     }
 
     &_1 {
@@ -37,7 +37,7 @@
     &_4 {
       color: #683b41;
     }
-    
+
   }
 
   &.default {

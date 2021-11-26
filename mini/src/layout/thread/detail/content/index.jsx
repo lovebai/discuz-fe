@@ -150,6 +150,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread', 
               isReward={isReward}
               isRed={isRedPack}
               onClick={onUserClick}
+              hasMoreIcon={props?.user?.isLogin() && isApproved}
             ></UserInfo>
           </View>
           {props?.user?.isLogin() && isApproved && (
@@ -167,7 +168,7 @@ const RenderThreadContent = inject('index', 'site', 'user', 'plugin', 'thread', 
           {text && <PostContent useShowMore={false} content={text || ''} />}
 
           {/* 视频 */}
-          {parseContent.VIDEO && parseContent.VIDEO.mediaUrl && (
+          {parseContent.VIDEO && parseContent.VIDEO.needPay !== 1 && (
             <VideoPlay
               url={parseContent.VIDEO.mediaUrl}
               coverUrl={parseContent.VIDEO.coverUrl}

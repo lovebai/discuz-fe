@@ -80,7 +80,7 @@ const Index = ({ cancel, pc, visible, threadPost }) => {
       </div>
 
       {subitems.map((item, index) => (
-        <div className={styles['line-box']} key={index} style={{ justifyContent: 'unset' }}>
+        <div className={styles['line-box']} key={index} style={{ justifyContent: 'unset', position: 'relative' }}>
           <div className={styles.label}>{`${index + 1}.`}</div>
           <div className={styles.item} style={{ marginLeft: '16px' }}>
             <Input mode="text" value={item.content} onChange={(e) => {
@@ -160,7 +160,7 @@ const Index = ({ cancel, pc, visible, threadPost }) => {
       {pc ? '' : (
         <>
           <DatePickers
-            // time={time}
+            time={new Date(time)}
             onSelects={(e) => {
               setTime(e);
               setShow(false);

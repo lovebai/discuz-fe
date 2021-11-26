@@ -428,6 +428,11 @@ class ThreadH5Page extends React.Component {
       return;
     }
 
+    const params = {
+      val,
+      imageList,
+    }
+
     // 验证码
     const { webConfig } = this.props.site;
     if (webConfig) {
@@ -441,14 +446,16 @@ class ThreadH5Page extends React.Component {
         if (!captchaTicket && !captchaRandStr) {
           return false ;
         }
+        params.captchaTicket = captchaTicket;
+        params.captchaRandStr = captchaRandStr;
       }
     }
 
-    return this.comment ? await this.updateComment(val, imageList) : await this.createComment(val, imageList);
+    return this.comment ? await this.updateComment(params) : await this.createComment(params);
   }
 
   // 创建评论
-  async createComment(val, imageList) {
+  async createComment({val, imageList, captchaTicket = '', captchaRandStr = ''}) {
     const id = this.props.thread?.threadData?.id;
     const params = {
       id,
@@ -456,6 +463,8 @@ class ThreadH5Page extends React.Component {
       sort: this.commentDataSort, // 目前的排序
       isNoMore: this.props?.thread?.isNoMore,
       attachments: [],
+      captchaTicket,
+      captchaRandStr,
     };
 
     if (imageList?.length) {
@@ -510,7 +519,7 @@ class ThreadH5Page extends React.Component {
   }
 
   // 更新评论
-  async updateComment(val) {
+  async updateComment({val, captchaTicket = '', captchaRandStr = ''}) {
     if (!this.comment) return;
 
     const id = this.props.thread?.threadData?.id;
@@ -519,6 +528,8 @@ class ThreadH5Page extends React.Component {
       postId: this.comment.id,
       content: val,
       attachments: [],
+      captchaTicket,
+      captchaRandStr,
     };
     const { success, msg, isApproved } = await this.props.comment.updateComment(params, this.props.thread);
     if (success) {

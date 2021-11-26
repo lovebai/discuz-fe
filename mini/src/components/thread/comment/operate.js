@@ -88,7 +88,7 @@ class CommentAction {
    * @returns {object} 处理结果
    */
   async createComment(params) {
-    const { id, content, attachments, postId } = params;
+    const { id, content, attachments, postId, captchaTicket, captchaRandStr } = params;
     if (!id || (!content && attachments.length === 0)) {
       return {
         msg: '参数不完整',
@@ -102,6 +102,11 @@ class CommentAction {
       replyId: postId,
       attachments,
     };
+
+    if (captchaTicket && captchaRandStr) {
+      requestParams.captchaTicket = captchaTicket;
+      requestParams.captchaRandStr = captchaRandStr;
+    }
 
     const res = await createPosts({ data: requestParams });
 
@@ -136,7 +141,7 @@ class CommentAction {
    * @returns {object} 处理结果
    */
   async updateComment(params, ThreadStore) {
-    const { id, postId, content, attachments } = params;
+    const { id, postId, content, attachments, captchaTicket, captchaRandStr } = params;
     if (!id || !content || !postId) {
       return {
         msg: '参数不完整',
@@ -154,6 +159,11 @@ class CommentAction {
         },
       },
     };
+
+    if (captchaTicket && captchaRandStr) {
+      requestParams.captchaTicket = captchaTicket;
+      requestParams.captchaRandStr = captchaRandStr;
+    }
 
     const res = await updatePosts({ data: requestParams });
 
@@ -196,7 +206,7 @@ class CommentAction {
    * @returns {object} 处理结果
    */
   async createReply(params) {
-    const { id, commentId, replyId, commentPostId, content, isComment, attachments } = params;
+    const { id, commentId, replyId, commentPostId, content, isComment, attachments, captchaTicket, captchaRandStr } = params;
     if (!id || (!content && attachments.length === 0) || !replyId || !commentId) {
       return {
         msg: '参数不完整',
@@ -211,6 +221,11 @@ class CommentAction {
       attachments,
       commentPostId,
     };
+
+    if (captchaTicket && captchaRandStr) {
+      requestParams.captchaTicket = captchaTicket;
+      requestParams.captchaRandStr = captchaRandStr;
+    }
 
     const res = await createPosts({ data: requestParams });
 
@@ -349,7 +364,7 @@ class CommentAction {
           comment.rewards = plus(Number(comment.rewards), Number(rewards));
         }
       });
-      
+
       if (this.threadData?.content?.indexes[107]?.body) {
         const remainMoney =  this.threadData.content.indexes[107].body.remainMoney ;
         this.threadData.content.indexes[107].body.remainMoney = Number(remainMoney - rewards).toFixed(2) ;

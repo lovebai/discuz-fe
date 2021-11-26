@@ -6,26 +6,21 @@ import { noop } from '../utils';
 import calcVideoSize from '@common/utils/calc-video-size';
 
 /**
- * 视频
- * @prop {boolean} isPay 是否需要付费
- * @prop {string | number} width 视频宽度
- * @prop {string | number} height 视频高度
- * @prop {string | number} money 付费金额
+ * 视频 - 需要付费时直接不展示
+ * @prop {string | number} v_width 视频宽度
+ * @prop {string | number} v_height 视频高度
  * @prop {string} coverUrl 封面图片
  * @prop {string} url 视频地址
  * @prop {string} time 总时长
- * @prop {function} onPay 付费时，蒙层点击事件
+ * @prop {number} status 视频状态
+ * @prop {boolean} canViewVideo 是否具有查看权限
  */
 
-//TODO 视频转码中和错误状态的蒙层样式有问题，需要调整
 const Index = ({
-  isPay = false,
   coverUrl,
   url,
   time,
-  money = 0,
   status = 0,
-  onPay = noop,
   baselayout = {},
   v_width = null,
   v_height = null,
@@ -44,14 +39,14 @@ const Index = ({
 
   const onPlay = (e) => {
     updateViewCount();
-    if(player && e && baselayout) {
+    if (player && e && baselayout) {
       // 暂停之前正在播放的音视频
-      if(baselayout.playingVideoDom) {
+      if (baselayout.playingVideoDom) {
         // 暂停之前正在播放的视频
         baselayout.pauseWebPlayingVideo(e.target);
       }
 
-      if(baselayout.playingAudioDom) {
+      if (baselayout.playingAudioDom) {
         // 暂停之前正在播放的音频
         baselayout.pauseWebPlayingAudio();
       }
@@ -85,9 +80,9 @@ const Index = ({
   }, [ref?.current?.clientHeight]);
 
   return (
-    <div id="common-video-play" className={styles.container} style={{width: `${width}px`, height: `${height}px`}} ref={ref}>
+    <div id="common-video-play" className={styles.container} style={{ width: `${width}px`, height: `${height}px` }} ref={ref}>
       {
-        width && (
+        width && url && (
           <Video
             className={styles.videoBox}
             onReady={onReady}
@@ -102,14 +97,17 @@ const Index = ({
           />
         )
       }
-      {/* 视频蒙层 已付费时隐藏 未付费时显示 */}
-      {/* {
-        isPay && <div className={styles.payBox} onClick={onPay}></div>
-      } */}
       {/* 视频蒙层 有权限播放时隐藏 无权限播放时显示 */}
       {
-        !canViewVideo && <div className={styles.payBox} onClick={() => Toast.warning({ content: '暂⽆权限播放视频' })}></div>
+        !canViewVideo && (
+          <div
+            className={styles.maskImage}
+            style={!url && { backgroundImage: `url(${coverUrl})` }}
+            onClick={() => Toast.warning({ content: '暂⽆权限播放视频' })}
+          ></div>
+        )
       }
+      {/* 视频头部提示 视频状态异常时显示 */}
       {
         status !== 1 && (
           <div className={styles.payBox}>

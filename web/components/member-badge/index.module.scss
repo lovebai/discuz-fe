@@ -3,6 +3,7 @@
 .memberBadgeBox {
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
 
   .memberBadgeIcon {
     z-index: 1;
@@ -14,15 +15,14 @@
     top: 1px;
     display: flex;
     align-items: center;
+    @include text-ellipsis;
 
     .memberBadgeNameText {
       font-size: 10px;
       max-width: rem(120);
-      height: 12px;
-      line-height: 12px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      height: 16px;
+      line-height: 16px;
+      @include text-ellipsis;
     }
 
     &_1 {

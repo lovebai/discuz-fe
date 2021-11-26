@@ -249,7 +249,7 @@ class CommentList extends React.Component {
             {this.props.data?.user && (
               <div className={styles.commentListFooter}>
                 {/* 操作按钮 */}
-                {!this.props.isFirstDivider && (
+                {!this.state.isFirstDivider && (
                   <div className={styles.commentBtn}>
                     <div className={styles.commentTime}>{diffDate(this.props.data.createdAt)}</div>
                     <div className={styles.extraBottom}>
@@ -290,10 +290,10 @@ class CommentList extends React.Component {
                         </div>
                       )}
 
-                      <div className={styles.commentReport} onClick={() => this.reportClick()}>
+                      {/* <div className={styles.commentReport} onClick={() => this.reportClick()}>
                         <Icon className={styles.icon} name="WarnOutlined"></Icon>
                         <span>举报</span>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 )}

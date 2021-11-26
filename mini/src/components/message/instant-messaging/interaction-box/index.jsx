@@ -11,7 +11,7 @@ import styles from './index.module.scss';
 
 const InteractionBox = (props) => {
   const { forum, showEmoji, switchEmoji, chooseImage, typingValue, setTypingValue, doSubmitClick } = props;
-  const { otherPermissions, setOtherPermissions } = forum;
+  const { otherPermissions } = forum;
   const { disabledChat = false } = otherPermissions || {};
 
   const [cursorPosition, setCursorPosition] = useState(0);
@@ -23,7 +23,7 @@ const InteractionBox = (props) => {
   };
 
   useEffect(() => {
-    !otherPermissions && setOtherPermissions();
+    !otherPermissions && forum.setOtherPermissions();
   }, [])
 
   return (

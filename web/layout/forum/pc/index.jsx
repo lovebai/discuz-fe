@@ -14,11 +14,11 @@ import UserCenterUsersPc from '@components/user-center/users-pc';
 import { COMMON_PERMISSION, PERMISSION_PLATE } from '@common/constants/site';
 import { simpleRequest } from '@common/utils/simple-request';
 import { get } from '@common/utils/get';
+import MemberBadge from '@components/member-badge';
 
 @inject('index')
 @inject('site')
 @inject('forum')
-@inject('search')
 @inject('user')
 @observer
 class ForumPCPage extends React.Component {
@@ -66,8 +66,9 @@ class ForumPCPage extends React.Component {
       site,
       forum: { myGroup, myPermissons, userTotal },
       index: { categoriesNames },
-      user: { userInfo }
+      user: { group },
     } = this.props;
+    console.log(group);
     const { platform } = site;
     // 创建时间
     const siteInstall = get(site, 'webConfig.setSite.siteInstall', '');
@@ -162,7 +163,16 @@ class ForumPCPage extends React.Component {
                 />
               </div>
               <div className={layout.user_value_item} title={ myGroup?.nickname || '--' }><span>{myGroup?.nickname || '--'}</span></div>
-              <div className={layout.user_value_item} title={myGroup?.groupName || '--'}><span>{myGroup?.groupName || '--'}</span></div>
+              <div className={layout.user_value_item} title={myGroup?.groupName || '--'}>
+                {
+                  group.level
+                    ? <MemberBadge
+                        groupLevel={group.level}
+                        groupName={group?.groupName}
+                      />
+                    : <span>{group?.groupName || '--'}</span>
+                }
+              </div>
               <div className={layout.user_value_item} title={myGroup ? Time.formatDate(myGroup?.createdAt, 'YYYY-MM-DD') : '--'}>
                 <span>{myGroup ? Time.formatDate(myGroup?.createdAt, 'YYYY-MM-DD') : '--'}</span>
               </div>

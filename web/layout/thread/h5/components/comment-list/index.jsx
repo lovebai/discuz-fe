@@ -4,7 +4,7 @@ import Avatar from '@components/avatar';
 import { Icon } from '@discuzq/design';
 import ReplyList from '../reply-list/index';
 import { diffDate } from '@common/utils/diff-date';
-import { observer, inject} from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';
 import ImageDisplay from '@components/thread/image-display';
@@ -100,7 +100,7 @@ class CommentList extends React.Component {
     const { thread } = this.props;
     // 评论内容是否通过审核
     const isApproved = this.props?.data?.isApproved === 1;
-    const { redPacketData } = this.props;
+    const { redPacketData, disabledReply = false } = this.props;
     const remainHongbaoLike = redPacketData?.condition === 1 && redPacketData?.remainNumber; // 是否还有剩余的点赞红包
     const needLikeNum = redPacketData?.likenum;
     const curLikeNum = this.props?.data?.likeCount;
@@ -113,7 +113,7 @@ class CommentList extends React.Component {
             <div></div>
             <div className={styles.headerRigth}>
               {
-                isCommenter && remainHongbaoLike*1>0 && curLikeNum < needLikeNum && !this.props.data?.redPacketAmount && (
+                isCommenter && remainHongbaoLike * 1 > 0 && curLikeNum < needLikeNum && !this.props.data?.redPacketAmount && (
                   <div className={styles.hongbaoLikeNum}>
                     <Icon className={styles.iconzan} size={12} name="PraiseOutlined"></Icon>
                     再集 <span> &nbsp;{needLikeNum - curLikeNum} &nbsp;</span> 赞可领红包
@@ -152,7 +152,7 @@ class CommentList extends React.Component {
         </div>
         <div className={styles.content}>
           <div className={styles.commentListAvatar} onClick={() => this.avatarClick()}>
-            <SiteMapLink href={`/user/${this.props?.data?.userId}`} text={this.props.data?.user?.nickname || this.props.data?.user?.userName || '异'}/>
+            <SiteMapLink href={`/user/${this.props?.data?.userId}`} text={this.props.data?.user?.nickname || this.props.data?.user?.userName || '异'} />
             {/* 头像和昵称*/}
             <Avatar
               image={
@@ -164,7 +164,7 @@ class CommentList extends React.Component {
           </div>
           {/* 评论内容*/}
           <div className={styles.commentListContent}>
-            <SiteMapLink href={`/thread/comment/${this.props?.data.id}?threadId=${thread?.threadData?.id}`} text={this.props?.data?.content}/>
+            <SiteMapLink href={`/thread/comment/${this.props?.data.id}?threadId=${thread?.threadData?.id}`} text={this.props?.data?.content} />
             <div className={`${styles.commentListContentText} ${this.props.active && styles.active}`}>
               <div className={styles.commentHeader}>
                 <div className={styles.userInfo}>
@@ -176,20 +176,20 @@ class CommentList extends React.Component {
                       <span className={styles.masterText}>作者</span>
                     </div>
                   )}
-                  {!!groups?.isDisplay  && (
-                  <div className={styles.groupsBox}>
-                    {
-                      groups?.level ?
-                      <MemberBadge
-                        groupLevel={groups?.level}
-                        groupName={groups?.name || groups?.groupName}
-                        groupNameStyle={{maxWidth: '100px'}}
-                      />
-                      :
-                      <div className={styles.groups}>{groups?.name || groups?.groupName}</div>
-                    }
-                  </div>
-                )}
+                  {!!groups?.isDisplay && (
+                    <div className={styles.groupsBox}>
+                      {
+                        groups?.level ?
+                          <MemberBadge
+                            groupLevel={groups?.level}
+                            groupName={groups?.name || groups?.groupName}
+                            groupNameStyle={{ maxWidth: '100px' }}
+                          />
+                          :
+                          <div className={styles.groups}>{groups?.name || groups?.groupName}</div>
+                      }
+                    </div>
+                  )}
                 </div>
                 {!isApproved ? <div className={styles.isApproved}>审核中</div> : <div></div>}
               </div>
@@ -224,9 +224,9 @@ class CommentList extends React.Component {
                         赞&nbsp;{this.props?.data?.likeCount > 0 ? this.props.data.likeCount : ''}
                       </span>
                     </div>
-                    {!this.props.disabledReply && <div className={styles.commentReply}>
-                        <span onClick={() => this.replyClick()}>回复</span>
-                      </div>
+                    {!disabledReply && <div className={styles.commentReply}>
+                      <span onClick={() => this.replyClick()}>回复</span>
+                    </div>
                     }
                     {this.props.isShowAdopt && (
                       <div className={styles.commentAdopt}>
@@ -268,6 +268,7 @@ class CommentList extends React.Component {
                         deleteClick={() => this.replyDeleteClick(this.needReply[0])}
                         toCommentDetail={() => this.toCommentDetail()}
                         threadId={this.props.threadId}
+                        disabledReply={disabledReply}
                       ></ReplyList>
                     ) : (
                       (this.needReply || []).map((val, index) => (
@@ -283,6 +284,7 @@ class CommentList extends React.Component {
                             toCommentDetail={() => this.toCommentDetail(val)}
                             active={this.props.postId === val.id}
                             threadId={this.props.threadId}
+                            disabledReply={disabledReply}
                           ></ReplyList>
                         </div>
                       ))
