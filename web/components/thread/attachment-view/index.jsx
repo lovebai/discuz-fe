@@ -38,6 +38,7 @@ const Index = ({
   canViewAttachment = false,
   isShowShowMore = true,
   customActionArea = null,
+  showPlayStatus = true, // 音频附件是否展示为播放状态，false：当作文本附件展示
 }) => {
   let itemUrl = null;
   // 过滤需要部分付费的附件
@@ -190,7 +191,7 @@ const Index = ({
 
   // 音频播放
   const isAttachPlayable = (file) => {
-    return AUDIO_FORMAT.includes(file?.extension?.toUpperCase());
+    return showPlayStatus && AUDIO_FORMAT.includes(file?.extension?.toUpperCase());
   };
 
   const beforeAttachPlay = async (file) => {
