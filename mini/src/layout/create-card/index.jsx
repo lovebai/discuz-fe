@@ -37,7 +37,7 @@ class Index extends React.Component {
         }
 
         try {
-            const paramPath = `/pages/index/index?path=${encodeURIComponent(setUrlParam(path, { inviteCode }))}`;
+            const paramPath = `/pages/index/index?path=${encodeURIComponent(commentId?path:setUrlParam(path, { inviteCode }))}`;
             const res = await getMiniCode({ params: { path: paramPath } });
             if(res?.code === 0) {
                 this.setState({miniCode: res?.data});
