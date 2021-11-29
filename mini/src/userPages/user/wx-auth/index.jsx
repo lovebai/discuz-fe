@@ -79,6 +79,7 @@ class MiniAuth extends React.Component {
       checkUserStatus(resp);
       if (resp.code === 0) {
         LoginHelper.restore();
+        await this.props.site.getSiteInfo();
         return;
       }
       // 落地页开关打开
