@@ -176,6 +176,9 @@ class Index extends React.Component {
         const r = sikpPath.match(reg);
         r && this.props.invite.setInviteCode(r[2])
       }
+      if(router.params && router.params.inviteCode) {
+        this.props.invite.setInviteCode(router.params.inviteCode)
+      }
 
       const isGoToHome = await this.isPass();
       if (isGoToHome ) {
