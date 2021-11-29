@@ -249,6 +249,8 @@ class ThreadPostAction extends ThreadPostStore {
       selectedImages,
       textFreeValue,
     } = this.partPayInfo;
+  
+    if (!payPrice) return;
 
     if (selectedAttachments && selectedAttachments.length > 0) {
       this.filesPriceList = [...selectedAttachments];
