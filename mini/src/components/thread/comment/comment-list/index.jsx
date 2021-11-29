@@ -1,16 +1,19 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import Taro from '@tarojs/taro';
 import Toast from '@discuzq/design/dist/components/toast';
 import CommentList from '@layout/thread/components/comment-list/index';
 import AboptPopup from '@layout/thread/components/abopt-popup';
 import { View } from '@tarojs/components'
 import { parseContentData } from '@layout/thread/utils';
-import InputPopup from '@layout/thread/components/input-popup';
+// import InputPopup from '@layout/thread/components/input-popup';
 import DeletePopup from '@layout/thread/components/delete-popup';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import { debounce } from '@common/utils/throttle-debounce';
+import { withRouter } from 'next/router';
 import comment from './index.module.scss';
 import Operate from '../operate';
+
 
 /**
  * 评论列表
@@ -27,7 +30,6 @@ class RenderCommentList extends React.Component {
       showAboptPopup: false, // 是否弹出采纳弹框
       showDeletePopup: false, // 是否弹出删除弹框
       showReplyDeletePopup: false, // 是否弹出回复删除弹框
-
       inputText: '请输入内容', // 默认回复框placeholder内容
     };
 
@@ -187,7 +189,7 @@ class RenderCommentList extends React.Component {
   // 跳转评论详情
   onCommentClick(data) {
     if (data.id && this.props.thread?.threadData?.id) {
-      this.props.router.push(`/thread/comment/${data.id}?threadId=${this.props.thread?.threadData?.id}`);
+      Taro.navigateTo({ url: `/indexPages/thread/index?id=${this.props.thread?.threadData?.id}` });
     }
   }
 
@@ -245,7 +247,7 @@ class RenderCommentList extends React.Component {
   avatarClick(data) {
     const { userId } = data;
     if (!userId) return;
-    this.props.router.push(`/user/${userId}`);
+    Taro.navigateTo({ url: `/userPages/user/index?id=${userId}` });
   }
 
   // 点击回复头像
@@ -325,4 +327,4 @@ class RenderCommentList extends React.Component {
   }
 }
 
-export default RenderCommentList;
+export default withRouter(RenderCommentList);
