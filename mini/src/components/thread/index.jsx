@@ -117,6 +117,8 @@ class Index extends React.Component {
       if (result.code === 0 && result.data) {
         updateThreadAssignInfoInLists(threadId, { updateType: 'like', updatedInfo: result.data, user: user.userInfo });
         typeof onPraise === 'function' && onPraise({ isLiked: result.data.isLiked })
+      }else{
+        Toast.info({ content: `${result?.msg}` });
       }
       this.setState({ isSendingLike: false, minHeight: 0 }, () => {
         // 点赞更新完数据后，重新修正帖子高度
