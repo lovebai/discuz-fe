@@ -8,6 +8,11 @@ const PriceUnit = inject('threadPost')(observer(({ ...props }) => {
   const { partPayInfo } = threadPost;
   const { payPrice } = partPayInfo;
 
+  const handlePrice = (val) => {
+    const arr = val.match(/([1-9]\d{0,5}|0)(\.\d{0,2})?/);
+    partPayInfo.payPrice = arr ? arr[0] : '';
+  };
+
   return (
       <Unit
         title={'设置付费价格'}
@@ -15,13 +20,10 @@ const PriceUnit = inject('threadPost')(observer(({ ...props }) => {
             <>
               <Input
                 mode={'number'}
-                htmlType={'number'}
-                placeholder={'金额'}
-                trim={true}
                 value={payPrice}
-                onChange={(e) => {
-                  partPayInfo.payPrice = e.target.value;
-                }}
+                placeholder={'金额'}
+                maxLength={9}
+                onChange={e => handlePrice(e.target.value)}
               />
               <span>&nbsp;元</span>
             </>
