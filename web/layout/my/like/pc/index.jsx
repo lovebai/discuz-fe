@@ -78,7 +78,7 @@ class LikePCPage extends React.Component {
           type="normal"
           isShowMore={false}
           noData={!likeThreadList?.length}
-          isLoading={!likeThreadList?.length}
+          isLoading={!(totalCount>=0)}
           icon={{ type: 3, name: 'LikeOutlined' }}
           rightText={totalCount !== undefined ? `共有${totalCount}条点赞` : null}
           className={styles.container}
