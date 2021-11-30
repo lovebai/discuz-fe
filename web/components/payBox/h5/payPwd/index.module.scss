@@ -47,7 +47,7 @@
 .paypwdDialogWrapper {
   :global {
     .dzq-modal__container {
-      width: rem(283);
+      width: rem(283) !important;
       top: 36%;
       box-sizing: border-box;
       border-radius: $border-radius-small;
