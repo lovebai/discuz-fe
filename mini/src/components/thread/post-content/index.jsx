@@ -108,7 +108,7 @@ const PostContent = ({
   }, [content]);
 
   const onShowMore = useCallback((e) => {
-    e && e.stopPropagation(); 
+    e && e.stopPropagation();
     updateViewCount();
 
     if (contentTooLong) {
