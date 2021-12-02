@@ -329,7 +329,7 @@ class index extends Component {
             </>
           )}
         </div>
-        {this.whetherIsShowRenewalCard() && <MemberShipCard onRenewalFeeClick={this.onRenewalFeeClick} />}
+        {this.whetherIsShowRenewalCard() && <MemberShipCard router={this.props.router} onRenewalFeeClick={this.onRenewalFeeClick} />}
         {/* 右上角屏蔽按钮 */}
         {this.props.isOtherPerson && (
           <div
