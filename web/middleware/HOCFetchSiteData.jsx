@@ -293,7 +293,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
 
       // 首页、推广邀请
       if (route.includes('/invite') || route === '/') {
-        title = `${nickname}邀请您加入${siteName}`;
+        title = `${nickname || ''}邀请您加入${siteName}`;
       }
 
       // 私聊页面分享出去点击访问消息模块首页

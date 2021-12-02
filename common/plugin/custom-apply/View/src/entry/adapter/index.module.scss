@@ -203,25 +203,34 @@
     .dzq-modal__container {
       width: 100% !important;
       height: 100% !important;
-      padding-left: 0;
-      padding-right: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
     }
     .dzq-modal__header {
-      margin: 0 $padding-6n;
+      margin: $padding-4n $padding-6n;
+      padding: 0;
     }
     .dzq-modal__body,
     .dzq-modal__footer {
       padding: 0 $padding-6n;
     }
     .dzq-modal__body {
-      height: calc(100vh - 120px - constant(safe-area-inset-bottom));
-      height: calc(100vh - 120px - env(safe-area-inset-bottom));
+      flex: 1;
+      margin-bottom: 60px;
+      margin-bottom: calc(60px + constant(safe-area-inset-bottom));
+      margin-bottom: calc(60px + env(safe-area-inset-bottom));
       overflow-x: hidden;
       overflow-y: auto;
     }
     .dzq-modal__footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: $padding-2n $padding-6n;
       border-top: $border-solid-1;
-      padding-top: 10px;
+      background: $white;
       display: flex;
       justify-content: space-between;
       .dzq-button {

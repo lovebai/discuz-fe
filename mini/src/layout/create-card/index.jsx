@@ -37,13 +37,14 @@ class Index extends React.Component {
         }
 
         try {
-            const paramPath = `/pages/index/index?path=${encodeURIComponent(setUrlParam(path, { inviteCode }))}`;
+            const paramPath = `/pages/index/index?path=${encodeURIComponent(commentId?path:setUrlParam(path, { inviteCode }))}`;
             let res = null;
             if(this.experienceData){
                 res = await readWechatPosterGenqrcode({ params: { path: '/pages/index/index' } });
             }else {
                 res = await getMiniCode({ params: { path: paramPath } })
             }
+
             if(res?.code === 0) {
                 this.setState({miniCode: res?.data});
             } else {
