@@ -11,13 +11,11 @@ import styles from './index.module.scss';
 
 const Index = ({ site, user, shipCardClassName, setTitle = () => { } }) => {
   const [defaultActive, setDefaultActive] = useState(1);
-  const { userInfo = {}, payGroups } = user || {};
+  const { isAdmini, userInfo = {}, payGroups } = user || {};
   const { group = {} } = userInfo;
 
   useEffect(async () => {
     const _payGroups = await user.queryPayGroups();
-
-    console.log(`object`, group, _payGroups)
     const { query } = Router.router.router;
     let level = 1;
 
@@ -41,18 +39,17 @@ const Index = ({ site, user, shipCardClassName, setTitle = () => { } }) => {
   }, [payGroups.length, defaultActive]);
 
   useEffect(() => {
-    // 站点付费模式且没有付费用户组时，重定个人中心
-    if ( (site.siteMode === 'pay' && !group.hasPayGroup)) {
+    // 管理员或者没有付费用户组时，重定个人中心
+    if ( isAdmini || !group.hasPayGroup ) {
       Router.redirect({ url: '/my' });
     }
-  }, [payGroups.length, site.siteMode, group.hasPayGroup])
+  }, [isAdmini, group.hasPayGroup])
   
   // 执行付费
   const doPay = async ({ amount, groupId, title }) => {
     try {
       await groupPay({ amount, groupId, title, user, site });
-      window.history.length <= 1 ? Router.redirect({ url: '/my' }) : Router.back();
-
+      Router.redirect({ url: '/my' }) 
     } catch (error) {
       console.log(error);
     }
@@ -60,12 +57,12 @@ const Index = ({ site, user, shipCardClassName, setTitle = () => { } }) => {
 
   const renderCard = (data) => {
     const { groupName, level, description } = data;
-    const theme = levelStyle[level] || {};
+    const { bgImg, groupNameColor, desAndDateColor } = levelStyle[level] || {};
     return (
-      <div className={`${styles.memberShipCardWrapper} ${shipCardClassName}`} style={{ backgroundImage: `url(${theme.bgImg})` }}>
+      <div className={`${styles.memberShipCardWrapper} ${shipCardClassName}`} style={{ backgroundImage: `url(${bgImg})` }}>
         <div className={styles.MemberShipCardContent}>
-          <div className={styles.roleType} style={{ color: theme.groupNameColor }}>{groupName}</div>
-          <div className={styles.tagline} style={{ color: theme.desAndDateColor }}>{level > 0 ? description : '访问海量站点内容'}</div>
+          <div className={styles.roleType} style={{ color: groupNameColor }}>{groupName}</div>
+          <div className={styles.tagline} style={{ color: desAndDateColor }}>{level > 0 ? description : '访问海量站点内容'}</div>
         </div>
       </div>
     );
@@ -84,9 +81,7 @@ const Index = ({ site, user, shipCardClassName, setTitle = () => { } }) => {
           return (
             <Tabs.TabPanel key={level} id={level} label={groupName}>
               <div>
-                <div className={classnames(styles.tabPanel, {
-                  [styles.mobileTabPanel]: true
-                })}>
+                <div className={classnames(styles.tabPanel, styles.mobileTabPanel)}>
 
                   {renderCard(data)}
 
