@@ -9,8 +9,9 @@ import { inject, observer } from 'mobx-react';
 import SiteCard from './siteCard';
 import ThreadCard from './threadCard';
 import CommentCard from './commentCard';
+import ExperienceCard from './experienceCard';
 
-const Index = ({ card, threadId, user, commentId}) => {
+const Index = ({ card, threadId, user, experience, commentId }) => {
   const [url, setUrl] = useState('');
   const [hidePart, setHidePart] = useState(false);
 
@@ -58,9 +59,14 @@ const Index = ({ card, threadId, user, commentId}) => {
           threadId && !commentId &&  <ThreadCard hidePart={hidePart} threadId={threadId}></ThreadCard>
         }
         {
-          !threadId && !commentId && <SiteCard></SiteCard>
+          experience && !threadId && !commentId && <ExperienceCard setReady={setReady} ></ExperienceCard>
         }
-        <Footer setReady={setReady} threadId={threadId} inviteCode={user?.userInfo?.id} commentId={commentId}></Footer>
+        {
+          !threadId && !commentId && !experience && <SiteCard></SiteCard>
+        }
+        {
+          !experience && <Footer setReady={setReady} threadId={threadId} inviteCode={user?.userInfo?.id} commentId={commentId}></Footer>
+        }
       </div>
       {ready && imgReady ? (
         <div className={styles.imgbox}>

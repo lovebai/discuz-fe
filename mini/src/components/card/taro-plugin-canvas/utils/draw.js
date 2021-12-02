@@ -173,9 +173,12 @@ export function drawImage(data, drawOptions) {
 }
 
 export function drawLine(drawData, drawOptions) {
-    const { startX, startY, endX, endY, color, width } = drawData;
+    const { startX, startY, endX, endY, color, width, dashData = [], dashOffset = 0 } = drawData;
     const { ctx, toPx } = drawOptions;
     ctx.save();
+    if(dashData?.length > 0) {
+        ctx.setLineDash(dashData, dashOffset);
+    }
     ctx.beginPath();
     color && ctx.setStrokeStyle(color);
     ctx.setLineWidth(toPx(width));

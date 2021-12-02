@@ -172,12 +172,12 @@ class Index extends React.Component {
       // 取出邀请码进行存储
       if(router.params && router.params.path) {
         const sikpPath = decodeURIComponent(router.params.path);
-        const reg = new RegExp(`(^|[&|?])inviteCode=([^&]*)(&|$)`);
+        const reg = new RegExp(`(^|[&|?])[inviteCode|scene]=([^&]*)(&|$)`);
         const r = sikpPath.match(reg);
         r && this.props.invite.setInviteCode(r[2])
       }
-      if(router.params && router.params.inviteCode) {
-        this.props.invite.setInviteCode(router.params.inviteCode)
+      if(router.params && (router.params.inviteCode || router.params.scene)) {
+        this.props.invite.setInviteCode(router.params.inviteCode || router.params.scene)
       }
 
       const isGoToHome = await this.isPass();

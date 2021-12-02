@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { Popup } from '@discuzq/design';
 import isWeiXin from '@common/utils/is-weixin';
 
-const index = ({ onClose, handleWxShare, handleH5Share, show, createCard, fromThread }) => (
+const index = ({ onClose, handleWxShare, handleH5Share, site, user, handleExperience, show, createCard, fromThread }) => (
       <Popup
         position="bottom"
         visible={show}
@@ -40,6 +40,17 @@ const index = ({ onClose, handleWxShare, handleH5Share, show, createCard, fromTh
                     </div>
                     <span className={styles.text}>
                         微信分享
+                    </span>
+                </div>
+                )}
+                { site?.wechatEnv !== 'none' && user?.isAdmini && (
+                <div className={styles.moreItem} onClick={handleExperience}>
+                    <div className={`${styles.icon} ${styles.experienceIcon}`}>
+                        <Icon name='ExperienceOutlined' size={20}>
+                        </Icon>
+                    </div>
+                    <span className={styles.text}>
+                        限时体验卡
                     </span>
                 </div>
                 )}
