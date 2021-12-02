@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import { Icon, Tag } from '@discuzq/design';
 import styles from './index.module.scss';
 import Avatar from '@components/avatar';
@@ -46,6 +47,7 @@ export default function UserInfo(props) {
   const [showShipCard, setShowShipCard] = useState(false);
 
   const isPc = props.platform === 'pc';
+  const router = useRouter();
   return (
     <>
       <SiteMapLink href={`/user/${props.userId}`} text={props.name || ''}/>
@@ -71,7 +73,9 @@ export default function UserInfo(props) {
               {
                 props.groupLevel ?
                 <MemberBadge
-                  onClick={() => setShowShipCard(true) }
+                  onClick={() => {
+                    isPc ? setShowShipCard(true) : router.push(`/my/upgrade?level=${props.groupLevel}`);
+                  } }
                   groupLevel={props.groupLevel}
                   groupName={props.groupName}
                   groupNameStyle={tagsNumber < 3 ? {maxWidth: '82.5px'} : {maxWidth: '58px'}}
