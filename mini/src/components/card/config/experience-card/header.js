@@ -4,14 +4,14 @@ const notesData = ['通过限时体验卡加入的用户，将被授权付费站
 const circlesData = [
   {
     x: 16 * 2,
-    y: 26 * 2,
+    y: 32 * 2,
     width: 8 * 2,
     height: 8 * 2,
     backgroundColor: '#fff'
   },
   {
     x: 16 * 2,
-    y: 105 * 2,
+    y: 110 * 2,
     width: 8 * 2,
     height: 8 * 2,
     backgroundColor: '#fff'
