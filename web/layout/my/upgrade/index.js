@@ -112,7 +112,6 @@ const Index = ({ site, user, shipCardClassName, setTitle = () => { } }) => {
       </Tabs>
     </div>
   );
-
 };
 
 export default inject('site', 'user')(observer(Index));

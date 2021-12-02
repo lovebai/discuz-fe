@@ -166,7 +166,11 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName,
 
   return isAdmini ? null : (
     <div className={styles.wrapper} onClick={ e => e.stopPropagation() }>
+
+      {/* 用户中心会员卡入口卡片 H5/PC */}
       {showRenderCard && renderCard({groupName, level, description})}
+
+      {/* 付费用户组弹层 PC。H5使用单独页面 */}
       {dialogVisible && (
         <Dialog
           className={isPC ? styles.dialogWrapper : styles.mobileDialogWrapper}
