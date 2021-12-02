@@ -29,9 +29,12 @@ export default function (cloneList, showFileList, type, site) {
 
     let isAllLegal = true; // 状态：此次上传图片是否全部合法
     cloneList.forEach((item, index) => {
-      const arr = item.name.split('.').pop();
-      const imageType = arr.toLocaleLowerCase();
-      const isLegalType = supportImgExt.toLocaleLowerCase().includes(imageType);
+      let imgType = item.imageType;
+      if (!imgType) {
+        const arr = item.name.split('.').pop();
+        imgType = arr.toLocaleLowerCase();
+      }
+      const isLegalType = supportImgExt.toLocaleLowerCase().includes(imgType);
 
       // 存在不合法图片时，从上传图片列表删除
       if (!isLegalType) {
