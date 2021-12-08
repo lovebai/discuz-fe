@@ -33,8 +33,9 @@ export default class ReplyList extends React.Component {
     typeof this.props.likeClick === 'function' && this.props.deleteClick();
   }
 
-  avatarClick(floor) {
+  avatarClick(e,floor) {
     typeof this.props.avatarClick === 'function' && this.props.avatarClick(floor);
+    e?.stopPropagation();
   }
 
   generatePermissions(data = {}) {
@@ -78,8 +79,8 @@ export default class ReplyList extends React.Component {
           <View className={styles.iconAt}>@</View>
           <View
             className={styles.replyedAvatar}
-            onClick={() => {
-              this.avatarClick(3);
+            onClick={(e) => {
+              this.avatarClick(e,3);
             }}
           >
             <Avatar
@@ -95,8 +96,8 @@ export default class ReplyList extends React.Component {
           </View>
           <Text
             className={styles.replyedUserName}
-            onClick={() => {
-              this.avatarClick(3);
+            onClick={(e) => {
+              this.avatarClick(e,3);
             }}
           >
             {this.props.data.commentUser.nickname || this.props.data.commentUser.userName || '用户异常'}
@@ -126,8 +127,8 @@ export default class ReplyList extends React.Component {
       <View className={styles.replyList} id={`position${this.props.data?.id}`}>
         <View
           className={styles.replyListAvatar}
-          onClick={() => {
-            this.avatarClick(2);
+          onClick={(e) => {
+            this.avatarClick(e,2);
           }}
         >
           <Avatar
@@ -145,8 +146,8 @@ export default class ReplyList extends React.Component {
               <View className={styles.userInfo}>
                 <View
                   className={styles.replyListName}
-                  onClick={() => {
-                    this.avatarClick(2);
+                  onClick={(e) => {
+                    this.avatarClick(e,2);
                   }}
                 >
                   <Text className={styles.replyListNameText}>{this.props.data?.user?.nickname || this.props.data?.user?.userName || '用户异常'}</Text>
