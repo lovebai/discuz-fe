@@ -118,6 +118,8 @@ class Index extends React.Component {
         typeof onPraise === 'function' && onPraise({isLiked: result.data.isLiked})
         // const { recomputeRowHeights = noop } = this.props;
         // recomputeRowHeights();
+      }else{
+        Toast.info({ content: `${result?.msg}` });
       }
       this.setState({ isSendingLike: false });
     });

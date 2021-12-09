@@ -80,11 +80,9 @@ class InviteH5Page extends React.Component {
                       groupName={inviteData.groupName}
                     />
                   </View>
-                  
                   :
                   <View className={layout.user_info_tag}>{inviteData.groupName}</View>
                 }
-                
                 <View className={layout.user_info_invite}>
                   <View className={layout.invite_num}>
                     <View className={layout.invite_num_title}>已邀人数</View>

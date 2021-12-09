@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { View, Button, Text } from '@tarojs/components'
-import styles from './index.module.scss'
+import { genParamScheme } from '@server';
 import Icon from '@discuzq/design/dist/components/icon/index';
-import Taro from '@tarojs/taro'
+import Toast from '@discuzq/design/dist/components/toast/index';
+import Taro, { setClipboardData } from '@tarojs/taro'
 import classNames from 'classnames';
 import Popup from '@discuzq/design/dist/components/popup/index';
 import setUrlParam from '@common/utils/set-url-param';
+import styles from './index.module.scss'
 
 const Index = ({ show, onShareClose, site, customShareData, inviteCode = '', type }) => {
+    const copyOver = useRef(true);
+
     const shareData = {
         title: customShareData?.title || site.webConfig?.setSite?.siteName || '',
         path: setUrlParam(customShareData?.path  || 'pages/index/index', { inviteCode }),
@@ -23,6 +27,47 @@ const Index = ({ show, onShareClose, site, customShareData, inviteCode = '', typ
             url: `/subPages/create-card/index`,
         })
     }
+
+    const CreateScheme = async () => {
+        if(!copyOver.current) {
+            return;
+        }
+        try {
+            copyOver.current = false;
+            const resp = await genParamScheme({
+                params: {
+                    type: "share_mini",
+                    query:{
+                        scene : '',
+                        inviteCode,
+                    }
+                }
+            });
+            if(resp.code !== 0) {
+                throw resp;
+            }
+            setClipboardData({
+                data: resp?.data?.openLink,
+                fail: (err) => {
+                    console.error(err);
+                    Toast.error({
+                        content: '创建邀请链接失败',
+                        duration: 1000,
+                    });
+                },
+                complete: () => {
+                    copyOver.current = true;
+                }
+            })
+
+        } catch (e) {
+            Toast.error({
+                content: e.msg || e,
+            });
+            copyOver.current = true;
+        }
+    }
+
     return (
       <Popup
         position="bottom"
@@ -38,6 +83,15 @@ const Index = ({ show, onShareClose, site, customShareData, inviteCode = '', typ
                         </View>
                         <Text className={styles.text}>
                             生成海报
+                        </Text>
+                    </View>
+                    <View className={styles.moreItem} onClick={CreateScheme}>
+                        <View className={styles.icon}>
+                            <Icon name='PaperClipOutlined' size={20}>
+                            </Icon>
+                        </View>
+                        <Text className={styles.text}>
+                            复制链接
                         </Text>
                     </View>
                     <Button className={styles.moreItem} openType='share' plain='true' data-shareData={shareData} onClick={onShareClose}>

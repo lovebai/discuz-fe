@@ -92,8 +92,9 @@ $width: rem(169);
       .dzq-upload-list-list {
         flex-direction: column;
         .dzq-upload-list-list__name {
-          max-width: 170px;
+          width: 45vw;
           line-height: rem(32);
+          @include text-ellipsis();
         }
         .dzq-button--text {
           width: 100%;
