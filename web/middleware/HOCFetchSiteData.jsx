@@ -182,7 +182,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
       } else {
         siteConfig = site ? site.webConfig : null;
       }
-      
+
        // 获取插件信息
        if ( site && site.pluginConfig ) {
         pluginRequest(site.pluginConfig, this.props.plugin.setPluginComponent.bind(this.props.plugin));
@@ -193,7 +193,7 @@ export default function HOCFetchSiteData(Component, _isPass) {
           pluginRequest(pluginConfig.data, this.props.plugin.setPluginComponent.bind(this.props.plugin));
         }
        }
-      
+
 
       // 初始化登陆方式
       site.initUserLoginEntryStatus();
@@ -369,7 +369,8 @@ export default function HOCFetchSiteData(Component, _isPass) {
       const jumpPage = LoginHelper.getUrl();
       if (jumpPage) {
         const urlObj = new URL(jumpPage);
-        if (urlObj.pathname === router.asPath) { // 目标地址已达到，清空即可
+        // 目标地址已达到，清空即可。首页之分类页地址与asPath不一致，需容错处理
+        if (urlObj.pathname === router.asPath || urlObj.pathname.includes('/cate/')) {
           LoginHelper.clear()
         } else if (router.asPath === '/') { // 被重定向到首页，取出跳转地址，跳转
           LoginHelper.restore();
