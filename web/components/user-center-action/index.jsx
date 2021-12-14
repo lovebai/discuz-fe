@@ -80,7 +80,7 @@ class UserCenterAction extends React.Component {
           name: '推广邀请',
           url: '/invite',
           iconName: 'NotbookOutlined',
-          visible: !this.props.user.isAdmini,
+          visible: true,
         },
       ],
       rowActionCount: this.props.site.platform === 'pc' ? 9 : 4,

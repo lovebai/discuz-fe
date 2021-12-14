@@ -5,7 +5,7 @@ import Avatar from '@components/avatar';
 import { readWechatPosterGenqrcode } from '@server';
 import QRCode from 'qrcode.react';
 
-const ExperienceCard = inject('user', 'card')(observer(({user, setReady, card, site }) => {
+const ExperienceCard = inject('user', 'card', 'site')(observer(({user, setReady, card, site }) => {
   const [miniCode, setMiniCode] = useState('');
   const [miniConfig, setMiniConfig] = useState(true);
   const [miniCodeCofig, setMiniCodeCofig] = useState(null);
@@ -64,7 +64,7 @@ const ExperienceCard = inject('user', 'card')(observer(({user, setReady, card, s
           <div className={styles.nickname}>{user.nickname || ''}</div>
           <div className={styles.invite}>邀你领取 {site?.siteName || ''}</div>
           <div className={styles.card__time}>{miniCodeCofig?.timeRange || ''}天免费体验卡</div>
-          <div className={styles.expiration__time}>{miniCodeCofig?.endTime || ''}此小程序码失效</div>
+          <div className={styles.expiration__time}>{miniCodeCofig?.endTime || ''}此{!miniConfig || site?.wechatEnv === 'openPlatform' ? '二维码' : '小程序码'}失效</div>
           <div className={styles.footer}>
             <div className={styles.miniCodeWrap}>
               <div className={styles.miniCode}>
@@ -74,7 +74,7 @@ const ExperienceCard = inject('user', 'card')(observer(({user, setReady, card, s
                     : <img alt="图片" src={miniCode} className={styles.footerImg}/>
                 }
               </div>
-              <div className={styles.miniCodeTips}>长按识别小程序码</div>
+              <div className={styles.miniCodeTips}>长按识别{!miniConfig || site?.wechatEnv === 'openPlatform' ? '二维码' : '小程序码'}</div>
             </div>
             <div className={styles.notch}></div>
             <div className={styles.notch}></div>

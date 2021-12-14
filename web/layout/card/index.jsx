@@ -84,6 +84,13 @@ const Index = ({ card, threadId, user, experience, commentId }) => {
           </div>
           )
         }
+        {
+          experience && (
+            <div className={styles.experience}>
+              本功能仅对管理员开放
+          </div>
+          )
+        }
         {!isWeiXin() ? (
           <Button className={styles.btn} onClick={isWeiXin() ? '' : saveImg}>
             保存到相册
