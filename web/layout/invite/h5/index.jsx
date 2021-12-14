@@ -85,6 +85,10 @@ class InviteH5Page extends React.Component {
     Router.push({ url: '/card' });
   }
 
+  handleExperience = () => {
+    Router.push({ url: `/card?experience=1` });
+  }
+
   handleClick = () => {
     const { user } = this.props;
     if (!user.isLogin()) {
@@ -212,9 +216,12 @@ class InviteH5Page extends React.Component {
           {/* 邀请朋友 end */}
           <MorePopop
             show={this.state.show}
+            site={this.props.site}
+            user={this.props.user}
             onClose={this.onCancel}
             handleH5Share={this.handleH5Share}
             handleWxShare={this.handleWxShare}
+            handleExperience={this.handleExperience}
             createCard={this.createCard}
           ></MorePopop>
           {loadWeiXin && <SharePopup visible={visible} onClose={this.onClose} />}
