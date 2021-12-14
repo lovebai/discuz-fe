@@ -131,7 +131,7 @@ const PostContent = ({
 
   const handleClick = (e, node) => {
     if(node && node.name === 'image') return
-    e && e.stopPropagation();
+    // e && e.stopPropagation();
     const { url, isExternaLink } = handleLink(node)
     if (isExternaLink) return
 
@@ -245,7 +245,7 @@ const PostContent = ({
       <View
         ref={contentWrapperRef}
         className={`${styles.contentWrapper} ${openedMore && showMore ? styles.hideCover : ''} ${customHoverBg ? styles.bg : ''}`}
-        onClick={!showMore ? onShowMore : handleClick}
+        onClick={ handleClick } 
       >
         <View className={styles.content}>
           <RichText
