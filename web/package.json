@@ -20,7 +20,7 @@
     "@discuzq/discuz-babel-plugin-import": "0.0.1",
     "@discuzq/discuz-plugin-loader": "2.1.8",
     "@discuzq/plugin-center": "2.0.15",
-    "@discuzq/sdk": "1.0.54",
+    "@discuzq/sdk": "1.0.55",
     "@discuzq/theme": "1.0.32",
     "@discuzq/vditor": "1.0.26",
     "@popperjs/core": "^2.10.1",
