@@ -47,7 +47,7 @@ const Index = ({ site, user, shipCardClassName }) => {
 
   return (
     <View className={styles.wrapper}>
-      <Tabs activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
+      <Tabs scrollable swipeable activeId={defaultActive} onActive={activeId => setDefaultActive(activeId)}>
         {payGroups.map(({ name: groupName, level, description, fee, notice, amount, groupId, days }) => {
           const data = {
             groupName,
