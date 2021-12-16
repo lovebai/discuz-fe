@@ -3,7 +3,7 @@
 ## 环境支持
 | 系统 | 是否支持 |
 | :-: | :-: |
-| windows11 | 不支持 |
+| windows11 | 支持 |
 | windows10 | 支持 |
 | windows7 | 支持 |
 | mac | 支持 |
