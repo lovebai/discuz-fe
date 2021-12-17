@@ -4,6 +4,25 @@ import {
   minGap,
 } from '../constants';
 
+const circlesData = [
+  {
+    x: 2 * 2,
+    y: 366 * 2,
+    width: 16 * 2,
+    height: 16 * 2,
+    zIndex: 20,
+    backgroundColor: '#2469F6'
+  },
+  {
+    x: posterWidth - 18 * 2,
+    y: 366 * 2,
+    width: 16 * 2,
+    height: 16 * 2,
+    zIndex: 20,
+    backgroundColor: '#2469F6'
+  },
+]
+
 const miniCodeWidth = 192;
 
 export const getContentConfig = ({ experienceData, miniCode, codeUrl, site, baseHeight }) => {
@@ -13,6 +32,7 @@ export const getContentConfig = ({ experienceData, miniCode, codeUrl, site, base
   const siteName = handleSiteName(site, baseHeight);
   const tips = handleTips(baseHeight);
   const line = handleLines(baseHeight);
+  const circles = handleCircle(circlesData);
   const experienceCardTime = handleExperienceCardTime(baseHeight, miniCode?.timeRange);
   const invite = handleInvite(site, baseHeight);
   const desc = handleDesc(baseHeight);
@@ -28,7 +48,8 @@ export const getContentConfig = ({ experienceData, miniCode, codeUrl, site, base
         nicknameText,
         siteName,
         invite,
-        experienceCardTime
+        experienceCardTime,
+        ...circles,
       ],
       texts: [
         desc,
@@ -54,7 +75,7 @@ export const getContentConfig = ({ experienceData, miniCode, codeUrl, site, base
 const handleBgc = (baseHeight) => {
   return {
     x: 20,
-    y: baseHeight,
+    y: baseHeight + 20,
     width: posterWidth - 40,
     height: 540 * 2,
     backgroundColor: '#fff',
@@ -261,3 +282,13 @@ const handleLines = (baseHeight) => {
       dashData: [4, 4],
   }
 }
+
+const handleCircle = (circles) => circles.map(item => ({
+    x: item.x,
+    y: item.y,
+    width: item.width,
+    height: item.height,
+    borderRadius: item.width,
+    backgroundColor: item.backgroundColor,
+    zIndex: item.zIndex || 0
+}));

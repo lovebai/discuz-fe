@@ -10,6 +10,7 @@ import { inject, observer } from 'mobx-react';
 import getSiteConfig from './config/site-card';
 import getCommentConfig from './config/comment-card/index.js'
 import getExperienceConfig from './config/experience-card';
+import ExperienceHeader from './config/experience-card/header.jsx';
 
 const Index = ({
   thread,
@@ -56,7 +57,8 @@ const Index = ({
 
   return (
     <View className={styles.container}>
-      <Card hidePart = {hidePart} config={config} setShareImage={setShareImage} miniCode={miniCode}></Card>
+      { experienceData && <ExperienceHeader/>}
+      <Card hidePart = {hidePart} config={config} setShareImage={setShareImage} miniCode={miniCode} experience={!!experienceData}></Card>
       <View className={`${styles.shareBtn} ${( comment || thread ) && styles.hasHidePart}`}>
         {
           ( comment || thread )&& (
