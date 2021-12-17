@@ -1,4 +1,3 @@
-import { getHeaderConfig } from './header';
 import { getContentConfig } from './content';
 import { checkAndGetBase64Src } from '../../utils'
 
@@ -10,9 +9,8 @@ const getConfig = async ({ site, experienceData, miniCode }) => {
     return;
   }
   const codeUrl = await miniCode.base64Img ? await checkAndGetBase64Src(miniCode.base64Img) : miniCode;
-  const { height: headerHeight, config: headerConfig } = getHeaderConfig();
 
-  const { height: contentHeight, config: contentConfig } = getContentConfig({ site, experienceData, miniCode, codeUrl, baseHeight: headerHeight});
+  const { height: contentHeight, config: contentConfig } = getContentConfig({ site, experienceData, miniCode, codeUrl, baseHeight: 0});
 
   const baseConfig = {
     width: posterWidth,
@@ -24,7 +22,7 @@ const getConfig = async ({ site, experienceData, miniCode }) => {
     texts: [],
     lines: [],
   };
-  const config = mergeObj([baseConfig, headerConfig, contentConfig]);
+  const config = mergeObj([baseConfig, contentConfig]);
 
   return config;
 };

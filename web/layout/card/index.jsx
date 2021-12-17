@@ -1,5 +1,5 @@
 import { generateImageUrlByHtml, savePic } from './util.js';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Fragment } from 'react';
 import styles from './index.module.scss';
 import { Button, Toast, Checkbox} from '@discuzq/design';
 import Footer from './footer';
@@ -10,6 +10,7 @@ import SiteCard from './siteCard';
 import ThreadCard from './threadCard';
 import CommentCard from './commentCard';
 import ExperienceCard from './experienceCard';
+import ExperienceCardHeader from './experienceCard/header';
 
 const Index = ({ card, threadId, user, experience, commentId }) => {
   const [url, setUrl] = useState('');
@@ -46,10 +47,14 @@ const Index = ({ card, threadId, user, experience, commentId }) => {
     Toast.loading({ content: '正在绘制...' });
   }
 
+  const showExperienceCard = experience && !threadId && !commentId;
   return (
     <div>
     <Header />
-    <div className={styles.contain}>
+    {
+      showExperienceCard && <ExperienceCardHeader/>
+    }
+    <div className={`${styles.contain} ${showExperienceCard && ready && imgReady && styles.experienceContain}`}>
       <div className={styles.poster} ref={post}>
         {/* {!threadId ? <SiteCard></SiteCard> : <ThreadCard threadId={threadId}></ThreadCard>} */}
         {
@@ -59,7 +64,7 @@ const Index = ({ card, threadId, user, experience, commentId }) => {
           threadId && !commentId &&  <ThreadCard hidePart={hidePart} threadId={threadId}></ThreadCard>
         }
         {
-          experience && !threadId && !commentId && <ExperienceCard setReady={setReady} ></ExperienceCard>
+          showExperienceCard && <ExperienceCard setReady={setReady} />
         }
         {
           !threadId && !commentId && !experience && <SiteCard></SiteCard>
@@ -69,11 +74,11 @@ const Index = ({ card, threadId, user, experience, commentId }) => {
         }
       </div>
       {ready && imgReady ? (
-        <div className={styles.imgbox}>
+        <div className={`${styles.imgbox} ${showExperienceCard && styles.experienceImgbox}`}>
           <img alt="" className={styles.centImage} src={url} />
         </div>
       ) : (
-        <div className={styles.imgbox}></div>
+        <div className={`${styles.imgbox} ${showExperienceCard && styles.experienceImgbox}`}></div>
       )}
       <div className={styles.emptyHeight}></div>
       <div className={`${styles.shareBtn} ${(commentId || threadId) && styles.hasHidePart}`}>
