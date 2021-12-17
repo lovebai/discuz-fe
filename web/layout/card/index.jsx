@@ -51,10 +51,10 @@ const Index = ({ card, threadId, user, experience, commentId }) => {
   return (
     <div>
     <Header />
-    {
-      showExperienceCard && <ExperienceCardHeader/>
-    }
     <div className={`${styles.contain} ${showExperienceCard && ready && imgReady && styles.experienceContain}`}>
+      {
+        showExperienceCard && <ExperienceCardHeader/>
+      }
       <div className={styles.poster} ref={post}>
         {/* {!threadId ? <SiteCard></SiteCard> : <ThreadCard threadId={threadId}></ThreadCard>} */}
         {
