@@ -476,9 +476,13 @@ class WalletH5Page extends React.Component {
           </View>
         </BaseLayout>
         <View className={layout.footer}>
-          <Button className={layout.button} onClick={this.toWithdrawal} type="primary">
-            提现
-          </Button>
+          {
+            isWechatPayOpen && threadOptimize && (
+              <Button className={layout.button} onClick={this.toWithdrawal} type="primary">
+                提现
+              </Button>
+            )
+          }
           {isShowRecharge && (
             <Button className={layout.button} onClick={this.toRecharge} type="primary">
               充值
