@@ -35,7 +35,7 @@
   }
 }
 .experienceImgbox {
-  padding: 0 10px;
+  padding: 0 rem(10) rem(20);
   .centImage {
     border-radius: 0 0 10px 10px;
   }
@@ -74,11 +74,12 @@
     border: 0px;
   }
   .wxBtn {
+    width: 343px;
     padding: rem(20) 0;
     font-family: 'PingFang SC';
     font-size: 16px;
     line-height: 24px;
-    text-align: left;
+    text-align: center;
     color: $text-color-primary;
   }
 }
