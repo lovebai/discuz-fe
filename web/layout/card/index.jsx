@@ -4,6 +4,7 @@ import styles from './index.module.scss';
 import { Button, Toast, Checkbox} from '@discuzq/design';
 import Footer from './footer';
 import Header from '@components/header';
+import { getClientHeight } from '@common/utils/get-client-height';
 import isWeiXin from '@common/utils/is-weixin';
 import { inject, observer } from 'mobx-react';
 import SiteCard from './siteCard';
@@ -15,12 +16,18 @@ import ExperienceCardHeader from './experienceCard/header';
 const Index = ({ card, threadId, user, experience, commentId }) => {
   const [url, setUrl] = useState('');
   const [hidePart, setHidePart] = useState(false);
+  const [containHeight, setContainHeight] = useState(null);
 
   const [ready, setReady] = useState(false);
   const post = useRef(null);
   const { imgReady } = card;
+  const showExperienceCard = experience && !threadId && !commentId;
   useEffect(() => {
     document.body.className = '';
+    if (showExperienceCard) {
+      const cliengtHeight = getClientHeight();
+      setContainHeight(cliengtHeight - 138);
+    }
   }, []);
   useEffect(() => {
     if (ready && imgReady) {
@@ -47,41 +54,41 @@ const Index = ({ card, threadId, user, experience, commentId }) => {
     Toast.loading({ content: '正在绘制...' });
   }
 
-  const showExperienceCard = experience && !threadId && !commentId;
   return (
     <div>
-    <Header />
-    <div className={`${styles.contain} ${showExperienceCard && ready && imgReady && styles.experienceContain}`}>
-      {
-        showExperienceCard && <ExperienceCardHeader/>
-      }
-      <div className={styles.poster} ref={post}>
-        {/* {!threadId ? <SiteCard></SiteCard> : <ThreadCard threadId={threadId}></ThreadCard>} */}
+      <Header />
+      <div className={`${styles.contain} ${showExperienceCard && ready && imgReady && styles.experienceContain}`} style={containHeight ? {height: containHeight} : {}}>
         {
-          commentId && <CommentCard hidePart={hidePart} commentId={commentId}></CommentCard>
+          showExperienceCard && <ExperienceCardHeader/>
         }
-        {
-          threadId && !commentId &&  <ThreadCard hidePart={hidePart} threadId={threadId}></ThreadCard>
-        }
-        {
-          showExperienceCard && <ExperienceCard setReady={setReady} />
-        }
-        {
-          !threadId && !commentId && !experience && <SiteCard></SiteCard>
-        }
-        {
-          !experience && <Footer setReady={setReady} threadId={threadId} inviteCode={user?.userInfo?.id} commentId={commentId}></Footer>
-        }
-      </div>
-      {ready && imgReady ? (
-        <div className={`${styles.imgbox} ${showExperienceCard && styles.experienceImgbox}`}>
-          <img alt="" className={styles.centImage} src={url} />
+        <div className={styles.poster} ref={post}>
+          {/* {!threadId ? <SiteCard></SiteCard> : <ThreadCard threadId={threadId}></ThreadCard>} */}
+          {
+            commentId && <CommentCard hidePart={hidePart} commentId={commentId}></CommentCard>
+          }
+          {
+            threadId && !commentId &&  <ThreadCard hidePart={hidePart} threadId={threadId}></ThreadCard>
+          }
+          {
+            showExperienceCard && <ExperienceCard setReady={setReady} />
+          }
+          {
+            !threadId && !commentId && !experience && <SiteCard></SiteCard>
+          }
+          {
+            !experience && <Footer setReady={setReady} threadId={threadId} inviteCode={user?.userInfo?.id} commentId={commentId}></Footer>
+          }
         </div>
-      ) : (
-        <div className={`${styles.imgbox} ${showExperienceCard && styles.experienceImgbox}`}></div>
-      )}
-      <div className={styles.emptyHeight}></div>
-      <div className={`${styles.shareBtn} ${(commentId || threadId) && styles.hasHidePart}`}>
+        {ready && imgReady ? (
+          <div className={`${styles.imgbox} ${showExperienceCard && styles.experienceImgbox}`}>
+            <img alt="" className={styles.centImage} src={url} />
+          </div>
+        ) : (
+          <div className={`${styles.imgbox} ${showExperienceCard && styles.experienceImgbox}`}></div>
+        )}
+      </div>
+      <div className={`${styles.emptyHeight} ${showExperienceCard && styles.experienceEmptyHeight}`}></div>
+      <div className={`${styles.shareBtn} ${(commentId || threadId) && styles.hasHidePart} `}>
         {
           (commentId || threadId) && (
             <div className={styles.checkbox}>
@@ -104,7 +111,6 @@ const Index = ({ card, threadId, user, experience, commentId }) => {
           <div className={styles.wxBtn}>长按图片保存到相册</div>
         )}
       </div>
-    </div>
     </div>
   );
 };
