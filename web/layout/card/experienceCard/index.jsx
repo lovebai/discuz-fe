@@ -16,7 +16,7 @@ const ExperienceCard = inject('user', 'card', 'site')(observer(({user, setReady,
     try {
       const path = '/indexPages/index/index';
       const paramPath = `/pages/index/index?path=${encodeURIComponent(path || '')}`;
-      const res = await readWechatPosterGenqrcode({ params: { redirectUri: paramPath } });
+      const res = await readWechatPosterGenqrcode({ params: { redirectUri: (site?.wechatEnv === 'miniProgram' ? paramPath : window.location.origin) } });
       if (res?.code === 0) {
         setMiniCode(res?.data.base64Img);
         setMiniCodeCofig(res?.data);
