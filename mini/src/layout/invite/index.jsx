@@ -142,7 +142,7 @@ class InviteH5Page extends React.Component {
             邀请朋友
           </Button>
         </View>
-        {this.state.show && <SiteShare show={this.state.show} onShareClose={this.onShareClose} inviteCode={inviteCode} customShareData={shareData} type='invite' site={site}></SiteShare>}
+        {this.state.show && <SiteShare show={this.state.show} onShareClose={this.onShareClose} inviteCode={inviteCode} customShareData={shareData} type='invite' user={user} site={site}></SiteShare>}
         {/* 邀请朋友 end */}
       </>
     );

@@ -42,6 +42,7 @@ export { default as readTopics } from './thread-post/read-topic';
 export { default as createThreadVideoAudio } from './thread-post/create-video-audio';
 export { default as readPostCategories } from './thread-post/read-post-categories';
 export { default as updateThreadStick } from './thread/updateThreadStick';
+export { default as readWechatPosterGenqrcode } from './read-wechatpostergenqrcode';
 
 // 注册登录部分
 export { default as smsVerify } from './smsVerify';

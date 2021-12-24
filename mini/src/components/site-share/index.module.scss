@@ -54,9 +54,14 @@
           font-size: 26px !important;
         }
       }
+      .experienceIcon {
+        > View {
+          font-size: 18px !important;
+        }
+      }
 
       .text {
-        width: 50px;
+        // width: 50px;
         margin-top: $padding-2n;
         text-align: center;
         color: $text-color-regular;
