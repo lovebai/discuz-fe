@@ -71,12 +71,13 @@ export default class Simple extends React.Component {
     })
   }
   render() {
+    const { experience } = this.props;
 
     return (
       <View className={styles.painter}>
         <View className={styles.canvanBox}>
         <Image
-              className={styles.centImage}
+              className={`${styles.centImage} ${experience && styles.experienceCentImage}`}
               src={this.state.shareImage}
               mode='widthFix'
               lazy-load

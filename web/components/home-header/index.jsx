@@ -114,6 +114,9 @@ class HomeHeader extends React.Component {
   createCard = () => {
     Router.push({ url: '/card' });
   }
+  handleExperience = () => {
+    Router.push({ url: '/card?experience=1' });
+  }
   componentDidMount() {
     this.setState({ loadWeiXin: isWeiXin() });
     if (this.domRef.current) {
@@ -190,10 +193,13 @@ class HomeHeader extends React.Component {
         </ul>}
         <MorePopop
           show={this.state.show}
+          site={this.props.site}
+          user={this.props.user}
           onClose={this.onCancel}
           handleH5Share={this.handleH5Share}
           handleWxShare={this.handleWxShare}
           createCard={this.createCard}
+          handleExperience={this.handleExperience}
         ></MorePopop>
         {
           mode === 'join' && <ul className={`${styles.siteInfo} ${styles.joinInfo}`}>

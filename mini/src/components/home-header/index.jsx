@@ -155,7 +155,8 @@ class HomeHeader extends React.Component {
       mode = '',
       site,
       fullScreenTitle = '',
-      index
+      index,
+      user
     } = this.props;
     const { visible } = this.state;
     const { countUsers, countThreads, siteAuthor, createDays } = this.getSiteInfo();
@@ -229,7 +230,7 @@ class HomeHeader extends React.Component {
               </View>
             </View>
           )}
-          {this.state.show && <SiteShare show={this.state.show} inviteCode={inviteCode} onShareClose={this.onShareClose} site={site}></SiteShare>}
+          {this.state.show && <SiteShare show={this.state.show} inviteCode={inviteCode} onShareClose={this.onShareClose} user={user} site={site}></SiteShare>}
           {mode === 'join' && (
             <view className={`${styles.siteInfo} ${styles.joinInfo}`}>
               <view className={styles.item}>

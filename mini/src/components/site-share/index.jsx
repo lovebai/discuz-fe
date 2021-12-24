@@ -9,13 +9,25 @@ import Popup from '@discuzq/design/dist/components/popup/index';
 import setUrlParam from '@common/utils/set-url-param';
 import styles from './index.module.scss'
 
-const Index = ({ show, onShareClose, site, customShareData, inviteCode = '', type }) => {
+const Index = ({ show, onShareClose, user, site, customShareData, inviteCode = '', type }) => {
     const copyOver = useRef(true);
 
     const shareData = {
         title: customShareData?.title || site.webConfig?.setSite?.siteName || '',
         path: setUrlParam(customShareData?.path  || 'pages/index/index', { inviteCode }),
     };
+
+    const CreateExperienceCard = () => {
+        const data = {...site, user }
+        onShareClose()
+        Taro.eventCenter.once('page:init', () => {
+            Taro.eventCenter.trigger('message:experience', data)
+        })
+        Taro.navigateTo({
+            url: `/subPages/create-card/index`,
+        })
+    }
+
     const CreateCard = () => {
         const data = {...site, }
         onShareClose()
@@ -103,6 +115,19 @@ const Index = ({ show, onShareClose, site, customShareData, inviteCode = '', typ
                             微信分享
                         </Text>
                     </Button>
+                    {
+                        user?.isAdmini && (
+                            <View className={styles.moreItem} onClick={CreateExperienceCard}>
+                                <View className={`${styles.icon} ${styles.experienceIcon}`}>
+                                    <Icon name='ExperienceOutlined' size={20}>
+                                    </Icon>
+                                </View>
+                                <Text className={styles.text}>
+                                    限时体验卡
+                                </Text>
+                            </View>
+                        )
+                    }
                 </View>
             </View>
             <View className={styles.button} >
