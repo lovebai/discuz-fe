@@ -9,6 +9,8 @@ import { throttle } from '@common/utils/throttle-debounce.js';
 import { inject, observer } from 'mobx-react';
 import getSiteConfig from './config/site-card';
 import getCommentConfig from './config/comment-card/index.js'
+import getExperienceConfig from './config/experience-card';
+import ExperienceHeader from './config/experience-card/header.jsx';
 
 const Index = ({
   thread,
@@ -17,6 +19,7 @@ const Index = ({
   user,
   data,
   comment,
+  experienceData
 }) => {
   const [hidePart, setHidePart] = useState(false);
 
@@ -29,6 +32,12 @@ const Index = ({
       )
     }else if(thread) {
       getConfig({ site, thread, miniCode, siteName, hidePart }).then(
+        config => {
+          setConfig(config);
+        }
+      )
+    }else if (experienceData) {
+      getExperienceConfig({ site, miniCode, experienceData }).then(
         config => {
           setConfig(config);
         }
@@ -48,7 +57,8 @@ const Index = ({
 
   return (
     <View className={styles.container}>
-      <Card hidePart = {hidePart} config={config} setShareImage={setShareImage} miniCode={miniCode}></Card>
+      { experienceData && <ExperienceHeader/>}
+      <Card hidePart = {hidePart} config={config} setShareImage={setShareImage} miniCode={miniCode} experience={!!experienceData}></Card>
       <View className={`${styles.shareBtn} ${( comment || thread ) && styles.hasHidePart}`}>
         {
           ( comment || thread )&& (
