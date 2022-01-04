@@ -12,7 +12,8 @@ class MessageAction extends MessageStore {
   // 把对话消息设置为已读
   @action.bound
   async updateDialog(dialogId) {
-    updateDialog({ data: { dialogId: parseInt(dialogId) } });
+    await updateDialog({ data: { dialogId: parseInt(dialogId) } });
+    await this.readUnreadCount();
   }
 
   // 获取未读消息数量
@@ -147,9 +148,6 @@ class MessageAction extends MessageStore {
 
       const { code, data = {} } = ret;
       if (code === 0) {
-        // 更新未读消息数量
-        this.readUnreadCount();
-
         const { pageData: list = [] } = data;
         const currentPage = page;
         const listData = (({ totalPage = 0, totalCount = 0 }) => ({ list, totalPage, totalCount, currentPage }))(data);
