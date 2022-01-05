@@ -411,15 +411,30 @@ class Index extends Component {
   // 执行云点播相关的上传工作
   yundianboUpload(type, file) {
     const { setPostData, createThreadVideoAudio } = this.props.threadPost;
+    const { qcloudVodExt, qcloudVodSize} = this.props.site;
+
+    let mediaFile = file;
+    const { tempFilePath: name, imageType } = mediaFile;
+    let prefix = imageType;
+    if (!imageType) {
+      const arr = (name || '')?.toLowerCase()?.split('.');
+      prefix = arr[arr.length - 1];
+    }
+    if (qcloudVodExt && qcloudVodExt.indexOf(prefix) === -1) {
+      Toast.info({ content: `仅支持${qcloudVodExt}类型的视频` });
+      return false;
+    }
+    if (qcloudVodSize && qcloudVodSize * 1024 * 1024 < file.size) {
+      Toast.info({ content: `上传视频大小在0到${qcloudVodSize}MB之间` });
+      return false;
+    }
+    if (type === 'audio') {
+      mediaFile = (({ fileSize: size, tempFilePath }) => ({ size, tempFilePath }))(file);
+    }
     Taro.showLoading({
       title: '上传中',
       mask: true
     });
-
-    let mediaFile = file;
-    if (type === 'audio') {
-      mediaFile = (({ fileSize: size, tempFilePath }) => ({ size, tempFilePath }))(file);
-    }
     VodUploader.start({
       mediaFile,
       // 必填，获取签名的函数
