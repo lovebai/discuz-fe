@@ -13,7 +13,7 @@ class MessageAction extends MessageStore {
   @action.bound
   async updateDialog(dialogId) {
     await updateDialog({ data: { dialogId: parseInt(dialogId) } });
-    await this.readUnreadCount();
+    this.readUnreadCount();
   }
 
   // 获取未读消息数量

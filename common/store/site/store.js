@@ -130,6 +130,16 @@ class SiteStore {
     return get(this.webConfig, 'qcloud.qcloudVod', false);
   }
 
+  // 云点播支持的视频扩展名
+  @computed get qcloudVodExt() {
+    return get(this.webConfig, 'qcloud.qcloudVodExt', '');
+  }
+
+  // 云点播支持的最大尺寸
+  @computed get qcloudVodSize() {
+    return get(this.webConfig, 'qcloud.qcloudVodSize', '');
+  }
+
   // 是否开启了微信支付
   @computed get isWechatPayOpen() {
     return get(this.webConfig, 'paycenter.wxpayClose', false);
