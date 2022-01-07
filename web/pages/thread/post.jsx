@@ -208,6 +208,7 @@ class PostPage extends React.Component {
   // 这个和选择文件之前的回调放到一起了，所以注意一下
   handleVideoUpload = (files) => {
     const { postData } = this.props.threadPost;
+    const { qcloudVodExt, qcloudVodSize} = this.props.site;
     if ((postData.video && postData.video.id) || (postData.iframe && postData.iframe.content)) {
       Toast.info({ content: '只能上传一个视频' });
       return false;
@@ -215,6 +216,15 @@ class PostPage extends React.Component {
     if (!files) return true;
 
     const [file] = files;
+    const isVideoType = this.checkFileType(file, qcloudVodExt);
+    if (qcloudVodExt && !isVideoType) {
+      Toast.info({ content: `仅支持${qcloudVodExt}类型的视频` });
+      return false;
+    }
+    if (qcloudVodSize && qcloudVodSize * 1024 * 1024 < file.size) {
+      Toast.info({ content: `大小在0到${qcloudVodSize}MB之间` });
+      return false;
+    }
     let toastInstance = null;
     toastInstance = Toast.loading({
       content: '上传中...',
