@@ -15,6 +15,7 @@ import { emojiFromEditFormat, emojiFormatForCommit } from '@common/utils/emoji-r
 import { formatDate } from '@common/utils/format-date';
 import { initPostData } from './common';
 import { tags as s9e } from '@common/utils/s9e';
+import xss from '@common/utils/xss';
 
 class ThreadPostAction extends ThreadPostStore {
   /**
@@ -464,7 +465,7 @@ class ThreadPostAction extends ThreadPostStore {
       captchaTicket,
       captchaRandStr
     } = this.postData;
-    let text = contentText;
+    let text = xss(contentText);
     if (isMini) {
       // 目前只是简单的队小程序进行简单的处理
       text = `${text.replace(/(\n*)$/, '').replace(/\n/g, '<br />')}`;
