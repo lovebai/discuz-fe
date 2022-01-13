@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import Header from '@components/header';
 
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName,
-  showRenderCard = true, visible = false, onClose = () => { }, groupLevel }) => {
+  showRenderCard = true, visible = false, onClose = () => { }, groupLevel, router }) => {
   const { siteMode, isPC } = site;
   const { userInfo, paid, isAdmini, isIndefiniteDuration, expiredDays, expiredAt, payGroups } = user;
   const { group } = userInfo;
@@ -32,8 +32,12 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName,
     setDefaultActive(groupLevel); // 如果是点击用户组徽章的情况
   }, [groupLevel]);
 
-  // 打开升级付费用户组的弹窗
+  // PC-打开升级付费用户组的弹窗，H5-跳转付费用户组购买页面
   const handlePayGroupRenewal = (upgradeLevel) => {
+    if (!isPC) {
+      router && router.push(`/my/upgrade`);
+      return;
+    }
     setDefaultActive(upgradeLevel);
     setDialogVisible(true);
   };
@@ -162,7 +166,11 @@ const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName,
 
   return isAdmini ? null : (
     <div className={styles.wrapper} onClick={ e => e.stopPropagation() }>
+
+      {/* 用户中心会员卡入口卡片 H5/PC */}
       {showRenderCard && renderCard({groupName, level, description})}
+
+      {/* 付费用户组弹层 PC。H5使用单独页面 */}
       {dialogVisible && (
         <Dialog
           className={isPC ? styles.dialogWrapper : styles.mobileDialogWrapper}
