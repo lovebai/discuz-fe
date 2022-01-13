@@ -15,6 +15,7 @@ import { emojiFromEditFormat, emojiFormatForCommit } from '@common/utils/emoji-r
 import { formatDate } from '@common/utils/format-date';
 import { initPostData } from './common';
 import { tags as s9e } from '@common/utils/s9e';
+import xss from '@common/utils/xss';
 
 class ThreadPostAction extends ThreadPostStore {
   /**
@@ -464,7 +465,7 @@ class ThreadPostAction extends ThreadPostStore {
       captchaTicket,
       captchaRandStr
     } = this.postData;
-    let text = contentText;
+    let text = xss(contentText);
     if (isMini) {
       // 目前只是简单的队小程序进行简单的处理
       text = `${text.replace(/(\n*)$/, '').replace(/\n/g, '<br />')}`;
@@ -509,7 +510,7 @@ class ThreadPostAction extends ThreadPostStore {
     const attachmentPrice = Number(detail.attachmentPrice);
     let position = {};
     if (detail.position && detail.position.address) position = detail.position;
-    let contentText = content && content.text;
+    let contentText = xss(content && content.text);
     // 目前只是简单的队小程序进行简单的处理
     if (isMini) contentText = contentText.replace(/<br \/>\n/g, '\n').replace(/<br \/>/g, '\n');
     // 解决web端行内换行编辑问题
