@@ -36,7 +36,7 @@
     "@discuzqfe/plugin-center": "2.0.16",
     "@discuzqfe/sdk": "1.0.55",
     "@discuzqfe/theme": "1.0.32",
-    "@discuzqfe/vditor": "1.0.26",
+    "@discuzqfe/vditor": "1.0.28",
     "@tarojs/components": "3.2.2",
     "@tarojs/react": "3.2.2",
     "@tarojs/runtime": "3.2.2",

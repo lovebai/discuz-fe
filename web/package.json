@@ -22,7 +22,7 @@
     "@discuzqfe/plugin-center": "2.0.16",
     "@discuzqfe/sdk": "1.0.55",
     "@discuzqfe/theme": "1.0.32",
-    "@discuzqfe/vditor": "1.0.26",
+    "@discuzqfe/vditor": "1.0.28",
     "@popperjs/core": "^2.10.1",
     "@sandstreamdev/react-swipeable-list": "^1.0.1",
     "@sentry/browser": "^6.12.0",
