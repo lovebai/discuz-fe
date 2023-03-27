@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import ImagePreviewer from '@discuzq/design/dist/components/image-previewer/index';
-import Flex from '@discuzq/design/dist/components/flex/index';
+import ImagePreviewer from '@discuzqfe/design/dist/components/image-previewer/index';
+import Flex from '@discuzqfe/design/dist/components/flex/index';
 import { noop } from '../utils'
 import styles from './index.module.scss';
 import { View, Image } from '@tarojs/components'

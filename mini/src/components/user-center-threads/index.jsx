@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { setThreadBeUnSticked, setThreadBeSticked } from '@common/store/index/list-business';
 import { View } from '@tarojs/components';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { Icon, ActionSheet, Toast } from '@discuzq/design';
+import { Icon, ActionSheet, Toast } from '@discuzqfe/design';
 import Thread from '@components/thread';
 import styles from './index.module.scss';
 

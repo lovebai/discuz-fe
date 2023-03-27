@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Popup from '@discuzq/design/dist/components/popup/index';
-import Button from '@discuzq/design/dist/components/button/index';
-import Textarea from '@discuzq/design/dist/components/textarea/index';
-import Radio from '@discuzq/design/dist/components/radio/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Textarea from '@discuzqfe/design/dist/components/textarea/index';
+import Radio from '@discuzqfe/design/dist/components/radio/index';
 import { View } from '@tarojs/components';
 import styles from './index.module.scss';
 

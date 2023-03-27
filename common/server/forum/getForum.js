@@ -1,4 +1,4 @@
-import {getForum} from '@discuzq/sdk/dist/api/forum/get-forum';
+import {getForum} from '@discuzqfe/sdk/dist/api/forum/get-forum';
 
 export default async function _getForum(opts, ctx) {
   const res = await getForum({ ...opts, __context: ctx });

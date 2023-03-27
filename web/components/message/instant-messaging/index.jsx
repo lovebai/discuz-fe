@@ -3,12 +3,12 @@
 /* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import Header from '@components/header';
 import BaseLayout from '@components/base-layout';
 import DialogBox from './dialog-box';
 import InteractionBox from './interaction-box';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import wxChooseImage from '@common/utils/wx-choose-image';
 import { createAttachment } from '@common/server';
 import { getMessageTimestamp } from '@common/utils/get-message-timestamp';

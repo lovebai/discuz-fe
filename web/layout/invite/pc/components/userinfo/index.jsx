@@ -1,11 +1,11 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import layout from './index.module.scss';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import Avatar from '@components/avatar';
 import { numberFormat } from '@common/utils/number-format';
-import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
-import Router from '@discuzq/sdk/dist/router';
+import h5Share from '@discuzqfe/sdk/dist/common_modules/share/h5';
+import Router from '@discuzqfe/sdk/dist/router';
 import MemberBadge from '@components/member-badge';
 
 function DefaultLayout(props) {

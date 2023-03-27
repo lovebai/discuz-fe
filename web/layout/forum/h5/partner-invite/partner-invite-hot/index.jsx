@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Spin, Toast } from '@discuzq/design';
+import { Spin, Toast } from '@discuzqfe/design';
 import ThreadContent from '@components/thread';
 import layout from './index.module.scss';
 import NoData from '@components/no-data';

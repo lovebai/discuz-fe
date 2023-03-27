@@ -3,14 +3,14 @@ import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 import { withRouter } from 'next/router';
 import BaseLayout from '@components/base-layout';
-import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
+import h5Share from '@discuzqfe/sdk/dist/common_modules/share/h5';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import NoData from '@components/no-data';
 import SectionTitle from '@components/section-title';
 import DetailsHeader from './components/details-header';
 import ThreadContent from '@components/thread';
 import Copyright from '@components/copyright';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import ActiveUsers from '@components/active-users';
 import BottomView from '@components/list/BottomView';
 

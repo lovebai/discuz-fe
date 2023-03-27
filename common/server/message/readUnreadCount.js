@@ -1,7 +1,7 @@
 /**
  * 获取未读消息数量
  */
-import { readUnreadNotification } from '@discuzq/sdk/dist/api/notice/read-unread-notification';
+import { readUnreadNotification } from '@discuzqfe/sdk/dist/api/notice/read-unread-notification';
 
 export default async function _readUnreadCount(opts = {}, ctx = null) {
   const res = await readUnreadNotification({ ...opts, __context: ctx });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image } from '@tarojs/components';
-import { Icon, Toast } from '@discuzq/design';
+import { Icon, Toast } from '@discuzqfe/design';
 import { MINI_SHOP_TYPE, PLATFORM_SHOP_TYPE } from '@common/plugin/Shop/View/src/common';
 import { setClipboardData, navigateToMiniProgram } from '@tarojs/taro';
 import classNames from 'classnames';

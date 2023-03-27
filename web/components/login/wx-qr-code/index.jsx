@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject } from 'mobx-react';
 import layout from './index.module.scss';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 
 @inject('site')
 class WeixinQrCode extends React.Component {

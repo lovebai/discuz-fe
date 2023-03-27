@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 
 class ToolsCategory extends React.Component {
   render() {

@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useState, useCallback, useMemo } from 'react';
-import { Input, Toast, Divider, Button, Icon } from '@discuzq/design';
+import { Input, Toast, Divider, Button, Icon } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import { readEmoji } from '@common/server';
 import Avatar from '@components/avatar';

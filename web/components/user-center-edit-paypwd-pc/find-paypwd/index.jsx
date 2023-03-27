@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Spin, Input, Toast, Icon } from '@discuzq/design';
+import { Button, Spin, Input, Toast, Icon } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import CaptchaInput from '../../user-center-edit-mobile-pc/captcha-input/index';
 import VerifyCode from '../../user-center-edit-mobile/verify-code';
 import throttle from '@common/utils/thottle.js';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import classNames from 'classnames';
 import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 

@@ -1,4 +1,4 @@
-import {transitionSmsBind} from '@discuzq/sdk/dist/api/login/transitionsmsbind';
+import {transitionSmsBind} from '@discuzqfe/sdk/dist/api/login/transitionsmsbind';
 
 export default async function _transitionSmsBind(opts, ctx = null) {
   const res = await transitionSmsBind({ ...opts, __context: ctx });

@@ -1,7 +1,7 @@
 /* eslint-disable spaced-comment */
 /* eslint-disable new-cap */
 import React from 'react';
-import { Spin } from '@discuzq/design';
+import { Spin } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';

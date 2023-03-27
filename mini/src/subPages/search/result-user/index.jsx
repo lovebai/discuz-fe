@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import IndexH5Page from '@layout/search/result-user';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import Page from '@components/page';
 import { getCurrentInstance } from '@tarojs/taro';
 

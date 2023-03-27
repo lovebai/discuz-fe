@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import layout from './index.module.scss';
 import HomeHeader from '@components/home-header';
-import { Button, Toast } from '@discuzq/design';
+import { Button, Toast } from '@discuzqfe/design';
 import { h5WechatCodeLogin } from '@server';
 import setAccessToken from '@common/utils/set-access-token';
 import { get } from '@common/utils/get';

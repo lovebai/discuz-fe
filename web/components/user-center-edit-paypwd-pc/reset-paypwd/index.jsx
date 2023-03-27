@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Input, Toast, Spin } from '@discuzq/design';
+import { Button, Input, Toast, Spin } from '@discuzqfe/design';
 import styles from '../index.module.scss';
 import throttle from '@common/utils/thottle.js';
 

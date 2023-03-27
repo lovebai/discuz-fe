@@ -4,7 +4,7 @@ import Avatar from '@components/avatar';
 import ReplyList from '../reply-list/index';
 import { diffDate } from '@common/utils/diff-date';
 import { observer, inject } from 'mobx-react';
-import { Icon, Divider } from '@discuzq/design';
+import { Icon, Divider } from '@discuzqfe/design';
 import classnames from 'classnames';
 import CommentInput from '../comment-input/index';
 import RewardDisplay from '@components/thread-detail-pc/reward-display';

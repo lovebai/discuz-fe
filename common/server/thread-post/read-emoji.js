@@ -1,4 +1,4 @@
-import {readEmoji} from '@discuzq/sdk/dist/api/other/read-emoji';
+import {readEmoji} from '@discuzqfe/sdk/dist/api/other/read-emoji';
 /**
  * 获取表情
  */

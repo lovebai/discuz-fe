@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Button from '@discuzq/design/dist/components/button/index';
-import Popup from '@discuzq/design/dist/components/popup/index';
-import Flex from '@discuzq/design/dist/components/flex/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
+import Flex from '@discuzqfe/design/dist/components/flex/index';
 import { View, Text } from '@tarojs/components';
 
 import styles from './index.module.scss';

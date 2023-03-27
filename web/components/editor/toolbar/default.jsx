@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Icon, Dropdown } from '@discuzq/design';
+import { Icon, Dropdown } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import { defaultIcon, defaultOperation } from '@common/constants/const';
 import { THREAD_TYPE } from '@common/constants/thread-post';

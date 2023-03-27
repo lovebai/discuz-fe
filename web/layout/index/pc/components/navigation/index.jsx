@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Card } from '@discuzq/design';
+import { Menu, Card } from '@discuzqfe/design';
 import { noop } from '@components/thread/utils'
 import styles from './index.module.scss';
 import isServer from '../../../../../../common/utils/is-server';

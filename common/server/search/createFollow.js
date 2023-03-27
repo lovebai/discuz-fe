@@ -1,4 +1,4 @@
-import { createFollow } from '@discuzq/sdk/dist/api/search/create-follow';
+import { createFollow } from '@discuzqfe/sdk/dist/api/search/create-follow';
 
 /** 粉丝关注创建
  * @param {object} params

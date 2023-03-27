@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Icon, Spin } from '@discuzq/design';
+import { Icon, Spin } from '@discuzqfe/design';
 import UserCenterHeaderImage from '@components/user-center-header-images';
 import UserCenterHead from '@components/user-center-head';
 import styles from './index.module.scss';

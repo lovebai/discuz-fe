@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Popup } from '@discuzq/design';
+import { Popup } from '@discuzqfe/design';
 import { noop } from '../utils';
 
 /**

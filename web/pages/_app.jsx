@@ -1,13 +1,13 @@
 import React from 'react';
 import { Provider } from 'mobx-react';
-import { hideInstance } from '@discuzq/design/dist/components/image-previewer/layouts/web';
+import { hideInstance } from '@discuzqfe/design/dist/components/image-previewer/layouts/web';
 import App from 'next/app';
 import getPlatform from '@common/utils/get-platform';
 import initializeStore from '@common/store';
 import PayBoxProvider from '../components/payBox/payBoxProvider';
 import isServer from '@common/utils/is-server';
 import csrRouterRedirect from '@common/utils/csr-router-redirect';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 // import sentry from '@common/utils/sentry';
 import '../styles/index.scss';
 import CustomHead from '@components/custom-head';
@@ -15,9 +15,9 @@ import Head from 'next/head';
 import monitor from '@common/utils/monitor';
 import { detectH5Orient } from '@common/utils/detect-orient';
 import browser from '@common/utils/browser';
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 import { STORAGE_KEY, STORAGE_TYPE } from '@common/utils/viewcount-in-storage';
-import DZQPluginCenter from '@discuzq/plugin-center';
+import DZQPluginCenter from '@discuzqfe/plugin-center';
 import PluginDevelopTools from '../utils/PluginDevelopTools';
 import { throttle } from '@common/utils/throttle-debounce.js';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image } from '@tarojs/components';
-import { Checkbox } from '@discuzq/design';
+import { Checkbox } from '@discuzqfe/design';
 import styles from '../index.module.scss';
 import classnames from 'classnames';
 

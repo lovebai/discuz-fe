@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Icon, Popup, Flex } from '@discuzq/design';
+import { Button, Icon, Popup, Flex } from '@discuzqfe/design';
 import { noop } from '@components/thread/utils';
 import { substr } from '@common/utils/substr';
 import filterData from './data';

@@ -5,10 +5,10 @@ import AboptPopup from '../components/abopt-popup';
 import CommentList from '../components/comment-list/index';
 import CommentInput from '../components/comment-input/index';
 import DeletePopup from '@components/thread-detail-pc/delete-popup';
-import { Icon, Toast } from '@discuzq/design';
+import { Icon, Toast } from '@discuzqfe/design';
 import classnames from 'classnames';
 import goToLoginPage from '@common/utils/go-to-login-page';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 
 

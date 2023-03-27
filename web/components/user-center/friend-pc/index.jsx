@@ -6,7 +6,7 @@ import { getUserFollow } from '@server';
 import styles from './index.module.scss';
 import { get } from '@common/utils/get';
 import { withRouter } from 'next/router';
-import { Spin } from '@discuzq/design';
+import { Spin } from '@discuzqfe/design';
 import Avatar from '@components/avatar';
 import NoData from '@components/no-data';
 import { followerAdapter } from './adapter';

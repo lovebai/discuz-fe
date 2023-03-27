@@ -1,6 +1,6 @@
 // 主要是用于pc，等后期基础组件优化好之后再去掉
 import React from 'react';
-import { Icon, Dialog, Button } from '@discuzq/design';
+import { Icon, Dialog, Button } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import ChooseFile from '@components/choose-file';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Icon } from '@discuzq/design';
+import { Input, Icon } from '@discuzqfe/design';
 
 
 import styles from './index.module.scss';

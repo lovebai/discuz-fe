@@ -1,9 +1,9 @@
 import React, { createRef, useEffect, useState, useCallback, useMemo } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, CustomWrapper } from '@tarojs/components'
-import Input from '@discuzq/design/dist/components/input';
-import Button from '@discuzq/design/dist/components/button';
-import Icon from '@discuzq/design/dist/components/icon';
+import Input from '@discuzqfe/design/dist/components/input';
+import Button from '@discuzqfe/design/dist/components/button';
+import Icon from '@discuzqfe/design/dist/components/icon';
 import { readEmoji } from '@common/server';
 import Avatar from '@components/avatar';
 import Emoji from '@components/emoji';

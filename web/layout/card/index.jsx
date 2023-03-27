@@ -1,7 +1,7 @@
 import { generateImageUrlByHtml, savePic } from './util.js';
 import React, { useState, useRef, useEffect, Fragment } from 'react';
 import styles from './index.module.scss';
-import { Button, Toast, Checkbox} from '@discuzq/design';
+import { Button, Toast, Checkbox} from '@discuzqfe/design';
 import Footer from './footer';
 import Header from '@components/header';
 import { getClientHeight } from '@common/utils/get-client-height';

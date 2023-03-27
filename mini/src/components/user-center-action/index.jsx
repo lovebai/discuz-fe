@@ -2,12 +2,12 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { View } from '@tarojs/components';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Badge from '@discuzq/design/dist/components/badge/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Badge from '@discuzqfe/design/dist/components/badge/index';
 import styles from './index.module.scss';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import UnreadRedDot from '@components/unread-red-dot';
-import DZQPluginCenterInjection from '@discuzq/plugin-center/dist/components/DZQPluginCenterInjection';
+import DZQPluginCenterInjection from '@discuzqfe/plugin-center/dist/components/DZQPluginCenterInjection';
 
 // 插件引入
 /**DZQ->plugin->register<plugin_user@user_extension_action_hook>**/

@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { PullDownRefresh, ScrollView } from '@discuzq/design';
+import { PullDownRefresh, ScrollView } from '@discuzqfe/design';
 import BaseList from '@components/list';
 
 import styles from './index.module.scss';

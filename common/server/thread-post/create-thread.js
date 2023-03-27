@@ -1,4 +1,4 @@
-import { createThread } from '@discuzq/sdk/dist/api/content/create-thread';
+import { createThread } from '@discuzqfe/sdk/dist/api/content/create-thread';
 
 /**
  * 发帖接口

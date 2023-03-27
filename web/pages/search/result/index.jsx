@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import IndexH5Page from '@layout/search/result/h5';
 import { readUsersList, readTopicsList, readThreadList } from '@server';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import ViewAdapter from '@components/view-adapter';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 

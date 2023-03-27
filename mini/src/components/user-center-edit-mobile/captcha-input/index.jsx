@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './index.module.scss';
 import { View, Text } from '@tarojs/components';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 
 class CaptchaInput extends Component {
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import IndexPage from '@layout/topic';
 import { readTopicsList } from '@server';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { getCurrentInstance } from '@tarojs/taro';
 import Page from '@components/page';
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Dropdown, Icon } from '@discuzq/design';
+import { Dropdown, Icon } from '@discuzqfe/design';
 import { noop } from '@components/thread/utils';
 
 import styles from './index.module.scss';

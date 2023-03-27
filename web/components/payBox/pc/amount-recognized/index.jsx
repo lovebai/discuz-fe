@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './index.module.scss';
-import { Dialog, Button, Checkbox, Icon, Toast, Spin } from '@discuzq/design';
+import { Dialog, Button, Checkbox, Icon, Toast, Spin } from '@discuzqfe/design';
 import CommonAccountContent from '../../components/common-account-content';
 import { inject } from 'mobx-react';
 import throttle from '@common/utils/thottle.js';

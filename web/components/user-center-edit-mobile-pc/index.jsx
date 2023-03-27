@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './index.module.scss';
-import { Spin, Input, Icon, Dialog, Toast, Button } from '@discuzq/design';
+import { Spin, Input, Icon, Dialog, Toast, Button } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import CaptchaInput from './captcha-input/index';
 import VerifyCode from '../user-center-edit-mobile/verify-code';

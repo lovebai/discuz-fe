@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import { Icon } from '@discuzq/design';
-import Router from '@discuzq/sdk/dist/router';
+import { Icon } from '@discuzqfe/design';
+import Router from '@discuzqfe/sdk/dist/router';
 import browser from '@common/utils/browser';
 import UnreadRedDot from '@components/unread-red-dot';
 import { unreadUpdateInterval } from '@common/constants/message';

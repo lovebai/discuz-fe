@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import { Toast, Icon } from '@discuzq/design';
+import { Toast, Icon } from '@discuzqfe/design';
 import JoinBanner from '@components/join-banner-pc';
 import LoadingBox from '@components/loading-box';
 import PcBodyWrap from '../components/pc-body-wrap';

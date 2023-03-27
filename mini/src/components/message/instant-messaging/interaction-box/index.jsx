@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View } from '@tarojs/components';
-import Button from '@discuzq/design/dist/components/button/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Input from '@discuzq/design/dist/components/input/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 
 import { Emoji } from '@components/thread-post';
 import { inject, observer } from 'mobx-react';

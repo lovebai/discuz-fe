@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import { withRouter } from 'next/router';
 import styles from './index.module.scss';
 import FilterRichText from '@components/filter-rich-text'

@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Spin from '@discuzq/design/dist/components/spin/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { createFollow, deleteFollow, getUserFollow } from '@server';
 import { get } from '@common/utils/get';
 import deepClone from '@common/utils/deep-clone';

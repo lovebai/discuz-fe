@@ -1,8 +1,8 @@
 import React from 'react';
-import { Icon, Dialog } from '@discuzq/design';
+import { Icon, Dialog } from '@discuzqfe/design';
 import styles from '../index.module.scss';
 import Qrcode from '../../../components/qrcode';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 export default class UserCenterEntry extends React.PureComponent {
   constructor(props) {

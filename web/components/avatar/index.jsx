@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
-import { Avatar, Button, Icon, Toast } from '@discuzq/design';
+import { Avatar, Button, Icon, Toast } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import LoadingBox from '@components/loading-box';

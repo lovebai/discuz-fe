@@ -1,7 +1,7 @@
 /* eslint-disable spaced-comment */
 import React from 'react';
 import styles from './index.module.scss';
-import { Divider, Spin, ImagePreviewer } from '@discuzq/design';
+import { Divider, Spin, ImagePreviewer } from '@discuzqfe/design';
 import UserCenterHeaderImage from '@components/user-center-header-images';
 import UserCenterHead from '@components/user-center-head';
 import { inject, observer } from 'mobx-react';
@@ -12,7 +12,7 @@ import BaseLayout from '@components/base-layout';
 import NoData from '@components/no-data';
 import PacketOpen from '@components/red-packet-animation/h5';
 import { withRouter } from 'next/router';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import setWxShare from '@common/utils/set-wx-share';
 
 // 插件引入

@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import ViewMore from '@components/view-more';
 import LoadingTips from '@components/thread-detail-pc/loading-tips';

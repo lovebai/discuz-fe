@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import UserCenterEditHeader from '../../user-center-edit-header/index';
-import { Button, Icon, Input, Toast, Spin } from '@discuzq/design';
+import { Button, Icon, Input, Toast, Spin } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import Avatar from '@components/avatar';
 import { inject, observer } from 'mobx-react';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import throttle from '@common/utils/thottle.js';
 import { isExtFieldsOpen } from '@common/store/login/util';
 import Copyright from '@components/copyright';

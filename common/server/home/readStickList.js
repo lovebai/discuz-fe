@@ -1,4 +1,4 @@
-import { readStickList } from '@discuzq/sdk/dist/api/home/read-stick-list';
+import { readStickList } from '@discuzqfe/sdk/dist/api/home/read-stick-list';
 
 /** 置顶列表
  * @param {object} params

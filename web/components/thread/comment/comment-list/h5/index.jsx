@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import CommentList from '@layout/thread/h5/components/comment-list/index';
 import AboptPopup from '@layout/thread/h5/components/abopt-popup';
 import comment from './index.module.scss';

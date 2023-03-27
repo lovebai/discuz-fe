@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 import Header from '@components/header';
 import isServer from '@common/utils/is-server';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 @observer
 class PCNoInstallPage extends React.Component {

@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
 import Header from '@components/header';
-import {Button} from '@discuzq/design';
-import Router from '@discuzq/sdk/dist/router';
+import {Button} from '@discuzqfe/design';
+import Router from '@discuzqfe/sdk/dist/router';
 import Copyright from '@components/copyright';
 
 class H5404Page extends React.Component {

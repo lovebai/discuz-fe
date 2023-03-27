@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import layout from './index.module.scss';
-import { Button, Toast, Avatar } from '@discuzq/design';
+import { Button, Toast, Avatar } from '@discuzqfe/design';
 import HomeHeader from '@components/home-header';
 import PhoneInput from '@components/login/phone-input';
 import Protocol from '../components/protocol';

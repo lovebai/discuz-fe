@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
 import { View, Text } from '@tarojs/components';
-import { Button, Dialog, Tabs } from '@discuzq/design';
+import { Button, Dialog, Tabs } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
-import time from '@discuzq/sdk/dist/time';
+import time from '@discuzqfe/sdk/dist/time';
 import { payGroupLevelStyle as levelStyle } from '@common/constants/const';
 import groupPay from '@common/pay-bussiness/group-pay';
 import classnames from 'classnames';
 import Header from '@components/header';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 const MemberShipCard = ({ site, user, onRenewalFeeClick, shipCardClassName }) => {
   const { siteMode, isPC, webConfig } = site;

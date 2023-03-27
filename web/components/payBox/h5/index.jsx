@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Popup } from '@discuzq/design';
+import { Popup } from '@discuzqfe/design';
 import { STEP_MAP } from '../../../../common/constants/payBoxStoreConstants';
 import AmountRecognized from './amount-recognized';
 import PayConfirmed from './pay-confirmed';

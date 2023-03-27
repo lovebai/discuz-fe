@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Button, Icon } from '@discuzq/design';
+import { Upload, Button, Icon } from '@discuzqfe/design';
 import { createAttachment } from '@common/server';
 import styles from './index.module.scss';
 import classNames from 'classnames';

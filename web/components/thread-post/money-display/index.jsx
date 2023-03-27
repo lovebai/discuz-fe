@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Tag } from '@discuzq/design';
+import { Tag } from '@discuzqfe/design';
 import { THREAD_TYPE } from '@common/constants/thread-post';
 import { defaultOperation, paidOption } from '@common/constants/const';
 import { plus } from '@common/utils/calculate';

@@ -2,9 +2,9 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 import Header from '@components/header';
-import {Button} from '@discuzq/design';
+import {Button} from '@discuzqfe/design';
 import isServer from '@common/utils/is-server';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Copyright from '@components/copyright';
 
 @observer

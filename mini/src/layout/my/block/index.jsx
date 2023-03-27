@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import List from '@components/list';
 import NoData from '@components/no-data';
-import Spin from '@discuzq/design/dist/components/spin/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
 import Avatar from '@components/avatar';
 import { View } from '@tarojs/components';
 import styles from './index.module.scss';

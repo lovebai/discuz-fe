@@ -1,12 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import time from '@discuzq/sdk/dist/time';
+import time from '@discuzqfe/sdk/dist/time';
 import { diffDate } from '@common/utils/diff-date';
 import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';
-import RichText from '@discuzq/design/dist/components/rich-text/index';
+import RichText from '@discuzqfe/design/dist/components/rich-text/index';
 
 @observer
 class IncomeList extends React.Component {

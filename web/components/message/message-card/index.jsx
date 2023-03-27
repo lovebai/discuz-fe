@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import UnreadRedDot from '@components/unread-red-dot';
 import styles from './index.module.scss';
 

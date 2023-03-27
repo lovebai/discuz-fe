@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { inject, observer } from 'mobx-react';
 import { IMG_SRC_HOST } from '@common/constants/site';
 import styles from './index.module.scss';
-import Audio from '@discuzq/design/dist/components/audio/index';
+import Audio from '@discuzqfe/design/dist/components/audio/index';
 import { noop } from '../utils';
 import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro';

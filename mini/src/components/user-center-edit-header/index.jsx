@@ -3,15 +3,15 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import Avatar from '@components/avatar';
 import UserCenterHeaderImage from '@components/user-center-header-images';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Input from '@discuzq/design/dist/components/input/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
 import { inject, observer } from 'mobx-react';
 import { ACCEPT_IMAGE_TYPES } from '@common/constants/thread-post';
 import { View, Text, Canvas } from '@tarojs/components';
 import locals from '@common/utils/local-bridge';
 import getConfig from '@common/config';
 import constants from '@common/constants';
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 import { updateMyThreadAvatar } from '@common/store/thread-list/list-business';
 
 @inject('user')

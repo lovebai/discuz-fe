@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import { View, Input, Image } from '@tarojs/components';
 import { debounce, throttle } from '@common/utils/throttle-debounce.js';
 

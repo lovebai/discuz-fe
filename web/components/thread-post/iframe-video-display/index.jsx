@@ -1,5 +1,5 @@
 import React from 'react';
-import { RichText, Icon } from '@discuzq/design';
+import { RichText, Icon } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import styles from './index.module.scss';

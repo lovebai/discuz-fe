@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react'
 import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import Radio from '@discuzq/design/dist/components/radio/index';
-import Input from '@discuzq/design/dist/components/input/index';
-import Button from '@discuzq/design/dist/components/button/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Radio from '@discuzqfe/design/dist/components/radio/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import DateTimePicker from '../date-time-picker';
 import { formatDate } from '@common/utils/format-date';
 import { observer, inject } from 'mobx-react';

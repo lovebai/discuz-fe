@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Input } from '@discuzq/design';
+import { Input } from '@discuzqfe/design';
 import styles from './index.module.scss';
 
 const MoneyInput = (props) => {

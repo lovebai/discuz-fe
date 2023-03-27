@@ -1,4 +1,4 @@
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import typeofFn from '@common/utils/typeof';
 
 export default function csrRouterRedirect() {

@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 import { View, Text } from '@tarojs/components';
 import FilterRichText from '@components/filter-rich-text'
 import { handleLink } from '@components/thread/utils'
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import goToLoginPage from '@common/utils/go-to-login-page';
 
 /**

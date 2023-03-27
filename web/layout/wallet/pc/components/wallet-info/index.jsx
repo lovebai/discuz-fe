@@ -6,7 +6,7 @@ import Avatar from '@components/avatar';
 
 import styles from './index.module.scss';
 
-import { Icon, Button } from '@discuzq/design';
+import { Icon, Button } from '@discuzqfe/design';
 
 @inject('user')
 @observer

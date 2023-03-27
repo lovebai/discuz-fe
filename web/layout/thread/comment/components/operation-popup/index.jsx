@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionSheet } from '@discuzq/design';
+import { ActionSheet } from '@discuzqfe/design';
 import styles from './index.module.scss';
 
 const OperationPop = (props) => {

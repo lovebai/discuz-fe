@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './index.module.scss';
-import { Icon, Tag  } from '@discuzq/design';
+import { Icon, Tag  } from '@discuzqfe/design';
 import { withRouter } from 'next/router';
 import { inject, observer } from 'mobx-react';
 import BottomView from '@components/list/BottomView';

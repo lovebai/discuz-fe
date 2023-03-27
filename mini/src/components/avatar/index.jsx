@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import Avatar from '@discuzq/design/dist/components/avatar/index';
+import Avatar from '@discuzqfe/design/dist/components/avatar/index';
 import { View } from '@tarojs/components';
 import { useCallback } from 'react';
 import calcCosImageQuality from '@common/utils/calc-cos-image-quality';

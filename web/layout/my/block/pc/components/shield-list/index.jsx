@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import Avatar from '@components/avatar';
-import { Button, Toast } from '@discuzq/design';
+import { Button, Toast } from '@discuzqfe/design';
 import styles from './index.module.scss';
 
 /**

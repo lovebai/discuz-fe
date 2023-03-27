@@ -32,7 +32,7 @@ import CardStore from './card/action';
 import CommentPosition from './thread/comment-position/action';
 import EmotionStore from './emotion/action';
 import ThreadListStore from './thread-list/list';
-import DZQPluginStore from '@discuzq/plugin-center/dist/pluginMobxStore';
+import DZQPluginStore from '@discuzqfe/plugin-center/dist/pluginMobxStore';
 
 useStaticRendering(isServer());
 

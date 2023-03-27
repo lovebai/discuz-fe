@@ -7,7 +7,7 @@ import ThreadContent from '@components/thread';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import Copyright from '@components/copyright';
 import SidebarPanel from '@components/sidebar-panel';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import TopicItem from '@components/search/topic-item'
 import ActiveUsersMore from '@components/search/active-user-more-items';
 import Stepper from '@components/stepper';

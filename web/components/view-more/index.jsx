@@ -1,6 +1,6 @@
 import React from 'react';
 import stylesModule from './index.module.scss';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import classnames from 'classnames';
 
 function ViewMore(props) {

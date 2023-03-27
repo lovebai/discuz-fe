@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import { Checkbox, Divider } from '@discuzq/design';
+import { Checkbox, Divider } from '@discuzqfe/design';
 import { ORDER_TRADE_TYPE } from '../../../../common/constants/payBoxStoreConstants';
 
 @inject('site')

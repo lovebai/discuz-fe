@@ -1,11 +1,11 @@
 import React, { useRef } from 'react'
 import { View, Button, Text } from '@tarojs/components'
 import { genParamScheme } from '@server';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import Taro, { setClipboardData } from '@tarojs/taro'
 import classNames from 'classnames';
-import Popup from '@discuzq/design/dist/components/popup/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
 import setUrlParam from '@common/utils/set-url-param';
 import styles from './index.module.scss'
 

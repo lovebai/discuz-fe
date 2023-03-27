@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import PopupList from '../popup-list';
 import Avatar from '../../avatar';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import { debounce } from '@common/utils/throttle-debounce.js';
 import { noop } from '../utils';
 

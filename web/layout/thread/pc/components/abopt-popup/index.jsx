@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Icon, Popup, Button, Input, Slider } from '@discuzq/design';
+import { Icon, Popup, Button, Input, Slider } from '@discuzqfe/design';
 import { debounce, throttle } from '@common/utils/throttle-debounce';
 import styles from './index.module.scss';
 

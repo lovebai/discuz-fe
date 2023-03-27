@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import SectionTitle from '@components/section-title';
 import NoData from '@components/no-data';
 import { simpleRequest } from '@common/utils/simple-request';
-import { Spin, Toast } from '@discuzq/design';
+import { Spin, Toast } from '@discuzqfe/design';
 import ActiveUsers from '../../../../search/h5/components/active-users';
 import ActiveUsersMore from '../../../../search/pc/components/active-users-more';
 import layout from './index.module.scss';

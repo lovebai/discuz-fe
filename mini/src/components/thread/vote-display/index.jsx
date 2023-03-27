@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
-import Checkbox from '@discuzq/design/dist/components/checkbox/index';
-import Button from '@discuzq/design/dist/components/button/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Radio from '@discuzq/design/dist/components/radio/index';
-import Progress from '@discuzq/design/dist/components/progress/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Checkbox from '@discuzqfe/design/dist/components/checkbox/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Radio from '@discuzqfe/design/dist/components/radio/index';
+import Progress from '@discuzqfe/design/dist/components/progress/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { View, Text } from '@tarojs/components'
 import CountDown from '@common/utils/count-down';
 import { throttle } from '@common/utils/throttle-debounce';
 import LoginHelper from '@common/utils/login-helper';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import styles from './index.module.scss';
 
 const CHOICE_TYPE = {

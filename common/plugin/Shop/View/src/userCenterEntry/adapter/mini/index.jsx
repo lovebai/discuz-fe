@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from '@tarojs/components';
-import { Icon, Toast } from '@discuzq/design';
+import { Icon, Toast } from '@discuzqfe/design';
 import styles from '../index.module.scss';
 import { navigateToMiniProgram } from '@tarojs/taro';
 export default class UserCenterEntry extends React.Component {

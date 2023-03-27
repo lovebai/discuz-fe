@@ -1,4 +1,4 @@
-import { readThreadList } from '@discuzq/sdk/dist/api/home/read-thread-list';
+import { readThreadList } from '@discuzqfe/sdk/dist/api/home/read-thread-list';
 
 /** 首页列表/热门内容
  * @param {object} params

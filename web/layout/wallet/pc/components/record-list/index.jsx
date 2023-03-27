@@ -11,11 +11,11 @@ import {
   PAY_STATUS_MAP,
 } from '../../../../../../common/constants/wallet';
 import { formatDate } from '@common/utils/format-date.js';
-import time from '@discuzq/sdk/dist/time';
+import time from '@discuzqfe/sdk/dist/time';
 import classNames from 'classnames';
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';
-import RichText from '@discuzq/design/dist/components/rich-text/index';
+import RichText from '@discuzqfe/design/dist/components/rich-text/index';
 
 const STATUS_MAP = {
   1: '待审核',

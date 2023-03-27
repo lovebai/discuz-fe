@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Icon, Button, Divider, Spin } from '@discuzq/design';
+import { Input, Icon, Button, Divider, Spin } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import Avatar from '@components/avatar';
 import styles from './index.module.scss';

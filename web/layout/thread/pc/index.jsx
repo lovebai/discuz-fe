@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 import AuthorInfo from './components/author-info/index';
 import CommentInput from './components/comment-input/index';
 import LoadingTips from '@components/thread-detail-pc/loading-tips';
-import { Icon, Toast, Popup } from '@discuzq/design';
+import { Icon, Toast, Popup } from '@discuzqfe/design';
 import UserInfo from '@components/thread/user-info';
 import RewardPopup from './components/reward-popup';
 import BaseLayout from '@components/base-layout';
@@ -18,7 +18,7 @@ import ShowTop from './components/show-top';
 import IsApproved from './components/isApproved';
 import DeletePopup from '@components/thread-detail-pc/delete-popup';
 
-import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
+import h5Share from '@discuzqfe/sdk/dist/common_modules/share/h5';
 import Copyright from '@components/copyright';
 import threadPay from '@common/pay-bussiness/thread-pay';
 import Recommend from '@components/recommend';

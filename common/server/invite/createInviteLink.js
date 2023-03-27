@@ -1,4 +1,4 @@
-import {createInviteLink} from '@discuzq/sdk/dist/api/invite/create-invite-link';
+import {createInviteLink} from '@discuzqfe/sdk/dist/api/invite/create-invite-link';
 /** 创建邀请链接
  * @param {object} params
  * @returns object

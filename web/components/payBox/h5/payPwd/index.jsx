@@ -3,10 +3,10 @@ import styles from './index.module.scss';
 import Header from '@components/header';
 import { inject, observer } from 'mobx-react';
 import CommonPayoffPwd from '../../components/common-paypwd-content';
-import { Dialog, Divider, Icon, Toast } from '@discuzq/design';
+import { Dialog, Divider, Icon, Toast } from '@discuzqfe/design';
 import { PAY_BOX_ERROR_CODE_MAP, STEP_MAP } from '../../../../../common/constants/payBoxStoreConstants';
 import throttle from '@common/utils/thottle.js';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import ReactDOM from 'react-dom';
 
 @inject('site')

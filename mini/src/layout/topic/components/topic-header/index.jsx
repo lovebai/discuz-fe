@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Dropdown from '@discuzq/design/dist/components/dropdown/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Dropdown from '@discuzqfe/design/dist/components/dropdown/index';
 import { noop } from '@components/thread/utils';
 import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';

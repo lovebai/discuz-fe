@@ -1,9 +1,9 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import Video from '@discuzq/design/dist/components/video/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Video from '@discuzqfe/design/dist/components/video/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { noop } from '../utils';
 import { View, Text, Image } from '@tarojs/components'
 import { getElementRect, randomStr } from '../utils'

@@ -3,8 +3,8 @@
 */
 import React, { Component, PureComponent } from 'react';
 import { View } from '@tarojs/components';
-import PullDownRefresh from '@discuzq/design/dist/components/pull-down-refresh/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import PullDownRefresh from '@discuzqfe/design/dist/components/pull-down-refresh/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import classNames from 'classnames';
 import styles from './index.module.scss';
 import throttle from '@common/utils/thottle';

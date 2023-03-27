@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Popup from '@discuzq/design/dist/components/popup/index';
-import Button from '@discuzq/design/dist/components/button/index';
-import Input from '@discuzq/design/dist/components/input/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';
 import className from 'classnames';

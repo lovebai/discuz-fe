@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Popup } from '@discuzq/design';
+import { Popup } from '@discuzqfe/design';
 import styles from './index.module.scss';
 
 const deletePop = (props) => {

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { inject } from 'mobx-react';
 import DDialog from '@components/dialog';
-import { Popup, Icon } from '@discuzq/design';
+import { Popup, Icon } from '@discuzqfe/design';
 
 import styles from './index.module.scss';
 

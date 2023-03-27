@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState, forwardRef } from 'react';
-import { Flex } from '@discuzq/design';
+import { Flex } from '@discuzqfe/design';
 import Header from '@components/header';
 import List from '@components/list';
 import BottomView from '@components/list/BottomView';

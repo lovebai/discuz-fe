@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './index.module.scss';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import { noop } from '@components/thread/utils';
 import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { inject, observer } from 'mobx-react';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import UnreadRedDot from '@components/unread-red-dot';
 import { unreadUpdateInterval } from '@common/constants/message';
 import canPublish from '@common/utils/can-publish';

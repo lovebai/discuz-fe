@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import { Dialog, Button, Icon, Toast } from '@discuzq/design';
+import { Dialog, Button, Icon, Toast } from '@discuzqfe/design';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 import { numberFormat } from '@common/utils/number-format';
 import renewPay from '@common/pay-bussiness/renew-pay';

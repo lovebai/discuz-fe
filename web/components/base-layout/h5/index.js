@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState, f
 import Header from '@components/header';
 import List from '@components/list';
 import BottomNavBar from '@components/bottom-nav-bar';
-import { PullDownRefresh } from '@discuzq/design';
+import { PullDownRefresh } from '@discuzqfe/design';
 import { noop } from '@components/thread/utils';
 import BacktoTop from '@components/list/backto-top';
 import styles from './index.module.scss';

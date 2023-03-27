@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Icon } from '@discuzq/design';
+import { Button, Icon } from '@discuzqfe/design';
 import Avatar from '../../avatar';
 import { noop } from '../utils';
 import styles from './index.module.scss';

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Dialog, Input, Toast, Icon, Spin } from '@discuzq/design';
+import { Button, Dialog, Input, Toast, Icon, Spin } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import ResetPassword from './reset-paypwd/index';
 import FindPassword from './find-paypwd/index';
 import throttle from '@common/utils/thottle.js';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 @inject('site')
 @inject('user')

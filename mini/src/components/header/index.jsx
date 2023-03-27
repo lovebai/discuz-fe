@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import styles from './index.module.scss';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Router from '@discuzq/sdk/dist/router';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Router from '@discuzqfe/sdk/dist/router';
 import browser from '@common/utils/browser';
 import { View, Text } from '@tarojs/components'
 import LoginHelper from '@common/utils/login-helper';

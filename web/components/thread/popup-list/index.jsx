@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Tabs, Popup, Icon, Spin, Button } from '@discuzq/design';
-import { readRegisterList } from '@discuzq/sdk/dist/api/plugin/read-register';
+import { Tabs, Popup, Icon, Spin, Button } from '@discuzqfe/design';
+import { readRegisterList } from '@discuzqfe/sdk/dist/api/plugin/read-register';
 import UserItem from '../user-item';
 import styles from './index.module.scss';
 import ReactDOM from 'react-dom';

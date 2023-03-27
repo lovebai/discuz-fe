@@ -3,15 +3,15 @@
  * 基于 vditor 开源组件：https://github.com/Vanessa219/vditor
  */
 import React, { useState, useEffect, useRef } from 'react';
-import Vditor from '@discuzq/vditor';
+import Vditor from '@discuzqfe/vditor';
 import classNames from 'classnames';
 import { baseOptions, baseToolbar } from './options';
 import { MAX_COUNT } from '@common/constants/thread-post';
 import LoadingBox from '@components/loading-box';
 import { emojiVditorCompatibilityDisplay } from '@common/utils/emoji-regexp';
 import './index.scss';
-import '@discuzq/vditor/src/assets/scss/index.scss';
-import { Toast } from '@discuzq/design';
+import '@discuzqfe/vditor/src/assets/scss/index.scss';
+import { Toast } from '@discuzqfe/design';
 import browser, { constants } from '@common/utils/browser';
 import commonUpload from '@common/utils/common-upload';
 import { inject, observer } from 'mobx-react';

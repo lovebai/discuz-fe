@@ -2,7 +2,7 @@
 import locals from '@common/utils/local-bridge';
 import constants from '@common/constants';
 import Taro from '@tarojs/taro';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 
 const attachmentApiUpload = (options) => {
   return new Promise(async (resolve, reject) => {

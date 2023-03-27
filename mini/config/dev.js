@@ -1,5 +1,5 @@
-const getDefinePlugin = require('@discuzq/cli/config/taro/getDefinePlugin');
-const getDZQPluginLoader = require('@discuzq/cli/config/taro/getDZQPluginLoader');
+const getDefinePlugin = require('@discuzqfe/cli/config/taro/getDefinePlugin');
+const getDZQPluginLoader = require('@discuzqfe/cli/config/taro/getDZQPluginLoader');
 const path = require('path');
 
 module.exports = {

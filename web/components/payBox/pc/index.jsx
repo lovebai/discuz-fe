@@ -4,7 +4,7 @@ import { STEP_MAP } from '@common/constants/payBoxStoreConstants';
 import AmountRecognized from './amount-recognized';
 import PayConfirmed from './pay-confirmed';
 import PayPwd from './payPwd';
-import { Dialog } from '@discuzq/design';
+import { Dialog } from '@discuzqfe/design';
 import isServer from '@common/utils/is-server';
 import styles from './index.module.scss';
 @inject('payBox')

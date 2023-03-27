@@ -1,7 +1,7 @@
 
 import React from 'react';
 import styles from './index.module.scss';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 
 const isApproved = (props) => {
   const { isShow } = props;

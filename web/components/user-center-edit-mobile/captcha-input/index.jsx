@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styles from './index.module.scss';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 
 class CaptchaInput extends Component {
 

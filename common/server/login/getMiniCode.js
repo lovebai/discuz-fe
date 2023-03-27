@@ -1,4 +1,4 @@
-import { getMiniCode } from '@discuzq/sdk/dist/api/home/get-mini-code';
+import { getMiniCode } from '@discuzqfe/sdk/dist/api/home/get-mini-code';
 
 /** 生成小程序二维码接口用于分享
  * @param {object} params

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Icon, Spin } from '@discuzq/design';
+import { Button, Icon, Spin } from '@discuzqfe/design';
 import { noop } from '../thread/utils';
 
 import styles from './index.module.scss';

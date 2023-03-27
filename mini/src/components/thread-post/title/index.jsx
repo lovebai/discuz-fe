@@ -8,7 +8,7 @@
  */
 import React, { memo } from 'react';
 import { View } from '@tarojs/components';
-import Input from '@discuzq/design/dist/components/input/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
 import { debounce, throttle } from '@common/utils/throttle-debounce.js';
 
 import styles from './index.module.scss';

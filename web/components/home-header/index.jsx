@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Icon, Toast } from '@discuzq/design';
+import { Icon, Toast } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import SharePopup from '../thread/share-popup';
 import isWeiXin from '@common/utils/is-weixin';
 import setUrlParam from '@common/utils/set-url-param';
 import { get } from '@common/utils/get';
-import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
+import h5Share from '@discuzqfe/sdk/dist/common_modules/share/h5';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import { numberFormat } from '@common/utils/number-format';
 import LoginHelper from '@common/utils/login-helper';

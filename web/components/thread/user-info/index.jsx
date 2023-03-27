@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { Icon, Tag } from '@discuzq/design';
+import { Icon, Tag } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import Avatar from '@components/avatar';
 import { diffDate } from '@common/utils/diff-date';

@@ -1,4 +1,4 @@
-import {readGoodsAnalysis} from '@discuzq/sdk/dist/api/content/read-goodsanalysis';
+import {readGoodsAnalysis} from '@discuzqfe/sdk/dist/api/content/read-goodsanalysis';
 
 /**
  * 获取商品信息

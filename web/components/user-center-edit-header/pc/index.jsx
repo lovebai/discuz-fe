@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import styles from './index.module.scss';
 import Avatar from '@components/avatar';
 import UserCenterHeaderImage from '@components/user-center-header-images';
-import { Icon, Input, Toast } from '@discuzq/design';
+import { Icon, Input, Toast } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import { ACCEPT_IMAGE_TYPES } from '@common/constants/thread-post';
 import { fixImageOrientation } from '@common/utils/exif';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 @inject('user')
 @observer

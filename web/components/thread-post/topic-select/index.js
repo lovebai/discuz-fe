@@ -6,7 +6,7 @@
  */
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Popup, Input, Icon, Toast } from '@discuzq/design';
+import { Popup, Input, Icon, Toast } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import PropTypes from 'prop-types';
 

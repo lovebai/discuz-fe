@@ -1,5 +1,5 @@
 import { inject, observer } from 'mobx-react';
-import { Checkbox } from '@discuzq/design';
+import { Checkbox } from '@discuzqfe/design';
 import React from 'react';
 
 const SelectAll = inject('threadPost')(

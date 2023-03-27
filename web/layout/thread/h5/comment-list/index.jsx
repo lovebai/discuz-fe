@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Icon, Toast } from '@discuzq/design';
+import { Icon, Toast } from '@discuzqfe/design';
 import CommentList from '../components/comment-list/index';
 import AboptPopup from '../components/abopt-popup';
 import comment from './index.module.scss';
@@ -9,7 +9,7 @@ import InputPopup from '../components/input-popup';
 import DeletePopup from '@components/thread-detail-pc/delete-popup';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import { debounce } from '@common/utils/throttle-debounce';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 
 

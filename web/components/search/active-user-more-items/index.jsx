@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import Avatar from '@components/avatar';
-import { Button, Icon } from '@discuzq/design';
+import { Button, Icon } from '@discuzqfe/design';
 import SiteMapLink from '@components/site-map-link';
 import styles from './index.module.scss';
 import MemberBadge from '@components/member-badge';

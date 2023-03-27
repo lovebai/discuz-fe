@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, CustomWrapper } from '@tarojs/components';
-import { Input } from '@discuzq/design';
+import { Input } from '@discuzqfe/design';
 import actEntryStyles from '../../../entry/adapter/index.module.scss';
 import { ATTACH_INFO_TYPE, ATTACH_INFO_NAME } from '@common/plugin/custom-apply/View/src/common';
 import { debounce } from '@common/utils/throttle-debounce';

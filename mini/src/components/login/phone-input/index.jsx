@@ -1,6 +1,6 @@
 import React from 'react';
-// import Input from '@discuzq/design/dist/components/input/index';
-import Input from '@discuzq/design/dist/components/input/index';
+// import Input from '@discuzqfe/design/dist/components/input/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
 import { View } from '@tarojs/components';
 import layout from './index.module.scss';
 import CaptchaInput from './captcha-input';

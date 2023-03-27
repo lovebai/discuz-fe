@@ -2,7 +2,7 @@ import React from 'react';
 import SidebarPanel from '@components/sidebar-panel';
 import UserCenterFollowPopup from '@components/user-center-follow-popup';
 import { inject, observer } from 'mobx-react';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import styles from './index.module.scss';
 import UserCenterFollows from '../../user-center-follow';
 import { withRouter } from 'next/router';

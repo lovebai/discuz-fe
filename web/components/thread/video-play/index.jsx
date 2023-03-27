@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import { Video, Icon, Toast } from '@discuzq/design';
+import { Video, Icon, Toast } from '@discuzqfe/design';
 import { noop } from '../utils';
 import calcVideoSize from '@common/utils/calc-video-size';
 

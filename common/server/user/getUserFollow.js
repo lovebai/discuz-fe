@@ -1,4 +1,4 @@
-import {readFollow} from '@discuzq/sdk/dist/api/user/read-follow';;
+import {readFollow} from '@discuzqfe/sdk/dist/api/user/read-follow';;
 import set from '../../utils/set';
 import deepClone from '../../utils/deep-clone';
 

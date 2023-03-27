@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Button from '@discuzq/design/dist/components/button/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import { View } from '@tarojs/components';
 import { IMG_SRC_HOST } from '@common/constants/site';
 import classNames from 'classnames';

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Icon, Popup, Button } from '@discuzq/design';
+import { Icon, Popup, Button } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import className from 'classnames';
 import classNames from 'classnames';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { computed } from 'mobx';
-import { Icon, ActionSheet, Toast, Dropdown } from '@discuzq/design';
+import { Icon, ActionSheet, Toast, Dropdown } from '@discuzqfe/design';
 import { withRouter } from 'next/router';
 import Thread from '@components/thread';
 import styles from './index.module.scss';

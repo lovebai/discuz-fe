@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState, forwardRef } from 'react';
-import { Avatar, ImagePreviewer, Icon } from '@discuzq/design';
+import { Avatar, ImagePreviewer, Icon } from '@discuzqfe/design';
 import { diffDate } from '@common/utils/diff-date';
 import { inject, observer } from 'mobx-react';
 import s9e from '@common/utils/s9e';
@@ -7,7 +7,7 @@ import xss from '@common/utils/xss';
 import { getMessageImageSize } from '@common/utils/get-message-image-size';
 
 import styles from './index.module.scss';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import classnames from 'classnames';
 
 const DialogBox = (props, ref) => {

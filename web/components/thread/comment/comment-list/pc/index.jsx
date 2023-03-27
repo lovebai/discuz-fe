@@ -5,10 +5,10 @@ import AboptPopup from '@layout/thread/pc/components/abopt-popup';
 import CommentList from '@layout/thread/pc/components/comment-list/index';
 import DeletePopup from '@components/thread-detail-pc/delete-popup';
 import ReportPopup from '@layout/thread/pc/components/report-popup';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import classnames from 'classnames';
 import goToLoginPage from '@common/utils/go-to-login-page';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Operate from '../../operate';
 
 const typeMap = {

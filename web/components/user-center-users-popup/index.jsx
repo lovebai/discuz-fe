@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Dialog, Divider } from '@discuzq/design';
+import { Dialog, Divider } from '@discuzqfe/design';
 import UserCenterUsers from '@components/user-center-users';
 import { noop } from '@components/thread/utils';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import ReactDOM from 'react-dom';
 
 /**

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import NewContent from '../new-content';
 import TopNews from '../../../h5/components/top-news';
 import TopMenu from '../top-menu';
-import { Button } from '@discuzq/design';
+import { Button } from '@discuzqfe/design';
 import ThreadContent from '@components/thread';
 import WindowVList from '@components/virtual-list/pc';
 import styles from './index.module.scss';

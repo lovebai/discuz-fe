@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 // @ts-ignore
 import styles from './index.module.scss';
-import Popup from '@discuzq/design/dist/components/popup/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { inject, observer } from 'mobx-react';
 import EventEmitter from 'eventemitter3';
 import { View } from '@tarojs/components';
@@ -12,7 +12,7 @@ import { STEP_MAP } from '../../../../common/constants/payBoxStoreConstants';
 import AmountRecognized from './amount-recognized';
 import PayConfirmed from './pay-confirmed';
 import PayPwd from './payPwd';
-// import { ToastProvider } from '@discuzq/design/dist/components/toast/ToastProvider';
+// import { ToastProvider } from '@discuzqfe/design/dist/components/toast/ToastProvider';
 import { get } from '../../../../common/utils/get';
 import LoginHelper from '@common/utils/login-helper';
 

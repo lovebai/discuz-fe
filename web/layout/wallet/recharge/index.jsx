@@ -4,9 +4,9 @@ import { withRouter } from 'next/router';
 import Header from '@components/header';
 import MoneyInput from '../withdrawal/components/money-input';
 import styles from './index.module.scss';
-import { Icon, Button, Toast } from '@discuzq/design';
+import { Icon, Button, Toast } from '@discuzqfe/design';
 import classNames from 'classnames';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import isWeixin from '@common/utils/is-weixin';
 
 @inject('wallet')

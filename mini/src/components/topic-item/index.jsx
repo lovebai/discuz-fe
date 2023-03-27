@@ -3,7 +3,7 @@ import replaceSearchResultContent from '@common/utils/replace-search-result-cont
 import { noop, handleLink } from '@components/thread/utils';
 import styles from './index.module.scss';
 import { View, Text } from '@tarojs/components';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import FilterRichText from '@components/filter-rich-text'
 
 

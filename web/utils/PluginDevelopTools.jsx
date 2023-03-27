@@ -1,8 +1,8 @@
 import React from 'react';
-import { Toast, Button, Input, Dialog, Icon } from '@discuzq/design';
+import { Toast, Button, Input, Dialog, Icon } from '@discuzqfe/design';
 import styles from './PluginDevelopTools.module.scss';
 import { inject, observer } from 'mobx-react';
-import DZQPluginCenter from '@discuzq/plugin-center';
+import DZQPluginCenter from '@discuzqfe/plugin-center';
 
 @inject('plugin')
 @observer

@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import { toTCaptcha } from '@common/utils/to-tcaptcha';
 import ViewMore from '@components/view-more';

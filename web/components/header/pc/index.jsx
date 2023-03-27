@@ -1,11 +1,11 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import { Icon, Input, Button, Dropdown } from '@discuzq/design';
+import { Icon, Input, Button, Dropdown } from '@discuzqfe/design';
 import Avatar from '@components/avatar';
 import { withRouter } from 'next/router';
 import goToLoginPage from '@common/utils/go-to-login-page';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import clearLoginStatus from '@common/utils/clear-login-status';
 import UnreadRedDot from '@components/unread-red-dot';
 import { unreadUpdateInterval } from '@common/constants/message';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Router from '@discuzq/sdk/dist/router'
+import Router from '@discuzqfe/sdk/dist/router'
 import { View,  } from '@tarojs/components';
-import Button from '@discuzq/design/dist/components/button/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
 import Page from '@components/page';
 import styles from './index.module.scss';
 

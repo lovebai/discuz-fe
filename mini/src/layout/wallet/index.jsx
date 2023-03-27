@@ -1,12 +1,12 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Tabs from '@discuzq/design/dist/components/tabs/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Button from '@discuzq/design/dist/components/button/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Tabs from '@discuzqfe/design/dist/components/tabs/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { View, Text } from '@tarojs/components';
 import classNames from 'classnames';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Taro from '@tarojs/taro';
 
 import Page from '@components/page';

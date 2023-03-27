@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { Input, Button, Toast } from '@discuzq/design';
+import { Input, Button, Toast } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import DDialog from '@components/dialog';
 import styles from './index.module.scss';

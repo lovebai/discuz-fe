@@ -1,4 +1,4 @@
-import { updateThreads } from '@discuzq/sdk/dist/api/content/update-threads';
+import { updateThreads } from '@discuzqfe/sdk/dist/api/content/update-threads';
 /**
  * 发帖接口
  */

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Input, Button, Toast } from '@discuzq/design';
+import { Input, Button, Toast } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import Avatar from '@components/avatar';

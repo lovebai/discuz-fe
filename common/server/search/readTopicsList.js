@@ -1,4 +1,4 @@
-import { readTopicsList } from '@discuzq/sdk/dist/api/search/read-topics-list';
+import { readTopicsList } from '@discuzqfe/sdk/dist/api/search/read-topics-list';
 
 /** 潮流话题/话题搜索
  * @param {object} params

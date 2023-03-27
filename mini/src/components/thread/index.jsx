@@ -1,7 +1,7 @@
 import React from 'react';
-import Router from '@discuzq/sdk/dist/router';
-import Toast from '@discuzq/design/dist/components/toast';
-import Icon from '@discuzq/design/dist/components/icon';
+import Router from '@discuzqfe/sdk/dist/router';
+import Toast from '@discuzqfe/design/dist/components/toast';
+import Icon from '@discuzqfe/design/dist/components/icon';
 import { inject, observer } from 'mobx-react';
 import BottomEvent from './bottom-event';
 import UserInfo from './user-info';

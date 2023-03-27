@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Icon, RichText, ImagePreviewer } from '@discuzq/design';
+import { Icon, RichText, ImagePreviewer } from '@discuzqfe/design';
 import { noop } from '../utils';
 import classnames from 'classnames';
 

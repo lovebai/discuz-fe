@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Icon, Spin } from '@discuzq/design';
+import { Button, Icon, Spin } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import CommonAccountContent from '../../components/common-account-content';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import { STEP_MAP } from '../../../../../common/constants/payBoxStoreConstants';
 import throttle from '@common/utils/thottle.js';
 @inject('payBox')

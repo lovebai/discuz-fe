@@ -1,12 +1,12 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import { Toast, Icon } from '@discuzq/design';
+import { Toast, Icon } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import JoinBanner from '@components/join-banner-pc';
 import WeixinQrCode from '@components/login/wx-qr-code';
 import { get } from '@common/utils/get';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import PcBodyWrap from '../components/pc-body-wrap';
 
 @inject('site')

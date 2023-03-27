@@ -1,7 +1,7 @@
 import React from 'react';
 import isServer from '@common/utils/is-server';
 import isWeiXin from '@common/utils/is-weixin';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import { inject } from 'mobx-react';
 
 export default function HOCWeixin(Component) {

@@ -1,10 +1,10 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import { time } from '@discuzq/sdk/dist/index';
+import { time } from '@discuzqfe/sdk/dist/index';
 import { diffDate } from '@common/utils/diff-date';
 import BaseLayout from '@components/base-layout';
-import { RichText } from '@discuzq/design';
+import { RichText } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';

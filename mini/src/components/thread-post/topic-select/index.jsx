@@ -5,8 +5,8 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import Taro from '@tarojs/taro';
 import { View } from '@tarojs/components';
-import Input from '@discuzq/design/dist/components/input/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import styles from './index.module.scss';
 
 import List from '@components/list';

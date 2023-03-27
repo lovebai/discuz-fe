@@ -1,8 +1,8 @@
 /* eslint-disable spaced-comment */
 import React from 'react';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import styles from './index.module.scss';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import { observer, inject } from 'mobx-react';
 import UnreadRedDot from '@components/unread-red-dot';
 import DZQPluginCenterInjectionPolyfill from '../../utils/DZQPluginCenterInjectionPolyfill';

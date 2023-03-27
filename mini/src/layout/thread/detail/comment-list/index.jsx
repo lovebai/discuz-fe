@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import CommentList from '../../components/comment-list/index';
@@ -9,7 +9,7 @@ import comment from './index.module.scss';
 import { parseContentData } from '../../utils';
 import DeletePopup from '../../components/delete-popup';
 import goToLoginPage from '@common/utils/go-to-login-page';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 /**
  * 详情页下方评论列表

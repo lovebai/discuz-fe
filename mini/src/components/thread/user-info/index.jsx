@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Tag from '@discuzq/design/dist/components/tag/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Tag from '@discuzqfe/design/dist/components/tag/index';
 import styles from './index.module.scss';
 import Avatar from '@components/avatar';
 import React from 'react';
@@ -8,7 +8,7 @@ import { diffDate } from '@common/utils/diff-date';
 import classNames from 'classnames';
 import { View, Text } from '@tarojs/components'
 import MemberBadge from '@components/member-badge';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 UserInfo.propTypes = {
   name: PropTypes.string.isRequired, // 用户名称

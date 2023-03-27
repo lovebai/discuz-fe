@@ -1,8 +1,8 @@
 import styles from './index.module.scss';
 import React from 'react';
 import { View, Text } from '@tarojs/components';
-import Spin from '@discuzq/design/dist/components/spin/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import classNames from 'classnames';
 
 // 加载提示

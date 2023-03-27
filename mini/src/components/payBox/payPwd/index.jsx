@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './index.module.scss';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Dialog from '@discuzq/design/dist/components/dialog/index';
-import Divider from '@discuzq/design/dist/components/divider/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Dialog from '@discuzqfe/design/dist/components/dialog/index';
+import Divider from '@discuzqfe/design/dist/components/divider/index';
 import { inject, observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
 import { STEP_MAP } from '../../../../../common/constants/payBoxStoreConstants';

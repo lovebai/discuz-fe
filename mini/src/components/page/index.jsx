@@ -2,15 +2,15 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { View, Navigator, Text } from '@tarojs/components';
 import styles from './index.module.scss';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Popup from '@discuzq/design/dist/components/popup/index'
-import Button from '@discuzq/design/dist/components/button/index';;
-import Router from '@discuzq/sdk/dist/router';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index'
+import Button from '@discuzqfe/design/dist/components/button/index';;
+import Router from '@discuzqfe/sdk/dist/router';
 import { getCurrentInstance } from '@tarojs/taro';
 import PayBoxProvider from '@components/payBox/payBoxProvider';
 import { MINI_SITE_JOIN_WHITE_LIST, REVIEWING_USER_WHITE_LIST } from '@common/constants/site';
-import { ToastProvider } from '@discuzq/design/dist/components/toast/ToastProvider';
-import { DialogProvider } from '@discuzq/design/dist/components/dialog/dialogProvider';
+import { ToastProvider } from '@discuzqfe/design/dist/components/toast/ToastProvider';
+import { DialogProvider } from '@discuzqfe/design/dist/components/dialog/dialogProvider';
 import Taro from '@tarojs/taro';
 import { REVIEWING } from '@common/store/login/util';
 import LoginHelper from '@common/utils/login-helper';

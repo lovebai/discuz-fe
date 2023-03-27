@@ -1,4 +1,4 @@
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 
 // 附件、图片上传之前
 export default function (cloneList, showFileList, type, site) {

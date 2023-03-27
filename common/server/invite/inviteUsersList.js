@@ -1,4 +1,4 @@
-import {inviteUsersList} from '@discuzq/sdk/dist/api/invite/invite-users-list';
+import {inviteUsersList} from '@discuzqfe/sdk/dist/api/invite/invite-users-list';
 
 /** 邀请用户列表
  * @param {object} params

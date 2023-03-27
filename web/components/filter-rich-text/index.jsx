@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { RichText } from '@discuzq/design';
+import { RichText } from '@discuzqfe/design';
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';
 

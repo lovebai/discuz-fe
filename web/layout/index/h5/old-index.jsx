@@ -1,6 +1,6 @@
 import React, { createRef, Fragment } from 'react';
 import { inject, observer, Observer } from 'mobx-react';
-import { Icon, Tabs } from '@discuzq/design';
+import { Icon, Tabs } from '@discuzqfe/design';
 import ThreadContent from '@components/thread';
 import HomeHeader from '@components/home-header';
 import styles from './index.module.scss';

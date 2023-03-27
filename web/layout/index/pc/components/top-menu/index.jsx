@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from './index.module.scss';
-import { Menu } from '@discuzq/design';
+import { Menu } from '@discuzqfe/design';
 import { noop } from '@components/thread/utils'
 import filterData from './data';
 import deepClone from '@common/utils/deep-clone';

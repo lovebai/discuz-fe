@@ -1,8 +1,8 @@
 import React from 'react';
 import { getCurrentInstance } from '@tarojs/taro';
 import { inject } from 'mobx-react';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Popup from '@discuzq/design/dist/components/popup/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
 import { Button, View } from '@tarojs/components';
 import { miniLogin } from '@server';
 import setAccessToken from '@common/utils/set-access-token';
@@ -13,7 +13,7 @@ import { getParamCode, getUserProfile } from '../common/utils'
 import layout from './index.module.scss';
 import { MOBILE_LOGIN_STORE_ERRORS } from '@common/store/login/mobile-login-store';
 import LoginHelper from '@common/utils/login-helper';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 const NEED_BIND_OR_REGISTER_USER = -7016;
 

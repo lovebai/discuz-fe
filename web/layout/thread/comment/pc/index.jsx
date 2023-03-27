@@ -1,13 +1,13 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import styles from './index.module.scss';
 import AuthorInfo from '../../pc/components/author-info/index';
 import CommentList from '../../pc/components/comment-list/index';
 import Recommend from '@components/recommend';
 import Header from '@components/header';
-import { Icon, Toast } from '@discuzq/design';
+import { Icon, Toast } from '@discuzqfe/design';
 import LoadingTips from '@components/thread-detail-pc/loading-tips';
 import RewardDisplay from '@components/thread-detail-pc/reward-display';
 import RedPacketDisplay from '@components/thread-detail-pc/red-packet-display';

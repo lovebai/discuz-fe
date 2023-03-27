@@ -10,7 +10,7 @@ import VoteDisplay from '@components/thread/vote-display';
 import PostRewardProgressBar, { POST_TYPE } from '@components/thread/post-reward-progress-bar';
 import Tip from '@components/thread/tip';
 import AttachmentView from '@components/thread/attachment-view';
-import { Icon, Button, Divider, Dropdown, Toast } from '@discuzq/design';
+import { Icon, Button, Divider, Dropdown, Toast } from '@discuzqfe/design';
 import UserInfo from '@components/thread/user-info';
 import classnames from 'classnames';
 import topic from './index.module.scss';
@@ -22,7 +22,7 @@ import Avatar from '@components/avatar';
 
 import Packet from '@components/thread/packet';
 import PacketOpen from '@components/red-packet-animation/web';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import DZQPluginCenterInjectionPolyfill from '../../../../utils/DZQPluginCenterInjectionPolyfill';
 // import DZQPluginCenterInjection from '../../../../utils/DZQPluginCenterInjection';
 import isServer from '@common/utils/is-server';

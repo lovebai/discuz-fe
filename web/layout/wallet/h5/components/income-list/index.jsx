@@ -1,12 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import { time } from '@discuzq/sdk/dist/index';
+import { time } from '@discuzqfe/sdk/dist/index';
 import { diffDate } from '@common/utils/diff-date';
 import styles from './index.module.scss';
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';
-import RichText from '@discuzq/design/dist/components/rich-text/index';
+import RichText from '@discuzqfe/design/dist/components/rich-text/index';
 
 
 @observer

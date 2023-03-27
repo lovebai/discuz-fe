@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Dialog } from '@discuzq/design';
+import { Icon, Dialog } from '@discuzqfe/design';
 import { MINI_SHOP_TYPE, PLATFORM_SHOP_TYPE } from '@common/plugin/Shop/View/src/common';
 import styles from '../index.module.scss';
 import classNames from 'classnames';

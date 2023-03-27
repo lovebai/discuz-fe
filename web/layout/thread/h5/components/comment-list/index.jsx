@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import Avatar from '@components/avatar';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import ReplyList from '../reply-list/index';
 import { diffDate } from '@common/utils/diff-date';
 import { observer, inject } from 'mobx-react';

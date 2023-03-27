@@ -6,7 +6,7 @@ import ActiveUsersMore from '../../../search/pc/components/active-users-more';
 import Copyright from '@components/copyright';
 import SidebarPanel from '@components/sidebar-panel';
 import PopTopic from '@components/pop-topic';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 
 @inject('site')
 @inject('user')

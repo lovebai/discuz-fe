@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Checkbox } from '@discuzq/design';
+import { Checkbox } from '@discuzqfe/design';
 import AttachmentView from '@components/thread/attachment-view';
 
 const AttachmentRender = inject('threadPost')(

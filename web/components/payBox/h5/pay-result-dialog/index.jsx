@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, Button } from '@discuzq/design';
+import { Dialog, Button } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import { inject, observer } from 'mobx-react';
 import browser from '@common/utils/browser';

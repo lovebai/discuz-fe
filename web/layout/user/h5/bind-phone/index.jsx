@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import { Button, Toast } from '@discuzq/design';
+import { Button, Toast } from '@discuzqfe/design';
 import layout from './index.module.scss';
 import PhoneInput from '@components/login/phone-input';
 import HomeHeader from '@components/home-header';
@@ -14,7 +14,7 @@ import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 import { isExtFieldsOpen } from '@common/store/login/util';
 import { MOBILE_LOGIN_STORE_ERRORS } from '@common/store/login/mobile-login-store';
 import loginHelper from '@common/utils/login-helper';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 
 @inject('site')

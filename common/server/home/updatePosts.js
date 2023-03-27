@@ -1,4 +1,4 @@
-import { updatePosts } from '@discuzq/sdk/dist/api/home/update-posts';
+import { updatePosts } from '@discuzqfe/sdk/dist/api/home/update-posts';
 
 /** 修改评论接口
  * @param {object} params

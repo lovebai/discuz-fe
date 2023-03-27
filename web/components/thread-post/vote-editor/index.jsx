@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Radio, Button, Input, Toast, Icon } from '@discuzq/design';
+import { Radio, Button, Input, Toast, Icon } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 import DDialog from '@components/dialog';

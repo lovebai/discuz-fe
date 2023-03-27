@@ -3,7 +3,7 @@
  */
 import React, { useState, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Input, Radio, Slider, Toast } from '@discuzq/design';
+import { Button, Input, Radio, Slider, Toast } from '@discuzqfe/design';
 import DDialog from '@components/dialog';
 import styles from './index.module.scss';
 import PropTypes from 'prop-types';

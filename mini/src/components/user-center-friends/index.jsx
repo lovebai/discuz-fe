@@ -1,7 +1,7 @@
 import React from 'react';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Button from '@discuzq/design/dist/components/button/index';
-import Spin from '@discuzq/design/dist/components/spin/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
 import { View } from '@tarojs/components';
 import { inject, observer } from 'mobx-react';
 import Avatar from '@components/avatar';

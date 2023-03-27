@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 
 const showTop = (props) => {
   const { showContent, setTop } = props;

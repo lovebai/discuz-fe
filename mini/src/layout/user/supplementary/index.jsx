@@ -1,14 +1,14 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Button from '@discuzq/design/dist/components/button/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { View } from '@tarojs/components';
 import layout from './index.module.scss';
 import { getSignInFields, setSignInFields } from '@server';
 // import PcBodyWrap from '../components/pc-body-wrap';
 import HomeHeader from '@components/home-header';
 import { InputType, CreateFunctions } from './components';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import LoginHelper from '@common/utils/login-helper';
 
 @inject('site')

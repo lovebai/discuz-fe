@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from '../../index.module.scss';
-import { Checkbox } from '@discuzq/design';
+import { Checkbox } from '@discuzqfe/design';
 
 const ImageRender = inject('threadPost')(
   observer(({ ...props }) => {

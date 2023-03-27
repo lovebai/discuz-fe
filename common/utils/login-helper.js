@@ -1,4 +1,4 @@
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import {
   WEB_SITE_JOIN_WHITE_LIST,
   MINI_SITE_JOIN_WHITE_LIST

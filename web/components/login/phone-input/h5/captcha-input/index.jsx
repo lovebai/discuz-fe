@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject } from 'mobx-react';
 import layout from './index.module.scss';
-import { Input } from '@discuzq/design';
+import { Input } from '@discuzqfe/design';
 
 let inputIndex = null;
 

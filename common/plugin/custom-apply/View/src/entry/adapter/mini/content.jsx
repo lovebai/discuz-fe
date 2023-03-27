@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components';
-import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Checkbox } from '@discuzq/design';
+import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Checkbox } from '@discuzqfe/design';
 import DatePickers from '@components/thread-post/date-time-picker';
 import classNames from 'classnames';
 import { formatDate } from '@common/utils/format-date';

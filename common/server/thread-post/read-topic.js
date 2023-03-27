@@ -1,4 +1,4 @@
-import {readTopicsList} from '@discuzq/sdk/dist/api/content/read-topicslist';
+import {readTopicsList} from '@discuzqfe/sdk/dist/api/content/read-topicslist';
 
 /**
  * 获取话题列表

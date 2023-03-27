@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Tabs, Spin } from '@discuzq/design';
+import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Tabs, Spin } from '@discuzqfe/design';
 import { goodImages } from '@common/constants/const';
 import ShopProductItem from '../../../components/shopProductItem';
 import { readProcutAnalysis } from '@common/server';

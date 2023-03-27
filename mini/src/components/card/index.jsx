@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Button } from '@tarojs/components'
-import { Checkbox } from '@discuzq/design';
+import { Checkbox } from '@discuzqfe/design';
 import styles from './index.module.scss'
 import Card from './card';
 import { saveToAlbum } from './utils'

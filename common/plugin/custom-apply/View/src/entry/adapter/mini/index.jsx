@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components';
-import { Icon, Dialog, Toast } from '@discuzq/design';
+import { Icon, Dialog, Toast } from '@discuzqfe/design';
 import CustomApplyEntryContent from './content';
 import { getPostData } from '@common/plugin/custom-apply/View/src/common';
 import { ONE_DAY } from '@common/constants/thread-post';

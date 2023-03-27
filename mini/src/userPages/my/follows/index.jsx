@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import { View } from '@tarojs/components';
 import { getCurrentInstance } from '@tarojs/taro';
 import UserCenterFollows from '@components/user-center-follow';
-import Divider from '@discuzq/design/dist/components/divider/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Divider from '@discuzqfe/design/dist/components/divider/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import Page from '@components/page';
 import styles from './index.module.scss';
 import Taro from '@tarojs/taro';

@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {Icon,Button} from '@discuzq/design'
+import {Icon,Button} from '@discuzqfe/design'
 import Header from '@components/header';
 import Copyright from '@components/copyright';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 export default function ErrorPage() {
 

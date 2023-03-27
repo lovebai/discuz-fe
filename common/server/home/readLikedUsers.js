@@ -1,4 +1,4 @@
-import { readLikedUsers } from '@discuzq/sdk/dist/api/home/read-liked-users';
+import { readLikedUsers } from '@discuzqfe/sdk/dist/api/home/read-liked-users';
 
 /** 获取点赞、打赏用户列表
  * @param {object} params

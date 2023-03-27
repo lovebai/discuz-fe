@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import Button from '@discuzq/design/dist/components/button/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import Avatar from '../../avatar';
 import { noop } from '../utils';
 import styles from './index.module.scss';

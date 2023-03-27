@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import { observer, inject } from 'mobx-react';
 import { PluginToolbar, DefaultToolbar, GeneralUpload, Title, Content, ClassifyPopup, OptionPopup, Position, Emoji } from '@components/thread-post';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { Units } from '@components/common';
 import styles from './index.module.scss';
 import { THREAD_TYPE, MAX_COUNT, THREAD_STATUS } from '@common/constants/thread-post';
@@ -21,8 +21,8 @@ import * as localData from '@common/utils/thread-post-localdata';
 import TagLocalData from '@components/thread-post/tag-localdata';
 import VoteWidget from '@components/thread-post/vote-widget';
 import typeofFn from '@common/utils/typeof';
-import DZQPluginCenterInjection from '@discuzq/plugin-center/dist/components/DZQPluginCenterInjection';
-import Dialog from '@discuzq/design/dist/components/dialog/index';
+import DZQPluginCenterInjection from '@discuzqfe/plugin-center/dist/components/DZQPluginCenterInjection';
+import Dialog from '@discuzqfe/design/dist/components/dialog/index';
 
 // 插件引入
 /**DZQ->plugin->register<plugin_post@post_extension_content_hook>**/

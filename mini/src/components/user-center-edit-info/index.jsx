@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Taro from '@tarojs/taro';
 import UserCenterEditHeader from '../user-center-edit-header';
-import Button from '@discuzq/design/dist/components/button/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Input from '@discuzq/design/dist/components/input/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Spin from '@discuzq/design/dist/components/spin/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
 import styles from './index.module.scss';
 import Avatar from '@components/avatar';
 import { inject, observer } from 'mobx-react';

@@ -3,7 +3,7 @@ import Withdrawal from '@layout/wallet/withdrawal';
 import { readWalletUser } from '@server';
 import Taro from '@tarojs/taro';
 import Page from '@components/page';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 
 class WalletPage extends React.Component {
   constructor(props) {

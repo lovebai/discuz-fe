@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useEffect, useState } from 'react';
-import Button from '@discuzq/design/dist/components/button/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import RichText from '@discuzq/design/dist/components/rich-text/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import RichText from '@discuzqfe/design/dist/components/rich-text/index';
 import AudioPlay from './audio-play';
 import PostContent from './post-content';
 import ProductItem from './product-item';
@@ -14,7 +14,7 @@ import Packet from './packet';
 import styles from './index.module.scss';
 import { View, Text } from '@tarojs/components';
 import { getElementRect, randomStr, noop, handleLink } from './utils'
-import DZQPluginCenterInjection from '@discuzq/plugin-center/dist/components/DZQPluginCenterInjection';
+import DZQPluginCenterInjection from '@discuzqfe/plugin-center/dist/components/DZQPluginCenterInjection';
 
 // 插件引入
 /**DZQ->plugin->register<plugin_index@thread_extension_display_hook>**/

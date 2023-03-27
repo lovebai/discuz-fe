@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Textarea, Icon, Input, Toast } from '@discuzq/design';
+import { Button, Textarea, Icon, Input, Toast } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import Emoji from '@components/editor/emoji';
 import styles from './index.module.scss';

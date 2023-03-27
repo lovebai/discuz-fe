@@ -4,7 +4,7 @@
  * 详细案例参考 https://github.com/Hacker0x01/react-datepicker/
  */
 import React, { memo, useState, useEffect } from 'react'; // 性能优化的
-import { Button, Input, Toast, Icon } from '@discuzq/design'; // 原来就有的封装
+import { Button, Input, Toast, Icon } from '@discuzqfe/design'; // 原来就有的封装
 import DatePickers from '@components/thread/date-picker'; // 原来就有的封装
 import DDialog from '@components/dialog';
 import DatePicker, { registerLocale } from 'react-datepicker';

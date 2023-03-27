@@ -1,5 +1,5 @@
 import React from 'react';
-import { Spin } from '@discuzq/design';
+import { Spin } from '@discuzqfe/design';
 import styles from './index.module.scss';
 
 /**

@@ -1,4 +1,4 @@
-import {usernameAutoBind} from '@discuzq/sdk/dist/api/login/wx-username-auto-bind';
+import {usernameAutoBind} from '@discuzqfe/sdk/dist/api/login/wx-username-auto-bind';
 export default async function _usernameAutoBind(opts, ctx) {
   const res = await usernameAutoBind({ ...opts, __context: ctx });
   return res;

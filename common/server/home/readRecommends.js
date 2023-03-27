@@ -1,4 +1,4 @@
-import { readRecommends } from '@discuzq/sdk/dist/api/home/read-recommends';
+import { readRecommends } from '@discuzqfe/sdk/dist/api/home/read-recommends';
 
 /** 推荐列表
  * @param {object} params

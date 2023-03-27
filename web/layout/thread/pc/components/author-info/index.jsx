@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Toast, Button } from '@discuzq/design';
+import { Icon, Toast, Button } from '@discuzqfe/design';
 import Avatar from '@components/avatar';
 import styles from './index.module.scss';
 import { diffDate } from '@common/utils/diff-date';

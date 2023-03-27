@@ -1,8 +1,8 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import Button from '@discuzq/design/dist/components/button/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Input from '@discuzq/design/dist/components/input/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
 import { View } from '@tarojs/components';
 import layout from './index.module.scss';
 import HomeHeader from '@components/home-header';
@@ -11,7 +11,7 @@ import clearLoginStatus from '@common/utils/clear-login-status';
 import { get } from '@common/utils/get';
 import { BANNED_USER, REVIEWING, REVIEW_REJECT, isExtFieldsOpen } from '@common/store/login/util';
 import LoginHelper from '@common/utils/login-helper';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Page from '@components/page';
 
 @inject('site')

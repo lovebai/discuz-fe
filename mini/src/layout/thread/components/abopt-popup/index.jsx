@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Popup from '@discuzq/design/dist/components/popup/index';
-import Button from '@discuzq/design/dist/components/button/index';
-import Slider from '@discuzq/design/dist/components/slider/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Slider from '@discuzqfe/design/dist/components/slider/index';
 import { debounce } from '@common/utils/throttle-debounce';
 import { View } from '@tarojs/components';
 import styles from './index.module.scss';

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Input, Toast, Spin } from '@discuzq/design';
+import { Button, Input, Toast, Spin } from '@discuzqfe/design';
 import Header from '@components/header';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import styles from './index.module.scss';
 
 @inject('user')

@@ -1,4 +1,4 @@
-import { deleteFollow } from '@discuzq/sdk/dist/api/search/delete-follow';
+import { deleteFollow } from '@discuzqfe/sdk/dist/api/search/delete-follow';
 
 /** 删除我的关注/我的粉丝
  * @param {object} params

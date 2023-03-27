@@ -2,8 +2,8 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 import Header from '@components/header';
-import {Button} from '@discuzq/design';
-import Router from '@discuzq/sdk/dist/router';
+import {Button} from '@discuzqfe/design';
+import Router from '@discuzqfe/sdk/dist/router';
 import { ERROR_PAGE_TIPS } from '@common/constants/site';
 import Copyright from '@components/copyright';
 

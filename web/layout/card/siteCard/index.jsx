@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './index.module.scss';
 import { inject, observer } from 'mobx-react';
-import { Avatar } from '@discuzq/design';
+import { Avatar } from '@discuzqfe/design';
 import classNames from 'classnames';
 import calcCosImageQuality from '@common/utils/calc-cos-image-quality';
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Icon, Button } from '@discuzq/design';
+import { Icon, Button } from '@discuzqfe/design';
 import { parseContentData } from '../../utils';
 import ImageDisplay from '@components/thread/image-display';
 import AudioPlay from '@components/thread/audio-play';
@@ -20,7 +20,7 @@ import IframeVideoDisplay from '@components/thread-post/iframe-video-display';
 import Avatar from '@components/avatar';
 import Packet from '@components/thread/packet';
 import PacketOpen from '@components/red-packet-animation/h5';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import DZQPluginCenterInjectionPolyfill from '../../../../utils/DZQPluginCenterInjectionPolyfill';
 import isServer from '@common/utils/is-server';
 

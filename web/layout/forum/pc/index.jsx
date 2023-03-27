@@ -1,14 +1,14 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import { Icon, ScrollView } from '@discuzq/design';
+import { Icon, ScrollView } from '@discuzqfe/design';
 import Avatar from '@components/avatar';
 import layout from './index.module.scss';
 import BaseLayout from '@components/user-center-base-laout-pc';
 import Copyright from '@components/copyright';
 import TrendingTopic from '@layout/search/pc/components/trending-topics';
 import SidebarPanel from '@components/sidebar-panel';
-import Time from '@discuzq/sdk/dist/time';
+import Time from '@discuzqfe/sdk/dist/time';
 import { numberFormat } from '@common/utils/number-format';
 import UserCenterUsersPc from '@components/user-center/users-pc';
 import { COMMON_PERMISSION, PERMISSION_PLATE } from '@common/constants/site';

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
 import { View, Text } from '@tarojs/components';
-import Button from '@discuzq/design/dist/components/button/index';
-import Tabs from '@discuzq/design/dist/components/tabs/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Tabs from '@discuzqfe/design/dist/components/tabs/index';
 import { inject, observer } from 'mobx-react';
 import { payGroupLevelStyle as levelStyle } from '@common/constants/const';
 import groupPay from '@common/pay-bussiness/group-pay';
 import classnames from 'classnames';
 import Taro from '@tarojs/taro';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 const Index = ({ site, user, shipCardClassName }) => {
   const { userInfo, payGroups, } = user;

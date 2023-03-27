@@ -1,6 +1,6 @@
 import React from 'react';
 import UserCenterFriends from '../user-center-friends';
-import { Spin } from '@discuzq/design';
+import { Spin } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import { createFollow, deleteFollow, getUserFans, readUsersList } from '@server';
 import { get } from '@common/utils/get';

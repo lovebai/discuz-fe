@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { Text } from '@tarojs/components';
-import Tag from '@discuzq/design/dist/components/tag/index';
+import Tag from '@discuzqfe/design/dist/components/tag/index';
 import { inject, observer } from 'mobx-react';
 import * as localData from '@common/utils/thread-post-localdata';
 import classNames from 'classnames';

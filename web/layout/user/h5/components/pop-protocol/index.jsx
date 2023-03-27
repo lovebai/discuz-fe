@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject } from 'mobx-react';
-import { Popup } from '@discuzq/design';
+import { Popup } from '@discuzqfe/design';
 import layout from './index.module.scss';
 import { getClientHeight } from '@common/utils/get-client-height';
 

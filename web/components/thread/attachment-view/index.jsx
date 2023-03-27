@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Icon, Toast, Spin, AudioPlayer } from '@discuzq/design';
+import { Icon, Toast, Spin, AudioPlayer } from '@discuzqfe/design';
 import { extensionList, isPromise, noop } from '../utils';
 import { throttle } from '@common/utils/throttle-debounce.js';
-import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
+import h5Share from '@discuzqfe/sdk/dist/common_modules/share/h5';
 import isWeiXin from '@common/utils/is-weixin';
 import { FILE_PREVIEW_FORMAT, AUDIO_FORMAT } from '@common/constants/thread-post';
 import FilePreview from './../file-preview';
@@ -14,7 +14,7 @@ import { readDownloadAttachment } from '@server';
 import goToLoginPage from '@common/utils/go-to-login-page';
 
 import styles from './index.module.scss';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 /**
  * 附件 - 免费附件正常展示，付费附件隐藏

@@ -1,6 +1,6 @@
 import React from 'react';
 import Taro, { eventCenter, getCurrentInstance } from '@tarojs/taro';
-import { Icon, Dialog, Toast } from '@discuzq/design';
+import { Icon, Dialog, Toast } from '@discuzqfe/design';
 
 export default class ShopPostEntry extends React.Component {
   constructor(props) {

@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Taro, { getCurrentInstance, navigateTo, redirectTo, navigateBack } from '@tarojs/taro';
-import Button from '@discuzq/design/dist/components/button/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Input from '@discuzq/design/dist/components/input/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
 import { View, Text } from '@tarojs/components';
 import Page from '@components/page';
 import { BANNED_USER, REVIEWING, REVIEW_REJECT, isExtFieldsOpen } from '@common/store/login/util';

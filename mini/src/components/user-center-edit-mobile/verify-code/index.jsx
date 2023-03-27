@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '@discuzq/design/dist/components/button/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
 import styles from './index.module.scss';
 import { View } from '@tarojs/components';
 

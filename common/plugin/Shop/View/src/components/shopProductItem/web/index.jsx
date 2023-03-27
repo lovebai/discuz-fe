@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Checkbox } from '@discuzq/design';
+import { Checkbox } from '@discuzqfe/design';
 import styles from '../index.module.scss';
 
 export default class ShopProductItemWebInstance extends React.Component {

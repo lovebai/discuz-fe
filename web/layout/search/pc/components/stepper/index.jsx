@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styles from './index.module.scss';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import { noop } from '@components/thread/utils';
 import datas from './data';
 import UnreadRedDot from '@components/unread-red-dot';

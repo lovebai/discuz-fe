@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { Button, Icon, Avatar, Toast, Dialog } from '@discuzq/design';
+import { Button, Icon, Avatar, Toast, Dialog } from '@discuzqfe/design';
 import PopupList from '@components/thread/popup-list';
 import CountDown from '@common/utils/count-down';
 import LoginHelper from '@common/utils/login-helper';

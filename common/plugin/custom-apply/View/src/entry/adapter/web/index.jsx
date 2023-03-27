@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Checkbox } from '@discuzq/design';
+import { Icon, Dialog, Button, Input, Textarea, Radio, Toast, Checkbox } from '@discuzqfe/design';
 // 移动端时间选择
 import DatePickers from '@components/thread/date-picker';
 // pc 端时间选择

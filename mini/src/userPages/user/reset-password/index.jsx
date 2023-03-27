@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Taro, { redirectTo } from '@tarojs/taro';
-import Button from '@discuzq/design/dist/components/button/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Input from '@discuzq/design/dist/components/input/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
 import PhoneInput from '@components/login/phone-input';
 import { toTCaptcha } from '@common/utils/to-tcaptcha'
 import { View } from '@tarojs/components';

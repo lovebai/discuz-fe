@@ -1,5 +1,5 @@
-// import {deleteDeny} from '@discuzq/sdk/dist/api/user/delete-deny';
-import { readYundianboSign } from '@discuzq/sdk/dist/api/other/read-yundianbo-signature';
+// import {deleteDeny} from '@discuzqfe/sdk/dist/api/user/delete-deny';
+import { readYundianboSign } from '@discuzqfe/sdk/dist/api/other/read-yundianbo-signature';
 /**
  * 云点播前端上传签名
  */

@@ -1,4 +1,4 @@
-import { readUsersList } from '@discuzq/sdk/dist/api/search/read-users-list';
+import { readUsersList } from '@discuzqfe/sdk/dist/api/search/read-users-list';
 
 /** 成员列表
  * @param {object} params

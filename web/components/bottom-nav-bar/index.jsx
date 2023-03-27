@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { observer, inject } from 'mobx-react';
 import styles from './index.module.scss';
-import { Icon, Toast } from '@discuzq/design';
+import { Icon, Toast } from '@discuzqfe/design';
 import { noop } from '@components/thread/utils';
 import { withRouter } from 'next/router';
 import UnreadRedDot from '@components/unread-red-dot';

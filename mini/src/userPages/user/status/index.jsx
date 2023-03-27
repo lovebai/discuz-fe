@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { getCurrentInstance, redirectTo } from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
-// import Button from '@discuzq/design/dist/components/button/index';
-import Button from '@discuzq/design/dist/components/button/index';
+// import Button from '@discuzqfe/design/dist/components/button/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
 import Page from '@components/page';
 import layout from './index.module.scss';
 import clearLoginStatus from '@common/utils/clear-login-status';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 @inject('user')
 @inject('site')

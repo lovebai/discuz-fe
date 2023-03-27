@@ -7,8 +7,8 @@ import { diffDate } from '@common/utils/diff-date';
 
 import styles from './index.module.scss';
 
-import { Icon, Button } from '@discuzq/design';
-import { time } from '@discuzq/sdk/dist';
+import { Icon, Button } from '@discuzqfe/design';
+import { time } from '@discuzqfe/sdk/dist';
 
 const STATUS_MAP = {
   1: '待审核',

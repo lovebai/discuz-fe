@@ -7,7 +7,7 @@ import NoData from '@components/no-data';
 import Copyright from '@components/copyright';
 import UserCenterFansPc from '@components/user-center/fans-pc';
 import styles from './index.module.scss';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import { withRouter } from 'next/router';
 
 @inject('index')

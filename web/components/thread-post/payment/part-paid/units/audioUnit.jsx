@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import Unit from '@components/thread-post/payment/part-paid/units/unit';
-import { Checkbox } from '@discuzq/design';
+import { Checkbox } from '@discuzqfe/design';
 import React from 'react';
 import AudioRender from '@components/thread-post/payment/part-paid/renders/audioRender';
 

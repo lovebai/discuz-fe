@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Popup, Button, Input, Icon, Toast } from '@discuzq/design';
+import { Popup, Button, Input, Icon, Toast } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import className from 'classnames';
 

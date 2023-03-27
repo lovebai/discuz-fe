@@ -1,11 +1,11 @@
 import React, { useState, Component, createRef } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Popup, Toast } from '@discuzq/design';
-import { Icon, Button, Dialog } from '@discuzq/design';
+import { Popup, Toast } from '@discuzqfe/design';
+import { Icon, Button, Dialog } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import MoneyInput from '../money-input';
 import classNames from 'classnames';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Payment from '../payment';
 
 @inject('wallet')

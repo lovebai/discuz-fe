@@ -1,7 +1,7 @@
 let PluginCenterInjection = () => {};
 
 if (process.env.DISCUZ_ENV === 'mini') {
-  const DZQPluginCenterInjection = require('@discuzq/plugin-center/dist/components/DZQPluginCenterInjection');
+  const DZQPluginCenterInjection = require('@discuzqfe/plugin-center/dist/components/DZQPluginCenterInjection');
   PluginCenterInjection = DZQPluginCenterInjection.default;
 }
 

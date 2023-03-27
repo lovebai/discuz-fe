@@ -4,7 +4,7 @@ import Avatar from '@components/avatar';
 import { diffDate } from '@common/utils/diff-date';
 import { observer } from 'mobx-react';
 import classnames from 'classnames';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import CommentInput from '../comment-input/index';
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';

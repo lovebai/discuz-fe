@@ -1,10 +1,10 @@
 import React from 'react';
 import { IMG_SRC_HOST } from '@common/constants/site';
 import styles from './index.module.scss';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import { inject, observer } from 'mobx-react';
 import { View, Text, Image, Button } from '@tarojs/components';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import SharePopup from '../thread/share-popup';
 import isWeiXin from '@common/utils/is-weixin';
 import { get } from '@common/utils/get';
@@ -12,7 +12,7 @@ import { get } from '@common/utils/get';
 // import joinLogoImg from '../../../../web/public/dzq-img/join-banner-bg.png';
 import { numberFormat } from '@common/utils/number-format';
 import SiteShare from '../site-share';
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 import goToLoginPage from '@common/utils/go-to-login-page';
 
 /**

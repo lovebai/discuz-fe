@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from '@tarojs/components';
-import { Checkbox, Video } from '@discuzq/design';
+import { Checkbox, Video } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import styles from '../../index.module.scss';
 

@@ -1,4 +1,4 @@
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 import Taro from '@tarojs/taro';
 // 汉字算2个字符，字母数字算1.2个
 export const getByteLen = (val) => {

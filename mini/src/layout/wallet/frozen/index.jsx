@@ -2,10 +2,10 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
 import List from '@components/list';
-import { time } from '@discuzq/sdk/dist/index';
+import { time } from '@discuzqfe/sdk/dist/index';
 import { diffDate } from '@common/utils/diff-date';
 import styles from './index.module.scss';
-import RichText from '@discuzq/design/dist/components/rich-text/index';
+import RichText from '@discuzqfe/design/dist/components/rich-text/index';
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';
 @inject('wallet')

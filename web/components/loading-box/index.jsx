@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Spin } from '@discuzq/design';
+import { Spin } from '@discuzqfe/design';
 
 export default function LoadingBox(props) {
   return (

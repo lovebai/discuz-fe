@@ -1,6 +1,6 @@
 import React from 'react';
 import Taro, { eventCenter, getCurrentInstance } from '@tarojs/taro';
-import { Icon, Button, Input, Tabs, Toast, Spin, Divider } from '@discuzq/design';
+import { Icon, Button, Input, Tabs, Toast, Spin, Divider } from '@discuzqfe/design';
 import { View, Image, CoverView } from '@tarojs/components';
 import { goodImages } from '@common/constants/const';
 import styles from '../index.module.scss';

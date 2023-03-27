@@ -3,7 +3,7 @@
  */
 import React, { memo } from 'react';
 import { View } from '@tarojs/components';
-import Popup from '@discuzq/design/dist/components/popup/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
 import styles from './index.module.scss';
 
 import PropTypes from 'prop-types';

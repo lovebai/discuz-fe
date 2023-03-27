@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox } from '@discuzq/design';
+import { Checkbox } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import Unit from '@components/thread-post/payment/part-paid/units/unit';
 import AudioRender from '@components/thread-post/payment/part-paid/renders/audioRender';

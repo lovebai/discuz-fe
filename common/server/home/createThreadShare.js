@@ -1,4 +1,4 @@
-import { createThreadShare } from '@discuzq/sdk/dist/api/home/create-thread-share';
+import { createThreadShare } from '@discuzqfe/sdk/dist/api/home/create-thread-share';
 
 /** 创建帖子分享
  * @param {object} params

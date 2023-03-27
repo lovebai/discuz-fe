@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
 import { diffDate } from '@common/utils/diff-date';
-import { time } from '@discuzq/sdk/dist/index';
+import { time } from '@discuzqfe/sdk/dist/index';
 import styles from './index.module.scss';
 
 const STATUS_MAP = {

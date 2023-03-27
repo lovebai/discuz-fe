@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from '@tarojs/components';
 import styles from './index.module.scss';
 import classNames from 'classnames';
-import Badge from '@discuzq/design/dist/components/badge/index';
+import Badge from '@discuzqfe/design/dist/components/badge/index';
 
 
 const Index = ({ children, unreadCount, type = '', style = {}, dotStyle = {} }) => {

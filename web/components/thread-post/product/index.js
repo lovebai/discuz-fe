@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { useRouter } from 'next/router';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';

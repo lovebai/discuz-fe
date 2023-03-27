@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { inject, observer } from 'mobx-react';
 import Unit from '@components/thread-post/payment/part-paid/units/unit';
 import { Text } from '@tarojs/components';
-import { Input } from '@discuzq/design';
+import { Input } from '@discuzqfe/design';
 
 const PriceUnit = inject('threadPost')(
   observer(({ ...props }) => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import isWeiXin from '@common/utils/is-weixin';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import { readDownloadAttachment } from '@server';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Checkbox, Radio, Icon, Toast } from '@discuzq/design';
+import { Input, Checkbox, Radio, Icon, Toast } from '@discuzqfe/design';
 import { ATTACHMENT_TYPE, ACCEPT_FILE_TYPES, ACCEPT_IMAGE_TYPES } from '@common/constants/thread-post';
 import DZQUpload from '@components/upload';
 import beforeUpload from '@common/utils/before-upload';

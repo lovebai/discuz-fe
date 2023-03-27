@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
 import { inject, observer } from 'mobx-react';
-import { Popup, Icon, Button, Radio, Toast, Spin } from '@discuzq/design';
-import Router from '@discuzq/sdk/dist/router';
+import { Popup, Icon, Button, Radio, Toast, Spin } from '@discuzqfe/design';
+import Router from '@discuzqfe/sdk/dist/router';
 import { PAY_MENT_MAP, PAYWAY_MAP, STEP_MAP } from '../../../../../common/constants/payBoxStoreConstants';
 import isWeixin from '@common/utils/is-weixin';
 import {

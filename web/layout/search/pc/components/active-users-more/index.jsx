@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import Avatar from '@components/avatar';
-import { Button, Icon } from '@discuzq/design';
+import { Button, Icon } from '@discuzqfe/design';
 import MemberBadge from '@components/member-badge';
 import classnames from 'classnames';
 

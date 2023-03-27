@@ -1,4 +1,4 @@
-import {readFollow} from '@discuzq/sdk/dist/api/user/read-follow';
+import {readFollow} from '@discuzqfe/sdk/dist/api/user/read-follow';
 
 /**
  * 获取粉丝关注

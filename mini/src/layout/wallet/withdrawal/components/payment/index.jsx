@@ -1,4 +1,4 @@
-import { Input, Radio } from '@discuzq/design';
+import { Input, Radio } from '@discuzqfe/design';
 import { View, Text } from '@tarojs/components';
 import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
 import styles from './index.module.scss';

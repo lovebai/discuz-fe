@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { Button, Icon } from '@discuzq/design';
+import { Button, Icon } from '@discuzqfe/design';
 import AudioPlay from './audio-play';
 import PostContent from './post-content';
 import ProductItem from './product-item';

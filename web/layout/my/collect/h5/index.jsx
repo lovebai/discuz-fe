@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import ThreadContent from '@components/thread';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import BaseLayout from '@components/base-layout';
 import throttle from '@common/utils/thottle.js';

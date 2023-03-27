@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Taro from '@tarojs/taro';
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 import CommentList from '@layout/thread/components/comment-list/index';
 import AboptPopup from '@layout/thread/components/abopt-popup';
 import { View } from '@tarojs/components'

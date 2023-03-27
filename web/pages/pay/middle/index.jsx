@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 import getQueryString from '@common/utils/get-query-string';

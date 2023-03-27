@@ -1,4 +1,4 @@
-import {smsResetPwd} from '@discuzq/sdk/dist/api/login/smsresetpwd';
+import {smsResetPwd} from '@discuzqfe/sdk/dist/api/login/smsresetpwd';
 
 export default async function _smsResetPwd(opts, ctx = null) {
   const res = await smsResetPwd({ ...opts, __context: ctx });

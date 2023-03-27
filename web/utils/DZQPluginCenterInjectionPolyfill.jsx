@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import DZQPluginCenterInjection from '@discuzq/plugin-center/dist/components/DZQPluginCenterInjection';
+import DZQPluginCenterInjection from '@discuzqfe/plugin-center/dist/components/DZQPluginCenterInjection';
 
 // next对于node_modules内的inject在服务器构建时会报错，需要添加垫片才能正常引用
 

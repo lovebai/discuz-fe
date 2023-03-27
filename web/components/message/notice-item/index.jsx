@@ -18,11 +18,11 @@
  *
  */
 import React, { Component } from 'react';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import classNames from 'classnames';
 import styles from './index.module.scss';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Avatar from '@components/avatar';
 
 import { diffDate } from '@common/utils/diff-date';

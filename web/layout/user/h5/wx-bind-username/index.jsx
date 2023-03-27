@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import layout from './index.module.scss';
-import { Input, Button, Toast, Avatar } from '@discuzq/design';
+import { Input, Button, Toast, Avatar } from '@discuzqfe/design';
 import HomeHeader from '@components/home-header';
 import { get } from '@common/utils/get';
 import { BANNED_USER, REVIEWING, REVIEW_REJECT, isExtFieldsOpen } from '@common/store/login/util';

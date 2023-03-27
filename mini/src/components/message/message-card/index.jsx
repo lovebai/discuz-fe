@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from '@tarojs/components';
 import UnreadRedDot from '@components/unread-red-dot';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import PropTypes from 'prop-types';
 
 import styles from './index.module.scss';

@@ -1,6 +1,6 @@
 
 
-import { getWXConfig } from '@discuzq/sdk/dist/api/wx/get-wx-config';
+import { getWXConfig } from '@discuzqfe/sdk/dist/api/wx/get-wx-config';
 import browser from '@common/utils/browser';
 const DEFAULT_JSAPULIST = ['closeWindow', 'chooseImage', 'uploadImage', 'getLocalImgData', 'updateAppMessageShareData', 'updateTimelineShareData', 'getNetworkType'];
 

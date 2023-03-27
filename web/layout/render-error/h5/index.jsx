@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import {Icon,Button} from '@discuzq/design'
+import {Icon,Button} from '@discuzqfe/design'
 import Header from '@components/header';
 import Copyright from '@components/copyright';
 

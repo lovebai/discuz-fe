@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react';
 import { View, Image } from '@tarojs/components';
 
 import styles from './index.module.scss';
-import Popup from '@discuzq/design/dist/components/popup/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
 
 
 const Index = inject('threadPost')(observer(({ threadPost, show = false, onHide = () => { }, onClick = () => { } }) => {

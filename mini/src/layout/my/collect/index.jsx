@@ -4,7 +4,7 @@ import ThreadContent from '@components/thread';
 import styles from './index.module.scss';
 import BaseLayout from '@components/base-layout';
 import { View, Text } from '@tarojs/components';
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 import throttle from '@common/utils/thottle.js';
 
 @inject('site')

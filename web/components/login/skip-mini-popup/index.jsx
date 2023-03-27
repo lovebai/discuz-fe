@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Popup, Button } from '@discuzq/design';
+import { Icon, Popup, Button } from '@discuzqfe/design';
 import styles from './index.module.scss';
 
 const SkipMiniPopup = (props) => {

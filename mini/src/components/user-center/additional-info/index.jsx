@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import styles from './index.module.scss';
 import { inject, observer } from 'mobx-react';
 import { View, Text, Image } from '@tarojs/components';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Spin from '@discuzq/design/dist/components/spin/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
 
 @inject('user')
 @observer

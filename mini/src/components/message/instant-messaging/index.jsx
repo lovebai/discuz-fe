@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { View } from '@tarojs/components';
 import { inject, observer } from 'mobx-react';
 import Taro from '@tarojs/taro';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import DialogBox from './dialog-box';
 import InteractionBox from './interaction-box';
 import styles from './index.module.scss';

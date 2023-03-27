@@ -6,7 +6,7 @@
  * @prop {function} getAtList 确定
  */
 import React, { Component } from 'react';
-import { Popup, Input, Checkbox, Avatar, Button, ScrollView, Icon, Toast } from '@discuzq/design';
+import { Popup, Input, Checkbox, Avatar, Button, ScrollView, Icon, Toast } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';

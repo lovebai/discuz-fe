@@ -1,8 +1,8 @@
 import React from 'react';
 import Taro from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
-import Upload from '@discuzq/design/dist/components/upload/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Upload from '@discuzqfe/design/dist/components/upload/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import locals from '@common/utils/local-bridge';
 import constants from '@common/constants';
 import classNames from 'classnames';

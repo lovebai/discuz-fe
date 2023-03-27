@@ -1,12 +1,12 @@
 import React from 'react';
 import { withRouter } from 'next/router';
-import { Icon, Toast } from '@discuzq/design';
+import { Icon, Toast } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import BottomEvent from './bottom-event';
 import UserInfo from './user-info';
 import NoData from '../no-data';
 import styles from './index.module.scss';
-import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
+import h5Share from '@discuzqfe/sdk/dist/common_modules/share/h5';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import threadPay from '@common/pay-bussiness/thread-pay';
 import ThreadCenterView from './ThreadCenterView';

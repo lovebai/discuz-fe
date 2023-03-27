@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import { noop } from '@components/thread/utils';
 import styles from './index.module.scss';
 import Link from 'next/link';

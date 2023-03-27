@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Tabs } from '@discuzq/design';
+import { Button, Tabs } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import { payGroupLevelStyle as levelStyle } from '@common/constants/const';
 import groupPay from '@common/pay-bussiness/group-pay';
 import classnames from 'classnames';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Header from '@components/header';
 import styles from './index.module.scss';
 

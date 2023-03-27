@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useMemo, useState } from 'react';
 import { View, Image, Text } from '@tarojs/components';
-import Avatar from '@discuzq/design/dist/components/avatar/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Avatar from '@discuzqfe/design/dist/components/avatar/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { diffDate } from '@common/utils/diff-date';
 import classnames from 'classnames';
 import { inject, observer } from 'mobx-react';

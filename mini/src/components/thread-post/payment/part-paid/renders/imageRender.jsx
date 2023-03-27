@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox } from '@discuzq/design';
+import { Checkbox } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import { View, Image } from '@tarojs/components';
 import styles from '../../index.module.scss';

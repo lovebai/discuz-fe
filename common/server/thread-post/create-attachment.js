@@ -1,5 +1,5 @@
 import typeofFn from '@common/utils/typeof';
-import { createAttachments } from '@discuzq/sdk/dist/api/content/create-attachments';
+import { createAttachments } from '@discuzqfe/sdk/dist/api/content/create-attachments';
 
 /**
  * 附件、图片等上传接口 [先放到这里]

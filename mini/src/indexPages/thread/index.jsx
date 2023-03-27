@@ -1,6 +1,6 @@
 import React from 'react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Page from '@components/page';
 import { inject } from 'mobx-react';
 import ThreadMiniPage from '@layout/thread/index';

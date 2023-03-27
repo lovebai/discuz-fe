@@ -4,10 +4,10 @@
 import React from 'react';
 import Taro from '@tarojs/taro';
 import { View, Text, Image, Video } from '@tarojs/components';
-import { Divider } from '@discuzq/design';
+import { Divider } from '@discuzqfe/design';
 import styles from './index.module.scss';
-//  import Icon from '@discuzq/design/dist/components/icon/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+//  import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import getAttachmentIconLink from '@common/utils/get-attachment-icon-link';
 
 const Index = (props) => {

@@ -11,9 +11,9 @@ import UserCenterPost from '../../components/user-center-post';
 import SectionTitle from '@components/section-title';
 import PacketOpen from '@components/red-packet-animation';
 import Taro, { getCurrentInstance, eventCenter } from '@tarojs/taro';
-import ImagePreviewer from '@discuzq/design/dist/components/image-previewer/index';
+import ImagePreviewer from '@discuzqfe/design/dist/components/image-previewer/index';
 import classnames from 'classnames';
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 import UserCenterThreads from '@components/user-center-threads';
 import checkImgExists from '@common/utils/check-image-exists';
 

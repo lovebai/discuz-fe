@@ -1,7 +1,7 @@
 import React from 'react';
 import { IMG_SRC_HOST } from '@common/constants/site';
 import styles from './index.module.scss';
-import Popup from '@discuzq/design/dist/components/popup/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
 import { noop } from '../utils';
 import { View, Image } from '@tarojs/components'
 // import sharePointImg from '../../../../../web/public/dzq-img/sharePoint.png';

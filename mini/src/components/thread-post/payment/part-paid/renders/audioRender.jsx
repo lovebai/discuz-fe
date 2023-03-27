@@ -1,5 +1,5 @@
 import React from 'react';
-import { Audio } from '@discuzq/design';
+import { Audio } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 
 const AudioRender = inject('threadPost')(

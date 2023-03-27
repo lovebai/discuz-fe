@@ -2,7 +2,7 @@
  * 发帖页弹出层
  */
 import React, { memo } from 'react'; // 性能优化的
-import { Popup } from '@discuzq/design';// 原来就有的封装
+import { Popup } from '@discuzqfe/design';// 原来就有的封装
 import PropTypes from 'prop-types';// 类型拦截
 import styles from './index.module.scss';// 私有样式
 

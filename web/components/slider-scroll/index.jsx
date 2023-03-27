@@ -4,7 +4,7 @@
  * 抛出事件 onPullDown,onScrollBottom,onBtnClick
 */
 import React, { Component, PureComponent } from 'react';
-import { PullDownRefresh, Icon } from '@discuzq/design';
+import { PullDownRefresh, Icon } from '@discuzqfe/design';
 import classNames from 'classnames';
 import styles from './index.module.scss';
 import throttle from '@common/utils/thottle';

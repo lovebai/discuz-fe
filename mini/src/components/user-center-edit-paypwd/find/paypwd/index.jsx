@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
-import Button from '@discuzq/design/dist/components/button/index';
-import Input from '@discuzq/design/dist/components/input/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Spin from '@discuzq/design/dist/components/spin/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
 import styles from './index.module.scss';
 import CaptchaInput from '../../../user-center-edit-mobile/captcha-input';
 import VerifyCode from '../../../user-center-edit-mobile/verify-code';

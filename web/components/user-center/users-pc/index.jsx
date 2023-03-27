@@ -3,7 +3,7 @@ import SidebarPanel from '@components/sidebar-panel';
 import UserCenterUsers from '@components/user-center-users';
 import UserCenterUsersPopup from '@components/user-center-users-popup';
 import { inject, observer } from 'mobx-react';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import styles from './index.module.scss';
 import { withRouter } from 'next/router';
 

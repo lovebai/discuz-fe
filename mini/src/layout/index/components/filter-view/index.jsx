@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import Button from '@discuzq/design/dist/components/button/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Popup from '@discuzq/design/dist/components/popup/index';
-import Flex from '@discuzq/design/dist/components/flex/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
+import Flex from '@discuzqfe/design/dist/components/flex/index';
 import { noop } from '@components/thread/utils';
 import filterData from './data';
 import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import { ScrollView } from '@tarojs/components';
 import { substr } from '@common/utils/substr';
 

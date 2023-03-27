@@ -1,6 +1,6 @@
 import React from 'react';
 import UserCenterFriends from '../user-center-friends';
-import { Spin, Toast, Input, Button, Icon, Avatar } from '@discuzq/design';
+import { Spin, Toast, Input, Button, Icon, Avatar } from '@discuzqfe/design';
 import { followerAdapter } from './adapter';
 import friendsStyle from '@components/user-center/friend-pc/index.module.scss';
 import styles from './index.module.scss';
@@ -10,7 +10,7 @@ import deepClone from '@common/utils/deep-clone';
 import NoData from '@components/no-data';
 import { inject, observer } from 'mobx-react';
 import { debounce } from '@common/utils/throttle-debounce';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import throttle from '@common/utils/thottle.js';
 
 @inject('user')

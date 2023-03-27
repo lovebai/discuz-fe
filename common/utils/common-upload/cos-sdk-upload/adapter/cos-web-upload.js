@@ -1,6 +1,6 @@
 // cos 上传wiki：https://cloud.tencent.com/document/product/436/11459
 import { getCosTmpKey, updateAttachment } from '@common/server';
-import time from '@discuzq/sdk/dist/time';
+import time from '@discuzqfe/sdk/dist/time';
 import sha1 from 'js-sha1';
 
 export default (options) => {

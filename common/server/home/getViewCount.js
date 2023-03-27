@@ -1,4 +1,4 @@
-import { getViewCount } from '@discuzq/sdk/dist/api/home/get-view-count';
+import { getViewCount } from '@discuzqfe/sdk/dist/api/home/get-view-count';
 
 /** 描述：得到帖子浏览量，调用一次后端对该帖子浏览量加1
  * @param {object} params

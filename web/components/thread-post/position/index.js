@@ -6,7 +6,7 @@
  * @prop {function} onChange 监听位置改变事件
  */
 import React, { useState, useEffect } from 'react';
-import { Tag, Icon, Toast } from '@discuzq/design';
+import { Tag, Icon, Toast } from '@discuzqfe/design';
 import classNames from 'classnames';
 import styles from './index.module.scss';
 

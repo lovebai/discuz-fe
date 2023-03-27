@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { Provider } from 'mobx-react';
 import initializeStore from '@common/store';
 import Taro from '@tarojs/taro'
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import setTitle from '@common/utils/setTitle';
 import LoginHelper from '@common/utils/login-helper'
-import DZQPluginCenter from '@discuzq/plugin-center';
+import DZQPluginCenter from '@discuzqfe/plugin-center';
 import { STORAGE_KEY } from '@common/utils/viewcount-in-storage';
 import './app.scss';
 
 // 本地调试时全局引入组件库样式，生产构建时在pages/index中进行引入
 if (process.env.NODE_ENV === 'development') {
-  require('@discuzq/theme/src/index.scss');
+  require('@discuzqfe/theme/src/index.scss');
 }
 
 const appStore = initializeStore();

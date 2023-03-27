@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import Taro from '@tarojs/taro';
 import { View, Navigator } from '@tarojs/components';
-import RichText from '@discuzq/design/dist/components/rich-text/index';
+import RichText from '@discuzqfe/design/dist/components/rich-text/index';
 import Avatar from '@components/avatar';
 import UnreadRedDot from '@components/unread-red-dot';
 import { inject, observer } from 'mobx-react';

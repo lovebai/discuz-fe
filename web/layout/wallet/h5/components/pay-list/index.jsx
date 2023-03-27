@@ -4,10 +4,10 @@ import { withRouter } from 'next/router';
 
 import Avatar from '@components/avatar';
 import { diffDate } from '@common/utils/diff-date';
-import { time } from '@discuzq/sdk/dist/index';
+import { time } from '@discuzqfe/sdk/dist/index';
 import s9e from '@common/utils/s9e';
 import xss from '@common/utils/xss';
-import RichText from '@discuzq/design/dist/components/rich-text/index';
+import RichText from '@discuzqfe/design/dist/components/rich-text/index';
 
 import styles from './index.module.scss';
 

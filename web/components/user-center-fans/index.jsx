@@ -1,6 +1,6 @@
 import React from 'react';
 import UserCenterFriends from '../user-center-friends';
-import { Spin, Toast } from '@discuzq/design';
+import { Spin, Toast } from '@discuzqfe/design';
 import { followerAdapter } from './adapter';
 import friendsStyle from '@components/user-center/friend-pc/index.module.scss';
 import styles from './index.module.scss';

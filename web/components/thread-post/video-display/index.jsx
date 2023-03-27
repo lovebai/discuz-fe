@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Video, Icon } from '@discuzq/design';
+import { Video, Icon } from '@discuzqfe/design';
 
 export default function VideoDisplay(props) {
   const {

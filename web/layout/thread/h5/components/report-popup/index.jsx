@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Toast, Popup, Button, Textarea, Radio } from '@discuzq/design';
+import { Toast, Popup, Button, Textarea, Radio } from '@discuzqfe/design';
 import styles from './index.module.scss';
 
 const InputPop = (props) => {

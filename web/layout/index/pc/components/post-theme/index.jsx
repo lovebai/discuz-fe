@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Dropdown, Button } from '@discuzq/design';
+import { Dropdown, Button } from '@discuzqfe/design';
 import postData from './data';
 
 /**

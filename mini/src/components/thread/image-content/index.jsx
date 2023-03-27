@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import ImagePreviewer from '@discuzq/design/dist/components/image-previewer/index';
+import ImagePreviewer from '@discuzqfe/design/dist/components/image-previewer/index';
 import img from './index.module.scss';
 import { View, Text, Image } from '@tarojs/components';
 

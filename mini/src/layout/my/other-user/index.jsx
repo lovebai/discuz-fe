@@ -1,20 +1,20 @@
 import React from 'react';
 import styles from './index.module.scss';
-import Spin from '@discuzq/design/dist/components/spin/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import UserCenterHeaderImage from '@components/user-center-header-images';
 import UserCenterHead from '@components/user-center-head';
 import { inject, observer } from 'mobx-react';
 import UserCenterThreads from '@components/user-center-threads';
 import BaseLayout from '@components/base-layout';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Taro, { getImageInfo, getCurrentInstance, eventCenter } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 
 import SectionTitle from '@components/section-title';
 import BottomView from '@components/list/BottomView';
 import PacketOpen from '@components/red-packet-animation';
-import ImagePreviewer from '@discuzq/design/dist/components/image-previewer/index';
+import ImagePreviewer from '@discuzqfe/design/dist/components/image-previewer/index';
 import LoginHelper from '@common/utils/login-helper';
 @inject('site')
 @inject('user')

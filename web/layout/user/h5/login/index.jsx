@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import isWeiXin from '@common/utils/is-weixin';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import clearLoginStatus from '@common/utils/clear-login-status';
 import { BANNED_USER, REVIEWING, REVIEW_REJECT } from '@common/store/login/util';
 

@@ -1,4 +1,4 @@
-import {getSignInFields} from '@discuzq/sdk/dist/api/login/get-sign-in-fields';
+import {getSignInFields} from '@discuzqfe/sdk/dist/api/login/get-sign-in-fields';
 export default async function _getSignInFields(opts, ctx) {
   return await getSignInFields({ ...opts, __context: ctx });
 }

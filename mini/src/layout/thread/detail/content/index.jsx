@@ -1,10 +1,10 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { View, Text ,Image} from '@tarojs/components';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Button from '@discuzq/design/dist/components/button/index';
-import RichText from '@discuzq/design/dist/components/rich-text/index';
-import Router from '@discuzq/sdk/dist/router';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import RichText from '@discuzqfe/design/dist/components/rich-text/index';
+import Router from '@discuzqfe/sdk/dist/router';
 import ImageDisplay from '@components/thread/image-display';
 import AudioPlay from '@components/thread/audio-play';
 import PostContent from '@components/thread/post-content';
@@ -19,7 +19,7 @@ import classnames from 'classnames';
 import UserInfo from '@components/thread/user-info';
 import Packet from '@components/thread/packet'
 import Avatar from '@components/avatar';
-import DZQPluginCenterInjection from '@discuzq/plugin-center/dist/components/DZQPluginCenterInjection';
+import DZQPluginCenterInjection from '@discuzqfe/plugin-center/dist/components/DZQPluginCenterInjection';
 import { setClipboardData } from '@tarojs/taro';
 import { parseContentData } from '../../utils';
 import styles from './index.module.scss';

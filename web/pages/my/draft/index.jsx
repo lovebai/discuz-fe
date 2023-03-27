@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 import H5Page from '@layout/my/draft/h5';
 import PCPage from '@layout/my/draft/pc';
 import { THREAD_LIST_FILTER_COMPLEX } from '@common/constants/index';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import { withRouter } from 'next/router';
 import ViewAdapter from '@components/view-adapter';
 

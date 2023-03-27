@@ -1,6 +1,6 @@
 import React from 'react';
 import Avatar from '@components/avatar';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import { View, Text, Image } from '@tarojs/components';
 import { diffDate } from '@common/utils/diff-date';
 import { observer, inject } from 'mobx-react';
@@ -9,7 +9,7 @@ import xss from '@common/utils/xss';
 import classNames from 'classnames';
 import ImageDisplay from '@components/thread/image-display';
 import { handleLink } from '@components/thread/utils';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import PostContent from '@components/thread/post-content';
 import { debounce } from '@common/utils/throttle-debounce';
 import { IMG_SRC_HOST } from '@common/constants/site';

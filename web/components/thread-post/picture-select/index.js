@@ -5,7 +5,7 @@
  * @prop {function} deletePicture 删除图片
  */
 import React, { memo, useState, useEffect } from 'react';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import PropTypes from 'prop-types';
 

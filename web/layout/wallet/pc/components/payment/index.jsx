@@ -1,4 +1,4 @@
-import { Input, Radio } from '@discuzq/design';
+import { Input, Radio } from '@discuzqfe/design';
 import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
 import styles from './index.module.scss';
 import locals from '@common/utils/local-bridge';

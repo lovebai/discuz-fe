@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import Header from '@components/header';
 import Copyright from '@components/copyright';
-import { Dropdown, Icon, Toast } from '@discuzq/design';
+import { Dropdown, Icon, Toast } from '@discuzqfe/design';
 import WalletInfo from './components/wallet-info/index';
 import RecordList from './components/record-list/index';
 import NoMore from './components/no-more';

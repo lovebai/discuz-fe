@@ -1,5 +1,5 @@
 import React from 'react';
-import ToastRef from '@discuzq/design/dist/components/toast/index';
+import ToastRef from '@discuzqfe/design/dist/components/toast/index';
 import goToLoginPage from '@common/utils/go-to-login-page';
 import { getLaunchOptionsSync } from '@tarojs/taro'
 

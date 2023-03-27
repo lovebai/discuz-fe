@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
-import { Spin } from '@discuzq/design';
+import { Spin } from '@discuzqfe/design';
 import { noop } from '@components/thread/utils';
 
 /**

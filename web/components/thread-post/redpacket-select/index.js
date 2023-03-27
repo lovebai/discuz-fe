@@ -6,7 +6,7 @@
  * @prop {confirm} object 确认事件，输出红包对象
  */
 import React, { memo, useState, useEffect } from 'react'; // 性能优化的
-import { Radio, Button, Input, Toast } from '@discuzq/design'; // 原来就有的封装
+import { Radio, Button, Input, Toast } from '@discuzqfe/design'; // 原来就有的封装
 import styles from './index.module.scss'; // 私有样式
 import DDialog from '@components/dialog';
 import PropTypes from 'prop-types'; // 类型拦截

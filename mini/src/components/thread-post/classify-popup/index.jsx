@@ -7,8 +7,8 @@
 import React, { useState, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import { View } from '@tarojs/components';
-import Popup from '@discuzq/design/dist/components/popup/index';
-import Button from '@discuzq/design/dist/components/button/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
 import styles from './index.module.scss';
 
 import PropTypes from 'prop-types';

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-import { Divider, Spin, Toast, ImagePreviewer } from '@discuzq/design';
+import { Divider, Spin, Toast, ImagePreviewer } from '@discuzqfe/design';
 import UserCenterHeaderImage from '@components/user-center-header-images';
 import UserCenterHead from '@components/user-center-head';
 import { inject, observer } from 'mobx-react';

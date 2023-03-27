@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import Input from '@discuzq/design/dist/components/input/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
 import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';
 

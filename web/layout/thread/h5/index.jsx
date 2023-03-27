@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { inject, observer } from 'mobx-react';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 import layout from './layout.module.scss';
 import footer from './footer.module.scss';
@@ -9,7 +9,7 @@ import NoMore from './components/no-more';
 import LoadingTips from '@components/thread-detail-pc/loading-tips';
 
 // import styleVar from '@common/styles/theme/default.scss.json';
-import { Icon, Input, Toast } from '@discuzq/design';
+import { Icon, Input, Toast } from '@discuzqfe/design';
 import Header from '@components/header';
 import goToLoginPage from '@common/utils/go-to-login-page';
 
@@ -21,7 +21,7 @@ import InputPopup from './components/input-popup';
 import throttle from '@common/utils/thottle';
 import { debounce } from '@common/utils/throttle-debounce';
 import { debounce as immediateDebounce } from '@components/thread/utils';
-import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
+import h5Share from '@discuzqfe/sdk/dist/common_modules/share/h5';
 import threadPay from '@common/pay-bussiness/thread-pay';
 import RewardPopup from './components/reward-popup';
 import SharePopup from '@components/thread/share-popup';

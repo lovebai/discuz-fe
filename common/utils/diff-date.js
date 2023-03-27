@@ -1,4 +1,4 @@
-import Time from '@discuzq/sdk/dist/time';
+import Time from '@discuzqfe/sdk/dist/time';
 
 export const diffDate = function (time, referenceTime) {
   if (!time) Time.formatDate(new Date(), 'yyyy-MM-dd');

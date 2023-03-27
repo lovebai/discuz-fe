@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react';
 import IndexH5Page from '@layout/topic/topic-detail/h5';
 import IndexPCPage from '@layout/topic/topic-detail/pc';
 import { readTopicsList } from '@server';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import ViewAdapter from '@components/view-adapter';
 
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';

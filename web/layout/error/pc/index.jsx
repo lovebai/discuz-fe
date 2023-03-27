@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './index.module.scss';
-import { Button } from '@discuzq/design';
+import { Button } from '@discuzqfe/design';
 import Header from '@components/header';
 import Copyright from '@components/copyright';
 

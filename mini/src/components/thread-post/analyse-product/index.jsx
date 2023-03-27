@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Taro from '@tarojs/taro';
 import { View, Text, Image, Textarea, Button } from '@tarojs/components';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { observer, inject } from 'mobx-react';
 import { goodImages } from '@common/constants/const';
 import styles from './index.module.scss';

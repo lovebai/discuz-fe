@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Button, Text } from '@tarojs/components'
 import styles from './index.module.scss'
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import Taro, { useEffect, useDidShow } from '@tarojs/taro'
 import classNames from 'classnames';
-import Popup from '@discuzq/design/dist/components/popup/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
 
 const Index = ({show, setShow, data = '', getShareData, shareNickname, shareAvatar, shareThreadid, onShare}) => {
     let threadTitle = ''

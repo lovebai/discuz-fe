@@ -1,4 +1,4 @@
-import {readUsersDeny} from '@discuzq/sdk/dist/api/user/read-usersdeny';
+import {readUsersDeny} from '@discuzqfe/sdk/dist/api/user/read-usersdeny';
 
 
 export default async function _readUsersDeny(opts, ctx) {

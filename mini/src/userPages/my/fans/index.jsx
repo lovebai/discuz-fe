@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import UserCenterFans from '@components/user-center-fans';
-import Divider from '@discuzq/design/dist/components/divider/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Divider from '@discuzqfe/design/dist/components/divider/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { View } from '@tarojs/components';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import { getCurrentInstance } from '@tarojs/taro';
 import Page from '@components/page';
 import styles from './index.module.scss';

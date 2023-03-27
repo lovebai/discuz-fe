@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import DDialog from '@components/dialog';
-import { Radio, Input, Popup, Button, Toast } from '@discuzq/design';
+import { Radio, Input, Popup, Button, Toast } from '@discuzqfe/design';
 import ChooseFile from '@components/choose-file';
 import classNames from 'classnames';
 import styles from './index.module.scss';

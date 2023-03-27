@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
 import { STEP_MAP } from '../../../../../common/constants/payBoxStoreConstants';
-import { Toast, Icon, Input, Button } from '@discuzq/design';
+import { Toast, Icon, Input, Button } from '@discuzqfe/design';
 import throttle from '@common/utils/thottle.js';
 @inject('user')
 @inject('payBox')

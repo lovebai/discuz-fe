@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon, Popup, Flex } from '@discuzq/design';
+import { Button, Icon, Popup, Flex } from '@discuzqfe/design';
 
 import styles from './index.module.scss';
 

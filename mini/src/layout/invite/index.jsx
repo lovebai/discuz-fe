@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Image , View, Button } from '@tarojs/components';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Avatar from '@discuzq/design/dist/components/avatar/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Avatar from '@discuzqfe/design/dist/components/avatar/index';
 import { IMG_SRC_HOST } from '@common/constants/site';
 
 import HomeHeader from '@components/home-header';

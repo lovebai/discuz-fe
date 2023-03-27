@@ -1,4 +1,4 @@
-import {usernameRegister} from '@discuzq/sdk/dist/api/login/usernameregister';
+import {usernameRegister} from '@discuzqfe/sdk/dist/api/login/usernameregister';
 
 export default async function _usernameRegister(opts, ctx = null) {
   const res = await usernameRegister({ ...opts, __context: ctx });

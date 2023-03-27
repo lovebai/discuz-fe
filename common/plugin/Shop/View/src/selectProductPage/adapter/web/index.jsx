@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Button, Input, Tabs, Toast, Spin, Divider } from '@discuzq/design';
+import { Icon, Button, Input, Tabs, Toast, Spin, Divider } from '@discuzqfe/design';
 import { goodImages } from '@common/constants/const';
 import styles from '../index.module.scss';
 import Header from '@components/header';

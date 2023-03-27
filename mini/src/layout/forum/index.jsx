@@ -1,13 +1,13 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
-import Popup from '@discuzq/design/dist/components/popup/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import Avatar from '@components/avatar';
 import HomeHeader from '@components/home-header';
 import UserCenterUsers from '@components/user-center-users';
 import { get } from '@common/utils/get';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import { simpleRequest } from '@common/utils/simple-request';
 import MemberBadge from '@components/member-badge';
 import layout from './index.module.scss';

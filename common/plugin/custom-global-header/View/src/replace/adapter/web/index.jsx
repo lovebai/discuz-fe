@@ -1,8 +1,8 @@
 import styles from '../index.module.scss';
-import { Icon, Input, Button, Dropdown, Avatar } from '@discuzq/design';
+import { Icon, Input, Button, Dropdown, Avatar } from '@discuzqfe/design';
 import { useState } from 'react';
 import UnreadRedDot from './unread-red-dot';
-import LocalBridge from '@discuzq/sdk/dist/localstorage';
+import LocalBridge from '@discuzqfe/sdk/dist/localstorage';
 
 const setCookie = (name, value, exdays) => {
   if (parseInt(exdays)) {

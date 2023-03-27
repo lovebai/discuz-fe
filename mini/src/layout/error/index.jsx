@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@discuzq/design/dist/components/button';
+import Button from '@discuzqfe/design/dist/components/button';
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { IMG_SRC_HOST } from '@common/constants/site';

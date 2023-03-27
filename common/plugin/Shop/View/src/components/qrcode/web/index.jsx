@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Spin } from '@discuzq/design';
+import { Icon, Spin } from '@discuzqfe/design';
 import styles from '../index.module.scss';
 
 export default class Qrcode extends React.PureComponent {

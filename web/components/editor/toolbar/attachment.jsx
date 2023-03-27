@@ -3,7 +3,7 @@
  * 附件操作栏比如：图片上传、视频上传、语音上传等
  */
 import React, { useState, useEffect } from 'react';
-import { Icon, Toast } from '@discuzq/design';
+import { Icon, Toast } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';

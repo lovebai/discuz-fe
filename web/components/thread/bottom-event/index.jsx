@@ -1,12 +1,12 @@
 import React, { useMemo, useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import Tip from '../tip';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import { noop } from '../utils';
 import MorePopop from '@components/more-popop';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import goToLoginPage from '@common/utils/go-to-login-page';
-import Toast from '@discuzq/design/dist/components/toast';
+import Toast from '@discuzqfe/design/dist/components/toast';
 // const hongbaoMini = 'https://cloudcache.tencentcs.com/operation/dianshi/other/redpacket-mini.10b46eefd630a5d5d322d6bbc07690ac4536ee2d.png';
 import hongbaoicon from './hongbaoicon';
 

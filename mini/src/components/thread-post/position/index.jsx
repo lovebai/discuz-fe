@@ -4,8 +4,8 @@
 import React, { memo, useState, useEffect } from 'react';
 import { View, Text } from '@tarojs/components';
 import styles from './index.module.scss';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Taro from '@tarojs/taro';

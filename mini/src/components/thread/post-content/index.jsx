@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import RichText from '@discuzq/design/dist/components/rich-text/index';
-import ImagePreviewer from '@discuzq/design/dist/components/image-previewer/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import RichText from '@discuzqfe/design/dist/components/rich-text/index';
+import ImagePreviewer from '@discuzqfe/design/dist/components/image-previewer/index';
 import { noop, handleLink } from '../utils'
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import Taro from '@tarojs/taro'
 
 import fuzzyCalcContentLength from '@common/utils/fuzzy-calc-content-length';

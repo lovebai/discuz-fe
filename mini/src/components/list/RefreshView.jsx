@@ -1,5 +1,5 @@
 import React from 'react';
-import Spin from '@discuzq/design/dist/components/spin/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
 import { View, Text } from '@tarojs/components';
 
 import styles from './index.module.scss';

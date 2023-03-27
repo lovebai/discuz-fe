@@ -1,8 +1,8 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { useState } from 'react';
 import { inject, observer } from 'mobx-react';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Tabs from '@discuzq/design/dist/components/tabs/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Tabs from '@discuzqfe/design/dist/components/tabs/index';
 import { View } from '@tarojs/components'
 import { randomStr } from '@components/thread/utils'
 import { useRef } from 'react';

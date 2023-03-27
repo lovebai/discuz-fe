@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Input, Toast, Spin } from '@discuzq/design';
+import { Button, Input, Toast, Spin } from '@discuzqfe/design';
 import Header from '@components/header';
 import styles from './index.module.scss';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import throttle from '@common/utils/thottle.js';
 import classNames from 'classnames';
 @inject('payBox')

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { inject, observer } from 'mobx-react';
 import styles from './index.module.scss';
-import { Audio } from '@discuzq/design';
+import { Audio } from '@discuzqfe/design';
 import { noop } from '../utils';
 
 /**

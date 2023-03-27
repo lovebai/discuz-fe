@@ -1,6 +1,6 @@
 import React from 'react';
 import layout from './index.module.scss';
-import { Input } from '@discuzq/design';
+import { Input } from '@discuzqfe/design';
 import CaptchaInput from './captcha-input';
 import { throttle } from '@common/utils/throttle-debounce';
 

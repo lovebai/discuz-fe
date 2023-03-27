@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ImagePreviewer, Flex } from '@discuzq/design';
+import { ImagePreviewer, Flex } from '@discuzqfe/design';
 import { noop } from '../utils';
 import styles from './index.module.scss';
 import SmartImg from '@components/smart-image';

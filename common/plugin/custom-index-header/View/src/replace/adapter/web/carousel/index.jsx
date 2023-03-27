@@ -1,6 +1,6 @@
 import React from 'react';
 import Carousel from 'nuka-carousel';
-import { Tag, Icon } from '@discuzq/design';
+import { Tag, Icon } from '@discuzqfe/design';
 import styles from './index.module.scss';
 
 export default class extends React.Component {

@@ -1,7 +1,7 @@
 import { action } from 'mobx';
 import WalletStore from './store';
 import { readWalletUser, readWalletLog, readWalletCash, createWalletCash } from '@server';
-import time from '@discuzq/sdk/dist/time';
+import time from '@discuzqfe/sdk/dist/time';
 import { get } from '@common/utils/get';
 import { INCOME_DETAIL_CONSTANTS, EXPAND_DETAIL_CONSTANTS, FREEZE_TYPE } from '@common/constants/wallet';
 import rechargePay from '@common/pay-bussiness/recharge-pay';

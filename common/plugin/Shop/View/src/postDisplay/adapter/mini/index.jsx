@@ -1,7 +1,7 @@
 import React from 'react';
 import Taro, { eventCenter, getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
 

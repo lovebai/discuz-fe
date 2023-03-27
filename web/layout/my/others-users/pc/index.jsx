@@ -9,7 +9,7 @@ import Copyright from '@components/copyright';
 import { withRouter } from 'next/router';
 import UserCenterFansPc from '@components/user-center/fans-pc';
 import UserCenterFollowsPc from '@components/user-center/follows-pc';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import UserCenterThreads from '@components/user-center-threads';
 import UserCenterHeaderPc from '@components/user-center/header-pc';
 import PacketOpen from '@components/red-packet-animation/web';

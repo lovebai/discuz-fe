@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, Icon, Avatar, Toast, Dialog, Input } from '@discuzq/design';
+import { Button, Icon, Avatar, Toast, Dialog, Input } from '@discuzqfe/design';
 import PopupList from '@components/thread/popup-list';
 import CountDown from '@common/utils/count-down';
 import LoginHelper from '@common/utils/login-helper';

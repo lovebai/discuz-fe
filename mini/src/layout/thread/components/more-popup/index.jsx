@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Popup from '@discuzq/design/dist/components/popup/index';
-// import Button from '@discuzq/design/dist/components/button/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Popup from '@discuzqfe/design/dist/components/popup/index';
+// import Button from '@discuzqfe/design/dist/components/button/index';
 
 import className from 'classnames';
 import { View ,Button} from '@tarojs/components';

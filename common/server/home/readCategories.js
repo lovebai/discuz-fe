@@ -1,4 +1,4 @@
-import { readCategories } from '@discuzq/sdk/dist/api/home/read-categories';
+import { readCategories } from '@discuzqfe/sdk/dist/api/home/read-categories';
 
 /** 获取分类列表接口
  * @param {object} params

@@ -1,18 +1,18 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import { Icon, Button, Toast, Avatar, Spin } from '@discuzq/design';
+import { Icon, Button, Toast, Avatar, Spin } from '@discuzqfe/design';
 import NoData from '@components/no-data';
 import { copyToClipboard } from '@common/utils/copyToClipboard';
 import layout from './index.module.scss';
 import { numberFormat } from '@common/utils/number-format';
 import BaseLayout from '@components/base-layout';
-import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
+import h5Share from '@discuzqfe/sdk/dist/common_modules/share/h5';
 import Copyright from '@components/copyright';
 import MorePopop from '@components/more-popop';
 import SharePopup from '@components/thread/share-popup';
 import MemberBadge from '@components/member-badge';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import isWeiXin from '@common/utils/is-weixin';
 
 @inject('site')

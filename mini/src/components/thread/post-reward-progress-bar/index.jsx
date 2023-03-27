@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import Progress from '@discuzq/design/dist/components/progress/index';
+import Progress from '@discuzqfe/design/dist/components/progress/index';
 import { IMG_SRC_HOST } from '@common/constants/site';
 
 import styles from './index.module.scss';

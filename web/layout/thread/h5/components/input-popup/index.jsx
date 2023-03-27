@@ -1,5 +1,5 @@
 import React, { useEffect, createRef, useState, Fragment } from 'react';
-import { Icon, Popup, Textarea, Divider, Toast } from '@discuzq/design';
+import { Icon, Popup, Textarea, Divider, Toast } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import ImageUpload from '@components/thread-post/image-upload';

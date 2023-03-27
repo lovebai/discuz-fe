@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styles from './index.module.scss';
-import { Dialog, Button, Checkbox, Icon, Input, Toast, Radio, Divider, Spin } from '@discuzq/design';
+import { Dialog, Button, Checkbox, Icon, Input, Toast, Radio, Divider, Spin } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import { PAYWAY_MAP, STEP_MAP, PAY_MENT_MAP } from '../../../../../common/constants/payBoxStoreConstants';
 import throttle from '@common/utils/thottle.js';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 @inject('site')
 @inject('user')

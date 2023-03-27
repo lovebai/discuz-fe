@@ -1,4 +1,4 @@
-import { createThreadVideoAudio } from '@discuzq/sdk/dist/api/content/create-video-audio';
+import { createThreadVideoAudio } from '@discuzqfe/sdk/dist/api/content/create-video-audio';
 
 /**
  * 创建视频音频接口

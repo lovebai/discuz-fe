@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from '@tarojs/components';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import classNames from 'classnames';
 import styles from '../index.module.scss';
 

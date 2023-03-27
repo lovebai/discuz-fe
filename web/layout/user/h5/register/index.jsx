@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import { Input, Button, Toast } from '@discuzq/design';
+import { Input, Button, Toast } from '@discuzqfe/design';
 import layout from './index.module.scss';
 import HomeHeader from '@components/home-header';
 import Header from '@components/header';
@@ -12,7 +12,7 @@ import { get } from '@common/utils/get';
 import HOCTencentCaptcha from '@middleware/HOCTencentCaptcha';
 
 import { MOBILE_LOGIN_STORE_ERRORS } from '@common/store/login/mobile-login-store';
-// import { TencentCaptcha } from '@discuzq/sdk/dist/common_modules/sliding-captcha';
+// import { TencentCaptcha } from '@discuzqfe/sdk/dist/common_modules/sliding-captcha';
 @inject('site')
 @inject('user')
 @inject('thread')

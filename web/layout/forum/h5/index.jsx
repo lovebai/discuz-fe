@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
-import { Popup, Icon } from '@discuzq/design';
+import { Popup, Icon } from '@discuzqfe/design';
 import Avatar from '@components/avatar';
 import HomeHeader from '@components/home-header';
 import Header from '@components/header';

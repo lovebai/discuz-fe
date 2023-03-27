@@ -3,10 +3,10 @@ import { inject, observer } from 'mobx-react'
 import './discuzq.scss';
 import styles from './index.module.scss';
 import { View } from '@tarojs/components';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Toast from '@discuzq/design/dist/components/toast';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Toast from '@discuzqfe/design/dist/components/toast';
 import clearLoginStatus from '@common/utils/clear-login-status';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import {readForum, readUser, readPermissions, readPluginList} from '@server';
 import Taro from '@tarojs/taro';
 import {

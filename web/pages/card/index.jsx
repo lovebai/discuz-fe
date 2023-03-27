@@ -2,8 +2,8 @@ import React from 'react';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 import ErrorH5Page from '@layout/error/h5';
 import { inject, observer } from 'mobx-react';
-import { Toast } from '@discuzq/design';
-import Router from '@discuzq/sdk/dist/router';
+import { Toast } from '@discuzqfe/design';
+import Router from '@discuzqfe/sdk/dist/router';
 import Card from '../../layout/card';
 @inject('card')
 @inject('site')

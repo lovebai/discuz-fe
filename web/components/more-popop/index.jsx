@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './index.module.scss';
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import classNames from 'classnames';
-import { Popup } from '@discuzq/design';
+import { Popup } from '@discuzqfe/design';
 import isWeiXin from '@common/utils/is-weixin';
 
 const index = ({ onClose, handleWxShare, handleH5Share, site, user, handleExperience, show, createCard, fromThread }) => (

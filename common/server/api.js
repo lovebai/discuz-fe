@@ -1,14 +1,14 @@
 /**
  * 针对给出的请求实例进行本地化配置
  */
-import { apiIns } from '@discuzq/sdk/dist/api';
+import { apiIns } from '@discuzqfe/sdk/dist/api';
 import typeofFn from '@common/utils/typeof';
 import setAuthorization from '@common/utils/set-authorization';
 import setUserAgent from '@common/utils/set-user-agent';
 import isServer from '@common/utils/is-server';
-import Toast from '@discuzq/design/dist/components/toast';
-import Router from '@discuzq/sdk/dist/router';
-import { handleError } from '@discuzq/sdk/dist/api/utils/handle-error';
+import Toast from '@discuzqfe/design/dist/components/toast';
+import Router from '@discuzqfe/sdk/dist/router';
+import { handleError } from '@discuzqfe/sdk/dist/api/utils/handle-error';
 import clearLoginStatus from '@common/utils/clear-login-status';
 import {
   ENV_CONFIG,

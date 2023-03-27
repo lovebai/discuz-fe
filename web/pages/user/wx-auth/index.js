@@ -1,6 +1,6 @@
 import React from 'react';
 import { inject } from 'mobx-react';
-import { Toast } from '@discuzq/design';
+import { Toast } from '@discuzqfe/design';
 import { h5WechatCodeLogin } from '@server';
 import HOCFetchSiteData from '@middleware/HOCFetchSiteData';
 import HOCLoginMode from '@middleware/HOCLoginMode';

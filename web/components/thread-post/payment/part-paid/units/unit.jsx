@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../index.module.scss';
 import styles from '@components/thread-post/payment/index.module.scss';
-import { Divider } from '@discuzq/design';
+import { Divider } from '@discuzqfe/design';
 
 // 容器
 const Unit = ({ className = '', children, title, desc, rightActionRender = null, withoutDivider = false }) => (

@@ -4,11 +4,11 @@ import { inject, observer } from 'mobx-react';
 import isServer from '@common/utils/is-server';
 import getPlatform from '@common/utils/get-platform';
 import { readForum, readUser, readPermissions, readEmoji, readPluginList } from '@server';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import { withRouter } from 'next/router';
 import clearLoginStatus from '@common/utils/clear-login-status';
 import { REVIEWING } from '@common/store/login/util';
-import { Spin, Icon } from '@discuzq/design';
+import { Spin, Icon } from '@discuzqfe/design';
 import typeofFn from '@common/utils/typeof';
 import setWxShare from '@common/utils/set-wx-share';
 import styles from './HOCFetchSiteData.module.scss';
@@ -32,7 +32,7 @@ import {
 } from '@common/constants/site';
 import LoginHelper from '@common/utils/login-helper';
 import { USER_STATUS } from '@common/constants/login';
-import pluginRequest from '@discuzq/plugin-center/dist/pluginRequest';
+import pluginRequest from '@discuzqfe/plugin-center/dist/pluginRequest';
 
 // 获取全站数据
 export default function HOCFetchSiteData(Component, _isPass) {

@@ -5,9 +5,9 @@ import Header from '@components/header';
 import MoneyInput from './components/money-input';
 import Payment from './components/payment';
 import styles from './index.module.scss';
-import { Icon, Button, Toast, Dialog } from '@discuzq/design';
+import { Icon, Button, Toast, Dialog } from '@discuzqfe/design';
 import classNames from 'classnames';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 @inject('wallet')
 @inject('site')

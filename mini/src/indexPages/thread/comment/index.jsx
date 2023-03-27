@@ -1,8 +1,8 @@
 import React from 'react';
 import { inject } from 'mobx-react';
-// import { ToastProvider } from '@discuzq/design/dist/components/toast/ToastProvider';
+// import { ToastProvider } from '@discuzqfe/design/dist/components/toast/ToastProvider';
 import Page from '@components/page';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 import { readCommentDetail } from '@server';
 import { getCurrentInstance } from '@tarojs/taro';
 import withShare from '@common/utils/withShare/withShare';

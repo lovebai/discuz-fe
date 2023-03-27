@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'next/router';
 import styles from './index.module.scss';
-import { Checkbox, Button, Icon, Radio, Progress, Toast } from '@discuzq/design';
+import { Checkbox, Button, Icon, Radio, Progress, Toast } from '@discuzqfe/design';
 import CountDown from '@common/utils/count-down';
 import { debounce } from '@common/utils/throttle-debounce';
 import LoginHelper from '@common/utils/login-helper';

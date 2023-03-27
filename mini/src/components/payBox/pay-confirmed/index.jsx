@@ -2,11 +2,11 @@ import React from 'react';
 import styles from './index.module.scss';
 import Taro, { getCurrentInstance, eventCenter } from '@tarojs/taro';
 import { inject, observer } from 'mobx-react';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Radio from '@discuzq/design/dist/components/radio/index';
-import Button from '@discuzq/design/dist/components/button/index';
-import Spin from '@discuzq/design/dist/components/spin/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Radio from '@discuzqfe/design/dist/components/radio/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Spin from '@discuzqfe/design/dist/components/spin/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { View, Text } from '@tarojs/components';
 import { PAY_MENT_MAP, PAYWAY_MAP, STEP_MAP } from '../../../../../common/constants/payBoxStoreConstants.js';
 import {
@@ -16,7 +16,7 @@ import {
   mode,
 } from '../../../../../common/store/pay/weixin-miniprogram-backend.js';
 import throttle from '@common/utils/thottle.js';
-import Router from '@discuzq/sdk/dist/router';
+import Router from '@discuzqfe/sdk/dist/router';
 
 @inject('site')
 @inject('user')

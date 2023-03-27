@@ -5,9 +5,9 @@ import BaseLayout from '@components/base-layout';
 import NoData from '@components/no-data';
 import DetailsHeader from './components/details-header'
 import ThreadContent from '@components/thread';
-import h5Share from '@discuzq/sdk/dist/common_modules/share/h5';
+import h5Share from '@discuzqfe/sdk/dist/common_modules/share/h5';
 import goToLoginPage from '@common/utils/go-to-login-page';
-import Toast from '@discuzq/design/dist/components/toast/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
 import { View, Text } from '@tarojs/components';
 import BottomView from '@components/list/BottomView'
 

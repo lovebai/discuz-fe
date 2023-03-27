@@ -1,4 +1,4 @@
-import { inviteDetail } from '@discuzq/sdk/dist/api/invite/invite-detail';
+import { inviteDetail } from '@discuzqfe/sdk/dist/api/invite/invite-detail';
 
 /** 邀请详情
  * @param {object} params

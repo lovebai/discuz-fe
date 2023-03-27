@@ -1,6 +1,6 @@
 import styles from './index.module.scss';
 import React from 'react';
-import { Spin } from '@discuzq/design';
+import { Spin } from '@discuzqfe/design';
 import classNames from 'classnames';
 
 // 加载提示

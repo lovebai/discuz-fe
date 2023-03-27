@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components';
-import Input from '@discuzq/design/dist/components/input/index';
-import Avatar from '@discuzq/design/dist/components/avatar/index';
-import Icon from '@discuzq/design/dist/components/icon/index';
-import Checkbox from '@discuzq/design/dist/components/checkbox/index';
-import Button from '@discuzq/design/dist/components/button/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
+import Avatar from '@discuzqfe/design/dist/components/avatar/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
+import Checkbox from '@discuzqfe/design/dist/components/checkbox/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
 import styles from './index.module.scss';
 import MemberBadge from '@components/member-badge';
 

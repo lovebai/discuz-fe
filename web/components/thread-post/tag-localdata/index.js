@@ -2,7 +2,7 @@
  * 提示有本地缓存标签
  */
 import React from 'react';
-import { Tag } from '@discuzq/design';
+import { Tag } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
 import * as localData from '@common/utils/thread-post-localdata';
 import styles from './index.module.scss';

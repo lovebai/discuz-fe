@@ -1,6 +1,6 @@
 import { inject, observer } from 'mobx-react';
 import Unit from '@components/thread-post/payment/part-paid/units/unit';
-import { Slider } from '@discuzq/design';
+import { Slider } from '@discuzqfe/design';
 import React from 'react';
 
 const TextUnit = inject('threadPost')(

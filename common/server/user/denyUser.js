@@ -1,4 +1,4 @@
-import {updateDeny} from '@discuzq/sdk/dist/api/user/update-deny';
+import {updateDeny} from '@discuzqfe/sdk/dist/api/user/update-deny';
 
 
 export default async function _updateDeny(opts, ctx) {

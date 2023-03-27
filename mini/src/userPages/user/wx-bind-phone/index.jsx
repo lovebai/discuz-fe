@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import Taro, { getCurrentInstance, navigateTo, redirectTo } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
-import Button from '@discuzq/design/dist/components/button/index';
-import Input from '@discuzq/design/dist/components/input/index';
-import Toast from '@discuzq/design/dist/components/toast/index';
-import Avatar from '@discuzq/design/dist/components/avatar/index';
+import Button from '@discuzqfe/design/dist/components/button/index';
+import Input from '@discuzqfe/design/dist/components/input/index';
+import Toast from '@discuzqfe/design/dist/components/toast/index';
+import Avatar from '@discuzqfe/design/dist/components/avatar/index';
 import { toTCaptcha } from '@common/utils/to-tcaptcha'
-// import { ToastProvider } from '@discuzq/design/dist/components/toast/ToastProvider';
+// import { ToastProvider } from '@discuzqfe/design/dist/components/toast/ToastProvider';
 import Page from '@components/page';
 import { BANNED_USER, REVIEWING, REVIEW_REJECT, isExtFieldsOpen } from '@common/store/login/util';
 import { get } from '@common/utils/get';

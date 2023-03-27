@@ -1,6 +1,6 @@
 import { Button, View, Text } from '@tarojs/components'
 import React from 'react'
-import Icon from '@discuzq/design/dist/components/icon/index';
+import Icon from '@discuzqfe/design/dist/components/icon/index';
 import styles from './index.module.scss'
 
 const Index = ({

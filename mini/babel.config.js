@@ -10,9 +10,9 @@ module.exports = {
   ],
   plugins: [
     [
-      "@discuzq/discuz-babel-plugin-import",
+      "@discuzqfe/discuz-babel-plugin-import",
       {
-        "libraryName": "@discuzq/design",
+        "libraryName": "@discuzqfe/design",
         "libraryDirectory": "dist-pure/components"
       }
     ]

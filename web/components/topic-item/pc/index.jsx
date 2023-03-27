@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import { handleAttachmentData, noop } from '@components/thread/utils';
 import replaceSearchResultContent from '@common/utils/replace-search-result-content';

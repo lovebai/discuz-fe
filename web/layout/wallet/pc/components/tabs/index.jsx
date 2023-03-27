@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon } from '@discuzq/design';
+import { Icon } from '@discuzqfe/design';
 import styles from './index.module.scss';
 import classNames from 'classnames';
 export default class index extends Component {

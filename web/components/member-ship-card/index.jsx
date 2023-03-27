@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.scss';
-import { Button, Dialog, Tabs } from '@discuzq/design';
+import { Button, Dialog, Tabs } from '@discuzqfe/design';
 import { inject, observer } from 'mobx-react';
-import time from '@discuzq/sdk/dist/time';
+import time from '@discuzqfe/sdk/dist/time';
 import { payGroupLevelStyle as levelStyle } from '@common/constants/const';
 import groupPay from '@common/pay-bussiness/group-pay';
 import classnames from 'classnames';

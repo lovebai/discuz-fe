@@ -1,4 +1,4 @@
-import {updateBackground} from '@discuzq/sdk/dist/api/user/update-background';
+import {updateBackground} from '@discuzqfe/sdk/dist/api/user/update-background';
 
 
 export default async function _updateBackground(opts, ctx) {

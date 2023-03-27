@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState, useImperativeHandle, forwardRef } from 'react';
-import { Flex, Icon, Spin } from '@discuzq/design';
+import { Flex, Icon, Spin } from '@discuzqfe/design';
 import Header from '@components/header';
 import List from '@components/list';
 import RefreshView from '@components/list/RefreshView';
