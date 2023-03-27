@@ -33,7 +33,7 @@
     "@discuzqfe/design": "1.1.7",
     "@discuzqfe/discuz-babel-plugin-import": "0.0.1",
     "@discuzqfe/discuz-plugin-loader": "2.1.8",
-    "@discuzqfe/plugin-center": "2.0.15",
+    "@discuzqfe/plugin-center": "2.0.16",
     "@discuzqfe/sdk": "1.0.55",
     "@discuzqfe/theme": "1.0.32",
     "@discuzqfe/vditor": "1.0.26",

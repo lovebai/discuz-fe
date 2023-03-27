@@ -1,6 +1,6 @@
 import PluginCenterInjection from './components/PluginCenterInjection';
 import PluginCenterReplaceInjection from './components/PluginCenterReplaceInjection';
-import DZQPluginCenter from '@discuzq/plugin-center';
+import DZQPluginCenter from '@discuzqfe/plugin-center';
 
 export default ({
   target,
