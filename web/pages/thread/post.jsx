@@ -105,11 +105,13 @@ class PostPage extends React.Component {
 
   handleRouteChange = (url) => {
     // 如果不是修改支付密码的页面则重置发帖信息
-    if ((url || '').indexOf('/my/edit/paypwd') === -1
-    && (url || '').indexOf('/pay/middle') === -1
-    && (url || '').indexOf('/my/edit/find-paypwd') === -1
-    && (url || '').indexOf('/plugin') === -1
-    && (url || '').indexOf('/wallet') === -1) {
+    if (
+      (url || '').indexOf('/my/edit/paypwd') === -1 &&
+      (url || '').indexOf('/pay/middle') === -1 &&
+      (url || '').indexOf('/my/edit/find-paypwd') === -1 &&
+      (url || '').indexOf('/plugin') === -1 &&
+      (url || '').indexOf('/wallet') === -1
+    ) {
       if (this.vditor) this.vditor.setValue('');
       this.props.threadPost.resetPostData();
     }
@@ -121,7 +123,8 @@ class PostPage extends React.Component {
   };
 
   // 从本地缓存中获取数据
-  getPostDataFromLocal = () => localData.getThreadPostDataLocal(this.props.user.userInfo.id, this.props.router.query.id);
+  getPostDataFromLocal = () =>
+    localData.getThreadPostDataLocal(this.props.user.userInfo.id, this.props.router.query.id);
 
   removeLocalData = () => {
     localData.removeThreadPostDataLocal();
@@ -208,7 +211,7 @@ class PostPage extends React.Component {
   // 这个和选择文件之前的回调放到一起了，所以注意一下
   handleVideoUpload = (files) => {
     const { postData } = this.props.threadPost;
-    const { qcloudVodExt, qcloudVodSize} = this.props.site;
+    const { qcloudVodExt, qcloudVodSize } = this.props.site;
     if ((postData.video && postData.video.id) || (postData.iframe && postData.iframe.content)) {
       Toast.info({ content: '只能上传一个视频' });
       return false;
@@ -323,12 +326,10 @@ class PostPage extends React.Component {
         // 判断ios版本号
         const v = u.match(/cpu iphone os (.*?) like mac os/);
         if (v) {
-          const version = v[1].replace(/_/g, '.').split('.')
-            .splice(0, 2)
-            .join('.');
+          const version = v[1].replace(/_/g, '.').split('.').splice(0, 2).join('.');
           if (
-            Number(version) < 14.3
-            && !(u.indexOf('safari') > -1 && u.indexOf('chrome') < 0 && u.indexOf('qqbrowser') < 0 && u.indexOf('360') < 0)
+            Number(version) < 14.3 &&
+            !(u.indexOf('safari') > -1 && u.indexOf('chrome') < 0 && u.indexOf('qqbrowser') < 0 && u.indexOf('360') < 0)
           ) {
             Toast.info({ content: 'iOS版本太低，请升级至iOS 14.3及以上版本或使用Safari浏览器访问' });
             return;
@@ -466,9 +467,10 @@ class PostPage extends React.Component {
     let isAllLegalSize = true;
     for (let i = 0; i < cloneList.length; i++) {
       const imageSize = cloneList[i].size;
-      const isLegalType =        type === THREAD_TYPE.image
-        ? this.checkFileType(cloneList[i], supportImgExt)
-        : this.checkFileType(cloneList[i], supportFileExt);
+      const isLegalType =
+        type === THREAD_TYPE.image
+          ? this.checkFileType(cloneList[i], supportImgExt)
+          : this.checkFileType(cloneList[i], supportFileExt);
       const isLegalSize = imageSize > 0 && imageSize < photoMaxSize * 1024 * 1024;
 
       // 存在不合法图片时，从上传图片列表删除
@@ -511,8 +513,8 @@ class PostPage extends React.Component {
 
   // 附件和图片上传完成之后的处理
   handleUploadComplete = (ret, file, type) => {
-    this.imageList = this.imageList.filter(item => item.uid !== file.uid);
-    this.fileList = this.fileList.filter(item => item.uid !== file.uid);
+    this.imageList = this.imageList.filter((item) => item.uid !== file.uid);
+    this.fileList = this.fileList.filter((item) => item.uid !== file.uid);
     if (ret.code !== 0) {
       const msg = ret.code === 413 ? '上传大小超过了服务器限制' : ret.msg;
       Toast.error({ content: `上传失败：${msg}` });
@@ -574,12 +576,13 @@ class PostPage extends React.Component {
     if (postData.attachmentPrice) {
       if (
         !(
-          postData.audio.id
-          || postData.video.id
-          || Object.keys(postData.images)?.length
-          || Object.keys(postData.files)?.length
+          postData.audio.id ||
+          postData.video.id ||
+          Object.keys(postData.images)?.length ||
+          Object.keys(postData.files)?.length
         )
-      ) return false;
+      )
+        return false;
       return true;
     }
     return true;
@@ -608,10 +611,18 @@ class PostPage extends React.Component {
     const { postData } = this.props.threadPost;
     const { images, video, files, audio, vote, iframe = {}, plugin } = postData;
     // todo, 应该还需要扩展当前插件是否可以无需文字
-    if (!(postData.contentText || video.id || vote.voteTitle || audio.id || !typeofFn.isEmptyObject(plugin)
-      || Object.values(images).length
-      || Object.values(files).length
-      || iframe.content)) {
+    if (
+      !(
+        postData.contentText ||
+        video.id ||
+        vote.voteTitle ||
+        audio.id ||
+        !typeofFn.isEmptyObject(plugin) ||
+        Object.values(images).length ||
+        Object.values(files).length ||
+        iframe.content
+      )
+    ) {
       return false;
     }
     return true;
@@ -676,7 +687,7 @@ class PostPage extends React.Component {
         // 验证码票据，验证码字符串不全时，弹出滑块验证码
         const { captchaTicket, captchaRandStr } = await this.props.showCaptcha();
         if (!captchaTicket && !captchaRandStr) return false;
-        threadPost.setPostData({captchaTicket, captchaRandStr});
+        threadPost.setPostData({ captchaTicket, captchaRandStr });
       }
     }
 
@@ -746,10 +757,11 @@ class PostPage extends React.Component {
     const { threadPost, thread, site, threadList } = this.props;
 
     // 图文混排：第三方图片转存
-    const { webConfig: { setAttach, qcloud } } = site;
+    const {
+      webConfig: { setAttach, qcloud },
+    } = site;
     const { supportImgExt, supportMaxSize } = setAttach;
     const { qcloudCosBucketName, qcloudCosBucketArea, qcloudCosSignUrl, qcloudCos } = qcloud;
-
 
     const errorTips = '部分图片转存失败，请替换标注红框的图片';
     const vditorEl = document.getElementById('dzq-vditor');
@@ -767,7 +779,9 @@ class PostPage extends React.Component {
     }
 
     let { contentText } = threadPost.postData;
-    const images = contentText.match(/<img.*?\/>/g)?.filter(image => (!image.match('alt="attachmentId-') && !image.includes('emoji')));
+    const images = contentText
+      .match(/<img.*?\/>/g)
+      ?.filter((image) => !image.match('alt="attachmentId-') && !image.includes('emoji'));
     if (images && images.length) {
       const fileurls = images.map((img) => {
         const src = img.match(/\"(.*?)\"/);
@@ -799,10 +813,10 @@ class PostPage extends React.Component {
           contentText = contentText.replace(images[index], `<img src=\"${url}\" alt=\"attachmentId-${id}\" />`);
         } else if (code === -7075) {
           sensitiveArr.push('');
-          contentText = contentText.replace(images[index], images[index].replace('alt=\"\"', 'alt=\"uploadError\"'));
+          contentText = contentText.replace(images[index], images[index].replace('alt=""', 'alt="uploadError"'));
         } else {
           uploadError.push('');
-          contentText = contentText.replace(images[index], images[index].replace('alt=\"\"', 'alt=\"uploadError\"'));
+          contentText = contentText.replace(images[index], images[index].replace('alt=""', 'alt="uploadError"'));
         }
       });
       threadPost.setPostData({ contentText });
@@ -841,7 +855,8 @@ class PostPage extends React.Component {
 
     // 提交帖子数据
     let ret = {};
-    if (!(isAutoSave || isPay)) this.toastInstance = Toast.loading({ content: isDraft ? '保存草稿中' : '发布中...', hasMask: true });
+    if (!(isAutoSave || isPay))
+      this.toastInstance = Toast.loading({ content: isDraft ? '保存草稿中' : '发布中...', hasMask: true });
     if (threadPost.postData.threadId) ret = await threadPost.updateThread(threadPost.postData.threadId);
     else ret = await threadPost.createThread();
     const { code, data, msg } = ret;
@@ -858,10 +873,12 @@ class PostPage extends React.Component {
       // 防止被清除
 
       // 未支付的订单
-      if (isDraft && !isAutoSave
-        && threadPost.postData.orderInfo.orderSn
-        && !threadPost.postData.orderInfo.status
-        && !threadPost.postData.draft
+      if (
+        isDraft &&
+        !isAutoSave &&
+        threadPost.postData.orderInfo.orderSn &&
+        !threadPost.postData.orderInfo.status &&
+        !threadPost.postData.draft
       ) {
         this.props.payBox.show();
         return;
@@ -890,7 +907,7 @@ class PostPage extends React.Component {
    * @param {*} element
    */
   jumpToErrorImgElement = (element) => {
-    const { top }  = element.getBoundingClientRect();
+    const { top } = element.getBoundingClientRect();
 
     const isPc = this.props.site?.platform === 'pc';
     const editorbox = document.querySelector('#post-inner');
@@ -905,11 +922,11 @@ class PostPage extends React.Component {
       });
     } else {
       editorbox.scrollTo({
-        top: currentScrollTop + top - (0.5 * boxHeight),
+        top: currentScrollTop + top - 0.5 * boxHeight,
         behavior: 'smooth',
       });
     }
-  }
+  };
 
   setIndexPageData = () => {
     const { data } = this.state;
@@ -934,7 +951,9 @@ class PostPage extends React.Component {
 
   // 保存草稿
   handleDraft = (val) => {
-    const { site: { isPC } } = this.props;
+    const {
+      site: { isPC },
+    } = this.props;
     if (isPC) {
       this.setPostData({ draft: 1 });
       this.handleSubmit(true);
@@ -950,7 +969,7 @@ class PostPage extends React.Component {
       const { jumpLink } = this.state;
       jumpLink ? Router.push({ url: jumpLink }) : Router.back();
     }
-  }
+  };
 
   handleEditorBoxScroller = (top = 0) => {
     const editorbox = document.querySelector('#post-inner');
@@ -966,7 +985,7 @@ class PostPage extends React.Component {
 
     const pc = (
       <IndexPCPage
-        setPostData={data => this.setPostData(data)}
+        setPostData={(data) => this.setPostData(data)}
         handleAttachClick={this.handleAttachClick}
         handleDefaultIconClick={this.handleDefaultIconClick}
         handleVideoUpload={this.handleVideoUpload}
@@ -976,7 +995,7 @@ class PostPage extends React.Component {
         handleUploadComplete={this.handleUploadComplete}
         handleAudioUpload={this.handleAudioUpload}
         handleEmojiClick={this.handleEmojiClick}
-        handleSetState={data => this.setState({ ...data })}
+        handleSetState={(data) => this.setState({ ...data })}
         handleSubmit={this.handleSubmit}
         saveDataLocal={this.saveDataLocal}
         handleAtListChange={this.handleAtListChange}
@@ -990,7 +1009,7 @@ class PostPage extends React.Component {
     );
     const h5 = (
       <IndexH5Page
-        setPostData={data => this.setPostData(data)}
+        setPostData={(data) => this.setPostData(data)}
         handleAttachClick={this.handleAttachClick}
         handleDefaultIconClick={this.handleDefaultIconClick}
         handleVideoUpload={this.handleVideoUpload}
@@ -1000,7 +1019,7 @@ class PostPage extends React.Component {
         handleUploadComplete={this.handleUploadComplete}
         handleAudioUpload={this.handleAudioUpload}
         handleEmojiClick={this.handleEmojiClick}
-        handleSetState={data => this.setState({ ...data })}
+        handleSetState={(data) => this.setState({ ...data })}
         handleSubmit={this.handleSubmit}
         saveDataLocal={this.saveDataLocal}
         handleAtListChange={this.handleAtListChange}
@@ -1019,7 +1038,7 @@ class PostPage extends React.Component {
       <>
         <Head>
           {/* 编辑器markdown依赖 */}
-          <script key="lute" async src="https://dl.discuz.chat/discuzq-fe/static/lute/lute.min.js" />
+          <script key="lute" async src="https://cdn.jsdelivr.net/npm/vditor@3.8.13/dist/js/lute/lute.min.js" />
         </Head>
         <ViewAdapter h5={h5} pc={pc} title="发布" />
       </>

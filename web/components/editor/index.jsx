@@ -39,7 +39,6 @@ function DVditor(props) {
     plugin,
   } = props;
 
-
   const vditorId = 'dzq-vditor';
   let timeoutId = null;
 
@@ -197,12 +196,12 @@ function DVditor(props) {
     const { images, video, files, audio, vote } = postData;
     if (
       !(
-        postData.contentText
-        || video.id
-        || vote.voteTitle
-        || audio.id
-        || Object.values(images).length
-        || Object.values(files).length
+        postData.contentText ||
+        video.id ||
+        vote.voteTitle ||
+        audio.id ||
+        Object.values(images).length ||
+        Object.values(files).length
       )
     ) {
       return false;
@@ -273,7 +272,8 @@ function DVditor(props) {
     const { width, height } = postInner.getBoundingClientRect();
     const { vditor } = editor;
     const editorElement = vditor[vditor.currentMode].element;
-    const x =      textareaPosition.left + (vditor.options.outline.position === 'left' ? vditor.outline.element.offsetWidth : 0);
+    const x =
+      textareaPosition.left + (vditor.options.outline.position === 'left' ? vditor.outline.element.offsetWidth : 0);
     const y = textareaPosition.top;
     const lineHeight = parseInt(
       document.defaultView.getComputedStyle(editorElement, null).getPropertyValue('line-height'),
@@ -314,7 +314,7 @@ function DVditor(props) {
 
     // https://ld246.com/article/1549638745630#options
     const editor = new Vditor(vditorId, {
-      _lutePath: 'https://dl.discuz.chat/discuzq-fe/static/lute/lute.min.js',
+      _lutePath: 'https://cdn.jsdelivr.net/npm/vditor@3.8.13/dist/js/lute/lute.min.js',
       ...baseOptions,
       minHeight: pc && !isHaveContent() ? 450 : 44,
       // 编辑器初始化值
@@ -394,26 +394,26 @@ function DVditor(props) {
       hint: {
         extend: pc
           ? [
-            {
-              key: '@',
-              hintCustom: (key, textareaPosition, lastindex) => {
-                if (key.indexOf(' ') !== -1) {
-                  return;
-                }
-                props.threadPost.setEditorHintAtKey(key);
-                const position = getLineHeight(editor, textareaPosition, '@');
-                hintCustom('@', key, position, lastindex, editor.vditor);
+              {
+                key: '@',
+                hintCustom: (key, textareaPosition, lastindex) => {
+                  if (key.indexOf(' ') !== -1) {
+                    return;
+                  }
+                  props.threadPost.setEditorHintAtKey(key);
+                  const position = getLineHeight(editor, textareaPosition, '@');
+                  hintCustom('@', key, position, lastindex, editor.vditor);
+                },
               },
-            },
-            {
-              key: '#',
-              hintCustom: (key, textareaPosition, lastindex) => {
-                props.threadPost.setEditorHintTopicKey(key);
-                const position = getLineHeight(editor, textareaPosition, '#');
-                hintCustom('#', key, position, lastindex, editor.vditor);
+              {
+                key: '#',
+                hintCustom: (key, textareaPosition, lastindex) => {
+                  props.threadPost.setEditorHintTopicKey(key);
+                  const position = getLineHeight(editor, textareaPosition, '#');
+                  hintCustom('#', key, position, lastindex, editor.vditor);
+                },
               },
-            },
-          ]
+            ]
           : [],
         hide() {
           props.threadPost.setEditorHintAtKey('');
@@ -449,8 +449,7 @@ function DVditor(props) {
           for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const { name } = file;
-            const nameType = name.split('.').pop()
-              .toUpperCase();
+            const nameType = name.split('.').pop().toUpperCase();
             const fileType = file.type;
 
             if (!fileType.includes('image')) {
@@ -526,7 +525,7 @@ function DVditor(props) {
 
             let content = `${errorLength}张图片上传失败，请重新尝试上传。`;
 
-            const sensitiveLen = error.filter(item => item?.msg.includes('敏感图')).length;
+            const sensitiveLen = error.filter((item) => item?.msg.includes('敏感图')).length;
 
             if (errorLength === sensitiveLen) {
               content = `有${sensitiveLen}张敏感图片上传失败，请更换图片重新上传。`;
