@@ -1038,7 +1038,7 @@ class PostPage extends React.Component {
       <>
         <Head>
           {/* 编辑器markdown依赖 */}
-          <script key="lute" async src="https://cdn.jsdelivr.net/npm/vditor@3.8.13/dist/js/lute/lute.min.js" />
+          <script key="lute" async src="https://dl.discuz.chat/discuzq-fe/static/lute/lute.min.js" />
         </Head>
         <ViewAdapter h5={h5} pc={pc} title="发布" />
       </>
