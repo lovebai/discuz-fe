@@ -35,7 +35,7 @@
     "@discuzqfe/discuz-plugin-loader": "2.1.8",
     "@discuzqfe/plugin-center": "2.0.17",
     "@discuzqfe/sdk": "1.0.55",
-    "@discuzqfe/theme": "1.0.33",
+    "@discuzqfe/theme": "1.0.34",
     "@discuzqfe/vditor": "1.0.29",
     "@tarojs/components": "3.4.14",
     "@tarojs/react": "3.4.14",
