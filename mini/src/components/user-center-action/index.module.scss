@@ -8,10 +8,13 @@
   display: flex;
   flex-wrap: wrap;
 
-  .userCenterActionItem, .userCenterPluginActionItem {
+  .userCenterActionItem,
+  .userCenterPluginActionItem {
     cursor: pointer;
     min-width: rem(60);
-    width: percentage(100/4/100);
+    // width: percentage(100/4/100);
+    // calc(0.25 * 100%)
+    width: calc(100 / 4 / 100);
   }
 
   .userCenterActionItem {
