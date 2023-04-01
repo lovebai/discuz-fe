@@ -30,10 +30,10 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "7.7.7",
-    "@discuzqfe/design": "1.1.8",
+    "@discuzqfe/design": "1.1.9",
     "@discuzqfe/discuz-babel-plugin-import": "0.0.1",
     "@discuzqfe/discuz-plugin-loader": "2.1.8",
-    "@discuzqfe/plugin-center": "2.0.17",
+    "@discuzqfe/plugin-center": "2.0.18",
     "@discuzqfe/sdk": "1.0.55",
     "@discuzqfe/theme": "1.0.34",
     "@discuzqfe/vditor": "1.0.29",
