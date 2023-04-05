@@ -32,7 +32,7 @@ module.exports = {
     miniCssExtractPluginOption: {
       ignoreOrder: true
     },
-    addChunkPages (pages) {
+    addChunkPages(pages) {
       const indexPages = miniConfig.subPackages[0].pages;
       const subPages = miniConfig.subPackages[1].pages;
       const userPages = miniConfig.subPackages[2].pages;
@@ -46,15 +46,13 @@ module.exports = {
         pages.set(`userPages/${page}`, ['userPages/common']);
       });
     },
-    webpackChain (chain, webpack) {
+    webpackChain(chain, webpack) {
       // chain.plugin('analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, []);
       const defaultDefinePlugin = getDefinePlugin();
       chain.plugin()
-        .use(webpack.DefinePlugin, [
-          {
-            ...defaultDefinePlugin
-          }
-      ]);
+        .use(webpack.DefinePlugin, [{
+          ...defaultDefinePlugin
+        }]);
       getDZQPluginLoader(chain);
 
       chain.merge({
@@ -110,7 +108,7 @@ module.exports = {
               discuzq: {
                 name: 'discuzq',
                 test: module => {
-                  return /@discuzq[\\/][a-z]+/.test(module.context);
+                  return /@discuzqfe[\\/][a-z]+/.test(module.context);
                 },
                 priority: 900,
               },
